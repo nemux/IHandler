@@ -18,102 +18,39 @@
                                           ]);
         }*/
       Attack::create([
-                  'name' => 'Otros',
+                  'name' => 'Malware',
                   'description' => ''
                   ]);
 
       Attack::create([
-                  'name' => 'Spam',
+                  'name' => 'DoS/DDoS',
                   'description' => ''
                   ]);
       Attack::create([
-                 'name' => 'Defacement',
+                 'name' => 'Bruteforce',
                  'description' => ''
                  ]);
       Attack::create([
-                 'name' => 'Acoso',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Virus',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Gusano',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Troyano',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Spyware',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Escaneo de vulnerabilidades',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Sniffing',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Ingeniería Social',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Inyección SQL',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Pharming',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Inyección Remota de Archivos',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Ataques de fuerza bruta',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Explotación de vulnerabilidades',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Cross-Site Scripting',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Inyección otros tipos',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'DoS / DDoS',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Fallo (hw/sw)',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Error humano',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Copyright',
-                 'description' => ''
-                 ]);
-      Attack::create([
-                 'name' => 'Suplantación',
+                 'name' => 'Ataques Web',
                  'description' => ''
                  ]);
       Attack::create([
                  'name' => 'Phishing',
                  'description' => ''
                  ]);
+      Attack::create([
+                 'name' => 'Defacement',
+                 'description' => ''
+                 ]);
+      Attack::create([
+                 'name' => 'Network Scanning/Recon',
+                 'description' => ''
+                 ]);
+      Attack::create([
+                 'name' => 'SQL Injection',
+                 'description' => ''
+                 ]);
+      
 
        }
 

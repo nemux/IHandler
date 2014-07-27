@@ -505,50 +505,9 @@
                           </select>
                         </td>
                         <td width="20%">
-                          <select name="attack_id" class="form-control" id="attack">
-
-                                  <optgroup label="Otros">
-                                    <option value="1">Otros</option>
-                                  </optgroup>
-                                  <optgroup label="Contenido Abusivo">
-                                    <option value="2">Spam</option>
-                                    <option value="3">Defacement</option>
-                                    <option value="4">Acoso / Coacción</option>
-                                  </optgroup>
-                                  <optgroup label="Código Dañino">
-                                    <option value="5">Virus</option>
-                                    <option value="6">Gusano</option>
-                                    <option value="7">Troyano</option>
-                                    <option value="8">Spyware</option>
-                                  </optgroup>
-                                  <optgroup label="Recolección de información">
-                                    <option value="9">Escaneo de vulnerabilidades</option>
-                                    <option value="10">Sniffing</option>
-                                    <option value="11">Ingeniería Social</option>
-                                  </optgroup>
-                                    <optgroup label="Intrusiones">
-                                    <option value="12">Inyección SQL</option>
-                                    <option value="13">Pharming</option>
-                                    <option value="14">Inyección remota de archivos</option>
-                                    <option value="15">Ataques de fuerza bruta</option>
-
-                                    <option value="16">Explotación de vulnerabilidades</option>
-                                    <option value="17">Cross-Site Scripting</option>
-                                    <option value="18">Inyección otros tipos</option>
-                                  </optgroup>
-                                  <optgroup label="Disponibilidad">
-                                    <option value="19">DoS / DDoS</option>
-                                    <option value="20">Fallo (hw/sw)</option>
-                                    <option value="21">Error humano</option>
-                                  </optgroup>
-                                  <optgroup label="Fraude">
-                                    <option value="22">Copyright</option>
-                                    <option value="23">Suplantación / Spoofing</option>
-                                    <option value="24">Phishing</option>
-                                  </optgroup>
-
-                                  </select>
-
+                          {{ Form::select('attack_id', $attack, $incident->attacks_id,[
+                                    'class'=>'form-control parsley-validated',]);
+                          }}
                         </td>
 
 
