@@ -8,18 +8,9 @@
 
        $faker = Faker\Factory::create();
 
-       /*
-            foreach (range (1,23) as $index) {
-
-                  Attack::create([
-                  'name' => $faker->state,
-                  'description' => $faker->paragraph($nbSentences = 2),
-
-                                          ]);
-        }*/
       Attack::create([
                   'name' => 'Malware',
-                  'description' => ''
+                  'description' => '',
                   ]);
 
       Attack::create([
@@ -50,7 +41,7 @@
                  'name' => 'SQL Injection',
                  'description' => ''
                  ]);
-      
+
 
        }
 

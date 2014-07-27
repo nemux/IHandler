@@ -85,6 +85,15 @@ Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
 });
 
 Route::get('incident/view/{id}','IncidentController@view');
+Route::get('/attack/create','AttackController@get_create');
+Route::post('/attack/create','AttackController@post_create');
+Route::get('/attack','AttackController@index');
+Route::get('/attack/{id}','AttackController@get_byID');
+Route::get('/attack/view/{id}','AttackController@view');
+Route::get('/attack/update/{id}','AttackController@get_update');
+Route::post('/attack/update','AttackController@post_update');
+
+
 
 Route::group(array('prefix'=>'report'),function(){
   # Report Routes

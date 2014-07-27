@@ -10,6 +10,7 @@ protected $layout = 'layouts.master';
       $input = Input::all();
       $sensor=new Sensor;
       $customer=Customer::lists('company', 'id');
+      $log = new Log\Logger();
 
       if (isset($input['name'])) {
         $sensor->name=$input['name'];
@@ -17,7 +18,7 @@ protected $layout = 'layouts.master';
         $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
-        //$log::info(Auth::user()->id,Auth::user()->username,'Se creó el Sensor con ID: '. $sensor->id);
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creó el Sensor con ID: '. $sensor->id);
         return Redirect::to('sensor/view/'.$sensor->id);
       }
       else{
@@ -36,6 +37,7 @@ protected $layout = 'layouts.master';
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
       $sensor=Sensor::find($id);
+      $log = new Log\Logger();
 
       if ($input) {
         $sensor->ip=$input['ip'];
@@ -43,7 +45,7 @@ protected $layout = 'layouts.master';
         $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
-        //$log::info(Auth::user()->id,Auth::user()->username,'Se actualizó el Sensor con ID: '. $sensor->id);
+        $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó el Sensor con ID: '. $sensor->id);
         return Redirect::to('sensor/view/'.$sensor->id);
       }
     }
@@ -70,7 +72,6 @@ protected $layout = 'layouts.master';
 
       return $this->layout = View::make('sensor.view', array(
         'sensor'=>$sensor,
-
         'action'=>'SensorController@getUpdate',
         ));
     }

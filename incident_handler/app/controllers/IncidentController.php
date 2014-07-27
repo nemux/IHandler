@@ -104,6 +104,7 @@ protected $layout = 'layouts.master';
       $input = Input::all();
       $id = $input['id'];
       $status = $input['status'];
+      $log = new Log\Logger();
 
 
       $incident=Incident::find($id);
@@ -171,7 +172,7 @@ protected $layout = 'layouts.master';
           $incident->incidents_status_id = $status;
           $incident->save();
         }
-        //$log::info(Auth::user()->id,Auth::user()->username,'Se actualizo el incidente con ID: '. $incident->id. ' a estatus '. $incident->incidents_status_id);
+        $log->info(Auth::user()->id,Auth::user()->username,'Se actualizo el incidente con ID: '. $incident->id. ' a estatus '. $incident->incidents_status_id);
       }
       return Redirect::to('incident/view/'.$incident->id);
     }
@@ -205,6 +206,7 @@ protected $layout = 'layouts.master';
 
       $sensor_object= new Sensor;
       $input = Input::all();
+      $log = new Log\Logger();
 
       $incident=new Incident;
       $attack=Attack::lists('name', 'id');
@@ -386,8 +388,7 @@ protected $layout = 'layouts.master';
           $incident_rule->incidents_id=$incident->id;
           $incident_rule->save();
         }
-        //$log::info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
-
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
         return Redirect::to('incident/view/'.$incident->id);
       }
       else{
@@ -451,6 +452,8 @@ protected $layout = 'layouts.master';
     {
 
       $input = Input::all();
+      $log = new Log\Logger();
+
       if ($input['sensor_id'] == 0 || !$input['sensor_id'])
         return "Debe seleccionar un sensor";
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -650,7 +653,7 @@ protected $layout = 'layouts.master';
                     $image->delete();
                   }
                 }
-                //$log::info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
+                $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
                 return Redirect::to('incident/view/'.$incident->id);
       }
     }
@@ -706,10 +709,12 @@ protected $layout = 'layouts.master';
     $incident=Incident::find($id);
     $htmlReport = $this->renderReport($incident);
     $pdf = App::make('dompdf');
+    $log = new Log\Logger();
 
     $pdf->loadHTML($htmlReport,1);
     //Log
-    //$log::info(Auth::user()->id,Auth::user()->username,'Se visualizó el reporte PDF del Incidente con ID: '. $incident->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se visualizó el reporte PDF del Incidente con ID: '. $incident->id );
+
     return $pdf->stream();
   }
   public function addObservation(){
@@ -833,6 +838,7 @@ protected $layout = 'layouts.master';
     $u = new Otrs\User();
     $ticketOtrs = new Otrs\Ticket();
     $ticketIM = new Ticket;
+    $log = new Log\Logger();
 
     $incident->incidents_status_id=$status;
     $incident->save();
@@ -855,12 +861,13 @@ protected $layout = 'layouts.master';
     $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
     $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
     $ticketIM->save();
-    //$log::info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id );
   }
 
   private function closeTicket($ticketID){
 
     $ticketOtrs = new Otrs\Ticket();
+    $log = new Log\Logger();
     $t = Ticket::where('otrs_ticket_id','=',$ticketID)->first();
 
     $ticketIM = Ticket::find($t->id);
@@ -869,7 +876,8 @@ protected $layout = 'layouts.master';
     $res = $ticketOtrs->close($ticketID, $htmlReport);
 
     //Log
-    //$log::info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+
   }
 
     private function sendRecomendation($incident, $recomendation){
@@ -880,6 +888,7 @@ protected $layout = 'layouts.master';
     $r->incidents_id = $incident->id;
     $r->content = $recomendation;
     $r->save();
+    $log = new Log\Logger();
 
     $htmlReport = $this->renderReport($incident);
 
@@ -889,7 +898,7 @@ protected $layout = 'layouts.master';
     $r->save();
 
     //Log
-    //$log::info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id );
   }
 
   private function renderReport($incident){
