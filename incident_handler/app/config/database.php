@@ -65,21 +65,21 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '10.30.12.106',
 			'database' => 'incident_handler',
-			'username' => 'postgres',
-			'password' => 'temp0ral',
+			'username' => 'imanager',
+			'password' => '.dataBDlaravel.',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
 		),
 
-    'log' => array(
+		'log' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '10.30.12.106',
 			'database' => 'log',
-			'username' => 'postgres',
-			'password' => 'temp0ral',
+			'username' => 'log',
+			'password' => 'log',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',

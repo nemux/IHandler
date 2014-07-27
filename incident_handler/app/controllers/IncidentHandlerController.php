@@ -13,7 +13,7 @@ protected $layout = 'layouts.master';
       $access=new Access;
       $types=AccessType::lists('name', 'id');
 
-      if ($input) {
+      if (isset($input['name'])) {
         $handler->name=$input['name'];
         $handler->lastname=$input['lastname'];
         $handler->phone=$input['phone'];

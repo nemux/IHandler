@@ -217,7 +217,7 @@ protected $layout = 'layouts.master';
       $det_time=new Time;
       $occ_time=new Time;
 
-      if ($input) {
+      if (isset($input['tittle'])) {
         if ($this->validateEntry(array($input['title'],))=="1") {
           return Redirect::to('/incident');
         }

@@ -11,7 +11,7 @@ protected $layout = 'layouts.master';
       $sensor=new Sensor;
       $customer=Customer::lists('company', 'id');
 
-      if ($input) {
+      if (isset($input['name'])) {
         $sensor->name=$input['name'];
         $sensor->ip=$input['ip'];
         $sensor->montage=$input['montage'];
