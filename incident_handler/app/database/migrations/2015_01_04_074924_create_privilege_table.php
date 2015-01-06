@@ -12,7 +12,7 @@ class CreatePrivilegeTable extends Migration {
 	 */
 	public function up()
 	{
-				Schema::create('affected_type',function(Blueprint $table)
+			Schema::create('affected_type',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('name');

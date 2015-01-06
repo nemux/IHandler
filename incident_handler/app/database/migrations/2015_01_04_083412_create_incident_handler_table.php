@@ -31,8 +31,7 @@ class CreateIncidentHandlerTable extends Migration {
 	 * @return void
 	 */
 	public function down()
-	{
-		//
+	{		//
 		Schema::drop('incident_handler');
 	}
 
