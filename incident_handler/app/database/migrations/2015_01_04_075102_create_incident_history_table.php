@@ -17,7 +17,7 @@ class CreateIncidentHistoryTable extends Migration {
 			$table->increments('id');
 			$table->string('datetime');
             $table->string('descripcion');
-            $table->integer('incident__handler_id')->unsigned();
+            $table->integer('incident_handler_id')->unsigned();
             $table->integer('incident_status_id')->unsigned();
 		});
 		//Schema::table('incident_history', function(Blueprint $table)

@@ -18,7 +18,7 @@ class CreateAttackerTable extends Migration {
 			$table->string('ip');
             $table->string('location');
 			$table->integer('incident_id')->unsigned();
-            $table->integer('attacker_time_id')->unsigned();
+            $table->integer('attacker_type_id')->unsigned();
             $table->timestamps();
 		});
 		//Schema::table('attacker', function(Blueprint $table)

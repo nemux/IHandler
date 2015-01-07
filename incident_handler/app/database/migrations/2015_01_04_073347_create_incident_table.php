@@ -13,7 +13,7 @@ class CreateIncidentTable extends Migration {
 	public function up()
 	{
 		//La tabla de incidentes (la migracion de)
-		Schema::create('incidentes',function(Blueprint $table)
+		Schema::create('incident',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('risk');

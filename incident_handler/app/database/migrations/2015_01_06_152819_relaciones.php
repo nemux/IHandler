@@ -22,16 +22,11 @@ class Relaciones extends Migration {
 			$table->foreign('incident_handler_id')->references('id')->on('incident_handler');
 			$table->foreign('acces_type_id')->references('id')->on('acces_type');
 		});
-		Schema::table('incident_history', function(Blueprint $table)
-		{
-			$table->foreign('incident_handler_id')->references('id')->on('incident_handler');
-			$table->foreign('incident_status_id')->references('id')->on('incident_status');
-		});
+
 		Schema::table('attacker', function(Blueprint $table)
 		{
 			$table->foreign('incident_id')->references('id')->on('incident');
-		
-				$table->foreign('attacker_type_id')->references('id')->on('attacker_type');
+			$table->foreign('attacker_type_id')->references('id')->on('attacker_type');
 		});
 		Schema::table('attacker_history', function(Blueprint $table)
 		{
@@ -63,6 +58,11 @@ class Relaciones extends Migration {
 			$table->foreign('incident_id')->references('id')->on('incident');
 		});
 
+				Schema::table('incident_history', function(Blueprint $table)
+		{
+			$table->foreign('incident_handler_id')->references('id')->on('incident_handler');
+			$table->foreign('incident_status_id')->references('id')->on('incident_status');
+		});
 
 
 		
