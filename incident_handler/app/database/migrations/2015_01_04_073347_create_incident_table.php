@@ -13,7 +13,7 @@ class CreateIncidentTable extends Migration {
 	public function up()
 	{
 		//La tabla de incidentes (la migracion de)
-		Schema::create('incident',function(Blueprint $table)
+		Schema::create('incidents',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('risk');
@@ -22,23 +22,13 @@ class CreateIncidentTable extends Migration {
 			$table->string('file');
 			$table->string('conclution');
 			$table->string('recomendation');
-			$table->integer('category_id')->unsigned();
-			$table->integer('attack_id')->unsigned();
-			$table->integer('customer_id')->unsigned();
+			$table->integer('categories_id')->unsigned();
+			$table->integer('attacks_id')->unsigned();
+			$table->integer('customers_id')->unsigned();
 			$table->integer('incident_handler_id')->unsigned();
 			$table->timestamps();
 
 		});
-
-
-
-		//Schema::table('incident', function(Blueprint $table){
-		//	$table->foreign('incident_handler_id')->references('id')->on('incident_handler');
-		//	$table->foreign('category_id')->references('id')->on('category');
-		//	$table->foreign('attack_id')->references('id')->on('attack');
-		//	$table->foreign('customer_id')->references('id')->on('customer');
-		//});
-
 	}
 
 	/**
@@ -48,16 +38,7 @@ class CreateIncidentTable extends Migration {
 	 */
 	public function down()
 	{
-		//
-		Schema::table('incident',function(Blueprint $table)
-		{
-			$table->dropForeign('incident_incident_handler_id_foreign');
-			$table->dropForeign('incident_category_id_foreign');
-			$table->dropForeign('incident_attack_id_foreign');
-			$table->dropForeign('incident_customer_id_foreign');
-		});
-
-		Schema::drop('incident');
+		Schema::drop('incidents');
 	}
 
 }

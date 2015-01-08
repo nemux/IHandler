@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimeTable extends Migration {
+class CreateAttackersTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,13 @@ class CreateTimeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('time',function(Blueprint $table)
+		Schema::create('attackers',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('datetime');
-      $table->string('zone');
-			$table->integer('time_types_id')->unsigned();
-      $table->integer('incidents_id')->unsigned();
+			$table->string('ip');
+      $table->string('location');
+			$table->integer('incidents_id')->unsigned();
+      $table->integer('attacker_types_id')->unsigned();
       $table->timestamps();
 		});
 	}
@@ -30,7 +30,7 @@ class CreateTimeTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('time');
+		Schema::drop('attackers');
 	}
 
 }

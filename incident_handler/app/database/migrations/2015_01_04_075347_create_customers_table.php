@@ -3,27 +3,24 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateCustomersTable extends Migration {
 
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-		
-		//
-		 public function up()
-  {
-    Schema::create('users', function(Blueprint $table) {
-      $table->increments('id');
-      $table->string('name');
-      $table->string('lastname');
-      $table->string('mail');
+	public function up()
+	{
+		Schema::create('customers',function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->string('company');
       $table->string('phone');
-      $table->integer('type');
-      $table->string('other');
+      $table->string('name');
+      $table->string('mail');
       $table->timestamps();
-    });
+		});
 	}
 
 	/**
@@ -33,7 +30,8 @@ class CreateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('customers');
+		//
 	}
 
 }

@@ -11,7 +11,7 @@ class CreateIncidentHandlerTable extends Migration {
 	 * @return void
 	 */
 	public function up()
-	{	
+	{
 		Schema::create('incident_handler', function(Blueprint $table)
 
 	{

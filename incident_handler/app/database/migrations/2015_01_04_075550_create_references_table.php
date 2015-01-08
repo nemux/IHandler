@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimeTable extends Migration {
+class CreateReferencesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,16 @@ class CreateTimeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('time',function(Blueprint $table)
+		Schema::create('references',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('datetime');
-      $table->string('zone');
-			$table->integer('time_types_id')->unsigned();
+			$table->string('link');
+      $table->string('title');
+			$table->string('date');
+			$table->string('cve');
+			$table->string('cvss');
+      $table->string('bid');
+			$table->string('sid');
       $table->integer('incidents_id')->unsigned();
       $table->timestamps();
 		});
@@ -30,7 +34,7 @@ class CreateTimeTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('time');
+		Schema::drop('references');
 	}
 
 }

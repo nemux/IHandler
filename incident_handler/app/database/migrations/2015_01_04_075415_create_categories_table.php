@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimeTable extends Migration {
+class CreateCategoriesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateTimeTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('time',function(Blueprint $table)
+		Schema::create('categories',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('datetime');
-      $table->string('zone');
-			$table->integer('time_types_id')->unsigned();
-      $table->integer('incidents_id')->unsigned();
-      $table->timestamps();
+			$table->string('name');
+      $table->string('description');
+      $table->string('time_range');
 		});
 	}
 
@@ -30,7 +28,7 @@ class CreateTimeTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('time');
+		Schema::drop('categories');
 	}
 
 }
