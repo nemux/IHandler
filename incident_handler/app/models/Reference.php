@@ -1,28 +1,19 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
 
-class Reference extends Eloquent implements UserInterface, RemindableInterface {
+class Reference extends Eloquent  {
 
-	use UserTrait, RemindableTrait;
 
 	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
-	protected $table = 'reference';
-	protected $fillable = ['link','title','date','cve','cvss','bid','sid','incident_id'];
+	protected $table = 'references';
+	protected $fillable = ['link','title','datetime','cve','cvss','bid','sid','incidents_id'];
 	protected $softDelete = true;
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 * @var array
-	 */
-	//protected $hidden = array('password', 'remember_token');
-	public funcion incident(){
-		return $this->belongsTO('Incident','id');
+
+	public function incident(){
+		return $this->belongsTo('Incident','incidents_id','id');
 	}
 
 }

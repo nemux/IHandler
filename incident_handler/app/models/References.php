@@ -1,15 +1,15 @@
 <?php
 
 
+class Reference extends Eloquent  {
 
-class Method extends Eloquent {
 
 	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
-	protected $table = 'methods';
-	protected $fillable = ['name','description','incidents_id'];
+	protected $table = 'references';
+	protected $fillable = ['link','title','date','cve','cvss','bid','sid','incidents_id'];
 	protected $softDelete = true;
 
 	public function incident(){

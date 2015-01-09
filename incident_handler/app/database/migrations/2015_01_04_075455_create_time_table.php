@@ -15,7 +15,7 @@ class CreateTimeTable extends Migration {
 		Schema::create('time',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('datetime');
+			$table->datetime('datetime');
       $table->string('zone');
 			$table->integer('time_types_id')->unsigned();
       $table->integer('incidents_id')->unsigned();

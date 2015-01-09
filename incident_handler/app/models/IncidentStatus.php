@@ -1,18 +1,14 @@
 <?php
 
-class Attack extends Eloquent {
+
+class IncidentStatus extends Eloquent {
 
 	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
-	protected $table = 'attacks';
+	protected $table = 'incidents_status';
 	protected $fillable = ['name','description'];
 	protected $softDelete = true;
-
-
-	public function incident(){
-		return $this->belongsTo('Incident','incidents_id','id');
-	}
 
 }

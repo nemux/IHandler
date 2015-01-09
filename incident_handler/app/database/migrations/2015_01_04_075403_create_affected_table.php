@@ -16,7 +16,7 @@ class CreateAffectedTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('source');
-      $table->string('datetime');
+      $table->datetime('datetime');
       $table->integer('incidents_id')->unsigned();
       $table->integer('affected_types_id')->unsigned();
 		});

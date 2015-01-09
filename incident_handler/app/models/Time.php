@@ -1,28 +1,20 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
-class Time extends Eloquent implements UserInterface, RemindableInterface {
-
-	use UserTrait, RemindableTrait;
+class Time extends Eloquent {
 
 	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
 	protected $table = 'time';
-	protected $fillable = ['date_time','zone','time_type_id','incident_id'];
+	protected $fillable = ['datetime','zone','time_types_id','incidents_id'];
 	protected $softDelete = true;
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 * @var array
-	 */
-	//protected $hidden = array('password', 'remember_token');
-	public funcion time_type(){
-		return $this->belongsTo('Time_type','time_type_id');
-	}
 
+
+	public function type(){
+		return $this->belongsTo('TimeType','time_types_id','id');
+	}
+	public function incident(){
+		return $this->belongsTo('Incident','incidents_id','id');
+	}
 }

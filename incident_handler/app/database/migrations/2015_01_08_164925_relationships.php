@@ -81,7 +81,6 @@ class Relationships extends Migration {
             $table->foreign('incidents_status_id')->references('id')->on('incidents_status');
           });
 
-
         }
 
         /**

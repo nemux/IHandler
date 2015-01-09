@@ -15,7 +15,7 @@ class CreateTicketsHistoryTable extends Migration {
 		Schema::create('tickets_history',function(Blueprint $table)
 		{
 			$table->increments('id');
-      $table->string('date_time');
+      $table->datetime('datetime');
       $table->integer('incident_handler_id')->unsigned();
      	$table->integer('tickets_status_id')->unsigned();
      	$table->integer('tickets_id')->unsigned();

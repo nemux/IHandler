@@ -17,7 +17,7 @@ class CreateReferencesTable extends Migration {
 			$table->increments('id');
 			$table->string('link');
       $table->string('title');
-			$table->string('date');
+			$table->datetime('datetime');
 			$table->string('cve');
 			$table->string('cvss');
       $table->string('bid');

@@ -19,7 +19,7 @@ class CreateAttackersHistoryTable extends Migration {
       $table->string('protocol');
       $table->string('operative_system');
       $table->string('function');
-      $table->string('date');
+      $table->datetime('datetime');
       $table->integer('attackers_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->timestamps();
