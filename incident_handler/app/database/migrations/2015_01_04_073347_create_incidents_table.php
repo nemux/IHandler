@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncidentTable extends Migration {
+class CreateIncidentsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -16,11 +16,11 @@ class CreateIncidentTable extends Migration {
 		Schema::create('incidents',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('risk');
-			$table->string('criticity');
-			$table->string('impact');
-      $table->string('description');
-			$table->string('file');
+			$table->string('risk')->nullable();
+			$table->string('criticity')->nullable();
+			$table->string('impact')->nullable();
+      $table->string('description')->nullable();
+			$table->string('file')->nullable();
 			$table->string('conclution');
 			$table->string('recomendation');
 			$table->integer('categories_id')->unsigned();

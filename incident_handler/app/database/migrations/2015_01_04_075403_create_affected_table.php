@@ -15,8 +15,8 @@ class CreateAffectedTable extends Migration {
 		Schema::create('affected',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('source');
-      $table->datetime('datetime');
+			$table->string('source')->nullable();
+      $table->datetime('datetime')->nullable();
       $table->integer('incidents_id')->unsigned();
       $table->integer('affected_types_id')->unsigned();
 		});

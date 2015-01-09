@@ -15,11 +15,11 @@ class CreateAttackersHistoryTable extends Migration {
 		Schema::create('attackers_history',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('port');
-      $table->string('protocol');
-      $table->string('operative_system');
-      $table->string('function');
-      $table->datetime('datetime');
+			$table->string('port')->nullable();
+      $table->string('protocol')->nullable();
+      $table->string('operative_system')->nullable();
+      $table->string('function')->nullable();
+      $table->datetime('datetime')->nullable();
       $table->integer('attackers_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->timestamps();

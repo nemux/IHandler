@@ -15,13 +15,13 @@ class CreateReferencesTable extends Migration {
 		Schema::create('references',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('link');
-      $table->string('title');
-			$table->datetime('datetime');
-			$table->string('cve');
-			$table->string('cvss');
-      $table->string('bid');
-			$table->string('sid');
+			$table->string('link')->nullable();
+      $table->string('title')->nullable();
+			$table->datetime('datetime')->nullable();
+			$table->string('cve')->nullable();
+			$table->string('cvss')->nullable();
+      $table->string('bid')->nullable();
+			$table->string('sid')->nullable();
       $table->integer('incidents_id')->unsigned();
       $table->timestamps();
 		});
