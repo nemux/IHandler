@@ -14,7 +14,7 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 	protected $table = 'access';
-	protected $fillable = ['incident_handler_id','acces_type_id','user'];
+	protected $fillable = ['incident_handler_id','user','pass','access_types_id'];
 	protected $softDelete = true;
 	/**
 	 * The attributes excluded from the model's JSON form.

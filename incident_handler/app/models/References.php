@@ -1,7 +1,7 @@
 <?php
 
 
-class Reference extends Eloquent  {
+class References extends Eloquent  {
 
 
 	/**

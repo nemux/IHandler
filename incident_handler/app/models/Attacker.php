@@ -6,7 +6,7 @@ class Attacker extends Eloquent {
 	 * The database table used by the model.
 	 * @var string
 	 */
-	protected $table = 'attacker';
+	protected $table = 'attackers';
 	protected $fillable = ['ip','location','incidents_id','attacker_types_id'];
 	protected $softDelete = true;
 

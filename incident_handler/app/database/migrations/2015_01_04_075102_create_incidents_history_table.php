@@ -16,10 +16,11 @@ class CreateIncidentsHistoryTable extends Migration {
 		{
 			$table->increments('id');
 			$table->datetime('datetime');
-      $table->string('descripcion');
+      $table->string('description');
       $table->integer('incidents_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->integer('incidents_status_id')->unsigned();
+      $table->timestamps();
 		});
 	}
 

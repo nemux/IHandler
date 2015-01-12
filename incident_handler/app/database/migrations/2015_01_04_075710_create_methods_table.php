@@ -18,6 +18,7 @@ class CreateMethodsTable extends Migration {
 			$table->string('name')->nullable();
       $table->string('description')->nullable();
       $table->integer('incidents_id')->unsigned();
+      $table->timestamps();
 		});
 	}
 

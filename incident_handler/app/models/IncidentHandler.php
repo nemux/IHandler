@@ -29,7 +29,7 @@ class IncidentHandler extends Eloquent {
 	}
 
 	public function ticket_history(){
-		return $this->hasMany('TicketHistory','incident_handler_id','id';
+		return $this->hasMany('TicketHistory','incident_handler_id','id');
 	}
 
 }

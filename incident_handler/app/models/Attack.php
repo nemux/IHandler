@@ -12,7 +12,7 @@ class Attack extends Eloquent {
 
 
 	public function incident(){
-		return $this->belongsTo('Incident','incidents_id','id');
+		return $this->hasOne('Incident','attacks_id','id');
 	}
 
 }

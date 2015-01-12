@@ -67,12 +67,12 @@ class Incident extends Eloquent{
 
 	public function customer()
 	{
-	  return $this->belongsTo('Customer','customers_id','id')
+	  return $this->belongsTo('Customer','customers_id','id');
 	}
 
 	public function incident_handler()
 	{
-		return $this->belongsTo('IncidentHandler','handler_id','id')
+		return $this->belongsTo('IncidentHandler','handler_id','id');
 	}
 
 }

@@ -19,6 +19,7 @@ class CreateAffectedTable extends Migration {
       $table->datetime('datetime')->nullable();
       $table->integer('incidents_id')->unsigned();
       $table->integer('affected_types_id')->unsigned();
+      $table->timestamps();
 		});
 	}
 

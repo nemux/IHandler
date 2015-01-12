@@ -18,6 +18,7 @@ class CreateApplicationsTable extends Migration {
 			$table->string('name');
       $table->string('description');
       $table->integer('incidents_id')->unsigned();
+      $table->timestamps();
 		});
 	}
 

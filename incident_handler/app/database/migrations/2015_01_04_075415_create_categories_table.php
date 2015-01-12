@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration {
 			$table->string('name')->nullable();
       $table->string('description')->nullable();
       $table->string('time_range')->nullable();
+      $table->timestamps();
 		});
 	}
 
