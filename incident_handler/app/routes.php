@@ -13,22 +13,20 @@
 
 Route::get('/', function()
 {
-	//return View::make('hello');
-	  return Redirect::to('usuarios');
+	return View::make('layouts.master');
+	  //return Redirect::to('usuarios');
 });
 
-Route::get('usuarios', array('uses' => 'UsuariosController@mostrarUsuarios'));
- 
-Route::get('usuarios/nuevo', array('uses' => 'UsuariosController@nuevoUsuario'));
- 
-Route::post('usuarios/crear', array('uses' => 'UsuariosController@crearUsuario'));
-// esta ruta es a la cual apunta el formulario donde se introduce la información del usuario 
-// como podemos observar es para recibir peticiones POST 
- 
-Route::get('usuarios/{id}', array('uses'=>'UsuariosController@verUsuario'));
-// esta ruta contiene un parámetro llamado {id}, que sirve para indicar el id del usuario que deseamos buscar 
-// este parámetro es pasado al controlador, podemos colocar todos los parámetros que necesitemos 
-// solo hay que tomar en cuenta que los parámetros van entre llaves {}
-// si el parámetro es opcional se colocar un signo de interrogación {parámetro?}
+Route::get('handler', 'IncidentHandlerController@index');
 
-//Route::resource('users', 'UsuariosController');
+Route::get('handler/create', 'IncidentHandlerController@create');
+Route::post('handler/create', 'IncidentHandlerController@create');
+
+Route::get('handler/update/{id}', 'IncidentHandlerController@getUpdate');
+Route::post('handler/update', 'IncidentHandlerController@postUpdate');
+
+Route::get('handler/view/{id}', 'IncidentHandlerController@view');
+
+Route::get('handler', 'IncidentHandlerController@index');
+
+Route::get('incident/create', 'IncidentController@create');

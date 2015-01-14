@@ -16,6 +16,7 @@ class CreateIncidentsTable extends Migration {
 		Schema::create('incidents',function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('title')->nullable();
 			$table->string('risk')->nullable();
 			$table->string('criticity')->nullable();
 			$table->string('impact')->nullable();
