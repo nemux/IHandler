@@ -29,4 +29,6 @@ Route::get('handler/view/{id}', 'IncidentHandlerController@view');
 
 Route::get('handler', 'IncidentHandlerController@index');
 
+
 Route::get('incident/create', 'IncidentController@create');
+Route::post('incident/create', 'IncidentController@create');

@@ -13,7 +13,11 @@ class Incident extends Eloquent{
   /*HAS MANY*/
   public function references()
 	{
-		return $this->hasMany('Reference','incidents_id','id');
+		return $this->hasMany('References','incidents_id','id');
+	}
+	public function rules()
+	{
+		return $this->hasMany('Rule','incidents_id','id');
 	}
 
   public function times()

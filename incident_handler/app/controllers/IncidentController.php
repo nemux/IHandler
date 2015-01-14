@@ -9,9 +9,11 @@ protected $layout = 'layouts.master';
     {
       $input = Input::all();
       $incident=new Incident;
+      $attack=Attack::lists('name', 'id');
+      $customer=Customer::lists('company', 'id');
 
       if ($input) {
-
+        print_r($input);
       }
       else{
         //$this->layout = View::make("incidentHandler.create",array('handler' => $handler));
@@ -19,6 +21,8 @@ protected $layout = 'layouts.master';
         'incident'=>$incident,
         'title'=>"Creación de Nuevo Incidente",
         'action'=>"IncidentController@create",
+        'attack'=>$attack,
+        'customer'=>$customer,
 
         ));
       }
