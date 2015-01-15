@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib\Otrs;
+namespace Otrs;
 
 use stdClass;
 

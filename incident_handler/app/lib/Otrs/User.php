@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib\Otrs;
+namespace Otrs;
 
 use stdClass;
 
@@ -20,7 +20,6 @@ class User extends Otrs{
                                            );
     return $usersList;
   }
-
 
 
   /*

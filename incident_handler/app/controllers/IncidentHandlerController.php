@@ -20,8 +20,8 @@ protected $layout = 'layouts.master';
         $handler->mail=$input['mail'];
         $handler->save();
 
-        $access->user=$input['user'];
-        $access->pass=substr(str_shuffle($chars),0,8);
+        $access->username=$input['user'];
+        $access->password=substr(str_shuffle($chars),0,8);
         $access->access_types_id=$input['access_types_id'];
         $access->incident_handler_id=$handler->id;
         $access->active=0;
@@ -57,7 +57,7 @@ protected $layout = 'layouts.master';
         $handler->mail=$input['mail'];
         $handler->save();
 
-        $access->user=$input['user'];
+        $access->username=$input['username'];
         //$access->pass=substr(str_shuffle($chars),0,8);
         $access->access_types_id=$input['access_types_id'];
         $access->incident_handler_id=$handler->id;

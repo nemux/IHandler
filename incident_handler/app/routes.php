@@ -37,19 +37,16 @@ Route::get('handler', 'IncidentHandlerController@index');
 Route::get('incident/create', 'IncidentController@create');
 Route::post('incident/create', 'IncidentController@create');
 
-//Route::get('/otrs/{name}',function($name);
+Route::get('/otrs/{name}',function($name)
+{
+
+  $o = new Otrs\Customer();
+  $u = new Otrs\User();
+  $t = new Otrs\Ticket();
+  $a = new Otrs\Article();
 
 
-
-//{
-  /*
-  $o = new \app\lib\Otrs\Customer();
-  $u = new \app\lib\Otrs\User();
-  $t = new \app\lib\Otrs\Ticket();
-  $a = new \app\lib\Otrs\Article();
-  */
-
-  //print_r($o->getAll());
+  print_r($o->getAll());
   /*
   foreach ($u->getAll() as $k=>$v){
     print("[");
@@ -66,8 +63,9 @@ Route::post('incident/create', 'IncidentController@create');
     print("<br/>");
   }
   */
-  //print_r($u->getUserInfo($name));
   /*
+  print_r($u->getUserInfo($name));
+
   foreach($u->getUserInfo($name) as $k=>$v){
      print("[");
       print($k);
@@ -76,6 +74,7 @@ Route::post('incident/create', 'IncidentController@create');
       print("<br/>");
   }
   */
+
 
   /*
   $ticket_info = $t->createTicket("Ticket desde Laravel", 3, "ldeleon", "Probando la creacion de tickets desde Laravel, intento 2");
@@ -94,6 +93,5 @@ Route::post('incident/create', 'IncidentController@create');
   //print_r($nombre);
   //$d = $o->getCustomerInfo($name);
   //print_r($d);
-
-
-//});
+  //return array("function"=>'get/otrs');
+});

@@ -83,10 +83,10 @@
 											</div>
 											<div class="form-group">
 												<label class="control-label col-md-2 col-sm-2">
-														{{ Form::label('user', 'Usuario:') }}
+														{{ Form::label('username', 'Usuario:') }}
 												</label>
 												<div class="col-md-10 col-sm-10">
-														{{Form::text('user', $access->user,[
+														{{Form::text('username', $access->username,[
 																			'class'=>'form-control parsley-validated',
 																			"data-parsley-pattern"=>"[]",
 																			"data-parsley-required"=>"true"]);

@@ -31,7 +31,7 @@
                 						<div class="stats-info">
                 							<h4><?php echo $handler->name ?> <?php echo $handler->lastname ?></h4>
                 							<p><?php echo $handler->access->type->name ?></p>
-                              <small>(<?php echo $handler->access->user ?>)</small>
+                              <small>(<?php echo $handler->access->username ?>)</small>
                 						</div>
                 						<div class="stats-link">
                 							<a href="/handler/update/<?php echo $handler->id ?>">Editar <i class="fa fa-arrow-circle-o-right"></i></a>

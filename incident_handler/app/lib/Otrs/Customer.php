@@ -1,6 +1,6 @@
 <?php
 
-namespace app\lib\Otrs;
+namespace Otrs;
 
 use stdClass;
 
@@ -21,12 +21,19 @@ class Customer extends Otrs {
                                          array($this->username,$this->password,
                                                "CustomerUserObject","CustomerSearch",
                                                "UserLogin","*",
-                                               )
-                                         );
-    $customerInfo = $this->formatOtrsArray($customersList);
+                                              )
+                                         ) ;
+    $tmpCustomerInfo = $this->formatOtrsArray($customersList);
 
-    if (sizeof($customerInfo) > 0 )
-      return $customerInfo;
+    if (sizeof($tmpCustomerInfo) > 0 ){
+      $CustomerInfo = array();
+      $i = 0;
+      foreach($tmpCustomerInfo as $k => $v){
+        $CustomerInfo[$i] =  array("UserName" => $k, "Name"=> $v);
+        $i++;
+      }
+      return $CustomerInfo;
+    }
     else
       return array("error_code" => 0, "error_description" => "No data.");
   }
@@ -67,6 +74,7 @@ class Customer extends Otrs {
                                                "User",$user,
                                                )
                                          );
+    return $this->formatOtrsArray($customerInfo);
     if (sizeof($customerInfo) > 0){
       $userInfoTmp = $this->formatOtrsArray($customerInfo);
 
