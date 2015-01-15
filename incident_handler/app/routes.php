@@ -10,6 +10,10 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::get('login', 'LoginController@login');
+
+Route::post('dologin', 'LoginController@doLogin');
+
 
 Route::get('/', function()
 {
@@ -33,8 +37,11 @@ Route::get('handler', 'IncidentHandlerController@index');
 Route::get('incident/create', 'IncidentController@create');
 Route::post('incident/create', 'IncidentController@create');
 
-Route::get('/otrs/{name}',function($name)
-{
+//Route::get('/otrs/{name}',function($name);
+
+
+
+//{
   /*
   $o = new \app\lib\Otrs\Customer();
   $u = new \app\lib\Otrs\User();
@@ -89,4 +96,4 @@ Route::get('/otrs/{name}',function($name)
   //print_r($d);
 
 
-});
+//});

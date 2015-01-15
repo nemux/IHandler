@@ -14,7 +14,7 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 	protected $table = 'access';
-	protected $fillable = ['incident_handler_id','username','password','access_types_id'];
+	protected $fillable = ['incident_handler_id','username','access_types_id'];
 	protected $softDelete = true;
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -34,6 +34,22 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return $this->belongsTo('AccessType','access_types_id','id');
 	}
+
+	public function getAuthIdentifier()
+	{
+    return $this->username;
+	}
+
+/**
+ * Get the password for the user
+ *
+ * @return string
+ */
+	public function getAuthPassword()
+	{
+    return $this->password;
+	}
+
 
 
 }
