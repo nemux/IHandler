@@ -20,22 +20,17 @@ class Relationships extends Migration {
             $table->foreign('access_types_id')->references('id')->on('access_types');
           });
 
-          Schema::table('attackers', function(Blueprint $table)
+          Schema::table('events', function(Blueprint $table)
           {
-              $table->foreign('incidents_id')->references('id')->on('incidents');
-              $table->foreign('attacker_types_id')->references('id')->on('attacker_types');
+            $table->foreign('events_types_id')->references('id')->on('events_types');
           });
 
           Schema::table('attackers_history', function(Blueprint $table)
           {
-            $table->foreign('attackers_id')->references('id')->on('attackers');
+            $table->foreign('events_id')->references('id')->on('events');
             $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
           });
 
-          Schema::table('affected', function(Blueprint $table)
-          {
-            $table->foreign('incidents_id')->references('id')->on('incidents');
-          });
 
           Schema::table('time', function(Blueprint $table)
           {
@@ -81,7 +76,15 @@ class Relationships extends Migration {
             $table->foreign('incidents_status_id')->references('id')->on('incidents_status');
           });
 
-        }
+          Schema::table('src_dst', function (Blueprint $table)
+          {
+            $table->foreign('src_id')->references('src')->on('events');
+            $table->foreign('dst_id')->references('dst')->on('events');
+            $table->foreign('incidents_id')->references('id')->on('incidents');
+              # code...
+            });
+          }
+        
 
         /**
          * Reverse the migrations.

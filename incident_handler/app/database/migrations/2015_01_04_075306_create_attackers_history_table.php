@@ -20,7 +20,7 @@ class CreateAttackersHistoryTable extends Migration {
       $table->string('operative_system')->nullable();
       $table->string('function')->nullable();
       $table->datetime('datetime')->nullable();
-      $table->integer('attackers_id')->unsigned();
+      $table->integer('events_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->timestamps();
 		});

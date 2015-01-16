@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttackerTypesTable extends Migration {
+class EventsType extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,14 @@ class CreateAttackerTypesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('attacker_types',function(Blueprint $table)
+			Schema::create('events_types',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('name');
       $table->string('description');
 		  $table->timestamps();
 		});
+		//
 	}
 
 	/**
@@ -28,8 +29,9 @@ class CreateAttackerTypesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('attacker_types');
+		Schema::drop('events_types');
 		//
 	}
 
 }
+

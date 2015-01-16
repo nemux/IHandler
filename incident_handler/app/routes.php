@@ -37,6 +37,14 @@ Route::get('handler', 'IncidentHandlerController@index');
 Route::get('incident/create', 'IncidentController@create');
 Route::post('incident/create', 'IncidentController@create');
 
+Route::filter('noAuth', function()
+{
+    //si no ha iniciado sesión
+    if(Auth::guest()){
+        return Redirect::to('login');
+    }
+});
+
 Route::get('/otrs/{name}',function($name)
 {
 

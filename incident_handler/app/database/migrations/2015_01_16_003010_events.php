@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttackersTable extends Migration {
+class Events extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,21 @@ class CreateAttackersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('attackers',function(Blueprint $table)
+			Schema::create('events',function(Blueprint $table)
 		{
+			
 			$table->increments('id');
 			$table->string('ip');
+			$table->string('src')->unique();
+			$table->string('dst')->unique();
       $table->string('location');
-			$table->integer('incidents_id')->unsigned();
-      $table->integer('attacker_types_id')->unsigned();
+	    $table->integer('attacker_types_id')->unsigned();
+	    $table->integer('events_types_id')->unsigned();
       $table->timestamps();
+			
 		});
+
+		//
 	}
 
 	/**
@@ -28,9 +34,11 @@ class CreateAttackersTable extends Migration {
 	 *
 	 * @return void
 	 */
+
 	public function down()
 	{
-		Schema::drop('attackers');
+		Schema::drop('events');
+		//
 	}
 
 }
