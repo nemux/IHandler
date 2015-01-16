@@ -203,7 +203,7 @@
 						    <span>Incident Handler</span>
 					    </a>
 						<ul class="sub-menu">
-						    <li class="active"><a href="/handler/create">Crear</a></li>
+						    <li><a href="/handler/create">Crear</a></li>
 						    <li><a href="/handler/">Ver</a></li>
 						</ul>
 					</li>
@@ -233,11 +233,9 @@
 		<!-- end #sidebar -->
 
 		<!-- begin #content -->
+
 		<div id="content" class="content">
-			<ol class="breadcrumb pull-right">
-				<li><a href="javascript:;">Home</a></li>
-				<li class="active">Dashboard</li>
-			</ol>
+
 			@yield('content')
 		</div>
 		<!-- end #content -->

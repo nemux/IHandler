@@ -1,13 +1,70 @@
 @extends('layouts.master')
 @section('content')
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+  <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
+  <!-- ================== END PAGE LEVEL STYLE ================== -->
 
-<script charset="utf-8">
-var count=0;
-function addImage(){
-  count=count+1;
-  $("#images").append('<input type="file" name="image_'+count+'">');
-}
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="/assets/plugins/pace/pace.min.js"></script>
+  <!-- ================== END BASE JS ================== -->
+<script>
+    $(document).ready(function() {
+
+      TableManageDefault.init();
+    });
+    var count_rule=0;
 </script>
+<script charset="utf-8">
+
+  function addRule(){
+    count_rule=count_rule+1;
+    //'sid','rule','message','translate','rule_is','why'
+    var str='<tr>'
+      +'<td>'
+        +'<input onkeyup="queryRule(this.value)" class="form-control" placeholder="sid" type="text" name="sid_'+count_rule+'" >'
+      +'</td>'
+      +'<td>'
+        +'<input class="form-control" placeholder="rule" type="text" name="rule_'+count_rule+'" >'
+      +'</td>'
+      +'<td>'
+        +'<input class="form-control" placeholder="message" type="text" name="message_'+count_rule+'" >'
+      +'</td>'
+      +'<td>'
+        +'<input class="form-control" placeholder="translate" type="text" name="translate_'+count_rule+'">'
+      +'</td>'
+      +'<td>'
+        +'<input class="form-control" placeholder="rule" type="text" name="rule_'+count_rule+'" >'
+      +'</td>'
+      +'<td>'
+        +'<input class="form-control" placeholder="why" type="text" name="why_'+count_rule+'" >'
+      +'</td>'
+    +'</tr>';
+    $("#rules").append(str);
+  }
+
+
+  function queryRule(sid){
+    $.ajax({
+        url: "/rule/query/",
+        type:"post",
+        data:"{sid:"+sid+"}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        async: true,
+        cache: false,
+        success: function(ret){
+             console.log(ret);
+         },
+        error: function(x,e){
+             console.log("error occur");
+        }
+      });
+  }
+
+  
+</script>
+
+
 <div class="row">
 <div class="panel panel-inverse">
 			    <div class="panel-heading">
@@ -83,6 +140,20 @@ function addImage(){
                               </td>
                             </tr>
                             <tr>
+                              <td style="width:15%">
+                                <a style="width:100%" class="btn btn-sm btn-success" onclick="addRule()"><i class="fa fa-plus"></i> Añadir</a><br><br>
+                                <a style="width:100%" href="#modal-dialog" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a>
+                              </td>
+                              <td colspan="3">
+                                <table class="table">
+                                  <tbody id="rules">
+
+
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
                               <td colspan="4" >
                                 {{Form::textarea('conclution',$incident->conclution,[
                                       'class'=>'form-control parsley-validated',
@@ -146,7 +217,68 @@ function addImage(){
 		</div>
 		<!-- end #content -->
 
+<div class="modal fade" id="modal-dialog">
+								<div class="modal-dialog">
+									<div class="modal-content" width="">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h4 class="modal-title">Modal Dialog</h4>
+										</div>
+										<div class="modal-body">
+											<div class="table-responsive">
+                         <table id="data-table" class="table table-striped table-bordered table-hover  ">
+                             <thead>
+                                 <tr>
+                                     <th>SID</th>
+                                     <th>Regla</th>
+                                     <th>Mensaje</th>
+                                     <th>Traducción</th>
+                                     <th>Qué es</th>
+                                     <th>Por qué ocurre</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+
+                               <?php foreach ($rule as $r): ?>
+                                 <tr style="cursor:pointer">
+
+                                   <td>
+                                     <?php echo $r->sid ?>
+                                   </td>
+                                   <td>
+                                     <?php echo $r->rule ?>
+                                   </td>
+                                   <td>
+                                     <?php echo $r->message ?>
+                                   </td>
+                                   <td>
+                                     <?php echo $r->translate ?>
+                                   </td>
+                                   <td>
+                                     <?php echo $r->rule_is ?>
+                                   </td>
+                                   <td>
+                                     <?php echo $r->why ?>
+                                   </td>
+                                 </tr>
+                               <?php endforeach ?>
+                             </tbody>
+                         </table>
+                     </div>
+										</div>
+										<div class="modal-footer">
+											<a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+											<a href="javascript:;" class="btn btn-sm btn-success">Action</a>
+										</div>
+									</div>
+								</div>
+							</div>
 
 
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
+  <script src="/assets/js/table-manage-default.demo.min.js"></script>
+  <script src="/assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
 
 @stop

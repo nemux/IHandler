@@ -11,6 +11,7 @@ protected $layout = 'layouts.master';
       $incident=new Incident;
       $attack=Attack::lists('name', 'id');
       $customer=Customer::lists('company', 'id');
+      $rule=Rule::all();
 
       if ($input) {
         print_r($input);
@@ -23,6 +24,7 @@ protected $layout = 'layouts.master';
         'action'=>"IncidentController@create",
         'attack'=>$attack,
         'customer'=>$customer,
+        'rule'=>$rule,
 
         ));
       }

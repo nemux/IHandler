@@ -22,6 +22,8 @@ Route::get('handler', 'IncidentHandlerController@index');
 Route::get('handler/create', 'IncidentHandlerController@create');
 Route::post('handler/create', 'IncidentHandlerController@create');
 
+Route::post('rule/query', 'RuleController@query');
+
 Route::get('handler/update/{id}', 'IncidentHandlerController@getUpdate');
 Route::post('handler/update', 'IncidentHandlerController@postUpdate');
 

@@ -15,10 +15,6 @@ class Incident extends Eloquent{
 	{
 		return $this->hasMany('References','incidents_id','id');
 	}
-	public function rules()
-	{
-		return $this->hasMany('Rule','incidents_id','id');
-	}
 
   public function times()
 	{
@@ -55,7 +51,11 @@ class Incident extends Eloquent{
 
   public function attackers()
 	{
-		return $this->belongsToMany('Attacker','attacker_incident','incidents_id','attackers_id');
+		return $this->belongsToMany('Attacker','attackers_incidents','incidents_id','attackers_id');
+	}
+	public function rules()
+	{
+		return $this->belongsToMany('Rule','incidents_rules','incidents_id','rules_id');
 	}
 
   /*BELONGS TO*/
