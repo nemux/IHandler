@@ -14,13 +14,13 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 	protected $table = 'access';
-	protected $fillable = ['incident_handler_id','user','pass','access_types_id'];
+	protected $fillable = ['incident_handler_id','username','access_types_id'];
 	protected $softDelete = true;
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 * @var array
 	 */
-	protected $hidden = array('pass', 'remember_token');
+	protected $hidden = array('password', 'remember_token');
   protected $guarded = array('id', 'active');
 
 	//la notacion estandar es de la siguente manera: la funcion se llama con el nombre de la que la genera y
@@ -34,6 +34,22 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return $this->belongsTo('AccessType','access_types_id','id');
 	}
+
+	public function getAuthIdentifier()
+	{
+    return $this->username;
+	}
+
+/**
+ * Get the password for the user
+ *
+ * @return string
+ */
+	public function getAuthPassword()
+	{
+    return $this->password;
+	}
+
 
 
 }

@@ -18,8 +18,8 @@ class CreateAccessTable extends Migration {
 	  $table->increments('id');
       $table->integer('incident_handler_id')->unsigned();
       $table->integer('access_types_id')->unsigned();
-      $table->string('user');
-      $table->string('pass');
+      $table->string('username');
+      $table->string('password');
       $table->boolean('active');
       $table->rememberToken();
       $table->timestamps();
