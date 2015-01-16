@@ -22,7 +22,6 @@ class Relationships extends Migration {
 
           Schema::table('attackers', function(Blueprint $table)
           {
-              $table->foreign('incidents_id')->references('id')->on('incidents');
               $table->foreign('attacker_types_id')->references('id')->on('attacker_types');
           });
 
