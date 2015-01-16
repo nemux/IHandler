@@ -1,6 +1,6 @@
 <?php
 
-   class AttackerTypeTableSeeder extends Seeder
+   class EventsTypeTableSeeder extends Seeder
    {
      
      public function run()
@@ -11,7 +11,7 @@
        
             foreach (range (1,7) as $index) {
                   
-                  AttackerType::create([
+                  EventsType::create([
                   'name' => $faker->state,
                   'description' => $faker->paragraph($nbSentences = 2),
                                           ]);

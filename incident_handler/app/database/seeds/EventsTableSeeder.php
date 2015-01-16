@@ -1,6 +1,6 @@
 <?php
 
-   class AttackerTableSeeder extends Seeder
+   class EventsTableSeeder extends Seeder
    {
      
      public function run()
@@ -11,8 +11,10 @@
        
             foreach (range (1,15) as $index) {
                   
-                  Attacker::create([
+                  Events::create([
                     'ip' => $faker->randomNumber($nbDigits = NULL),
+                    'src'=> $faker->randomNumber($nbDigits) =NULL),
+                    'dst'=> $faker->randomNumber($nbDigits) = NULL),
                     'location' =>$faker->state,
                     'incidents_id' =>$faker->numberBetween($min = 1, $max = 13),
                     'attacker_types_id' => $faker->numberBetween($min = 1, $max = 6),
