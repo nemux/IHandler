@@ -12,10 +12,10 @@ class CreateEventsIncidentTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('events_incidents', function(Blueprint $table)
+		Schema::create('incidents_occurrences', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('events_id')->unsigned();
+			$table->integer('occurrences_id')->unsigned();
 			$table->integer('incidents_id')->unsigned();
 		}	);
 	}

@@ -12,10 +12,10 @@ class ManyToManyRelationship extends Migration {
 	*/
 	public function up()
 	{
-		Schema::table('events_incidents', function(Blueprint $table)
+		Schema::table('incidents_occurrences', function(Blueprint $table)
 		{
 			$table->foreign('incidents_id')->references('id')->on('incidents');
-			$table->foreign('events_id')->references('id')->on('events');
+			$table->foreign('occurrences_id')->references('id')->on('occurrences');
 
 		});
 
