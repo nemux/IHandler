@@ -1,12 +1,12 @@
 <?php
 
-class AttackerHistory extends Eloquent {
+class EventsHistory extends Eloquent {
 
 	/**
 	 * The database table used by the model.
 	 * @var string
 	 */
-	protected $table = 'attackers_history';
+	protected $table = 'events_history';
 	protected $fillable = ['port','protocol','operative_system','function','datetime','attackers_id','incident_handler_id'];
 	protected $softDelete = true;
 

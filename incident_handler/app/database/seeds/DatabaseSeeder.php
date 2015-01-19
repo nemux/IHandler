@@ -12,18 +12,19 @@ class DatabaseSeeder extends Seeder {
 			Eloquent::unguard();
 			  $this->call('TableSeeder');
 			  $this->command->info('Done!');
+
 			  $this->call('AccesTypeTableSeeder');
 			  $this->command->info('Done1!');
   			$this->call('AccesTableSeeder');
 			  $this->command->info('Done(consider acces_type)');
-			  //$this->call('AffectedTypeSeeder');
+		 
 			  //$this->command->info('Done!5');
 			  $this->call('CategoryTableSeeder');
 			  $this->command->info('Done!10');
 			  $this->call('CustomerTableSeeder');
 			  $this->command->info('Done!11');
 			  $this->command->info('Done!8');
-			  $this->call('AttackerTypeTableSeeder');
+			  
 			  $this->command->info('Done!9');
 			  //until here we are good¡
 			  $this->call('AttackTableSeeder');
@@ -31,15 +32,15 @@ class DatabaseSeeder extends Seeder {
 			  $this->command->info('Done!14');
 			  $this->call('ImageTableSeeder');
 			  $this->command->info('Done!12');
-			  $this->call('AttackerTableSeeder');
-			  $this->call('AttackerHistorySeeder');
+			 
+			    $this->command->info('error');
 
+			
+			  
 			  $this->call('ApplicationTableSeeder');
 			  $this->command->info('Done!6');
 				$this->call('IncidentStatusTableSeeder');
 			  $this->command->info('Done!15');
-			  $this->call('AffectedTableSeeder');
-			  $this->command->info('Done!4');
 			  $this->call('MethodTableSeeder');
 			  $this->command->info('Done!16');
 			  			  $this->call('TimeTypeTableSeeder');
@@ -52,8 +53,15 @@ class DatabaseSeeder extends Seeder {
 			  $this->command->info('Done!13');
 			  $this->call('ReferenceTableSeeder');
 			  $this->command->info('Done!17');
-			  $this->call('AffectedTypeTableSeeder');
-			  $this->command->info('Done!5');
+				$this->command->info('Que la verga');
+							  $this->call('EventsTypeTableSeeder');
+			  $this->call('EventsTableSeeder');
+			    $this->call('AttackerHistorySeeder');
+
+
+
+
+
 
 	}
 

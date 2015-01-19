@@ -19,6 +19,6 @@ class Attacker extends Eloquent {
 	}
 
   public function history(){
-    return $this->hasMany('AttackerHistory','attackers_id','id');
+    return $this->hasMany('EventsHistory','attackers_id','id');
   }
 }

@@ -45,12 +45,6 @@ class Incident extends Eloquent{
 		return $this->hasMany('IncidentHistory','incidents_id','id');
 	}
 
-  public function affecteds()
-	{
-		return $this->hasMany('Affected','incidents_id','id');
-	}
-
-
   /*BELONGS TO MANY*/
 
   public function attackers()

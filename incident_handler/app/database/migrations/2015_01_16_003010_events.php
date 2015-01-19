@@ -12,16 +12,14 @@ class Events extends Migration {
 	 */
 	public function up()
 	{
-			Schema::create('events',function(Blueprint $table)
+			Schema::create('occurrences',function(Blueprint $table)
 		{
 			
 			$table->increments('id');
 			$table->string('ip');
 			$table->string('src')->unique();
 			$table->string('dst')->unique();
-      $table->string('location');
-	    $table->integer('attacker_types_id')->unsigned();
-	    $table->integer('events_types_id')->unsigned();
+	    $table->integer('occurrences_types_id')->unsigned();
       $table->timestamps();
 			
 		});

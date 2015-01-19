@@ -9,15 +9,13 @@
        $faker = Faker\Factory::create();
 
        
-            foreach (range (1,15) as $index) {
+            foreach (range (1,22) as $index) {
                   
-                  Events::create([
-                    'ip' => $faker->randomNumber($nbDigits = NULL),
-                    'src'=> $faker->randomNumber($nbDigits) =NULL),
-                    'dst'=> $faker->randomNumber($nbDigits) = NULL),
-                    'location' =>$faker->state,
-                    'incidents_id' =>$faker->numberBetween($min = 1, $max = 13),
-                    'attacker_types_id' => $faker->numberBetween($min = 1, $max = 6),
+                  Occurence::create([
+                    'ip' => $faker->ipv4,
+                    'src'=> $faker->ipv6,
+                    'dst'=> $faker->unique()->ipv4,
+                    'occurrences_types_id' => $faker->numberBetween($min = 1, $max = 3),
                                           ]);
         }
        }
