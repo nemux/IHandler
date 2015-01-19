@@ -20,14 +20,14 @@ class Relationships extends Migration {
             $table->foreign('access_types_id')->references('id')->on('access_types');
           });
 
-          Schema::table('events', function(Blueprint $table)
+          Schema::table('occurrences', function(Blueprint $table)
           {
-            $table->foreign('events_types_id')->references('id')->on('events_types');
+            $table->foreign('occurrences_types_id')->references('id')->on('occurrences_types');
           });
 
-          Schema::table('attackers_history', function(Blueprint $table)
+          Schema::table('events_history', function(Blueprint $table)
           {
-            $table->foreign('events_id')->references('id')->on('events');
+            $table->foreign('events_id')->references('id')->on('occurrences');
             $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
           });
 
@@ -78,8 +78,8 @@ class Relationships extends Migration {
 
           Schema::table('src_dst', function (Blueprint $table)
           {
-            $table->foreign('src_id')->references('src')->on('events');
-            $table->foreign('dst_id')->references('dst')->on('events');
+            $table->foreign('src_id')->references('src')->on('occurrences');
+            $table->foreign('dst_id')->references('dst')->on('occurrences');
             $table->foreign('incidents_id')->references('id')->on('incidents');
               # code...
             });

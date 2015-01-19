@@ -11,13 +11,14 @@
        
             foreach (range (1,18) as $index) {
                   
-                  AttackerHistory::create([
+                  EventsHistory::create([
                     'port' => $faker->randomDigitNotNull,
                     'protocol' =>$faker->word,
                     'operative_system' =>$faker->word,
                     'function' =>$faker->word,
+                    'location' =>$faker->country,
                     'datetime' =>$faker->dateTime($max = 'now'),
-                    'attackers_id' =>$faker->numberBetween($min = 3, $max = 8),
+                    'events_id' =>$faker->numberBetween($min = 3, $max = 8),
                     'incident_handler_id' =>$faker->numberBetween($min = 1, $max = 19),
                                           ]);
         }

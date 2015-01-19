@@ -12,13 +12,14 @@ class CreateAttackersHistoryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('attackers_history',function(Blueprint $table)
+		Schema::create('events_history',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('port')->nullable();
       $table->string('protocol')->nullable();
       $table->string('operative_system')->nullable();
       $table->string('function')->nullable();
+      $table->string('location')->nullable();
       $table->datetime('datetime')->nullable();
       $table->integer('events_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
