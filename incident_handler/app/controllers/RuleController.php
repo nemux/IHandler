@@ -5,9 +5,12 @@ protected $layout = 'layouts.master';
     /**
      * Muestra el perfil de un usuario dado.
      */
-    public function query()
+    public function query($id)
     {
-      echo "hola";
+      $rule = Rule::where("sid" , '=', $id)->first();
+      return $this->layout = View::make("rule.query", array(
+      'rule'=>$rule,
+      ));
     }
 }
 

@@ -3,21 +3,22 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ManyToManyRelationships extends Migration {
+class ManyToManyRelationship extends Migration {
 
 	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+	* Run the migrations.
+	*
+	* @return void
+	*/
 	public function up()
 	{
-		Schema::table('attackers_incidents', function(Blueprint $table)
+		Schema::table('events_incidents', function(Blueprint $table)
 		{
 			$table->foreign('incidents_id')->references('id')->on('incidents');
-			$table->foreign('attackers_id')->references('id')->on('attackers');
+			$table->foreign('events_id')->references('id')->on('events');
 
 		});
+
 		Schema::table('incidents_rules', function(Blueprint $table)
 		{
 			$table->foreign('incidents_id')->references('id')->on('incidents');
@@ -27,10 +28,10 @@ class ManyToManyRelationships extends Migration {
 	}
 
 	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+	* Reverse the migrations.
+	*
+	* @return void
+	*/
 	public function down()
 	{
 		//

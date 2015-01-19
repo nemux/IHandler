@@ -22,11 +22,7 @@ class Relationships extends Migration {
 
           Schema::table('events', function(Blueprint $table)
           {
-<<<<<<< HEAD:incident_handler/app/database/migrations/2015_01_08_164925_relationships.php
-              $table->foreign('attacker_types_id')->references('id')->on('attacker_types');
-=======
             $table->foreign('events_types_id')->references('id')->on('events_types');
->>>>>>> 22282685694f46a764b4adb5610f66e5588a343e:incident_handler/app/database/migrations/2015_01_16_004158_relationships.php
           });
 
           Schema::table('attackers_history', function(Blueprint $table)
@@ -88,7 +84,7 @@ class Relationships extends Migration {
               # code...
             });
           }
-        
+
 
         /**
          * Reverse the migrations.

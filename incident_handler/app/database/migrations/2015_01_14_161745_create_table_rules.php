@@ -21,7 +21,7 @@ class CreateTableRules extends Migration {
 			$table->string('translate')->nullable();
 			$table->string('rule_is')->nullable();
 			$table->string('why')->nullable();
-			
+
 			$table->timestamps();
 
 		});
