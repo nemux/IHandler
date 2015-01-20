@@ -8,46 +8,32 @@ class LoginController extends Controller{
         return View::make('usuarios.login');
     }
 
-      public function doLogin()
-  {
-        $user = Input::get('username');
-        $password = Input::get('password');
-
-        $validator = Acces::validate(array(
-        'username' => Input::get('real_name'),
-        'password' => Input::get('password'),
-                  ));
-
-
-
-
-    
-        $credentials = array(
-        'username' => $user,
-        'password' => $password
+    public function doLogin()
+    {
+      $userData = array(
+        'username' => Input::get('username'),
+        'password' => Input::get('password')
         );
 
-        if(Auth::attempt($credentials,true))
-        {
+      $rules = array(
+        'username'=>'required|alpha_num|min:5',
+        'password'=>'required|alpha_num|between:5,15'
+      );
+
+
+      $validator = Validator::make($userData, $rules);
+
+      if ($validator->passes()) {
+        if(Auth::attempt($userData)) {
           return View::make('layouts.master');
         }
         else{
-          echo 'FAlse';
+          return Redirect::to('/login')->with('message', 'Your username/password combination was incorrect');
         }
-
-       /* $a = Auth::attempt(array ("username"=>"salma76", 'password'=>"leonel"));      
-      
-        7if($a) {
-          return View::make ('layouts.master');
-        }
-        else {          
-          echo 'FALSE';
-        }   */    
-  //{
-  //  if(Auth::check()){
-  //    Auth::logout();
- // }
-  //    return Redirect::route('login');
-
- }
+      } else {
+        return Redirect::to('/login')->withErrors($validator);
+      }
+    }
 }
+
+

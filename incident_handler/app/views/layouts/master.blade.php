@@ -153,9 +153,9 @@
 					</li>
 
 					-->
+          @if (Auth::user())
 					<li class="dropdown navbar-user">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="fa fa-user"></i>
 							<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu animated fadeInLeft">
@@ -165,9 +165,10 @@
 							<li><a href="javascript:;">Calendar</a></li>
 							<li><a href="javascript:;">Setting</a></li>
 							<li class="divider"></li>
-							<li><a href="javascript:;">Log Out</a></li>
+							<li><a href="/logout">Log Out</a></li>
 						</ul>
 					</li>
+          @endif
 				</ul>
 				<!-- end header navigation right -->
 			</div>
@@ -189,13 +190,15 @@
 							Incident Handler
 
 						</div>
-						Usuario
+						{{ Auth::user()->username }}
 					</li>
 				</ul>
 				<!-- end sidebar user -->
 				<!-- begin sidebar nav -->
 				<ul class="nav">
 					<li class="nav-header">Menú</li>
+
+            @if (Auth::user()->type->name == 'admin')
 					<li class="has-sub ">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
@@ -207,6 +210,7 @@
 						    <li><a href="/handler/">Ver</a></li>
 						</ul>
 					</li>
+          @endif
 
 					<li class="has-sub ">
 						<a href="javascript:;">
@@ -217,7 +221,7 @@
 						</a>
 						<ul class="sub-menu">
 								<li class=""><a href="/incident/create">Crear</a></li>
-								<li><a href="/handler/">Ver</a></li>
+								<li><a href="#">Ver</a></li>
 						</ul>
 					</li>
 

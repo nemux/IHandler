@@ -10,40 +10,42 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::get('login', 'LoginController@login');
-
-Route::post('dologin', 'LoginController@doLogin');
-
 
 Route::get('/', function()
 {
-	return View::make('layouts.master');
-	  //return Redirect::to('usuarios');
+  return Redirect::to('/login');
 });
 
-Route::get('handler', 'IncidentHandlerController@index');
-
-Route::get('handler/create', 'IncidentHandlerController@create');
-Route::post('handler/create', 'IncidentHandlerController@create');
-
-Route::get('handler/update/{id}', 'IncidentHandlerController@getUpdate');
-Route::post('handler/update', 'IncidentHandlerController@postUpdate');
-
-Route::get('handler/view/{id}', 'IncidentHandlerController@view');
-
-Route::get('handler', 'IncidentHandlerController@index');
-
-
-Route::get('incident/create', 'IncidentController@create');
-Route::post('incident/create', 'IncidentController@create');
-
-Route::filter('noAuth', function()
+Route::get('login', 'LoginController@login');
+Route::post('login', 'LoginController@doLogin');
+Route::get('logout', function()
 {
-    //si no ha iniciado sesión
-    if(Auth::guest()){
-        return Redirect::to('login');
-    }
+    Auth::logout();
+    return Redirect::to('login');
 });
+
+
+Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
+
+  # User Routes
+  Route::get('/', 'IncidentHandlerController@index');
+  Route::get('create', 'IncidentHandlerController@create');
+  Route::post('create', 'IncidentHandlerController@create');
+  Route::get('update/{id}', 'IncidentHandlerController@getUpdate');
+  Route::post('handler/update', 'IncidentHandlerController@postUpdate');
+  Route::get('view/{id}', 'IncidentHandlerController@view');
+
+  #Admin Routes
+});
+
+Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
+  Route::get('create', 'IncidentController@create');
+  Route::post('create', 'IncidentController@create');
+
+});
+
+
+
 
 Route::get('/otrs/{name}',function($name)
 {
