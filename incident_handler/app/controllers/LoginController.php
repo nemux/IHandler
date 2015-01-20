@@ -5,7 +5,12 @@ class LoginController extends Controller{
 
     public function login()
     {
+
+      if(Auth::check())
+        return Redirect::to('/dashboard');
+      else
         return View::make('usuarios.login');
+
     }
 
     public function doLogin()
@@ -25,7 +30,7 @@ class LoginController extends Controller{
 
       if ($validator->passes()) {
         if(Auth::attempt($userData)) {
-          return View::make('layouts.master');
+          return Redirect::to('/');
         }
         else{
           return Redirect::to('/login')->with('message', 'Your username/password combination was incorrect');
@@ -34,6 +39,12 @@ class LoginController extends Controller{
         return Redirect::to('/login')->withErrors($validator);
       }
     }
+
+  public function logout()
+  {
+    Auth::logout();
+    return Redirect::to('/');
+  }
 }
 
 

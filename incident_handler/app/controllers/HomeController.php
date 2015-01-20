@@ -15,9 +15,16 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
+	public function index()
 	{
-		return View::make('hello');
+    if (Auth::check())
+      return Redirect::to('/dashboard');
+    else
+      return View::make('usuarios.login');
 	}
 
+  public function dashboard()
+  {
+    return View::make('usuarios.dashboard');
+  }
 }

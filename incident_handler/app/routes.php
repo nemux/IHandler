@@ -11,20 +11,14 @@
 |
 */
 
-Route::get('/', function()
-{
-  return Redirect::to('/login');
-});
+Route::get('/','HomeController@index');
+Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
 Route::get('rule/query/{id}', 'RuleController@query');
 
 
-Route::get('login', 'LoginController@login');
+Route::get('login','LoginController@login');
 Route::post('login', 'LoginController@doLogin');
-Route::get('logout', function()
-{
-    Auth::logout();
-    return Redirect::to('login');
-});
+Route::get('logout', 'LoginController@logout');
 
 
 Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
@@ -45,9 +39,6 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::post('create', 'IncidentController@create');
 
 });
-
-
-
 
 Route::get('/otrs/{name}',function($name)
 {

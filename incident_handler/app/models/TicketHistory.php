@@ -10,7 +10,7 @@ class TicketHistory extends Eloquent {
   protected $softDelete = true;
 
 
-  public function incident_handler(){
+  public function incidentHandler(){
     return $this->belongsTo('IncidentHandler','incident_handler_id','id');
   }
   public function status(){

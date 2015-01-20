@@ -26,7 +26,7 @@ class Access extends Eloquent implements UserInterface, RemindableInterface {
 	//la notacion estandar es de la siguente manera: la funcion se llama con el nombre de la que la genera y
 	//el nombre de la que genera, si es necesario se agregan letras adicionales para evitar la duplicidad
 
-	public function incident_handler(){
+	public function incidentHandler(){
 		return $this->belongsTo('IncidentHandler','incident_handler_id','id');
 	}
 

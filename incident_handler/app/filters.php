@@ -105,7 +105,4 @@ Route::filter('admin', function()
   if (Auth::check())
     if ( Auth::user()->type->name != 'admin')
       return Response::make('Unauthorized', 401);
-  else
-    return Redirect::to('/');
-
 });

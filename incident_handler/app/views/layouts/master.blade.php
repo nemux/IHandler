@@ -59,7 +59,7 @@
 <script src="/assets/js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 </head>
-<body>
+<body onload="startTime()">
 	<!-- begin #page-loader -->
 	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
 	<!-- end #page-loader -->
@@ -160,11 +160,8 @@
 						</a>
 						<ul class="dropdown-menu animated fadeInLeft">
 							<li class="arrow"></li>
-							<li><a href="javascript:;">Edit Profile</a></li>
-							<li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
-							<li><a href="javascript:;">Calendar</a></li>
-							<li><a href="javascript:;">Setting</a></li>
-							<li class="divider"></li>
+              <li><a href="javascript:;"><span class="badge badge-anger pull-right">2</span> Inbox</a></li>
+              <li class="divider"></li>
 							<li><a href="/logout">Log Out</a></li>
 						</ul>
 					</li>
@@ -190,7 +187,7 @@
 							Incident Handler
 
 						</div>
-						{{ Auth::user()->username }}
+            {{ Auth::user()->username." "}}
 					</li>
 				</ul>
 				<!-- end sidebar user -->
@@ -260,13 +257,47 @@
 			//Dashboard.init();
 		});
 	</script>
+  <script>
+    function startTime() {
+      var today = new Date();
+      var month = new Array();
+      month[0] = "Ene";
+      month[1] = "Feb";
+      month[2] = "Mar";
+      month[3] = "Abr";
+      month[4] = "May";
+      month[5] = "Jun";
+      month[6] = "Jul";
+      month[7] = "Ago";
+      month[8] = "Sep";
+      month[9] = "Oct";
+      month[10] = "Nov";
+      month[11] = "Dic";
+
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      var d = today.getDate();
+      var mo = month[today.getMonth()];
+      var y = today.getFullYear();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('reloj').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
+      var t = setTimeout(function(){startTime()},500);
+    }
+
+    function checkTime(i) {
+      if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+    }
+  </script>
 	<script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-53034621-1', 'auto');
+      ga('create', '', 'auto');
       ga('send', 'pageview');
     </script>
 </body>

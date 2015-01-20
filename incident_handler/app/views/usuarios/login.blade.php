@@ -22,10 +22,14 @@
 	<!-- ================== END BASE CSS STYLE ================== -->
 </head>
   <body>
+  	<div class="login-cover">
+	    <div class="login-cover-image"><img src="assets/img/login-bg/bg-1.jpg" data-id="login-cover-image" alt="" /></div>
+	    <div class="login-cover-bg"></div>
+	</div>
 	<!-- begin #page-container -->
 	<div id="page-container">
 	    <!-- begin login -->
-        <div class="login bg-black animated fadeInDown">
+        <div class="login login-v2" data-pageload-addclass="animated flipInX">
             <!-- begin brand -->
             <div class="login-header">
                 <div class="brand">
@@ -51,6 +55,14 @@
                  {{ Form::close() }}
             </div>
         </div>
+         <ul class="login-bg-list">
+            <li class="active"><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-1.jpg" alt="" /></a></li>
+            <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-2.jpg" alt="" /></a></li>
+            <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-3.jpg" alt="" /></a></li>
+            <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-4.jpg" alt="" /></a></li>
+            <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-5.jpg" alt="" /></a></li>
+            <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-6.jpg" alt="" /></a></li>
+        </ul>
   <!-- ================== BEGIN BASE JS ================== -->
 	<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
 	<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
@@ -66,8 +78,16 @@
 	<!-- ================== END BASE JS ================== -->
 
 	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="assets/js/login-v2.demo.min.js"></script>
 	<script src="assets/js/apps.min.js"></script>
 	<!-- ================== END PAGE LEVEL JS ================== -->
+
+  <script>
+		$(document).ready(function() {
+			App.init();
+			LoginV2.init();
+		});
+	</script>
 
   </body>
 </html>
