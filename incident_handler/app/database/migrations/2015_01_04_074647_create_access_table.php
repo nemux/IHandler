@@ -15,13 +15,13 @@ class CreateAccessTable extends Migration {
 		//la tabla de acceso desde este lado se realizara el manejor de las sesiones
 		Schema::create('access',function(Blueprint $table){
 
-	  $table->increments('id');
+	    $table->increments('id');
       $table->integer('incident_handler_id')->unsigned();
       $table->integer('access_types_id')->unsigned();
       $table->string('username');
       $table->string('password');
       $table->boolean('active');
-      $table->rememberToken();
+      $table->rememberToken()->nullable();
       $table->timestamps();
 		});
 	}
