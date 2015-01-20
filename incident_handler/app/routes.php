@@ -15,6 +15,8 @@ Route::get('/', function()
 {
   return Redirect::to('/login');
 });
+Route::get('rule/query/{id}', 'RuleController@query');
+
 
 Route::get('login', 'LoginController@login');
 Route::post('login', 'LoginController@doLogin');

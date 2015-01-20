@@ -19,9 +19,9 @@ class CreateTableRules extends Migration {
 			$table->string('rule')->nullable();
 			$table->string('message')->nullable();
 			$table->string('translate')->nullable();
-			$table->string('is')->nullable();
+			$table->string('rule_is')->nullable();
 			$table->string('why')->nullable();
-			$table->integer('incidents_id')->unsigned();
+
 			$table->timestamps();
 
 		});
