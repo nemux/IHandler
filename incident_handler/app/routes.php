@@ -21,7 +21,7 @@ Route::get('/', function()
 	  //return Redirect::to('usuarios');
 });
 Route::get('rule/query/{id}', 'RuleController@query');
-
+Route::get('occurence/query/{id}', 'OccurenceController@query');
 
 Route::get('handler', 'IncidentHandlerController@index');
 

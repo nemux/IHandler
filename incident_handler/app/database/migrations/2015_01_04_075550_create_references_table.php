@@ -15,7 +15,7 @@ class CreateReferencesTable extends Migration {
 		Schema::create('references',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('link')->nullable();
+			$table->longText('link')->nullable();
       $table->string('title')->nullable();
 			$table->datetime('datetime')->nullable();
 			$table->string('cve')->nullable();

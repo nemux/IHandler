@@ -15,7 +15,7 @@ class Occurence extends Eloquent {
    */
 
 
-  public function events(){
+  public function type(){
     return $this->belongsTo('occurrencesType','occurrences_id','id');
   }
 

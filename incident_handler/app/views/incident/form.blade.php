@@ -4,9 +4,34 @@
   <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
   <!-- ================== END PAGE LEVEL STYLE ================== -->
 
+	<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+	<link href="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet" />
+	<!-- ================== END PAGE LEVEL STYLE ================== -->
+
   <!-- ================== BEGIN BASE JS ================== -->
   <script src="/assets/plugins/pace/pace.min.js"></script>
   <!-- ================== END BASE JS ================== -->
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/plugins/ckeditor/ckeditor.js"></script>
+	<script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
+	<script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
+	<script src="/assets/js/form-wysiwyg.demo.min.js"></script>
+	<script src="/assets/js/apps.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+
+  <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+	<link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
+	<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+	<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+	<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+	<!-- ================== END PAGE LEVEL STYLE ================== -->
 <script>
 
     var ip_added=new Array();
@@ -37,8 +62,12 @@
       }
     }
     $(document).ready(function() {
-
+      FormPlugins.init();
       TableManageDefault.init();
+      Form1.init();
+      Form2.init();
+      Form3.init();
+      Form4.init();
 
 
 
@@ -79,6 +108,7 @@
       sid_added.splice(index,1);
     }
 
+
 </script>
 <script charset="utf-8">
 
@@ -110,6 +140,7 @@
         +why
         +'<input style="display:none" value="'+why+'"  class="form-control" placeholder="por qué ocurre" type="text" name="why_'+count_rule+'" >'
       +'</td>'
+
     +'</tr>';
 
     if (validateSid(sid)=="0") {
@@ -133,32 +164,60 @@
     var dst_function=$("#dst_function").val();
     var src_location=$("#src_location").val();
     var dst_location=$("#dst_location").val();
+    var src_occurences=$("#src_occurences").val();
+    var dst_occurences=$("#dst_occurences").val();
 
 
     var str='<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_ip_'+count_event+'" placeholder="origen" value="'+src_ip+'"><br>'
-        +'<input type="text" class="form-control" name="dst_ip_'+count_event+'" placeholder="destino" value="'+dst_ip+'">'
+
+      +'<td style="display:none">'
+        +'<input type="text" class="form-control" name="srcip_'+count_event+'" placeholder="origen" value="'+src_ip+'"><br>'
+        +'<input type="text" class="form-control" name="dstip_'+count_event+'" placeholder="destino" value="'+dst_ip+'">'
+        +'<input type="text" class="form-control" name="srcport_'+count_event+'" placeholder="origen" value="'+src_port+'"><br>'
+        +'<input type="text" class="form-control" name="dstport_'+count_event+'" placeholder="destino" value="'+dst_port+'">'
+        +'<input type="text" class="form-control" name="srcprotocol_'+count_event+'" placeholder="origen" value="'+src_protocol+'"><br>'
+        +'<input type="text" class="form-control" name="dstprotocol_'+count_event+'" placeholder="destino" value="'+dst_protocol+'">'
+        +'<input type="text" class="form-control" name="srcoperativesystem_'+count_event+'" placeholder="origen" value="'+src_operative_system+'"><br>'
+        +'<input type="text" class="form-control" name="dstoperative_system_'+count_event+'" placeholder="destino" value="'+dst_operative_system+'">'
+        +'<input type="text" class="form-control" name="srcfunction_'+count_event+'" placeholder="origen" value="'+src_function+'"><br>'
+        +'<input type="text" class="form-control" name="dstfunction_'+count_event+'" placeholder="destino" value="'+dst_function+'">'
+        +'<input type="text" class="form-control" name="srclocation_'+count_event+'" placeholder="origen" value="'+src_location+'"><br>'
+        +'<input type="text" class="form-control" name="dstlocation_'+count_event+'" placeholder="destino" value="'+dst_location+'">'
+        +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="destino" value="'+src_occurences+'">'
+        +'<input type="text" class="form-control" name="dstoccurencestype_'+count_event+'" placeholder="destino" value="'+dst_occurences+'">'
       +'</td>'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_port_'+count_event+'" placeholder="origen" value="'+src_port+'"><br>'
-        +'<input type="text" class="form-control" name="dst_port_'+count_event+'" placeholder="destino" value="'+dst_port+'">'
+      +'<td colspan="2">'
+        +src_ip
+        +','
+        +src_port
+        +','
+        +src_protocol
+        +','
+        +src_operative_system
+        +','
+        +src_function
+        +','
+        +src_location
+        +','
+        +src_occurences
+        +','
+
       +'</td>'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_protocol_'+count_event+'" placeholder="origen" value="'+src_protocol+'"><br>'
-        +'<input type="text" class="form-control" name="dst_protocol_'+count_event+'" placeholder="destino" value="'+dst_protocol+'">'
-      +'</td>'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_operative_system_'+count_event+'" placeholder="origen" value="'+src_operative_system+'"><br>'
-        +'<input type="text" class="form-control" name="dst_operative_system_'+count_event+'" placeholder="destino" value="'+dst_operative_system+'">'
-      +'</td>'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_function_'+count_event+'" placeholder="origen" value="'+src_function+'"><br>'
-        +'<input type="text" class="form-control" name="dst_function_'+count_event+'" placeholder="destino" value="'+dst_function+'">'
-      +'</td>'
-      +'<td>'
-        +'<input type="text" class="form-control" name="src_location_'+count_event+'" placeholder="origen" value="'+src_location+'"><br>'
-        +'<input type="text" class="form-control" name="dst_location_'+count_event+'" placeholder="destino" value="'+dst_location+'">'
+      +'<td colspan="2">'
+        +dst_ip
+        +','
+        +dst_port
+        +','
+        +dst_protocol
+        +','
+        +dst_operative_system
+        +','
+        +dst_function
+        +','
+        +dst_location
+        +','
+        +dst_occurences
+
       +'</td>'
     +'</tr>';
 
@@ -198,6 +257,36 @@
                           <table class="table table-bordered">
                             <tr>
                               <td>
+                                Fecha y Hora de detección
+                              </td>
+                              <td>
+                                <div class="input-group bootstrap-timepicker">
+                                  <input data-date-format="yyyy-mm-dd" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('Y-m-d') ?>" />
+                                  <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                </div><br>
+                                <div class="input-group bootstrap-timepicker">
+                                  <input name="det_time" id="" type="text" class="form-control timepicker" />
+                                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                              </td>
+                              <td>
+                                Fecha y hora de Ocurrencia
+                              </td>
+                              <td>
+                                <div class="input-group bootstrap-timepicker">
+                                  <input data-date-format="yyyy-mm-dd" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('Y-m-d') ?>" />
+                                  <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                                </div><br>
+                                <div class="input-group bootstrap-timepicker">
+                                  <input  name="occ_time" id="" type="text" class="form-control timepicker" />
+                                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                          <table class="table table-bordered">
+                            <tr>
+                              <td>
                                 <select name="risk" class="form-control">
                                   <option value="">Riesgo</option>
                                   <?php for($i=0;$i<11;$i++){ ?>
@@ -224,22 +313,29 @@
                                 </select>
                               </td>
                               <td>
-                                {{ Form::select('category_id', $attack, $incident->attacks_id,[
+                                {{ Form::select('attack_id', $attack, $incident->attacks_id,[
+                                          'class'=>'form-control parsley-validated',]);
+                                }}
+                              </td>
+                              <td>
+                                {{ Form::select('category_id', $categories, $incident->categories_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
                               </td>
 
                             </tr>
                             <tr>
-                              <td colspan="4">
+                              <td colspan="5">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
 
                               </td>
                             </tr>
+
                             <tr>
-                              <td colspan="4" >
+
+                              <td colspan="5" >
                                 {{Form::text('title',$incident->title,[
                                       'class'=>'form-control parsley-validated',
                                       "data-parsley-pattern"=>"",
@@ -249,17 +345,19 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="4" >
+                              <td colspan="5" >
                                 {{Form::textarea('description',$incident->description,[
                                       'class'=>'form-control parsley-validated',
                                       "data-parsley-pattern"=>"",
                                       "data-parsley-required"=>"true",
-                                      "placeholder"=>"Descripción del incidente"]);
+                                      "placeholder"=>"Descripción del incidente",
+                                      "id"=>"description",
+                                      ]);
                                 }}
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="4">
+                              <td colspan="5">
                                 <h4>Añadir Eventos</h4>
 
                               </td>
@@ -270,7 +368,7 @@
                                 <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success" onclick="addButton()"><i class="fa fa-plus"></i> Añadir</a>
 
                               </td>
-                              <td colspan="3  ">
+                              <td colspan="4">
                                 <table class="table table-bordered table-striped " >
                                   <thead>
                                     <th>
@@ -291,7 +389,9 @@
                                     <th>
                                       Localidad
                                     </th>
-
+                                    <th>
+                                      Tipo
+                                    </th>
                                   </thead>
                                   <tbody>
 
@@ -320,6 +420,19 @@
                                           <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
                                           <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
                                         </td>
+                                        <td>
+                                          {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                                    'class'=>'form-control parsley-validated',
+                                                    'id'=>'src_occurences',
+                                                    ]);
+                                          }}
+                                          <br>
+                                          {{ Form::select('dst_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                                      'class'=>'form-control parsley-validated',
+                                                      'id'=>'dst_occurences',
+                                                      ]);
+                                          }}
+                                        </td>
                                       </tr>
 
                                   </tbody>
@@ -329,7 +442,7 @@
 
                             </tr>
                             <tr>
-                              <td colspan="4">
+                              <td colspan="5">
                                 <table class="table table-bordered table-striped" id="events">
 
 
@@ -337,7 +450,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="4">
+                              <td colspan="5">
                                 <h4>Añadir Reglas de Detección</h4>
                               </td>
                             </tr>
@@ -349,7 +462,7 @@
 
                               </td>
 
-                              <td colspan="3">
+                              <td colspan="4">
                                 <table class="table">
                                   <tbody>
 
@@ -382,7 +495,7 @@
 
                             <tr>
 
-                              <td colspan="4">
+                              <td colspan="5">
                                 <table class="table table-bordered table-striped table-hover">
                                   <tbody id="rules">
 
@@ -392,32 +505,34 @@
 
                             </tr>
                             <tr>
-                              <td colspan="4" >
+                              <td colspan="5" >
                                <div class="form-group">
                                  {{Form::textarea('conclution',$incident->conclution,[
                                        'class'=>'form-control parsley-validated',
                                        "data-parsley-pattern"=>"",
                                        "data-parsley-required"=>"true",
-                                       "placeholder"=>"Conclusiones"]);
+                                       "placeholder"=>"Conclusiones",
+                                       "id"=>"conclutions"]);
                                  }}
                                </div>
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="4" >
+                              <td colspan="5" >
                                 <div class="form-group">
                                   {{Form::textarea('recomendation',$incident->recomendation,[
                                         'class'=>'form-control parsley-validated',
                                         "data-parsley-pattern"=>"",
                                         "data-parsley-required"=>"true",
-                                        "placeholder"=>"Recomendaciones"]);
+                                        "placeholder"=>"Recomendaciones",
+                                        "id"=>"recomendations"]);
                                   }}
                                 </div>
                               </td>
                             </tr>
                             <tr>
 
-                              <td colspan="4">
+                              <td colspan="5">
 
                               </td>
 
@@ -434,22 +549,34 @@
                             <td style="width:15%">
                               Imagenes relacionadas:
                             </td>
-                            <td colspan="3">
+                            <td colspan="4">
 
-                                <input class="" type="file" name="images[]" multiple="">
+                                <input class="btn btn-default" type="file" name="images[]" multiple="">
                             </td>
                           </tr>
                           <tr>
                             <td>
                               Archivo Opcional de Evidencia: <br>
                             </td>
-                            <td colspan="3">
+                            <td colspan="4">
 
-                                <input class="" type="file" name="file">
+                                <input class="btn btn-default" type="file" name="file">
                             </td>
                           </tr>
                         </table>
                       </div>
+
+                    <div class="form-group">
+                        {{Form::textarea('description',$references->link,[
+                              'class'=>'form-control parsley-validated',
+                              "data-parsley-pattern"=>"",
+                              "data-parsley-required"=>"true",
+                              "placeholder"=>"Referencias",
+                              "id"=>"references",
+                              ]);
+                        }}
+                    </div>
+
                       <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">
                         </label>
@@ -557,6 +684,22 @@
                         </div>
                       </div>
 
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+	<script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+	<script src="/assets/plugins/masked-input/masked-input.min.js"></script>
+	<script src="/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+	<script src="/assets/plugins/password-indicator/js/password-indicator.js"></script>
+	<script src="/assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
+	<script src="/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+	<script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+	<script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
+	<script src="/assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+	<script src="/assets/js/form-plugins.demo.min.js"></script>
+	<script src="/assets/js/apps.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
 
   <!-- ================== BEGIN PAGE LEVEL JS ================== -->
   <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
