@@ -25,9 +25,9 @@ class Relationships extends Migration {
             $table->foreign('occurrences_types_id')->references('id')->on('occurrences_types');
           });
 
-          Schema::table('events_history', function(Blueprint $table)
+          Schema::table('occurences_history', function(Blueprint $table)
           {
-            $table->foreign('events_id')->references('id')->on('occurrences');
+            $table->foreign('occurences_id')->references('id')->on('occurrences');
             $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
           });
 
@@ -76,10 +76,10 @@ class Relationships extends Migration {
             $table->foreign('incidents_status_id')->references('id')->on('incidents_status');
           });
 
-          Schema::table('src_dst', function (Blueprint $table)
+          Schema::table('incidents_occurences', function (Blueprint $table)
           {
-            $table->foreign('src_id')->references('src')->on('occurrences');
-            $table->foreign('dst_id')->references('dst')->on('occurrences');
+            $table->foreign('source_id')->references('id')->on('occurrences');
+            $table->foreign('destiny_id')->references('id')->on('occurrences');
             $table->foreign('incidents_id')->references('id')->on('incidents');
               # code...
             });

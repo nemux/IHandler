@@ -7,7 +7,7 @@ class Occurence extends Eloquent {
    * @var string
    */
   protected $table = 'occurrences';
-  protected $fillable = ['ip','src','dst'];
+  protected $fillable = ['ip','src','dst','occurrences_types_id'];
   protected $softDelete = true;
   /**
    * The attributes excluded from the model's JSON form.
@@ -16,7 +16,7 @@ class Occurence extends Eloquent {
 
 
   public function type(){
-    return $this->belongsTo('occurrencesType','occurrences_id','id');
+    return $this->belongsTo('OccurenceType','occurrences_types_id','id');
   }
 
 }

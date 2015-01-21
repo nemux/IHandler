@@ -7,13 +7,17 @@ class Incident extends Eloquent{
 	 * @var string
 	 */
 	protected $table = 'incidents';
-	protected $fillable = ['risk','criticity','impact','description','file','conclution','recomendation','categories_id','attacks_id','customers_id','incident_handler_id'];
+	protected $fillable = ['risk','criticity','impact','description','file','conclution','recomendation','sensors_id','categories_id','attacks_id','customers_id','incident_handler_id'];
 	protected $softDelete = true;
 
   /*HAS MANY*/
   public function references()
 	{
 		return $this->hasMany('References','incidents_id','id');
+	}
+	public function srcDst()
+	{
+		return $this->hasMany('IncidentOccurence','incidents_id','id');
 	}
 
   public function times()
@@ -56,6 +60,9 @@ class Incident extends Eloquent{
 
 	public function category(){
 		return $this->belongsTo('Category','categories_id','id');
+	}
+	public function sensor(){
+		return $this->belongsTo('Sensor','sensors_id','id');
 	}
 
 	public function attack()
