@@ -13,14 +13,6 @@ class LoginController extends Controller{
         $user = Input::get('username');
         $password = Input::get('password');
 
-        $validator = Acces::validate(array(
-        'username' => Input::get('real_name'),
-        'password' => Input::get('password'),
-                  ));
-
-
-
-
     
         $credentials = array(
         'username' => $user,
