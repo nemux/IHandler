@@ -7,7 +7,7 @@ class OccurenceHistory extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'occurences_history';
-	protected $fillable = ['port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'];
+	protected $fillable = ['port','protocol','operative_system','function','location','datetime','occurences_id','incident_handler_id'];
 	protected $softDelete = true;
 
 	//la notacion estandar es de la siguente manera: la funcion se llama con el nombre de la que la genera y
