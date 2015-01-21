@@ -14,8 +14,5 @@ class OccurenceType extends Eloquent {
    * @var array
    */
 
-  public function events(){
-    return $this->HasOne('Events','occurrences_types_id','id');
-  }
 
 }

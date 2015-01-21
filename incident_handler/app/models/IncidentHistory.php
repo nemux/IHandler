@@ -18,7 +18,7 @@ class IncidentHistory extends Eloquent {
 		return $this->belongsTo('Incident','incidents_id','id');
 	}
 
-	public function incident_status()
+	public function incidentStatus()
 	{
 		return $this->belongsTo('IncidentStatus','incidents_status_id','id');
 	}

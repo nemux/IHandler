@@ -9,11 +9,12 @@ class Rule extends Eloquent  {
    * @var string
    */
   protected $table = 'rules';
-  protected $fillable = ['sid','rule','message','translate','is','why','incidents_id'];
+  protected $fillable = ['sid','rule','message','translate','rule_is','why'];
   protected $softDelete = true;
 
-  public function incident(){
-    return $this->belongsTo('Incident','incidents_id','id');
-  }
 
+  public function incidents()
+  {
+    return $this->belongsToMany('Incident','incidents_rules','rules_id','incidents_id');
+  }
 }

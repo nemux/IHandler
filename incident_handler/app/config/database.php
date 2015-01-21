@@ -66,9 +66,9 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-			'database' => 'leinn32',
-			'username' => 'test',
-			'password' => 'password',
+			'database' => 'incident_handler',
+			'username' => 'postgres',
+			'password' => 'temp0ral',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',

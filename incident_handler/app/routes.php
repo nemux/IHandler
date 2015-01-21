@@ -10,39 +10,34 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::get('login', 'LoginController@login');
 
-Route::post('dologin', 'LoginController@doLogin');
+Route::get('/','HomeController@index');
+Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
+Route::get('rule/query/{id}', 'RuleController@query');
+Route::get('occurence/query/{id}', 'OccurenceController@query');
+
+Route::get('login','LoginController@login');
+Route::post('login', 'LoginController@doLogin');
+Route::get('logout', 'LoginController@logout');
 
 
-Route::get('/', function()
-{
-	return View::make('layouts.master');
-	  //return Redirect::to('usuarios');
+Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
+
+  # User Routes
+  Route::get('/', 'IncidentHandlerController@index');
+  Route::get('create', 'IncidentHandlerController@create');
+  Route::post('create', 'IncidentHandlerController@create');
+  Route::get('update/{id}', 'IncidentHandlerController@getUpdate');
+  Route::post('handler/update', 'IncidentHandlerController@postUpdate');
+  Route::get('view/{id}', 'IncidentHandlerController@view');
+
+  #Admin Routes
 });
 
-Route::get('handler', 'IncidentHandlerController@index');
+Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
+  Route::get('create', 'IncidentController@create');
+  Route::post('create', 'IncidentController@create');
 
-Route::get('handler/create', 'IncidentHandlerController@create');
-Route::post('handler/create', 'IncidentHandlerController@create');
-
-Route::get('handler/update/{id}', 'IncidentHandlerController@getUpdate');
-Route::post('handler/update', 'IncidentHandlerController@postUpdate');
-
-Route::get('handler/view/{id}', 'IncidentHandlerController@view');
-
-Route::get('handler', 'IncidentHandlerController@index');
-
-
-Route::get('incident/create', 'IncidentController@create');
-Route::post('incident/create', 'IncidentController@create');
-
-Route::filter('noAuth', function()
-{
-    //si no ha iniciado sesión
-    if(Auth::guest()){
-        return Redirect::to('login');
-    }
 });
 
 Route::get('/otrs/{name}',function($name)

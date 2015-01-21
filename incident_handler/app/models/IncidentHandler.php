@@ -13,7 +13,7 @@ class IncidentHandler extends Eloquent {
 	public function access(){
 		return $this->hasOne('Access','incident_handler_id','id');
 	}
-	public function incident_history(){
+	public function incidentHistory(){
 		return $this->hasMany('IncidentHistory','incident_handler_id','id');
 	}
 
@@ -24,11 +24,11 @@ class IncidentHandler extends Eloquent {
 		return $this->hasMany('Ticket','incident_handler_id','id');
 	}
 
-	public function attacker_history(){
+	public function attackerHistory(){
 		return $this->hasMany('AttackerHistory','incident_handler_id','id');
 	}
 
-	public function ticket_history(){
+	public function ticketHistory(){
 		return $this->hasMany('TicketHistory','incident_handler_id','id');
 	}
 

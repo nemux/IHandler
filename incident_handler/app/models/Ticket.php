@@ -9,7 +9,7 @@ class Ticket extends Eloquent {
     protected $fillable = ['otrs_ticket_id','otrs_ticket_number','datetime','incident_handler_id'];
     protected $softDelete = true;
 
-    public function incident_handler(){
+    public function incidentHandler(){
         return $this->belongsTo('IncidentHandler','incident_handler_id','id');
     }
 

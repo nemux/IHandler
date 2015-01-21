@@ -84,7 +84,7 @@ class Relationships extends Migration {
               # code...
             });
           }
-        
+
 
         /**
          * Reverse the migrations.

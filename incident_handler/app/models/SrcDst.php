@@ -1,6 +1,6 @@
 <?php
 
-class Src_Dst extends Eloquent {
+class SrcDst extends Eloquent {
 
   /**
    * The database table used by the model.
