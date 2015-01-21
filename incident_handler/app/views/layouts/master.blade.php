@@ -195,7 +195,7 @@
 				<ul class="nav">
 					<li class="nav-header">Menú</li>
 
-            @if (Auth::user()->type->name == 'admin')
+          @if (Auth::user()->type->name == 'admin')
 					<li class="has-sub ">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
@@ -208,12 +208,25 @@
 						</ul>
 					</li>
           @endif
+					@if (Auth::user()->type->name == 'admin')
+					<li class="has-sub ">
+						<a href="javascript:;">
+								<b class="caret pull-right"></b>
+								<i class="fa fa-eye"></i>
+								<span>Sensores</span>
+							</a>
+						<ul class="sub-menu">
+								<li><a href="/sensor/create">Crear</a></li>
+								<li><a href="/sensor/">Ver</a></li>
+						</ul>
+					</li>
+					@endif
 
 					<li class="has-sub ">
 						<a href="javascript:;">
 								<b class="caret pull-right"></b>
 								<i class="fa fa-bookmark"></i>
-								<span>Incidente</span>
+								<span>Incidentes</span>
 
 						</a>
 						<ul class="sub-menu">

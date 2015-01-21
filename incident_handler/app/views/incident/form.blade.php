@@ -178,7 +178,7 @@
         +'<input type="text" class="form-control" name="srcprotocol_'+count_event+'" placeholder="origen" value="'+src_protocol+'"><br>'
         +'<input type="text" class="form-control" name="dstprotocol_'+count_event+'" placeholder="destino" value="'+dst_protocol+'">'
         +'<input type="text" class="form-control" name="srcoperativesystem_'+count_event+'" placeholder="origen" value="'+src_operative_system+'"><br>'
-        +'<input type="text" class="form-control" name="dstoperative_system_'+count_event+'" placeholder="destino" value="'+dst_operative_system+'">'
+        +'<input type="text" class="form-control" name="dstoperativesystem_'+count_event+'" placeholder="destino" value="'+dst_operative_system+'">'
         +'<input type="text" class="form-control" name="srcfunction_'+count_event+'" placeholder="origen" value="'+src_function+'"><br>'
         +'<input type="text" class="form-control" name="dstfunction_'+count_event+'" placeholder="destino" value="'+dst_function+'">'
         +'<input type="text" class="form-control" name="srclocation_'+count_event+'" placeholder="origen" value="'+src_location+'"><br>'
@@ -261,7 +261,7 @@
                               </td>
                               <td>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input data-date-format="yyyy-mm-dd" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('Y-m-d') ?>" />
+                                  <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
                                   <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
                                 </div><br>
                                 <div class="input-group bootstrap-timepicker">
@@ -274,7 +274,7 @@
                               </td>
                               <td>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input data-date-format="yyyy-mm-dd" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('Y-m-d') ?>" />
+                                  <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
                                   <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
                                 </div><br>
                                 <div class="input-group bootstrap-timepicker">
@@ -325,13 +325,22 @@
 
                             </tr>
                             <tr>
-                              <td colspan="5">
+                              <td colspan="3">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
 
                               </td>
+                              <td colspan="2">
+                                {{ Form::select('sensor_id', $sensor,$incident->sensors_id,[
+                                          'class'=>'form-control parsley-validated',]);
+                                }}
+
+                              </td>
+
                             </tr>
+
+
 
                             <tr>
 
@@ -365,7 +374,7 @@
                             <tr>
                               <td style="width:10%"><br>
                                 <a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
-                                <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success" onclick="addButton()"><i class="fa fa-plus"></i> Añadir</a>
+                                <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
 
                               </td>
                               <td colspan="4">
@@ -567,7 +576,7 @@
                       </div>
 
                     <div class="form-group">
-                        {{Form::textarea('description',$references->link,[
+                        {{Form::textarea('references',$references->link,[
                               'class'=>'form-control parsley-validated',
                               "data-parsley-pattern"=>"",
                               "data-parsley-required"=>"true",

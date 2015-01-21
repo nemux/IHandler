@@ -14,14 +14,12 @@ class Events extends Migration {
 	{
 			Schema::create('occurrences',function(Blueprint $table)
 		{
-			
+
 			$table->increments('id');
 			$table->string('ip');
-			$table->string('src')->unique();
-			$table->string('dst')->unique();
 	    $table->integer('occurrences_types_id')->unsigned();
       $table->timestamps();
-			
+
 		});
 
 		//
@@ -35,7 +33,7 @@ class Events extends Migration {
 
 	public function down()
 	{
-		Schema::drop('events');
+		Schema::drop('occurrences');
 		//
 	}
 

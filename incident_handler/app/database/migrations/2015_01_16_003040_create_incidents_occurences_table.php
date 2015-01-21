@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class SrcDst extends Migration {
+class CreateIncidentsOccurencesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -13,16 +13,16 @@ class SrcDst extends Migration {
 
 	public function up()
 	{
-		
-			Schema::create('src_dst',function(Blueprint $table)
+
+			Schema::create('incidents_occurences',function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('src_id')->unsigned();
-      $table->string('dst_id')->unsigned();
-	    $table->integer('incidents_id')->unsigned();
+	    $table->integer('source_id')->unsigned();
+			$table->integer('destiny_id')->unsigned();
+			$table->integer('incidents_id')->unsigned();
       $table->timestamps();
 		});
-		
+
 		//
 	}
 	/**
@@ -32,7 +32,7 @@ class SrcDst extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('src_dst');
+		Schema::drop('incidents_occurences');
 		//
 	}
 

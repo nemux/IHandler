@@ -28,6 +28,7 @@ class CreateIncidentsTable extends Migration {
 			$table->integer('attacks_id')->unsigned();
 			$table->integer('customers_id')->unsigned();
 			$table->integer('incident_handler_id')->unsigned();
+			$table->integer('sensors_id')->unsigned();
 			$table->timestamps();
 
 		});

@@ -96,7 +96,7 @@ protected $layout = 'layouts.master';
         'handler'=>$handler,
         'access'=>$access,
         'types'=>$types,
-        'action'=>'IncidentHandlerController@updateHandler',
+        
         ));
 
 
