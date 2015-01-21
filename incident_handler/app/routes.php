@@ -40,6 +40,14 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
 
 });
 
+Route::group(array('prefix'=>'report'),function(){
+
+  # Report Routes
+  Route::get('/', 'ReportController@index');
+  Route::get('create', 'ReportController@index');
+  Route::post('create', 'ReportController@postCreate');
+});
+
 Route::get('/otrs/{name}',function($name)
 {
 

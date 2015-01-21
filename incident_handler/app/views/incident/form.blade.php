@@ -69,8 +69,6 @@
       Form3.init();
       Form4.init();
 
-
-
       $("#search_sid").keyup(function (e){
 
         if(e.which == 13 && validateSid($("#search_sid").val())) {
