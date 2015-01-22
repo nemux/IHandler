@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttackersHistoryTable extends Migration {
+class CreateOccurencesHistoryTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateAttackersHistoryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('events_history',function(Blueprint $table)
+		Schema::create('occurences_history',function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('port')->nullable();
@@ -21,7 +21,7 @@ class CreateAttackersHistoryTable extends Migration {
       $table->string('function')->nullable();
       $table->string('location')->nullable();
       $table->datetime('datetime')->nullable();
-      $table->integer('events_id')->unsigned();
+      $table->integer('occurences_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->timestamps();
 		});
@@ -34,7 +34,7 @@ class CreateAttackersHistoryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('attackers_history');
+		Schema::drop('occurences_history');
 	}
 
 }

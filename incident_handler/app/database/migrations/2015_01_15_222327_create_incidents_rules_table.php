@@ -17,6 +17,7 @@ class CreateIncidentsRulesTable extends Migration {
 			$table->increments('id');
 			$table->integer('rules_id')->unsigned();
 			$table->integer('incidents_id')->unsigned();
+			$table->timestamps();
 		}	);
 	}
 

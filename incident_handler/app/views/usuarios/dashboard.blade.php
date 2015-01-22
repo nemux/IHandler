@@ -21,7 +21,7 @@
 						<div class="stats-icon"><i class="fa fa-clock-o"></i></div>
 						<div class="stats-info">
 							<h4>Hora</h4>
-							<p id="reloj"></p>
+							<p id="dash-clock"></p>
 						</div>
 						<div class="stats-link">
 						</div>

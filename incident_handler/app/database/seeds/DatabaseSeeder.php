@@ -17,26 +17,24 @@ class DatabaseSeeder extends Seeder {
 			  $this->command->info('Done1!');
   			$this->call('AccesTableSeeder');
 			  $this->command->info('Done(consider acces_type)');
-		 
+
 			  //$this->command->info('Done!5');
 			  $this->call('CategoryTableSeeder');
 			  $this->command->info('Done!10');
 			  $this->call('CustomerTableSeeder');
 			  $this->command->info('Done!11');
 			  $this->command->info('Done!8');
-			  
+
 			  $this->command->info('Done!9');
 			  //until here we are good¡
 			  $this->call('AttackTableSeeder');
+        $this->call('SensorSeeder');
 			  $this->call('IncidentTableSeeder');
 			  $this->command->info('Done!14');
 			  $this->call('ImageTableSeeder');
 			  $this->command->info('Done!12');
-			 
-			    $this->command->info('error');
 
-			
-			  
+
 			  $this->call('ApplicationTableSeeder');
 			  $this->command->info('Done!6');
 				$this->call('IncidentStatusTableSeeder');
@@ -54,9 +52,9 @@ class DatabaseSeeder extends Seeder {
 			  $this->call('ReferenceTableSeeder');
 			  $this->command->info('Done!17');
 				$this->command->info('Que la verga');
-							  $this->call('EventsTypeTableSeeder');
+				$this->call('EventsTypeTableSeeder');
 			  $this->call('EventsTableSeeder');
-			    $this->call('AttackerHistorySeeder');
+			  $this->call('AttackerHistorySeeder');
 
 
 

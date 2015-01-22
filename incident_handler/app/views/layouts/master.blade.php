@@ -153,8 +153,9 @@
 					</li>
 
 					-->
-          @if (Auth::user())
-					<li class="dropdown navbar-user">
+            <li id="nav-clock" class="label caret"/>
+
+					  <li class="dropdown navbar-user">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
 							<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>
 						</a>
@@ -164,8 +165,9 @@
               <li class="divider"></li>
 							<li><a href="/logout">Log Out</a></li>
 						</ul>
-					</li>
-          @endif
+					  </li>
+
+
 				</ul>
 				<!-- end header navigation right -->
 			</div>
@@ -185,7 +187,6 @@
 						</div>
 						<div class="info">
 							Incident Handler
-
 						</div>
             {{ Auth::user()->username." "}}
 					</li>
@@ -195,7 +196,7 @@
 				<ul class="nav">
 					<li class="nav-header">Menú</li>
 
-            @if (Auth::user()->type->name == 'admin')
+          @if (Auth::user()->type->name == 'admin')
 					<li class="has-sub ">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
@@ -208,12 +209,25 @@
 						</ul>
 					</li>
           @endif
+					@if (Auth::user()->type->name == 'admin')
+					<li class="has-sub ">
+						<a href="javascript:;">
+								<b class="caret pull-right"></b>
+								<i class="fa fa-eye"></i>
+								<span>Sensores</span>
+							</a>
+						<ul class="sub-menu">
+								<li><a href="/sensor/create">Crear</a></li>
+								<li><a href="/sensor/">Ver</a></li>
+						</ul>
+					</li>
+					@endif
 
 					<li class="has-sub ">
 						<a href="javascript:;">
 								<b class="caret pull-right"></b>
 								<i class="fa fa-bookmark"></i>
-								<span>Incidente</span>
+								<span>Incidentes</span>
 
 						</a>
 						<ul class="sub-menu">
@@ -282,7 +296,8 @@
       var y = today.getFullYear();
       m = checkTime(m);
       s = checkTime(s);
-      document.getElementById('reloj').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
+      document.getElementById('nav-clock').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
+      document.getElementById('dash-clock').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
       var t = setTimeout(function(){startTime()},500);
     }
 
