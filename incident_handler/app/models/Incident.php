@@ -11,20 +11,27 @@ class Incident extends Eloquent{
 	protected $softDelete = true;
 
   /*HAS MANY*/
-  public function references()
+  public function reference()
 	{
-		return $this->hasMany('References','incidents_id','id');
+		return $this->hasOne('References','incidents_id','id');
+	}
+	public function incidentRule()
+	{
+		return $this->hasMany('IncidentRule','incidents_id','id');
+	}
+	public function incidentOccurence()
+	{
+		return $this->hasMany('IncidentOccurence','incidents_id','id');
 	}
 	public function srcDst()
 	{
 		return $this->hasMany('IncidentOccurence','incidents_id','id');
 	}
 
-  public function times()
+	public function times()
 	{
 		return $this->hasMany('Time','incidents_id','id');
 	}
-
   	public function methods()
 	{
 		return $this->hasMany('Method','incidents_id','id');

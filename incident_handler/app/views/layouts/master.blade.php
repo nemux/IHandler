@@ -83,6 +83,7 @@
 
 				<!-- begin header navigation right -->
 				<ul class="nav navbar-nav navbar-right">
+
 					<li>
 						<form class="navbar-form full-width">
 							<div class="form-group">
@@ -153,12 +154,14 @@
 					</li>
 
 					-->
-            <li id="nav-clock" class="label caret"/>
 
+						<li class="media" style="padding-top:3px;"><span id="nav-clock" class=" " style="color:#FFF"/></span></li>
 					  <li class="dropdown navbar-user">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+
 							<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>
 						</a>
+
 						<ul class="dropdown-menu animated fadeInLeft">
 							<li class="arrow"></li>
               <li><a href="javascript:;"><span class="badge badge-anger pull-right">2</span> Inbox</a></li>
