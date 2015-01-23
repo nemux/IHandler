@@ -6,6 +6,20 @@ protected $layout = 'layouts.master';
      * Muestra el perfil de un usuario dado.
      */
 
+    public function change_status()
+    {
+             
+      return View::make('approved.status')
+    }
+
+
+    public function edit() 
+    {
+      $incident = '22';
+      $incident = Incident::find($incident);
+      return View::make('approved.approved')->with('incident', $incident);
+        }
+
     public function validateImage($image)
     {
       $input = array('image' => $image);
@@ -20,24 +34,24 @@ protected $layout = 'layouts.master';
           echo "0";
       }
     }
-
+ 
     public function validateRequired($input)
     {
       //echo $input['title']."<br>\n";
       $rules = array(
-          'title' => 'required | regex:/^[A-Za-záéíóúÁÉÍÓÚ\_\,\;\!\?\"\:\-\(\)\#\=\.]+$/',
-          'det_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
-          'det_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
-          'occ_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
-          'occ_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
-          'risk' => 'required | regex:/^[0-9]{2}$/',
-          'criticity' => 'required | regex:/^[0-9]{2}$/',
-          'impact' => 'required | regex:/^[0-9]{2}$/',
-          'attack_id' => 'required | regex:/^[0-9]{5}$/',
-          'category_id' => 'required | regex:/^[0-9]{5}$/',
-          'customer_id' => 'required | regex:/^[0-9]{5}$/',
+      //    'title' => 'required | regex:/^[A-Za-záéíóúÁÉÍÓÚ\_\,\;\!\?\"\:\-\(\)\#\=\.]+$/',
+      //    'det_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
+      //    'det_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
+      //    'occ_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
+      //    'occ_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
+      //    'risk' => 'required | regex:/^[0-9]{2}$/',
+      //    'criticity' => 'required | regex:/^[0-9]{2}$/',
+      //    'impact' => 'required | regex:/^[0-9]{2}$/',
+      //    'attack_id' => 'required | regex:/^[0-9]{5}$/',
+      //    'category_id' => 'required | regex:/^[0-9]{5}$/',
+      //    'customer_id' => 'required | regex:/^[0-9]{5}$/',
           'description' => 'required',
-          'sensor_id' => 'required | regex:/^[0-9]{5}$/',
+      //    'sensor_id' => 'required | regex:/^[0-9]{5}$/',
           'conclution' => 'required',
           'references' => 'required',
           'recomendations' => 'required'
@@ -50,7 +64,7 @@ protected $layout = 'layouts.master';
           echo "0";
       }
     }
-
+   
     public function create()
     {
       $sensor_object= new Sensor;

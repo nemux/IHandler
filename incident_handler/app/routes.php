@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('larala', 'IncidentController@edit');
+Route::post('larala', 'IncidentController@change_status')
+
 Route::get('/','HomeController@index');
 Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
 Route::get('rule/query/{id}', 'RuleController@query')->where(array('id'=>'^[0-9]+$'));
@@ -30,7 +33,7 @@ Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
   Route::get('update/{id}', 'IncidentHandlerController@getUpdate')->where(array('id'=>'^[0-9]+$'));
   Route::post('update', 'IncidentHandlerController@postUpdate');
   Route::get('view/{id}', 'IncidentHandlerController@view')->where(array('id'=>'^[0-9]+$'));
-
+ // Route::get('larala','IncidentHandlerController@aproved');
   #Admin Routes
 });
 

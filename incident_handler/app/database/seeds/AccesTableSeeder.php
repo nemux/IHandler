@@ -8,15 +8,28 @@
       
        $faker = Faker\Factory::create();
 
-       
+         Access::create([
+                   
+                  'username' => 'admin' ,
+                  'password' => Hash::make('leonel'),
+                  'incident_handler_id' => '1',
+                  'access_types_id' => '1',
+                  'active'=>'1',
+  
+                                          ]);
+      
             foreach (range (1,35) as $index) {
                   
                   Access::create([
+
+
+
+
                   'username' => $faker->userName,
                   'password' => Hash::make('leonel'),
                   //'password' => $faker->creditCardNumber,
-                  'incident_handler_id' => $faker->numberBetween($min = 1, $max = 34),
-                  'access_types_id' =>$faker->numberBetween($min = 1, $max = 3),
+                  'incident_handler_id' => $faker->numberBetween($min = 4, $max = 40),
+                  'access_types_id' =>$faker->numberBetween($min = 2, $max = 3),
                   'active'=>$faker->boolean($chanceOfGettingTrue = 0)
   
                                           ]);
