@@ -32,7 +32,5 @@
 
        foreach($sensorInfo as $s)
          Sensor::create($s);
-
-
       }
     }

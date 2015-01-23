@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('content')
+@section('head')
 <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
   <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
   <!-- ================== END PAGE LEVEL STYLE ================== -->
@@ -109,7 +109,6 @@
 
 </script>
 <script charset="utf-8">
-
   function addRule(sid,rule,message,translate,rule_is,why){
     count_rule=count_rule+1;
     //'sid','rule','message','translate','rule_is','why'
@@ -237,10 +236,9 @@
     var index=ip_added.indexOf(ip);
     ip_added.splice(index,1);
   }
-
 </script>
-
-
+@stop
+@section('content')
 <div class="row">
 <div class="panel panel-inverse">
 			    <div class="panel-heading">
@@ -690,8 +688,6 @@
                           </div>
                         </div>
                       </div>
-
-
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
@@ -713,5 +709,4 @@
   <script src="/assets/js/table-manage-default.demo.min.js"></script>
   <script src="/assets/js/apps.min.js"></script>
   <!-- ================== END PAGE LEVEL JS ================== -->
-
 @stop

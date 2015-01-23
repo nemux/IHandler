@@ -349,7 +349,20 @@ protected $layout = 'layouts.master';
 
     }
 
+  public function view($id){
 
+
+    $reportView = View::make('incident.show', array(
+                             'incident_title' => $id,
+                            ));
+
+    $pdf = App::make('snappy.pdf.wrapper');
+    $pdf->loadHTML($reportView);
+
+    //return $pdf->stream();
+    return $reportView;
+
+  }
 }
 
 

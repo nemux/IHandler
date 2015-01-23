@@ -52,7 +52,10 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('create', 'IncidentController@create');
   Route::post('create', 'IncidentController@create');
 
+
 });
+
+Route::get('incident/view/{id}','IncidentController@view');
 
 Route::group(array('prefix'=>'report'),function(){
 
