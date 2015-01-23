@@ -132,7 +132,7 @@
       +'</td>'
       +'<td>'
         +rule_is
-        +'<input style="display:none" value="'+rule_is+'"  class="form-control" placeholder="qué es" type="text" name="rule_'+count_rule+'" >'
+        +'<input style="display:none" value="'+rule_is+'"  class="form-control" placeholder="qué es" type="text" name="ruleis_'+count_rule+'" >'
       +'</td>'
       +'<td>'
         +why
@@ -259,11 +259,27 @@
                               </td>
                               <td>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+                                  <?php if (!isset($update)) {
+                                    ?>
+                                      <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+
+                                    <?php
+                                  }else{ ?>
+                                      <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($det_time->datetime)) ?>" />
+                                    <?php } ?>
                                   <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
                                 </div><br>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input name="det_time" id="" type="text" class="form-control timepicker" />
+
+                                  <?php if (!isset($update)) {
+                                    ?>
+                                      <input name="det_time" id="" type="text" class="form-control timepicker" />
+                                    <?php
+                                  }else{ ?>
+                                      <input name="det_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($det_time->datetime)) ?>"/>
+                                    <?php } ?>
+
+
                                   <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                 </div>
                               </td>
@@ -272,11 +288,24 @@
                               </td>
                               <td>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+                                  <?php if (!isset($update)) {
+                                    ?>
+                                      <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+
+                                    <?php
+                                  }else{ ?>
+                                      <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($occ_time->datetime)) ?>" />
+                                    <?php } ?>
                                   <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
                                 </div><br>
                                 <div class="input-group bootstrap-timepicker">
-                                  <input  name="occ_time" id="" type="text" class="form-control timepicker" />
+                                  <?php if (!isset($update)) {
+                                    ?>
+                                      <input name="occ_time" id="" type="text" class="form-control timepicker" />
+                                    <?php
+                                  }else{ ?>
+                                      <input name="occ_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($occ_time->datetime)) ?>"/>
+                                    <?php } ?>
                                   <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                 </div>
                               </td>
@@ -288,17 +317,23 @@
                                 <select name="risk" class="form-control">
                                   <option value="">Riesgo</option>
                                   <?php for($i=0;$i<11;$i++){ ?>
-                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php if (isset($update) && $incident->risk==$i): ?>
+                                      <option selected value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php endif ?>
+                                    <?php if (!isset($update) && $incident->risk==$i): ?>
+                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php endif ?>
                                   <?php }?>
+
                                 </select>
 
                               </td>
                               <td>
                                 <select name="criticity" class="form-control">
                                   <option value="">Severidad</option>
-                                  <option value="Bajo">Bajo</option>
-                                  <option value="Medio">Medio</option>
-                                  <option value="Alto">Alto</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='Bajo'){ echo "selected"; } ?> value="Bajo">Bajo</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='Medio'){ echo "selected"; } ?>value="Medio">Medio</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='Alto'){ echo "selected"; } ?>value="Alto">Alto</option>
 
                                 </select>
                               </td>
@@ -306,7 +341,12 @@
                                 <select name="impact" class="form-control">
                                   <option value="">Impacto</option>
                                   <?php for($i=0;$i<4;$i++){ ?>
-                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php if (isset($update) && $incident->impact==$i): ?>
+                                      <option selected value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php endif ?>
+                                    <?php if (!isset($update) && $incident->impact==$i): ?>
+                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php endif ?>
                                   <?php }?>
                                 </select>
                               </td>
@@ -452,6 +492,67 @@
                               <td colspan="5">
                                 <table class="table table-bordered table-striped" id="events">
 
+                                    <?php if (isset($update)): ?>
+                                      <?php $i=0; ?>
+                                      <?php foreach ($incident_occurence as $io): ?>
+                                        <?php $i++; ?>
+                                        <tr onclick="removeEvent(this)" style="cursor:pointer">
+
+                                          <td style="display:none">
+                                            <input style="display:none" type="text" class="form-control" name="srcip_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->ip ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstip_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->ip ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcport_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->port ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstport_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->port ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcprotocol_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->protocol ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstprotocol_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->protocol ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcoperativesystem_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->operative_system ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstoperativesystem_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->operative_system ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcfunction_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->function ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
+                                            <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
+                                          </td>
+                                          <td colspan="2">
+                                            <?php echo $io->src->ip ?>
+                                            ,
+                                            <?php echo $io->src->port ?>
+                                            ,
+                                            <?php echo $io->src->protocol ?>
+                                            ,
+                                            <?php echo $io->src->operative_system ?>
+                                            ,
+                                            <?php echo $io->src->function ?>
+                                            ,
+                                            <?php echo $io->src->location ?>
+                                            ,
+                                            <?php echo $io->src->type->name ?>
+
+
+                                          </td>
+                                          <td colspan="2">
+
+                                            <?php echo $io->dst->ip ?>
+                                            ,
+                                            <?php echo $io->dst->port ?>
+                                            ,
+                                            <?php echo $io->dst->protocol ?>
+                                            ,
+                                            <?php echo $io->dst->operative_system ?>
+                                            ,
+                                            <?php echo $io->dst->function ?>
+                                            ,
+                                            <?php echo $io->dst->location ?>
+                                            ,
+                                            <?php echo $io->dst->type->name ?>
+
+                                          </td>
+                                        </tr>
+
+                                      <?php endforeach ?>
+
+                                    <?php endif ?>
 
                                 </table>
                               </td>
@@ -506,6 +607,45 @@
                                 <table class="table table-bordered table-striped table-hover">
                                   <tbody id="rules">
 
+                                     <?php if (isset($update)): ?>
+                                       <?php $i=0; ?>
+                                       <?php foreach ($incident_rule as $ir): ?>
+                                         <?php $i++; ?>
+                                          <tr onclick="removeRule(this,'<?php echo $ir->rule->sid ?>')" style="cursor:pointer">
+                                            <td>
+                                              <?php echo $ir->rule->sid ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->sid ?>" class="form-control"  type="text" name="sid_<?php echo $i ?>" >
+                                            </td>
+                                            <td>
+                                              <?php echo $ir->rule->rule ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->rule ?>" class="form-control"  type="text" name="rule_<?php echo $i ?>" >
+                                            </td>
+                                            <td>
+                                              <?php echo $ir->rule->message ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->message ?>" class="form-control"  type="text" name="message_<?php echo $i ?>" >
+                                            </td>
+                                            <td>
+                                              <?php echo $ir->rule->translate ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->translate ?>" class="form-control"  type="text" name="translate_<?php echo $i ?>" >
+                                            </td>
+                                            <td>
+                                              <?php echo $ir->rule->rule_is ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->rule_is ?>" class="form-control"  type="text" name="ruleis_<?php echo $i ?>" >
+                                            </td>
+                                            <td>
+                                              <?php echo $ir->rule->why ?>
+                                              <input style="display:none" value="<?php echo $ir->rule->why ?>" class="form-control"  type="text" name="why_<?php echo $i ?>" >
+                                            </td>
+                                          </tr>
+                                          <script>
+                                          if (validateSid(<?php echo $ir->rule->sid ?>)=="0") {
+                                            sid_added.push(<?php echo $ir->rule->sid ?>);
+
+                                          }
+                                          </script>
+                                       <?php endforeach ?>
+
+                                     <?php endif ?>
                                   </tbody>
                                 </table>
                               </td>
@@ -550,8 +690,8 @@
 
 
                     <!--</div>-->
-                      <div class="form-group">
-                        <table class="table">
+                      <div class="form-group" style="display:none">
+                        <table class="table" >
                           <tr>
                             <td style="width:15%">
                               Imagenes relacionadas:
@@ -574,16 +714,20 @@
                       </div>
 
                     <div class="form-group">
-                        {{Form::textarea('references',$references->link,[
-                              'class'=>'form-control parsley-validated',
-                              "data-parsley-pattern"=>"",
-                              "data-parsley-required"=>"true",
-                              "placeholder"=>"Referencias",
-                              "id"=>"references",
-                              ]);
-                        }}
-                    </div>
 
+                          {{Form::textarea('references',$references->link,[
+                                'class'=>'form-control parsley-validated',
+                                "data-parsley-pattern"=>"",
+                                "data-parsley-required"=>"true",
+                                "placeholder"=>"Referencias",
+                                "id"=>"references",
+                                ]);
+                          }}
+
+                    </div>
+                    <?php if (isset($update)): ?>
+                      <input type="text" name="id" value="<?php echo $incident->id ?>" style="display:none">
+                    <?php endif ?>
                       <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">
                         </label>

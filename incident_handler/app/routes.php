@@ -54,7 +54,8 @@ Route::group(array('before'=>'admin', 'prefix'=>'sensor'),function(){
 Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('create', 'IncidentController@create');
   Route::post('create', 'IncidentController@create');
-
+  Route::get('update/{id}', 'IncidentController@getUpdate')->where(array('id'=>'^[0-9]+$'));
+  Route::post('update', 'IncidentController@postUpdate');
 });
 
 Route::group(array('prefix'=>'report'),function(){
