@@ -16,10 +16,10 @@ class CreateIncidentsReportsTable extends Migration {
 		{
 			$table->increments('id');
       $table->integer('incidents_id')->unsigned();
-      $table->integer('reports')->unsigned();
+      $table->integer('reports_id')->unsigned();
 		});
 
-    Schema::$table('incidents_reports', function(Blueprint $table){
+    Schema::table('incident_report', function(Blueprint $table){
       $table->foreign('incidents_id')->references('id')->on('incidents');
       $table->foreign('reports_id')->references('id')->on('reports');
     });

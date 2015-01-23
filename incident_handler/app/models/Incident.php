@@ -82,9 +82,9 @@ class Incident extends Eloquent{
 	  return $this->belongsTo('Customer','customers_id','id');
 	}
 
-	public function incident_handler()
+	public function handler()
 	{
-		return $this->belongsTo('IncidentHandler','handler_id','id');
+		return $this->belongsTo('IncidentHandler','incident_handler_id','id');
 	}
 
 }

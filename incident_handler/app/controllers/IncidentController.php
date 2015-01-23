@@ -8,17 +8,16 @@ protected $layout = 'layouts.master';
 
     public function change_status()
     {
-             
-      return View::make('approved.status')
+
+      return View::make('approved.status');
     }
 
 
-    public function edit() 
+    public function edit($id)
     {
-      $incident = '22';
-      $incident = Incident::find($incident);
+      $incident = Incident::find($id);
       return View::make('approved.approved')->with('incident', $incident);
-        }
+    }
 
     public function validateImage($image)
     {
@@ -34,7 +33,7 @@ protected $layout = 'layouts.master';
           echo "0";
       }
     }
- 
+
     public function validateRequired($input)
     {
       //echo $input['title']."<br>\n";
@@ -75,7 +74,7 @@ protected $layout = 'layouts.master';
           echo "0";
       }
     }
-   
+
     public function create()
     {
 
@@ -391,7 +390,7 @@ protected $layout = 'layouts.master';
                   $src->save();
                   $src_history=new OccurenceHistory;
                   //'port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'
-                
+
                   $src_history->port=$input['srcport_'.$e];
                   $src_history->protocol=$input['srcprotocol_'.$e];
                   $src_history->operative_system=$input['srcoperativesystem_'.$e];
@@ -470,8 +469,7 @@ protected $layout = 'layouts.master';
   public function view($id){
 
 
-<<<<<<< HEAD
-    $reportView = View::make('incident.show', array(
+    $reportView = View::make('incident.view', array(
                              'incident_title' => $id,
                             ));
 
@@ -482,8 +480,15 @@ protected $layout = 'layouts.master';
     return $reportView;
 
   }
-=======
->>>>>>> b90e83fffb3a7fbb7b929a661d9ff8eeb09fe4e1
+  public function index(){
+    $incident=Incident::all();
+    return $this->layout = View::make('incident.index', array(
+      'incident'=>$incident,
+
+      ));
+  }
+
+
 }
 
 

@@ -84,8 +84,11 @@
 					</li>
 
 					-->
-            <li id="nav-clock" class="label caret"/>
-
+            <li class="media" >
+							<div style="padding-top:3px;color:#FFF">
+            		<div id="nav-clock" class=""/></div>
+            	</div>
+						</li>
 					  <li class="dropdown navbar-user">
 						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
 							<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>

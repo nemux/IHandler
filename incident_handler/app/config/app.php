@@ -190,7 +190,7 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
     'PDF'               => 'Barryvdh\Snappy\Facades\SnappyPdf',
-    'Image'             => 'Barryvdh\Snappy\Facades\SnappyImage',
+    'Images'             => 'Barryvdh\Snappy\Facades\SnappyImage',
 	),
 
 );

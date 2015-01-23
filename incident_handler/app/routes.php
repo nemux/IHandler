@@ -11,8 +11,7 @@
 |
 */
 
-Route::get('larala', 'IncidentController@edit');
-Route::post('larala', 'IncidentController@change_status')
+
 
 Route::get('/','HomeController@index');
 Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
@@ -52,15 +51,14 @@ Route::group(array('before'=>'admin', 'prefix'=>'sensor'),function(){
 });
 
 Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
+  Route::get('/', 'IncidentController@index');
   Route::get('create', 'IncidentController@create');
   Route::post('create', 'IncidentController@create');
-<<<<<<< HEAD
-
-
-=======
   Route::get('update/{id}', 'IncidentController@getUpdate')->where(array('id'=>'^[0-9]+$'));
   Route::post('update', 'IncidentController@postUpdate');
->>>>>>> b90e83fffb3a7fbb7b929a661d9ff8eeb09fe4e1
+  Route::get('manage/{id}', 'IncidentController@edit');
+  Route::post('manage', 'IncidentController@change_status');
+
 });
 
 Route::get('incident/view/{id}','IncidentController@view');
@@ -71,6 +69,7 @@ Route::group(array('prefix'=>'report'),function(){
   Route::get('/', 'ReportController@index');
   Route::get('create', 'ReportController@index');
   Route::post('create', 'ReportController@postCreate');
+
 });
 
 Route::get('/otrs/{name}',function($name)

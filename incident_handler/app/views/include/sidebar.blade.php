@@ -54,7 +54,7 @@
 						</a>
 						<ul class="sub-menu">
 								<li class=""><a href="/incident/create">Crear</a></li>
-								<li><a href="#">Ver</a></li>
+								<li><a href="/incident/">Ver</a></li>
 						</ul>
 					</li>
 
