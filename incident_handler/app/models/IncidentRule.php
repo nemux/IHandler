@@ -10,7 +10,7 @@ class IncidentRule extends Eloquent{
   protected $fillable = ['incidents_id','rules_id'];
   protected $softDelete = true;
 
-  public function rules(){
+  public function rule(){
     return $this->belongsTo('Rule','rules_id','id');
   }
 

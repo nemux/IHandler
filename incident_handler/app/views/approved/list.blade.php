@@ -15,7 +15,6 @@
 
       <!-- begin row -->
 
-
 <div class="row">
           <!-- begin col-6 -->
     <div class="col-md-8">
@@ -23,11 +22,11 @@
               <div class="panel panel-inverse" data-sortable-id="form-validation-1">
                   <div class="panel-heading">
 
-                      <h4 class="panel-title">Registre los siguientes campos</h4>
+                      <h4 class="panel-title">Vista de Incidentes</h4>
                   </div>
                   <div class="panel-body panel-form">
 
-                  {{ Form::model($sensor,array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form")) }}
+                  {{ Form::model($incident,array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form")) }}
                       <div class="form-group">
                           <label class="control-label col-md-2 col-sm-2">
                             {{ Form::label('name', 'Nombre del Sensor:') }}
@@ -47,7 +46,7 @@
                           {{ Form::label('ip', 'Dirección IP: ') }}
                         </label>
                         <div class="col-md-10 col-sm-10">
-                          {{Form::text('ip', $sensor->ip,[
+                          {{Form::text('title', $incident->title,[
                                     'class'=>'form-control parsley-validated',
                                     "data-parsley-pattern"=>"^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
                                     "data-parsley-required"=>"true"]);

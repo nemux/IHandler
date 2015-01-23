@@ -1,47 +1,24 @@
 <?php
 
-class SensorController extends Controller {
+class ApprovedController extends Controller {
 protected $layout = 'layouts.master';
     /**
      * Muestra el perfil de un usuario dado.
      */
-    public function create()
-    {
-      $input = Input::all();
-      $sensor=new Sensor;
-      $customer=Customer::lists('company', 'id');
-
-      if ($input) {
-        $sensor->name=$input['name'];
-        $sensor->ip=$input['ip'];
-        $sensor->customers_id=$input['customers_id'];
-        $sensor->save();
-        return Redirect::to('sensor/view/'.$sensor->id);
-      }
-      else{
-        return $this->layout = View::make("sensor.form", array(
-        'sensor'=>$sensor,
-        'customer'=>$customer,
-        'action'=>'SensorController@create',
-        'title'=>"Nuevo Sensor",
-        ));
-      }
-
-    }
 
     public function postUpdate()
     {
       $input = Input::all();
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
-      $sensor=Sensor::find($id);
+      $incident=Incident::find($id);
 
       if ($input) {
-        $sensor->ip=$input['ip'];
-        $sensor->name=$input['name'];
-        $sensor->customers_id=$input['customers_id'];
-        $sensor->save();
-        return Redirect::to('sensor/view/'.$sensor->id);
+        $incident->ip=$input['ip'];
+        $incident->name=$input['name'];
+        $incident->customers_id=$input['customers_id'];
+        $incident->save();
+        return Redirect::to('approved/approved/'.$incident->id);
       }
 
 

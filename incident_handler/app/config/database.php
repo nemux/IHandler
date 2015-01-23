@@ -55,9 +55,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'incident_handler',
-			'username'  => 'root',
-			'password'  => '',
+			'database'  => 'leinn32',
+			'username'  => 'test',
+			'password'  => 'password',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
@@ -66,8 +66,13 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
+<<<<<<< HEAD
 			'database' => 'incident_handler',
 			'username' => 'incident',
+=======
+			'database' => 'leinn32',
+			'username' => 'test',
+>>>>>>> b90e83fffb3a7fbb7b929a661d9ff8eeb09fe4e1
 			'password' => 'password',
 			'charset'  => 'utf8',
 			'prefix'   => '',
