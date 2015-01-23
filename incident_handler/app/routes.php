@@ -56,8 +56,8 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::post('create', 'IncidentController@create');
   Route::get('update/{id}', 'IncidentController@getUpdate')->where(array('id'=>'^[0-9]+$'));
   Route::post('update', 'IncidentController@postUpdate');
-  Route::get('manage/{id}', 'IncidentController@edit');
-  Route::post('manage', 'IncidentController@change_status');
+  Route::get('manage/{id}', 'ApprovedController@edit');
+  Route::post('manage', 'ApprovedControllerller@change');
 
 });
 
