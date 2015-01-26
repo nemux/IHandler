@@ -49,3 +49,30 @@
 <script src="/assets/js/dashboard.min.js"></script>
 <script src="/assets/js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
+<style media="screen">
+	#new_clock:hover{
+		color: #FFFFFF;
+    text-decoration: none;
+	}
+	#new_clock{
+		color: #FFFFFF;
+		text-decoration: none;
+	}
+</style>
+<script charset="utf-8">
+	function startTime() {
+    var today=new Date();
+    var h=today.getHours();
+    var m=today.getMinutes();
+    var s=today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('new_clock').innerHTML = h+":"+m+":"+s;
+    var t = setTimeout(function(){startTime()},500);
+}
+
+function checkTime(i) {
+    if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+</script>

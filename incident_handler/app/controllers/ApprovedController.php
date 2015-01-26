@@ -12,49 +12,61 @@ protected $layout = 'layouts.master';
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
       $incident=Incident::find($id);
+      $access=$handler->access;
+      $types=AccessType::lists('name', 'id');
 
       if ($input) {
-        $incident->ip=$input['ip'];
-        $incident->name=$input['name'];
-        $incident->customers_id=$input['customers_id'];
-        $incident->save();
-        return Redirect::to('approved/approved/'.$incident->id);
+        $handler->conclution=$input['conclution'];
+        $handler->recomendation=$input['recomendation'];
+       //$handler->phone=$input['conclution'];
+        //$handler->mail=$input['mail'];
+        $handler->save();
+        return Redirect::to('approved/approved/'.$handler->id);
       }
-
-
     }
+
+
+
     public function getUpdate($id){
 
-        $sensor=Sensor::find($id);
-        $customer=Customer::lists('company', 'id');
-        return $this->layout = View::make("sensor.form", array(
-        'sensor'=>$sensor,
-        'customer'=>$customer,
-        'action'=>'SensorController@postUpdate',
-        'title'=>"Actualizar Sensor",
-        'update'=>"1"
+        $handler=IncidentHandler::find($id);
+        $access=$handler->access;
+        $types=AccessType::lists('name', 'id');
+        return $this->layout = View::make("incidentHandler.form", array(
+        'handler'=>$handler,
+        'access'=>$access,
+        'types'=>$types,
+        'action'=>'IncidentHandlerController@postUpdate',
+        'update'=>'update',
+        'title'=>'Actualización de Incident Handler'
         ));
 
+    }
+
+    
+
+    public function change()
+    {
+      return View::make('/');
+    }
+
+
+    public function edit($id)
+    {
+      $incident = Incident::find($id);
+      return View::make('approved.approved')->with('incident', $incident);
     }
 
     public function view($id)
     {
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      $sensor=Sensor::find($id);
+      $incident=Incident::find($id);
 
 
-      return $this->layout = View::make('sensor.view', array(
-        'sensor'=>$sensor,
+      return $this->layout = View::make('approved.approved', array(
+        'incient'=>$incident,
 
-        'action'=>'SensorController@getUpdate',
-        ));
-    }
-
-    public function index(){
-      $sensor=Sensor::all();
-      return $this->layout = View::make('sensor.index', array(
-        'sensor'=>$sensor,
-
+        'action'=>'ApprovedController@getUpdate',
         ));
     }
 

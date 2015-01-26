@@ -163,6 +163,15 @@
     var dst_location=$("#dst_location").val();
     var src_occurences=$("#src_occurences").val();
     var dst_occurences=$("#dst_occurences").val();
+    var src_blacklist=0;
+    var dst_blacklist=0;
+    if ($("#src_blacklist").attr('checked')) {
+        src_blacklist=1;
+    }
+    if ($("#dst_blacklist").attr('checked')) {
+        dst_blacklist=1;
+    }
+
 
 
     var str='<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
@@ -182,8 +191,12 @@
         +'<input type="text" class="form-control" name="dstlocation_'+count_event+'" placeholder="destino" value="'+dst_location+'">'
         +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="destino" value="'+src_occurences+'">'
         +'<input type="text" class="form-control" name="dstoccurencestype_'+count_event+'" placeholder="destino" value="'+dst_occurences+'">'
+        +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="destino" value="'+src_blacklist+'">'
+        +'<input type="text" class="form-control" name="dstblacklist_'+count_event+'" placeholder="destino" value="'+dst_blacklist+'">'
       +'</td>'
+
       +'<td colspan="2">'
+
         +src_ip
         +','
         +src_port
@@ -198,6 +211,7 @@
         +','
         +src_occurences
         +','
+        +src_blacklist
 
       +'</td>'
       +'<td colspan="2">'
@@ -214,6 +228,8 @@
         +dst_location
         +','
         +dst_occurences
+        +','
+        +dst_blacklist
 
       +'</td>'
     +'</tr>';
@@ -314,13 +330,24 @@
                               <td>
                                 <select name="risk" class="form-control">
                                   <option value="">Riesgo</option>
+                                  <?php $option=""; ?>
                                   <?php for($i=0;$i<11;$i++){ ?>
-                                    <?php if (isset($update) && $incident->risk==$i): ?>
-                                      <option selected value="<?php echo $i ?>"><?php echo $i ?></option>
+
+
+                                    <?php if (isset($update)): ?>
+                                      <?php if ($incident->risk==$i): ?>
+                                        <?php $option="selected"; ?>
+                                      <?php endif ?>
+                                      <?php if ($incident->risk!=$i): ?>
+                                        <?php $option=""; ?>
+                                      <?php endif ?>
+
                                     <?php endif ?>
-                                    <?php if (!isset($update) && $incident->risk==$i): ?>
-                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php if (!isset($update)): ?>
+                                      <?php $option=""; ?>
                                     <?php endif ?>
+
+                                    <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
                                   <?php }?>
 
                                 </select>
@@ -330,21 +357,31 @@
                                 <select name="criticity" class="form-control">
                                   <option value="">Severidad</option>
                                   <option <?php if(isset($update) && $incident->criticity=='Bajo'){ echo "selected"; } ?> value="Bajo">Bajo</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='Medio'){ echo "selected"; } ?>value="Medio">Medio</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='Alto'){ echo "selected"; } ?>value="Alto">Alto</option>
-
+                                  <option <?php if(isset($update) && $incident->criticity=='Medio'){ echo "selected"; } ?> value="Medio">Medio</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='Alto'){ echo "selected"; } ?> value="Alto">Alto</option>
                                 </select>
                               </td>
                               <td>
                                 <select name="impact" class="form-control">
                                   <option value="">Impacto</option>
-                                  <?php for($i=0;$i<4;$i++){ ?>
-                                    <?php if (isset($update) && $incident->impact==$i): ?>
-                                      <option selected value="<?php echo $i ?>"><?php echo $i ?></option>
+                                  <?php $option=""; ?>
+                                  <?php for($i=0;$i<11;$i++){ ?>
+
+
+                                    <?php if (isset($update)): ?>
+                                      <?php if ($incident->impact==$i): ?>
+                                        <?php $option="selected"; ?>
+                                      <?php endif ?>
+                                      <?php if ($incident->impact!=$i): ?>
+                                        <?php $option=""; ?>
+                                      <?php endif ?>
+
                                     <?php endif ?>
-                                    <?php if (!isset($update) && $incident->impact==$i): ?>
-                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php if (!isset($update)): ?>
+                                      <?php $option=""; ?>
                                     <?php endif ?>
+
+                                    <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
                                   <?php }?>
                                 </select>
                               </td>
@@ -390,6 +427,18 @@
                               </td>
                             </tr>
                             <tr>
+
+                              <td colspan="5" >
+                                {{Form::text('stream',$incident->stream,[
+                                      'class'=>'form-control parsley-validated',
+                                      "data-parsley-pattern"=>"",
+                                      "data-parsley-required"=>"true",
+                                      "placeholder"=>"Flujo"]);
+                                }}
+                              </td>
+                            </tr>
+
+                            <tr>
                               <td colspan="5" >
                                 {{Form::textarea('description',$incident->description,[
                                       'class'=>'form-control parsley-validated',
@@ -401,160 +450,7 @@
                                 }}
                               </td>
                             </tr>
-                            <tr>
-                              <td colspan="5">
-                                <h4>Añadir Eventos</h4>
 
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style="width:10%"><br>
-                                <a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
-                                <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
-
-                              </td>
-                              <td colspan="4">
-                                <table class="table table-bordered table-striped " >
-                                  <thead>
-                                    <th>
-                                      IP
-                                    </th>
-                                    <th>
-                                      Puerto
-                                    </th>
-                                    <th>
-                                      Protocolo
-                                    </th>
-                                    <th>
-                                      Sistema Operativo
-                                    </th>
-                                    <th>
-                                      Función
-                                    </th>
-                                    <th>
-                                      Localidad
-                                    </th>
-                                    <th>
-                                      Tipo
-                                    </th>
-                                  </thead>
-                                  <tbody>
-
-                                      <tr>
-                                        <td>
-                                          <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
-                                          <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
-                                          <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
-                                          <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
-                                          <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
-                                          <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
-                                          <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
-                                                    'class'=>'form-control parsley-validated',
-                                                    'id'=>'src_occurences',
-                                                    ]);
-                                          }}
-                                          <br>
-                                          {{ Form::select('dst_occurences_types_id', $occurences_types, $incident->categories_id,[
-                                                      'class'=>'form-control parsley-validated',
-                                                      'id'=>'dst_occurences',
-                                                      ]);
-                                          }}
-                                        </td>
-                                      </tr>
-
-                                  </tbody>
-                                </table>
-                              </td>
-
-
-                            </tr>
-                            <tr>
-                              <td colspan="5">
-                                <table class="table table-bordered table-striped" id="events">
-
-                                    <?php if (isset($update)): ?>
-                                      <?php $i=0; ?>
-                                      <?php foreach ($incident_occurence as $io): ?>
-                                        <?php $i++; ?>
-                                        <tr onclick="removeEvent(this)" style="cursor:pointer">
-
-                                          <td style="display:none">
-                                            <input style="display:none" type="text" class="form-control" name="srcip_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->ip ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstip_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->ip ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcport_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->port ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstport_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->port ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcprotocol_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->protocol ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstprotocol_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->protocol ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcoperativesystem_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->operative_system ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstoperativesystem_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->operative_system ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcfunction_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->function ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
-                                            <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
-                                          </td>
-                                          <td colspan="2">
-                                            <?php echo $io->src->ip ?>
-                                            ,
-                                            <?php echo $io->src->port ?>
-                                            ,
-                                            <?php echo $io->src->protocol ?>
-                                            ,
-                                            <?php echo $io->src->operative_system ?>
-                                            ,
-                                            <?php echo $io->src->function ?>
-                                            ,
-                                            <?php echo $io->src->location ?>
-                                            ,
-                                            <?php echo $io->src->type->name ?>
-
-
-                                          </td>
-                                          <td colspan="2">
-
-                                            <?php echo $io->dst->ip ?>
-                                            ,
-                                            <?php echo $io->dst->port ?>
-                                            ,
-                                            <?php echo $io->dst->protocol ?>
-                                            ,
-                                            <?php echo $io->dst->operative_system ?>
-                                            ,
-                                            <?php echo $io->dst->function ?>
-                                            ,
-                                            <?php echo $io->dst->location ?>
-                                            ,
-                                            <?php echo $io->dst->type->name ?>
-
-                                          </td>
-                                        </tr>
-
-                                      <?php endforeach ?>
-
-                                    <?php endif ?>
-
-                                </table>
-                              </td>
-                            </tr>
                             <tr>
                               <td colspan="5">
                                 <h4>Añadir Reglas de Detección</h4>
@@ -571,6 +467,7 @@
                               <td colspan="4">
                                 <table class="table">
                                   <tbody>
+
 
                                     <tr>
                                       <td>
@@ -602,6 +499,7 @@
                             <tr>
 
                               <td colspan="5">
+
                                 <table class="table table-bordered table-striped table-hover">
                                   <tbody id="rules">
 
@@ -640,6 +538,7 @@
                                             sid_added.push(<?php echo $ir->rule->sid ?>);
 
                                           }
+                                          count_rule=<?php echo $i ?>;
                                           </script>
                                        <?php endforeach ?>
 
@@ -649,6 +548,7 @@
                               </td>
 
                             </tr>
+
                             <tr>
                               <td colspan="5" >
                                <div class="form-group">
@@ -673,6 +573,200 @@
                                         "id"=>"recomendations"]);
                                   }}
                                 </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="5">
+                                <div class="form-group">
+
+                                      {{Form::textarea('references',$references->link,[
+                                            'class'=>'form-control parsley-validated',
+                                            "data-parsley-pattern"=>"",
+                                            "data-parsley-required"=>"true",
+                                            "placeholder"=>"Referencias",
+                                            "id"=>"references",
+                                            ]);
+                                      }}
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="5">
+                                <h4>Añadir Eventos</h4>
+
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="width:10%"><br>
+                                <!--<a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>-->
+                                <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
+
+                              </td>
+                              <td colspan="4">
+                                <table class="table table-bordered table-striped " >
+                                  <thead>
+                                    <th>
+                                      IP
+                                    </th>
+                                    <th>
+                                      Puerto
+                                    </th>
+                                    <th>
+                                      Protocolo
+                                    </th>
+                                    <th>
+                                      Sistema Operativo
+                                    </th>
+                                    <th>
+                                      Función
+                                    </th>
+                                    <th>
+                                      Localidad
+                                    </th>
+                                    <th>
+                                      Tipo
+                                    </th>
+                                    <th>
+                                      Blacklist
+                                    </th>
+                                  </thead>
+                                  <tbody>
+
+                                      <tr>
+                                        <td>
+                                          <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
+                                          <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
+                                        </td>
+                                        <td>
+                                          <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
+                                          <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
+                                        </td>
+                                        <td>
+                                          <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
+                                          <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
+                                        </td>
+                                        <td>
+                                          <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
+                                          <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
+                                        </td>
+                                        <td>
+                                          <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
+                                          <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
+                                        </td>
+                                        <td>
+                                          <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
+                                          <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
+                                        </td>
+
+                                        <td>
+                                          {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                                    'class'=>'form-control parsley-validated',
+                                                    'id'=>'src_occurences',
+                                                    ]);
+                                          }}
+                                          <br>
+                                          {{ Form::select('dst_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                                      'class'=>'form-control parsley-validated',
+                                                      'id'=>'dst_occurences',
+                                                      ]);
+                                          }}
+                                        </td>
+                                        <td>
+                                          <input id="src_blacklist" class="checkbox" type="checkbox" name="search_src_blacklist" value="1"><br><br>
+                                          <input id="dst_blacklist" class="checkbox"  type="checkbox"  name="search_dst_blacklist" value="1">
+                                        </td>
+                                      </tr>
+
+                                  </tbody>
+                                </table>
+                              </td>
+
+
+                            </tr>
+                            <tr>
+                              <td colspan="5">
+                                <table class="table table-bordered table-striped" id="events">
+
+                                    <?php if (isset($update)): ?>
+                                      <?php $i=0; ?>
+                                      <?php foreach ($incident_occurence as $io): ?>
+                                        <?php $i++; ?>
+                                        <tr onclick="removeEvent(this)" style="cursor:pointer">
+
+                                          <td style="display:none">
+                                            <input style="display:none" type="text" class="form-control" name="srcip_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->ip ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstip_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->ip ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcport_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->port ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstport_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->port ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcprotocol_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->protocol ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstprotocol_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->protocol ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcoperativesystem_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->operative_system ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstoperativesystem_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->operative_system ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcfunction_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->function ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
+                                            <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
+                                            <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
+                                            <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                            <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                          </td>
+                                          <td colspan="2">
+                                            <?php echo $io->src->ip ?>
+                                            ,
+                                            <?php echo $io->src->port ?>
+                                            ,
+                                            <?php echo $io->src->protocol ?>
+                                            ,
+                                            <?php echo $io->src->operative_system ?>
+                                            ,
+                                            <?php echo $io->src->function ?>
+                                            ,
+                                            <?php echo $io->src->location ?>
+                                            ,
+                                            <?php echo $io->src->type->name ?>
+                                            ,
+                                            <?php if ($io->src->blacklist) {
+                                              echo "1";
+                                            }else{
+                                              echo "0";
+                                            } ?>
+
+
+                                          </td>
+                                          <td colspan="2">
+
+                                            <?php echo $io->dst->ip ?>
+                                            ,
+                                            <?php echo $io->dst->port ?>
+                                            ,
+                                            <?php echo $io->dst->protocol ?>
+                                            ,
+                                            <?php echo $io->dst->operative_system ?>
+                                            ,
+                                            <?php echo $io->dst->function ?>
+                                            ,
+                                            <?php echo $io->dst->location ?>
+                                            ,
+                                            <?php echo $io->dst->type->name ?>
+                                            ,
+                                            <?php if ($io->dst->blacklist) {
+                                              echo "1";
+                                            }else{
+                                              echo "0";
+                                            } ?>
+
+                                          </td>
+                                        </tr>
+                                        <script charset="utf-8">
+                                          count_event=<?php echo $i ?>;
+                                        </script>
+                                      <?php endforeach ?>
+
+                                    <?php endif ?>
+
+                                </table>
                               </td>
                             </tr>
                             <tr>
@@ -711,18 +805,7 @@
                         </table>
                       </div>
 
-                    <div class="form-group">
 
-                          {{Form::textarea('references',$references->link,[
-                                'class'=>'form-control parsley-validated',
-                                "data-parsley-pattern"=>"",
-                                "data-parsley-required"=>"true",
-                                "placeholder"=>"Referencias",
-                                "id"=>"references",
-                                ]);
-                          }}
-
-                    </div>
                     <?php if (isset($update)): ?>
                       <input type="text" name="id" value="<?php echo $incident->id ?>" style="display:none">
                     <?php endif ?>

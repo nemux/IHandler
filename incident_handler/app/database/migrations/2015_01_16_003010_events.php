@@ -18,6 +18,7 @@ class Events extends Migration {
 			$table->increments('id');
 			$table->string('ip');
 	    $table->integer('occurrences_types_id')->unsigned();
+			$table->boolean('blacklist')->default("0");
       $table->timestamps();
 
 		});

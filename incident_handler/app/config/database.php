@@ -66,8 +66,13 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
+<<<<<<< HEAD
 			'database' => 'incident_handler',
 			'username' => 'incident',
+=======
+			'database' => 'leinn32',
+			'username' => 'test',
+>>>>>>> f2bcfc19f58fe11c5ac077b41eeaca2d708be3af
 			'password' => 'password',
 			'charset'  => 'utf8',
 			'prefix'   => '',

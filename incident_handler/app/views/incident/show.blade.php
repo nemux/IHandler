@@ -1,94 +1,233 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
 
-<head id='head'>
-  @include('include.head')
+<head>
+  <meta charset="utf-8" />
 </head>
-
+<style media="screen">
+  body{
+    border: 1px solid black;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+  }
+  .wrapper{
+    width:600px;
+  }
+  table, th, td {
+     border: 1px solid black;
+  }
+  img{
+    width:50%;
+    margin-left:18%;
+    border-radius:6px;
+    box-shadow: 10px 10px 5px #888888;
+    margin-top:5px;
+    margin-bottom:5px;
+  }
+</style>
 
 <body>
-	<!-- begin #page-loader -->
-	<!-- <div id="page-loader" class="fade in"><span class="spinner"></span></div> -->
-	<!-- end #page-loader -->
+  <div  >
+    <table>
+      <tr>
+        <td colspan="3" style="text-align:center;background:#d9d9d9">
+          <strong>Incidente: <?php echo $incident->title ?></strong>
+        </td>
 
-	<!-- begin #page-container -->
-	<div id="page-container" class="fade page-without-sidebar page-header-fixed">
+      </tr>
+      <tr style="">
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Categoría:</strong>
+        </td>
+        <td colspan="2" style="border-collapse: collapse;">
+          <table style="border-collapse: collapse;">
+            <tr>
+              <td colspan="2" style="text-align:center;background:#d9d9d9">
+                Descripción
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align:center">
+                <?php echo $incident->category->id ?>
+              </td>
+              <td style="">
+                <?php echo $incident->category->description ?>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Sensor:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+          <?php echo $incident->sensor->name ?>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Indicador:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+          <?php foreach ($incident->incidentRule as $r ): ?>
+            "<?php echo $r->rule->message ?>"<br>
+            <?php //print_r($r) ?>
+          <?php endforeach ?>
+          <?php //print_r($incident->incidentRule); ?>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Flujo del ataque:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+          <?php
+              echo $incident->stream;
 
-		<!-- begin #content -->
-		<div id="content" class="content">
-			<!-- begin page-header -->
-      <h1 class="page-header">Reporte de incidente<small> 22/01/2014</small></h1>
-			<!-- end page-header -->
+          ?>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:center;background:#d9d9d9" >
+          <strong>Fecha de detección:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+          <?php
+              echo $det_time->datetime;
 
-			<div class="panel panel-inverse">
-			    <div class="panel-heading">
-			        <div class="panel-heading-btn">
-			            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-			            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-			            <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a> -->
-			        </div>
-			        <h4 class="panel-title">{{ $incident_title }}</h4>
-			    </div>
-			    <div class="panel-body">
-			        <div class="form-group">
-                <table class="table table-bordered">
+          ?>,<?php
+              echo $det_time->zone;
 
-                <tr>
-                    <th rowspan="2" >Categoria</th>
-                    <th colspan="2" >Descripcion</th>
-                </tr>
+          ?>
+        </td>
+      </tr>
+      <tr >
 
-                <tr>
-                  <td> Aqui va la categoria</td>
-                  <td>Aqui va la Descripcion</td>
-                </tr>
-                @for($i = 1; $i < 10; $i++)
-                  <tr>
-                    <th>Ticket</th>
-                    <td colspan="2" >Aqui va el ticket.</td>
-                </tr>
-                @endfor
-                <tr>
-                    <td rowspan="2" >BlackList</td>
-                    <th>IP</th>
-                    <th>Pais de Origen</th>
-                </tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Severidad:</strong>
+        </td>
 
-                <tr>
-                  <td> Aqui va la categoria</td>
-                  <td>Aqui va la Descripcion</td>
-                </tr>
-                @for($i = 1; $i < 10; $i++)
-                  <tr>
-                    <th>Ticket</th>
-                    <td colspan="2" >Aqui va el ticket.</td>
-                </tr>
-                @endfor
-              </table>
-              </div>
-			    </div>
-			</div>
-            <p>
-                <a href="javascript:history.back(-1);" class="btn btn-success">
-                    <i class="fa fa-arrow-circle-left"></i> Back to previous page
-                </a>
-            </p>
-		</div>
-		<!-- end #content -->
+        <?php
+        $font="";
+        $color="";
+        if ($incident->criticity=="Bajo") {
+          $color="#01DF3A";
+          $font="#000";
+        }else if($incident->criticity=="Medio"){
+          $color="#F7FE2E";
+          $font="#000";
+        }else if($incident->criticity=="Alto"){
+          $color="#FE2E2E";
+          $font="#FFF";
+        }
 
+         ?>
+        <td style="background-color:<?php echo $color ?>;color:<?php echo $font ?>;text-align:center" colspan="2">
+          <div >
+            <?php
+                echo $incident->criticity;
 
-		<!-- begin scroll to top btn -->
-		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
-		<!-- end scroll to top btn -->
-	</div>
-	<!-- end page container -->
+            ?>
+          </div>
 
-	<script>
-		$(document).ready(function() {
-			App.init();
-		});
-	</script>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Dirección IP de Origen:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+
+            <?php foreach ($incident->srcDst as $ip): ?>
+              <?php echo $ip->src->ip ?><br>
+            <?php endforeach ?>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Dirección IP Destino:</strong>
+        </td>
+        <td colspan="2" style="text-align:center">
+
+            <?php foreach ($incident->srcDst as $ip): ?>
+              <?php echo $ip->dst->ip ?><br>
+            <?php endforeach ?>
+
+        </td>
+      </tr>
+      <?php if (count($listed)>0): ?>
+        <tr>
+          <td style="text-align:center;background:#d9d9d9">
+            <strong>Blacklist:</strong>
+          </td>
+          <td colspan="2">
+            <table style="border-collapse:collapse;width:100%">
+              <tr>
+                <th style="text-align:center;background:#d9d9d9">
+                  Dirección Ip
+                </th>
+                <th style="text-align:center;background:#d9d9d9">
+                  País de Origen
+                </th>
+              </tr>
+              <tr>
+                <td style="text-align:center">
+                  <?php $count=0 ?>
+                  <?php foreach ($listed as $l): ?>
+                    <?php $count++; ?>
+                    <?php echo $l->ip ?>[<?php echo $count ?>]<br>
+                  <?php endforeach ?>
+                </td>
+                <td style="text-align:center">
+                  <?php $count=0 ?>
+                  <?php foreach ($location as $l): ?>
+                    <?php $count++; ?>
+                    <?php print_r($l->location) ?><br>
+                  <?php endforeach ?>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      <?php endif ?>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Descripción:</strong>
+        </td>
+        <td colspan="2" style="text-align: justify; padding:10px;">
+          <?php echo $incident->description ?><br>
+          <?php echo $incident->conclution ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Recomendación:</strong>
+        </td>
+        <td colspan="2" style="text-align: justify; padding:10px;">
+          <?php echo $incident->recomendation ?><br>
+
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9">
+          <strong>Referencia:</strong>
+        </td>
+        <td colspan="2" style="text-align: justify; padding:10px;">
+          <?php echo $incident->reference->link ?><br>
+
+        </td>
+      </tr>
+    </table>
+  </div>
 </body>
+
+
+
+  </div>
+  <!-- end page container -->

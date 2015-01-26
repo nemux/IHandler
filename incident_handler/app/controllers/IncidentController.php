@@ -6,10 +6,15 @@ protected $layout = 'layouts.master';
      * Muestra el perfil de un usuario dado.
      */
 
-    public function change_status()
-    {
+<<<<<<< HEAD
+     //evil function
 
-      return View::make('approved.status');
+    public function change_status()
+=======
+    public function change()
+>>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
+    {
+      return View::make('/');
     }
 
 
@@ -61,6 +66,16 @@ protected $layout = 'layouts.master';
           echo "1";
       } else {
           echo "0";
+      }
+    }
+
+    public function updateStatus(){
+      $input = Input::all();
+      if ($input['id'] && $input['status']) {
+        $incident=Incident::find($input['id']);
+        $incident->incidents_status_id=$input['status'];
+        $incident->save();
+        return Redirect::to('incident/view/'.$incident->id);
       }
     }
 
@@ -117,11 +132,13 @@ protected $layout = 'layouts.master';
         $incident->attacks_id=$input['attack_id'];
         $incident->customers_id=$input['customers_id'];
         $incident->title=$input['title'];
+        $incident->incidents_status_id=1;
         $incident->description=$input['description'];
         $incident->conclution=$input['conclution'];
         $incident->recomendation=$input['recomendation'];
         $incident->incident_handler_id=Auth::user()->incident_handler_id;
         $incident->sensors_id=$input['sensor_id'];
+        $incident->stream=$input['stream'];
         //$incident->incident_handler_id='1';
         $incident->save();
 
@@ -161,15 +178,19 @@ protected $layout = 'layouts.master';
           $dst=new Occurence;
           $src=new Occurence;
 
+
           if (Occurence::where('ip','=',$input['srcip_'.$e])->first()) {
             $src=Occurence::where('ip','=',$input['srcip_'.$e])->first();
           }
           if (Occurence::where('ip','=',$input['dstip_'.$e])->first()) {
             $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
           }
-
+          $src->blacklist=$input['srcblacklist_'.$e];
+          $dst->blacklist=$input['dstblacklist_'.$e];
           $src_history=new OccurenceHistory;
           $dst_history=new OccurenceHistory;
+
+
 
           if($input['srcip_'.$e]=='')
             return "Ip no puede ir vacía";
@@ -185,6 +206,7 @@ protected $layout = 'layouts.master';
           $src_history->function=$input['srcfunction_'.$e];
           $src_history->datetime=date('Y-m-d H:i:s');
           $src_history->occurences_id=$src->id;
+          $src_history->location=$input['srclocation_'.$e];
           $src_history->incident_handler_id=Auth::user()->incident_handler_id;
           $src_history->save();
 
@@ -198,6 +220,7 @@ protected $layout = 'layouts.master';
           $dst_history->function=$input['dstfunction_'.$e];
           $dst_history->datetime=date('Y-m-d H:i:s');
           $dst_history->occurences_id=$dst->id;
+          $dst_history->location=$input['dstlocation_'.$e];
           $dst_history->incident_handler_id=Auth::user()->incident_handler_id;
           $dst_history->save();
 
@@ -294,7 +317,9 @@ protected $layout = 'layouts.master';
     }
     public function postUpdate()
     {
+
       $input = Input::all();
+
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
 
@@ -334,7 +359,9 @@ protected $layout = 'layouts.master';
                 $incident->conclution=$input['conclution'];
                 $incident->recomendation=$input['recomendation'];
                 $incident->sensors_id=$input['sensor_id'];
+                $incident->stream=$input['stream'];
                 $reference=$incident->reference;
+
                 $reference->link=$input['references'];
                 $reference->save();
                 //$incident->incident_handler_id='1';
@@ -369,7 +396,21 @@ protected $layout = 'layouts.master';
                 $det_time->save();
                 $occ_time->save();
 
+                //proceso de borrado incident occurrence|
+                $register=$incident->incidentOccurence;
+                foreach ($register as $r) {
+                  $r->delete();
+                }
+                ////////////////////////////////////////|
+                //proceso de borrado incident Rule      |
+                $register=$incident->incidentRule;
+                foreach ($register as $r) {
+                  $r->delete();
+                }
+                ////////////////////////////////////////|
+
                 foreach ($events as $e) {
+
                   $dst=new Occurence;
                   $src=new Occurence;
 
@@ -380,7 +421,8 @@ protected $layout = 'layouts.master';
                     $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
                   }
 
-
+                  $src->blacklist=$input['srcblacklist_'.$e];
+                  $dst->blacklist=$input['dstblacklist_'.$e];
                   if($input['srcip_'.$e]=='')
                     return "Ip no puede ir vacía";
                   if($input['dstip_'.$e]=='')
@@ -397,8 +439,10 @@ protected $layout = 'layouts.master';
                   $src_history->function=$input['srcfunction_'.$e];
                   $src_history->datetime=date('Y-m-d H:i:s');
                   $src_history->occurences_id=$src->id;
+                  $src_history->location=$input['srclocation_'.$e];
                   $src_history->incident_handler_id=Auth::user()->incident_handler_id;
                   $src_history->save();
+
 
                   $dst->ip=$input['dstip_'.$e];
                   $dst->occurrences_types_id=$input['dstoccurencestype_'.$e];
@@ -411,15 +455,9 @@ protected $layout = 'layouts.master';
                   $dst_history->function=$input['dstfunction_'.$e];
                   $dst_history->datetime=date('Y-m-d H:i:s');
                   $dst_history->occurences_id=$dst->id;
+                  $dst_history->location=$input['dstlocation_'.$e];
                   $dst_history->incident_handler_id=Auth::user()->incident_handler_id;
                   $dst_history->save();
-
-                  //proceso de borrado incident occurrence
-                  $register=$incident->incidentOccurence;
-                  foreach ($register as $r) {
-                    $r->delete();
-                  }
-                  ////////////////////////////////////////
 
                   $src_dst=new IncidentOccurence;
                   $src_dst->source_id=$src->id;
@@ -445,12 +483,7 @@ protected $layout = 'layouts.master';
                   $rule->translate=$input['translate_'.$r];
                   $rule->why=$input['why_'.$r];
                   $rule->save();
-                  //proceso de borrado incident Rule
-                  $register=$incident->incidentRule;
-                  foreach ($register as $r) {
-                    $r->delete();
-                  }
-                  ////////////////////////////////////////
+
                   $incident_rule=new IncidentRule;
                   $incident_rule->rules_id=$rule->id;
                   $incident_rule->incidents_id=$incident->id;
@@ -466,22 +499,96 @@ protected $layout = 'layouts.master';
 
     }
 
-  public function view($id){
+  public function view($id)
+  {
+    //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $incident=Incident::find($id);
+
+    $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
+    $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
+    $listed=array();
+    $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
+    $location=array();
+    foreach ($black_preview as $b) {
+      if ($b->src->blacklist) {
+        array_push($listed,$b->src);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+
+      }
+      if ($b->dst->blacklist) {
+        array_push($listed,$b->dst);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+    }
+    return $this->layout = View::make('incident.view', array(
+      'det_time'=>$det_time,
+      'occ_time'=>$occ_time,
+      'incident'=>$incident,
+      'listed'=>$listed,
+      'location'=>$location
+      ));
 
 
-    $reportView = View::make('incident.view', array(
-                             'incident_title' => $id,
-                            ));
-
+<<<<<<< HEAD
     $pdf = App::make('dompdf');
     $pdf->loadHTML($reportView);
+=======
+  }
+  public function pdf($id)
+  {
+    //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $incident=Incident::find($id);
 
-    //return $pdf->stream();
-    return $reportView;
+    $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
+    $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
+    $listed=array();
+    $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
+    $location=array();
+    foreach ($black_preview as $b) {
+      if ($b->src->blacklist) {
+        array_push($listed,$b->src);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+>>>>>>> f2bcfc19f58fe11c5ac077b41eeaca2d708be3af
+
+      }
+      if ($b->dst->blacklist) {
+        array_push($listed,$b->dst);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+    }
+
+
+    $html= $this->layout = View::make('incident.show', array(
+      'det_time'=>$det_time,
+      'occ_time'=>$occ_time,
+      'incident'=>$incident,
+      'listed'=>$listed,
+      'location'=>$location
+
+      ));
+
+    $pdf = App::make('dompdf');
+
+    $pdf->loadHTML($html,1);
+    return $pdf->stream();
 
   }
   public function index(){
+
     $incident=Incident::all();
+
     return $this->layout = View::make('incident.index', array(
       'incident'=>$incident,
 

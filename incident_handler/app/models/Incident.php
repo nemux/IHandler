@@ -7,7 +7,7 @@ class Incident extends Eloquent{
 	 * @var string
 	 */
 	protected $table = 'incidents';
-	protected $fillable = ['risk','criticity','impact','description','file','conclution','recomendation','sensors_id','categories_id','attacks_id','customers_id','incident_handler_id'];
+	protected $fillable = ['risk','stream','criticity','impact','description','file','conclution','recomendation','sensors_id','categories_id','attacks_id','customers_id','incident_handler_id','incidents_status_id'];
 	protected $softDelete = true;
 
   /*HAS MANY*/
@@ -15,6 +15,7 @@ class Incident extends Eloquent{
 	{
 		return $this->hasOne('References','incidents_id','id');
 	}
+
 	public function incidentRule()
 	{
 		return $this->hasMany('IncidentRule','incidents_id','id');
@@ -67,6 +68,9 @@ class Incident extends Eloquent{
 
 	public function category(){
 		return $this->belongsTo('Category','categories_id','id');
+	}
+	public function status(){
+		return $this->belongsTo('IncidentStatus','incidents_status_id','id');
 	}
 	public function sensor(){
 		return $this->belongsTo('Sensor','sensors_id','id');
