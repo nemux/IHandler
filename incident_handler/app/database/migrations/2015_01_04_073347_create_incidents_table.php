@@ -27,6 +27,8 @@ class CreateIncidentsTable extends Migration {
 			$table->integer('categories_id')->unsigned();
 			$table->integer('attacks_id')->unsigned();
 			$table->integer('customers_id')->unsigned();
+			$table->string('stream')->nullable();
+			$table->integer('incidents_status_id')->unsigned();
 			$table->integer('incident_handler_id')->unsigned();
 			$table->integer('sensors_id')->unsigned();
 			$table->timestamps();

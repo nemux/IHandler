@@ -45,44 +45,13 @@
 	<script>
 		$(document).ready(function() {
 			App.init();
+      startTime();
 			//Dashboard.init();
 		});
 	</script>
 
   <script>
-    function startTime() {
-      var today = new Date();
-      var month = new Array();
-      month[0] = "Ene";
-      month[1] = "Feb";
-      month[2] = "Mar";
-      month[3] = "Abr";
-      month[4] = "May";
-      month[5] = "Jun";
-      month[6] = "Jul";
-      month[7] = "Ago";
-      month[8] = "Sep";
-      month[9] = "Oct";
-      month[10] = "Nov";
-      month[11] = "Dic";
-
-      var h = today.getHours();
-      var m = today.getMinutes();
-      var s = today.getSeconds();
-      var d = today.getDate();
-      var mo = month[today.getMonth()];
-      var y = today.getFullYear();
-      m = checkTime(m);
-      s = checkTime(s);
-      document.getElementById('nav-clock').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
-      document.getElementById('dash-clock').innerHTML = d+"/"+mo+"/"+y+" "+h+":"+m+":"+s;
-      var t = setTimeout(function(){startTime()},500);
-    }
-
-    function checkTime(i) {
-      if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
-    }
+    
   </script>
 </body>
 </html>

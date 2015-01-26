@@ -86,19 +86,21 @@
 					-->
             <li class="media" >
 							<div style="padding-top:3px;color:#FFF">
-            		<div id="nav-clock" class=""/></div>
+
+            			<?php echo date("d-m-Y") ?>
+            		<a id="new_clock" ></a>
             	</div>
 						</li>
 					  <li class="dropdown navbar-user">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-							<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu animated fadeInLeft">
-							<li class="arrow"></li>
-              <li><a href="javascript:;"><span class="badge badge-anger pull-right">2</span> Inbox</a></li>
-              <li class="divider"></li>
-							<li><a href="/logout">Log Out</a></li>
-						</ul>
+							<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+								<span class="hidden-xs">Mi sesión</span> <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu animated fadeInLeft">
+								<li class="arrow"></li>
+	              <li><a href="javascript:;"><span class="badge badge-anger pull-right">2</span> Inbox</a></li>
+	              <li class="divider"></li>
+								<li><a href="/logout">Log Out</a></li>
+							</ul>
 					  </li>
 				</ul>
 				<!-- end header navigation right -->

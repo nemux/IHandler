@@ -6,7 +6,7 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-    "barryvdh/laravel-snappy": "0.1.x"
+    "barryvdh/laravel-dompdf": "0.4.*"
 	},
 	"autoload": {
 		"classmap": [

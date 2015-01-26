@@ -20,7 +20,7 @@ protected $layout = 'layouts.master';
         $handler->mail=$input['mail'];
         $handler->save();
 
-        $access->username=$input['user'];
+        $access->username=$input['username'];
         $access->password=substr(str_shuffle($chars),0,8);
         $access->access_types_id=$input['access_types_id'];
         $access->incident_handler_id=$handler->id;
@@ -96,7 +96,7 @@ protected $layout = 'layouts.master';
         'handler'=>$handler,
         'access'=>$access,
         'types'=>$types,
-        
+
         ));
 
 
