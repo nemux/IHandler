@@ -122,7 +122,10 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+<<<<<<< HEAD
 		'Barryvdh\DomPDF\ServiceProvider',
+=======
+>>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
 
 	),
 
@@ -191,8 +194,11 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
 
+<<<<<<< HEAD
     'Images'             => 'Barryvdh\Snappy\Facades\SnappyImage',
 		'PDF'             	=> 'Barryvdh\DomPDF\Facade',
+=======
+>>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
 	),
 
 );

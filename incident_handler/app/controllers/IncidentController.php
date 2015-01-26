@@ -6,12 +6,15 @@ protected $layout = 'layouts.master';
      * Muestra el perfil de un usuario dado.
      */
 
+<<<<<<< HEAD
      //evil function
 
     public function change_status()
+=======
+    public function change()
+>>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
     {
-
-      return View::make('approved.status');
+      return View::make('/');
     }
 
 
