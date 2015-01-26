@@ -30,8 +30,7 @@
 						    <li><a href="/handler/">Ver</a></li>
 						</ul>
 					</li>
-          @endif
-					@if (Auth::user()->type->name == 'admin')
+
 					<li class="has-sub ">
 						<a href="javascript:;">
 								<b class="caret pull-right"></b>
@@ -41,6 +40,18 @@
 						<ul class="sub-menu">
 								<li><a href="/sensor/create">Crear</a></li>
 								<li><a href="/sensor/">Ver</a></li>
+						</ul>
+					</li>
+
+          <li class="has-sub ">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-user"></i>
+						    <span>Clientes</span>
+					    </a>
+						<ul class="sub-menu">
+						    <li><a href="/customer/create">Crear</a></li>
+						    <li><a href="/customer/">Ver</a></li>
 						</ul>
 					</li>
 					@endif

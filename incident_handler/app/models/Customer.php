@@ -7,7 +7,7 @@ class Customer extends Eloquent {
 	 * @var string
 	 */
 	protected $table = 'customers';
-	protected $fillable = ['company','phone','name','mail'];
+	protected $fillable = ['company','phone','name','mail','otrs_userID','otrs_userlogin','otrs_usercustomerID','otrs_validID'];
 	protected $softDelete = true;
 
 	public function incidents(){

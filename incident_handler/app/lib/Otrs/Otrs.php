@@ -22,7 +22,7 @@ abstract class Otrs {
     $this->url      = "http://192.168.1.134/otrs/rpc.pl";
     $this->username = "some_user";
     $this->password = "some_pass";
-    $this->incidentHandler = "incident_handler";
+    $this->incidentHandler = "gcs_im";
 
     $this->client = new SoapClient(null, array('location'  =>  $this->url,
                                          'uri'       => "Core",

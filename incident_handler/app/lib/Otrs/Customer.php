@@ -74,7 +74,7 @@ class Customer extends Otrs {
                                                "User",$user,
                                                )
                                          );
-    return $this->formatOtrsArray($customerInfo);
+    //return $this->formatOtrsArray($customerInfo);
     if (sizeof($customerInfo) > 0){
       $userInfoTmp = $this->formatOtrsArray($customerInfo);
 

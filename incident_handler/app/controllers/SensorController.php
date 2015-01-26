@@ -26,7 +26,6 @@ protected $layout = 'layouts.master';
         'title'=>"Nuevo Sensor",
         ));
       }
-
     }
 
     public function postUpdate()
@@ -43,9 +42,8 @@ protected $layout = 'layouts.master';
         $sensor->save();
         return Redirect::to('sensor/view/'.$sensor->id);
       }
-
-
     }
+
     public function getUpdate($id){
 
         $sensor=Sensor::find($id);

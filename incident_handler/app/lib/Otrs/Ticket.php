@@ -24,7 +24,7 @@ class Ticket extends Otrs {
 
     public function createTicket($title, $priority, $customer, $body) {
 
-      //Before create ticket, search the ID for the user assigned to Incident Handler System
+      //Before create ticket, search the ID for the user assigned to Incident Manager System
       $user = new User;
       $article = new Article;
 
@@ -34,7 +34,7 @@ class Ticket extends Otrs {
       $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketCreate",
                                                       "Title",        $title,
-                                                      "Queue",        "Postmaster",
+                                                      "Queue",        "gcs_im_queue",
                                                       "Lock",         "unlock",
                                                       "PriorityID",   $priority,
                                                       "State",        "new",

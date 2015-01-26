@@ -473,7 +473,7 @@ protected $layout = 'layouts.master';
                              'incident_title' => $id,
                             ));
 
-    $pdf = App::make('snappy.pdf.wrapper');
+    $pdf = App::make('dompdf');
     $pdf->loadHTML($reportView);
 
     //return $pdf->stream();

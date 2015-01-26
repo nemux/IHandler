@@ -2,21 +2,20 @@
 
    class CustomerTableSeeder extends Seeder
    {
-     
+
      public function run()
      {
-      
-       $faker = Faker\Factory::create();
-
-       
-            foreach (range (1,7) as $index) {
-                  
-                  Customer::create([
-                  'company' => $faker->city,
-                  'phone' => $faker->phoneNumber,
-                  'name' =>$faker->firstNameMale,
-                  'mail'=>$faker->companyEmail,
+       Customer::create([
+                  'company' => 'Gobierno de Puebla',
+                  'phone' => '5555555555',
+                  'name' => 'SFA - Puebla',
+                  'mail'=> 'fca@puebla.org',
+                  'otrs_userID' => 'fca_puebla',
+                  'otrs_userlogin' => 'fca_puebla',
+                  'otrs_usercustomerID' => 'fca_puebla',
+                  'otrs_validID' => '1'
                                           ]);
-        }
-       }
+     }
+
+
 }
