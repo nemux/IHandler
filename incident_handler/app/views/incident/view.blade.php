@@ -31,7 +31,7 @@
 
                   </tr>
                   <tr style="padding:0;">
-                    <td style="text-align:center;background:#CCC;width:250px">
+                    <td style="text-align:center;background:#CCC;width:200px">
                       <strong>Categoría:</strong>
                     </td>
                     <td colspan="2" style="text-align:center;padding:0">
@@ -42,7 +42,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td style="width:35%">
+                          <td style="width:15%">
                             <?php echo $incident->category->id ?>
                           </td>
                           <td>
@@ -60,6 +60,25 @@
                       <?php echo $incident->sensor->name ?>
                     </td>
                   </tr>
+
+                  <tr>
+                    <td style="text-align:center;background:#CCC;">
+                      <strong>Ticket:</strong>
+                    </td>
+                    <td style="text-align:center;">
+                      <?php //echo $incident->ticket->internal_number ?>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="text-align:center;background:#CCC;">
+                      <strong>Status:</strong>
+                    </td>
+                    <td style="text-align:center;">
+                      <?php echo $incident->status->name ?>
+                    </td>
+                  </tr>
+
                   <tr>
                     <td style="text-align:center;background:#CCC;">
                       <strong>Indicador:</strong>
@@ -106,13 +125,13 @@
                     <?php
                     $font="";
                     $color="";
-                    if ($incident->criticity=="Bajo") {
+                    if ($incident->criticity=="BAJA") {
                       $color="#01DF3A";
                       $font="#000";
-                    }else if($incident->criticity=="Medio"){
+                    }else if($incident->criticity=="MEDIA"){
                       $color="#F7FE2E";
                       $font="#000";
-                    }else if($incident->criticity=="Alto"){
+                    }else if($incident->criticity=="ALTA"){
                       $color="#FE2E2E";
                       $font="#FFF";
                     }

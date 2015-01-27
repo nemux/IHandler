@@ -61,6 +61,7 @@ class Relationships extends Migration {
           Schema::table('tickets', function(Blueprint $table)
           {
             $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
+            $table->foreign('incidents_id')->references('id')->on('incidents');
           });
 
           Schema::table('tickets_history', function(Blueprint $table)

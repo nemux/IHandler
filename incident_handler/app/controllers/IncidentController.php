@@ -179,6 +179,7 @@ protected $layout = 'layouts.master';
         $references->incidents_id=$incident->id;
         $references->link=$input['references'];
         $references->save();
+
         foreach ($events as $e) {
           $dst=new Occurence;
           $src=new Occurence;
@@ -296,6 +297,7 @@ protected $layout = 'layouts.master';
       $incident_occurence=$incident->incidentOccurence;
       $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
       $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
+
 
 
         //$this->layout = View::make("incidentHandler.create",array('handler' => $handler));
@@ -517,7 +519,7 @@ protected $layout = 'layouts.master';
     foreach ($black_preview as $b) {
       if ($b->src->blacklist) {
         array_push($listed,$b->src);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->src->id." and datetime=(select max(updated_at) from occurences_history)")->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
@@ -525,18 +527,20 @@ protected $layout = 'layouts.master';
       }
       if ($b->dst->blacklist) {
         array_push($listed,$b->dst);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
       }
     }
+
     return $this->layout = View::make('incident.view', array(
       'det_time'=>$det_time,
       'occ_time'=>$occ_time,
       'incident'=>$incident,
       'listed'=>$listed,
-      'location'=>$location
+      'location'=>$location,
+
       ));
 
   }

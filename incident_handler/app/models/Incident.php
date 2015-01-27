@@ -16,6 +16,11 @@ class Incident extends Eloquent{
 		return $this->hasOne('References','incidents_id','id');
 	}
 
+	public function ticket()
+	{
+		return $this->hasOne('Ticket','incidents_id','id');
+	}
+
 	public function incidentRule()
 	{
 		return $this->hasMany('IncidentRule','incidents_id','id');

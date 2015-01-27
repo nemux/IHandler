@@ -17,8 +17,9 @@ class CreateTicketsTable extends Migration {
 			$table->increments('id');
 			$table->integer('otrs_ticket_id')->unsigned();
       $table->integer('otrs_ticket_number')->unsigned();
-      $table->datetime('datetime');
       $table->integer('incident_handler_id')->unsigned();
+			$table->string('internal_number');
+			$table->integer('incidents_id')->unsigned();
       $table->timestamps();
 		});
 	}

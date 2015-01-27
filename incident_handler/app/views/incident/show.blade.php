@@ -4,7 +4,7 @@
 </head>
 <style media="screen">
   body{
-    border: 1px solid black;
+
     font-family:Arial, Helvetica, sans-serif;
     font-size:12px;
   }
@@ -63,6 +63,24 @@
           <?php echo $incident->sensor->name ?>
         </td>
       </tr>
+
+      <tr>
+        <td style="text-align:center;background:#CCC;">
+          <strong>Ticket:</strong>
+        </td>
+        <td style="text-align:center;" colspan="5">
+          <?php //echo $incident->ticket->internal_number ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#CCC;">
+          <strong>Status:</strong>
+        </td>
+        <td style="text-align:center;" colspan="5">
+          <?php echo $incident->status->name ?>
+        </td>
+      </tr>
       <tr>
         <td style="text-align:center;background:#d9d9d9">
           <strong>Indicador:</strong>
@@ -109,13 +127,13 @@
         <?php
         $font="";
         $color="";
-        if ($incident->criticity=="Bajo") {
+        if ($incident->criticity=="BAJA") {
           $color="#01DF3A";
           $font="#000";
-        }else if($incident->criticity=="Medio"){
+        }else if($incident->criticity=="MEDIA"){
           $color="#F7FE2E";
           $font="#000";
-        }else if($incident->criticity=="Alto"){
+        }else if($incident->criticity=="ALTA"){
           $color="#FE2E2E";
           $font="#FFF";
         }

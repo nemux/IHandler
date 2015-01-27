@@ -19,4 +19,6 @@ class Occurence extends Eloquent {
     return $this->belongsTo('OccurenceType','occurrences_types_id','id');
   }
 
+  
+
 }
