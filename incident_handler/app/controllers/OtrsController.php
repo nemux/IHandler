@@ -6,17 +6,38 @@ class OtrsController extends BaseController{
   public function sendTicket($id){
 
     $u = new Otrs\User();
-    $ticketOtrs = new Otrs\Ticket();
+    $o = new Otrs\Customer();
+    $t = new Otrs\Ticket();
     $a = new Otrs\Article();
-    $incident = Incident::find($id);
-    $ticket = new Ticket;
+    //$incident = Incident::find($id);
+    //$ticket = new Ticket;
 
 
-    $ticket_info = $ticketOtrs->createTicket($incident->title, "1", "1",$incident->description);
+    //$ticket_info = $ticketOtrs->createTicket($incident->title, 3, "ldeleon",$incident->description);
 
     //$ticket->otrs_ticket_id = $ticket_info->TicketID;
     //$ticket->otrs_ticket_number = $ticket_info->TicketNumber;
     //$ticket->incident_handler_id = $ticket_info-> Auth::user()->id;
+
+    //print_r($o->getAll());
+    //print_r($o->getAll());
+  /*
+  foreach ($u->getAll() as $k=>$v){
+    print("[");
+    print($k);
+    print("]=>");
+    foreach($v as $k2 => $v2){
+      print("[");
+      print($k2);
+      print("]=>");
+      print($v2);
+      print("<br/>");
+    }*/
+    //print_r($v);
+
+    print_r($a->AllSenderTypeList());
+    print("<br/>");
+    print_r($a->AllArticleTypeList());
 
   }
 
