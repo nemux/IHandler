@@ -17,6 +17,16 @@
                   'active'=>'1',
 
                                           ]);
+        Access::create([
+
+                  'username' => 'user1' ,
+                  'password' => Hash::make('leonel'),
+                  'incident_handler_id' => '2',
+                  'access_types_id' => '2',
+                  'active'=>'1',
+
+                                          ]);
+       /*
 
             foreach (range (1,35) as $index) {
 
@@ -30,6 +40,6 @@
                   'active'=>$faker->boolean($chanceOfGettingTrue = 0)
 
                                           ]);
-        }
+        }*/
        }
 }

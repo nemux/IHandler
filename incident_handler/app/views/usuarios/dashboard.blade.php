@@ -1,6 +1,5 @@
 @extends('layouts.master')
 
-
 @section('content')
        <!-- begin breadcrumb -->
 			<ol class="breadcrumb pull-right">
@@ -28,6 +27,7 @@
 					</div>
 				</div>
 				<!-- end col-3 -->
+
         <!-- begin col-3 -->
         <div class="col-md-3 col-sm-6">
           <div class="widget widget-stats bg-green">
@@ -38,7 +38,25 @@
               <h4>Incidentes Abiertos</h4>
             </div>
             <div class="stats-number">
-               {{ Incident::where('incident_handler_id', '=',Auth::user()->incident_handler_id )->count() }}
+               {{ Incident::where('incident_handler_id', '=',Auth::user()->incident_handler_id )->
+                            where('incidents_status_id','=',1)->count() }}
+            </div>
+          </div>
+        </div>
+        <!-- end col-3 -->
+
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6">
+          <div class="widget widget-stats bg-green">
+            <div class="stats-icon stats-icon-lg">
+              <i class="fa fa-search  fa-fw"></i>
+            </div>
+            <div class="stats-info">
+              <h4>Incidentes en Investigaci&oacute;n</h4>
+            </div>
+            <div class="stats-number">
+               {{ Incident::where('incident_handler_id', '=',Auth::user()->incident_handler_id )->
+                            where('incidents_status_id','=',2)->count() }}
             </div>
           </div>
         </div>
@@ -46,6 +64,8 @@
 			</div>
 			<!-- end row -->
 @stop
+
+
 
 
 

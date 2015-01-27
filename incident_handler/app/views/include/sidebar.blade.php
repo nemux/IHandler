@@ -50,7 +50,7 @@
 						    <span>Clientes</span>
 					    </a>
 						<ul class="sub-menu">
-						    <li><a href="/customer/create">Crear</a></li>
+						    <li><a href="/customer/import">Crear</a></li>
 						    <li><a href="/customer/">Ver</a></li>
 						</ul>
 					</li>

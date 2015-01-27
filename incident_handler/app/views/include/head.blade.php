@@ -68,6 +68,8 @@
     m = checkTime(m);
     s = checkTime(s);
     document.getElementById('new_clock').innerHTML = h+":"+m+":"+s;
+    document.getElementById('dash-clock').innerHTML = h+":"+m+":"+s;
+
     var t = setTimeout(function(){startTime()},500);
 }
 

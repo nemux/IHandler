@@ -242,7 +242,6 @@
 
           <?php if ($incident->incidents_status_id==2): ?>
             <input type="hidden" name="status" value="3">
-
               <input type="hidden" name="id" value="<?php echo $incident->id ?>">
             {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ']);}}
           <?php endif ?>

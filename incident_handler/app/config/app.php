@@ -121,16 +121,7 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-<<<<<<< HEAD
     'Barryvdh\DomPDF\ServiceProvider',
-=======
-
-<<<<<<< HEAD
-		'Barryvdh\DomPDF\ServiceProvider',
-=======
->>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
-
->>>>>>> f2bcfc19f58fe11c5ac077b41eeaca2d708be3af
 	),
 
 	/*
@@ -197,15 +188,6 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
-<<<<<<< HEAD
     'PDF'               => 'Barryvdh\DomPDF\Facade',
-=======
-
-<<<<<<< HEAD
-    'Images'             => 'Barryvdh\Snappy\Facades\SnappyImage',
-		'PDF'             	=> 'Barryvdh\DomPDF\Facade',
-=======
->>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
->>>>>>> f2bcfc19f58fe11c5ac077b41eeaca2d708be3af
 	),
 );

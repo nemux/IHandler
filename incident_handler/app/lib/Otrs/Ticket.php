@@ -34,7 +34,7 @@ class Ticket extends Otrs {
       $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketCreate",
                                                       "Title",        $title,
-                                                      "Queue",        "gcs_im_queue",
+                                                      "Queue",        "raw",
                                                       "Lock",         "unlock",
                                                       "PriorityID",   $priority,
                                                       "State",        "new",

@@ -5,14 +5,9 @@ protected $layout = 'layouts.master';
     /**
      * Muestra el perfil de un usuario dado.
      */
-
-<<<<<<< HEAD
      //evil function
-
     public function change_status()
-=======
-    public function change()
->>>>>>> 3dbff1f1009845963515c67c478ed0d49e2f330c
+
     {
       return View::make('/');
     }
@@ -72,9 +67,19 @@ protected $layout = 'layouts.master';
     public function updateStatus(){
       $input = Input::all();
       if ($input['id'] && $input['status']) {
+        $u = new Otrs\User();
+        $ticketOtrs = new Otrs\Ticket();
+        $ticketIM = new Ticket;
+
         $incident=Incident::find($input['id']);
         $incident->incidents_status_id=$input['status'];
         $incident->save();
+
+        $ticket_info = $ticketOtrs->createTicket($incident->title, $incident->risk, $incident->customers_id,$incident->description);
+        $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+        $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+        $ticketIM->incident_handler_id = Auth::user()->id;
+
         return Redirect::to('incident/view/'.$incident->id);
       }
     }
@@ -534,11 +539,6 @@ protected $layout = 'layouts.master';
       'location'=>$location
       ));
 
-
-<<<<<<< HEAD
-    $pdf = App::make('dompdf');
-    $pdf->loadHTML($reportView);
-=======
   }
   public function pdf($id)
   {
@@ -557,8 +557,6 @@ protected $layout = 'layouts.master';
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
->>>>>>> f2bcfc19f58fe11c5ac077b41eeaca2d708be3af
-
       }
       if ($b->dst->blacklist) {
         array_push($listed,$b->dst);
@@ -587,15 +585,15 @@ protected $layout = 'layouts.master';
   }
   public function index(){
 
-    $incident=Incident::all();
+    if (Auth::user()->type->name == 'admin')
+      $incident=Incident::all();
+    else
+      $incident = Incident::where('incident_handler_id','=',Auth::user()->id)->get();
 
     return $this->layout = View::make('incident.index', array(
-      'incident'=>$incident,
-
-      ));
+    'incident'=>$incident,
+    ));
   }
-
-
 }
 
 
