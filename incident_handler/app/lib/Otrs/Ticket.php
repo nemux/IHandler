@@ -34,7 +34,7 @@ class Ticket extends Otrs {
       $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketCreate",
                                                       "Title",        $title,
-                                                      "Queue",        "raw",
+                                                      "Queue",        "gcs_im_queue",
                                                       "Lock",         "unlock",
                                                       "PriorityID",   $priority,
                                                       "State",        "new",
@@ -81,6 +81,15 @@ class Ticket extends Otrs {
                                                        ));
     return $TicketNr;
 
+  }
+
+  public function getPriorities(){
+    $priorities = $this->client->__soapCall("Dispatch",array($this->username, $this->password,
+                                                       "PriorityObject",   "PriorityList",
+                                                       "Valid",       1,
+                                                       ));
+
+    return $this->formatOtrsArray($priorities);
   }
 }
 

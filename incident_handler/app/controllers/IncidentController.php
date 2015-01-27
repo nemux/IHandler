@@ -66,19 +66,55 @@ protected $layout = 'layouts.master';
 
     public function updateStatus(){
       $input = Input::all();
-      if ($input['id'] && $input['status']) {
+      $id = $input['id'];
+      $status = $input['status'];
+
+      if ( $id && $status) {
         $u = new Otrs\User();
         $ticketOtrs = new Otrs\Ticket();
         $ticketIM = new Ticket;
 
-        $incident=Incident::find($input['id']);
-        $incident->incidents_status_id=$input['status'];
+        $incident=Incident::find($id);
+        $incident->incidents_status_id=$status;
         $incident->save();
 
-        $ticket_info = $ticketOtrs->createTicket($incident->title, $incident->risk, $incident->customers_id,$incident->description);
+        $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
+        $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
+        $listed=array();
+        $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
+        $location=array();
+        foreach ($black_preview as $b) {
+          if ($b->src->blacklist) {
+            array_push($listed,$b->src);
+            $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+            array_push($location,$loc);
+            //print_r($loc);
+            //echo "<br>";
+          }
+          if ($b->dst->blacklist) {
+            array_push($listed,$b->dst);
+            $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+            array_push($location,$loc);
+            //print_r($loc);
+            //echo "<br>";
+          }
+        }
+
+       $htmlReport= $this->layout = View::make('incident.show', array(
+         'det_time'=>$det_time,
+         'occ_time'=>$occ_time,
+         'incident'=>$incident,
+         'listed'=>$listed,
+         'location'=>$location
+      ))->render();
+
+        //print_r($ticketOtrs->getPriorities());
+        $ticket_info = $ticketOtrs->createTicket($incident->title, 1, $incident->customer->otrs_userID,$htmlReport);
         $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
         $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
         $ticketIM->incident_handler_id = Auth::user()->id;
+        $ticketIM->save();
+
 
         return Redirect::to('incident/view/'.$incident->id);
       }

@@ -28,17 +28,15 @@ class Article extends Otrs {
        $ArticleID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                          "TicketObject",   "ArticleCreate",
                                                          "TicketID",       $TicketID,
-                                                         "ArticleType",    "webrequest",
-                                                         "SenderType",     "customer",
+                                                         "ArticleType",    "email-notification-int",
+                                                         "SenderType",     "system",
                                                          "HistoryType",    "WebRequestCustomer",
                                                          "HistoryComment", "Creado desde GCS Incident System",
-                                                         "From",           $customer,
+                                                         "From",           'GCS-IM System <gcs_im@globalcybersec.com>',
                                                          "Subject",        $title,
-                                                         "ContentType",    "text/plain; charset=ISO-8859-1",
+                                                         "ContentType",    "text/html; charset=UTF-8",
                                                          "Body",           $body,
                                                          "UserID",         $userId,
-                                                         "Loop",           0,
-                                                         "AutoResponseType", 'auto reply',
                                                          "OrigHeader", array(
                                                            'From' => $userEmail,
                                                            'To' => 'Postmaster',
@@ -48,4 +46,22 @@ class Article extends Otrs {
                                                         ));
       return $ArticleID;
     }
+
+  public function AllSenderTypeList(){
+
+     $SenderTypeList = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                         "TicketObject",   "ArticleSenderTypeList",
+                                                         "Result", "HASH"
+                                                         ));
+
+    return $this->formatOtrsArray($SenderTypeList);
+  }
+
+  public function AllArticleTypeList(){
+     $ArticleTypeList = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                         "TicketObject",   "ArticleTypeList",
+                                                         "Result", "HASH"
+                                                         ));
+    return $this->formatOtrsArray($ArticleTypeList);
+  }
 }
