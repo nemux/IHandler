@@ -213,7 +213,7 @@
       <?php endif ?>
 
       <tr>
-        <td style="text-align:center;background:#d9d9d9">
+        <td style="text-align:center;background:#d9d9d9" colspan="5">
           <strong>Descripción:</strong>
         </td>
         <td colspan="2" style="text-align: justify; padding:10px;">
