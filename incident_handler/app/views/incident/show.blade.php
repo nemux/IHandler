@@ -4,7 +4,7 @@
 </head>
 <style media="screen">
   body{
-    border: 1px solid black;
+
     font-family:Arial, Helvetica, sans-serif;
     font-size:12px;
   }
@@ -34,11 +34,11 @@
 
       </tr>
       <tr style="">
-        <td style="text-align:center;background:#d9d9d9">
+        <td style="text-align:center;background:#d9d9d9" colspan="1">
           <strong>Categoría:</strong>
         </td>
-        <td colspan="2" style="border-collapse: collapse;">
-          <table style="border-collapse: collapse;">
+        <td style="border-collapse: collapse;width:100%">
+          <table style="border-collapse: collapse;width:100%">
             <tr>
               <td colspan="2" style="text-align:center;background:#d9d9d9">
                 Descripción
@@ -61,6 +61,24 @@
         </td>
         <td colspan="2" style="text-align:center">
           <?php echo $incident->sensor->name ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9;">
+          <strong>Ticket:</strong>
+        </td>
+        <td style="text-align:center;" colspan="2">
+          <?php //echo $incident->ticket->internal_number ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td style="text-align:center;background:#d9d9d9;">
+          <strong>Status:</strong>
+        </td>
+        <td style="text-align:center;" colspan="2">
+          <?php echo $incident->status->name ?>
         </td>
       </tr>
       <tr>
@@ -109,13 +127,13 @@
         <?php
         $font="";
         $color="";
-        if ($incident->criticity=="Bajo") {
+        if ($incident->criticity=="BAJA") {
           $color="#01DF3A";
           $font="#000";
-        }else if($incident->criticity=="Medio"){
+        }else if($incident->criticity=="MEDIA"){
           $color="#F7FE2E";
           $font="#000";
-        }else if($incident->criticity=="Alto"){
+        }else if($incident->criticity=="ALTA"){
           $color="#FE2E2E";
           $font="#FFF";
         }
@@ -195,10 +213,10 @@
       <?php endif ?>
 
       <tr>
-        <td style="text-align:center;background:#d9d9d9">
+        <td style="text-align:center;background:#d9d9d9" colspan="1">
           <strong>Descripción:</strong>
         </td>
-        <td colspan="2" style="text-align: justify; padding:10px;">
+        <td colspan="3" style="text-align: justify; padding:10px;">
           <?php echo $incident->description ?><br>
           <?php echo $incident->conclution ?>
         </td>

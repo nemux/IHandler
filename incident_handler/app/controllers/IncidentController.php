@@ -34,25 +34,25 @@ protected $layout = 'layouts.master';
       }
     }
 
-    public function validateRequired($input)
+    public function validateRequired($incident)
     {
       //echo $input['title']."<br>\n";
-      $rules = array(
-      //    'title' => 'required | regex:/^[A-Za-záéíóúÁÉÍÓÚ\_\,\;\!\?\"\:\-\(\)\#\=\.]+$/',
-      //    'det_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
-      //    'det_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
-      //    'occ_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
-      //    'occ_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
-      //    'risk' => 'required | regex:/^[0-9]{2}$/',
-      //    'criticity' => 'required | regex:/^[0-9]{2}$/',
-      //    'impact' => 'required | regex:/^[0-9]{2}$/',
-      //    'attack_id' => 'required | regex:/^[0-9]{5}$/',
-      //    'category_id' => 'required | regex:/^[0-9]{5}$/',
-      //    'customer_id' => 'required | regex:/^[0-9]{5}$/',
+      /*$rules = array(
+          'title' => 'required | regex:/^[A-Za-záéíóúÁÉÍÓÚ\_\,\;\!\?\"\:\-\(\)\#\=\.]+$/',
+          'det_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
+          'det_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
+          'occ_date' => 'required | regex:/^[0-9]{2}\-[0-9]{2}\-[0-9]{4}$/',
+          'occ_time' => 'required | regex:/^[0-9]{2}\s[0-9]{2}\s[AM|PM]$/',
+          'risk' => 'required | regex:/^[0-9]{2}$/',
+          'criticity' => 'required | regex:/^[0-9]{2}$/',
+          'impact' => 'required | regex:/^[0-9]{2}$/',
+          'attack_id' => 'required | regex:/^[0-9]{5}$/',
+          'category_id' => 'required | regex:/^[0-9]{5}$/',
+          'customer_id' => 'required | regex:/^[0-9]{5}$/',
           'description' => 'required',
-      //    'sensor_id' => 'required | regex:/^[0-9]{5}$/',
+          'sensor_id' => 'required | regex:/^[0-9]{5}$/',
           'conclution' => 'required',
-          'references' => 'required',
+          //'references' => 'required',
           'recomendations' => 'required'
       );
       $validator = Validator::make($input, $rules);
@@ -61,20 +61,104 @@ protected $layout = 'layouts.master';
           echo "1";
       } else {
           echo "0";
+      }*/
+
+      if ($incident->title=="") {
+        return "El título no puede ir en blanco";
       }
+      if (count($incident->times)==0) {
+        return "Debe tener registradas las fechas para detección y ocurrencia";
+      }
+
+      /*if ($incident->risk=="") {
+        return "Se debe seleccionar un ni";
+      }*/
+      if ($incident->criticity=="") {
+        return "Se debe elegir un nivel de criticidad";
+      }
+      if ($incident->impact=="") {
+        return "Se debe elegir un nivel de impacto";
+      }
+      /*if ($incident->attack_id=="") {
+        return "Se debe elegir un tipo de ataque";
+      }*/
+      if (!$incident->category) {
+        return "Se debe elegir una categoría";
+      }
+      if (!$incident->customer) {
+        return "Se debe elegir un cliente";
+      }
+      if ($incident->description=="") {
+        return "La descripción no puede ir en blanco";
+      }
+      if (!$incident->sensor) {
+        return "Se debe elegir un sensor";
+      }
+      /*if ($incident->conclution=="") {
+        return "";
+      }*/
+      return "0";
+
     }
 
     public function updateStatus(){
       $input = Input::all();
       $id = $input['id'];
       $status = $input['status'];
+      $incident=Incident::find($id);
 
       if ( $id && $status) {
+
+
+        if ($status=="3") {
+
+          $count_images=0;
+          foreach ($input['images'] as $i) {
+            if ($i) {
+              $count_images++;
+            }
+          }
+
+
+          if ($count_images>0) {
+
+            $incident->incidents_status_id=$status;
+            foreach ($input['images'] as $i) {
+              if ($i) {
+
+                $name=$i->getClientOriginalName();
+                print_r($i);
+                $files=explode('.',$name);
+                $extension=end($files);
+                if ($extension=='JPG' || $extension=='jpg' || $extension=='png' || $extension=='PNG' ) {
+                  $new_name=date("Ymd_his")."_".$incident->id."_".$incident->title."_".$files[0].".".$extension;
+                  $i->move('files/evidence/',$new_name);
+                  //consideraremos esto una limitante en el documento de vison.
+                  usleep(100000);
+                  $im=new Image;
+                  $im->file = "files/evidence/".$new_name;
+                  $im->name=$new_name;
+                  $im->incidents_id=$incident->id;
+                  $im->evidence_types_id="2";
+                  $im->save();
+                  echo $new_name."<br>";
+                }
+              }
+            }
+            $incident->save();
+
+          }
+
+
+        }
+
+
+      if ($status=="2") {
         $u = new Otrs\User();
         $ticketOtrs = new Otrs\Ticket();
         $ticketIM = new Ticket;
 
-        $incident=Incident::find($id);
+
         $incident->incidents_status_id=$status;
         $incident->save();
 
@@ -113,11 +197,15 @@ protected $layout = 'layouts.master';
         $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
         $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
         $ticketIM->incident_handler_id = Auth::user()->id;
+        $ticketIM->incidents_id = $id;
         $ticketIM->save();
 
-
-        return Redirect::to('incident/view/'.$incident->id);
       }
+
+
+
+      }
+      return Redirect::to('incident/view/'.$incident->id);
     }
 
     public function validateSingle($input){
@@ -131,11 +219,30 @@ protected $layout = 'layouts.master';
       }
     }
 
+    public function ready($incident){
+      if ($this->validateRequired($incident)!="0") {
+        return $this->validateRequired($incident);
+      }
+      if (count($incident->reference)==0) {
+        return "Este incidente no tiene referencias";
+      }
+      if (count($incident->srcDst)==0) {
+        return "No se han añadido ips a este incidente";
+      }
+      if (count($incident->incidentRule)==0) {
+        return "Este incidente no contiene ninguna regla";
+      }
+      return "";
+    }
+
     public function create()
     {
 
       $sensor_object= new Sensor;
       $input = Input::all();
+
+
+
       $incident=new Incident;
       $attack=Attack::lists('name', 'id');
       $categories=Category::lists('name', 'id');
@@ -152,6 +259,10 @@ protected $layout = 'layouts.master';
         $keys=array_keys($input);
         //print_r($keys);
         $events=array();
+
+
+
+
 
         foreach ($keys as $k) {
           if (strpos($k,'srcip') !== false) {
@@ -183,16 +294,29 @@ protected $layout = 'layouts.master';
         //$incident->incident_handler_id='1';
         $incident->save();
 
-        /*foreach ($input['images'] as $i) {
-          if (1) {
-            $im=new Image;
-            $im->source=Auth::user()->incident_handler_id;
-            $im->file=$i;
-            $im->name=date("Ymd_his")."_".$incident->id."_".$incident->title;
-            $im->incidents_id=$incident->id;
-            $im->save();
+        if ($input['images']) {
+          foreach ($input['images'] as $i) {
+            if ($i) {
+              $name=$i->getClientOriginalName();
+              $files=explode('.',$name);
+              $extension=end($files);
+              if ($extension=='JPG' || $extension=='jpg' || $extension=='png' || $extension=='PNG' ) {
+                $new_name=date("Ymd_his")."_".$incident->id."_".$incident->title."_".$files[0].".".$extension;
+                $i->move('files/evidence/',$new_name);
+                //consideraremos esto una limitante en el documento de vison.
+                usleep(100000);
+                $im=new Image;
+                $im->file = "files/evidence/".$new_name;
+                $im->name=$new_name;
+                $im->incidents_id=$incident->id;
+                $im->evidence_types_id="1";
+                $im->save();
+                echo $new_name."<br>";
+              }
+            }
           }
-        }*/
+        }
+
         $history=new IncidentHistory;
         $history->datetime=date('Y-m-d H:i:s');
         $history->description="Se creó incidente";
@@ -215,6 +339,7 @@ protected $layout = 'layouts.master';
         $references->incidents_id=$incident->id;
         $references->link=$input['references'];
         $references->save();
+
         foreach ($events as $e) {
           $dst=new Occurence;
           $src=new Occurence;
@@ -334,6 +459,7 @@ protected $layout = 'layouts.master';
       $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
 
 
+
         //$this->layout = View::make("incidentHandler.create",array('handler' => $handler));
         return $this->layout = View::make("incident.form", array(
         'incident'=>$incident,
@@ -386,8 +512,15 @@ protected $layout = 'layouts.master';
                   if (strpos($k,'sid_') !== false) {
                       array_push($rules,explode('_',$k)[1]);
                   }
+
                 }
 
+                $delete=array();
+                foreach ($keys as $k) {
+                  if (strpos($k,'del_') !== false) {
+                      array_push($delete,$k);
+                  }
+                }
 
                 $incident->risk=$input['risk'];
                 $incident->criticity=$input['criticity'];
@@ -408,16 +541,28 @@ protected $layout = 'layouts.master';
                 //$incident->incident_handler_id='1';
                 $incident->save();
 
-                /*foreach ($input['images'] as $i) {
-                  if (1) {
-                    $im=new Image;
-                    $im->source=Auth::user()->incident_handler_id;
-                    $im->file=$i;
-                    $im->name=date("Ymd_his")."_".$incident->id."_".$incident->title;
-                    $im->incidents_id=$incident->id;
-                    $im->save();
+                if ($input['images']){
+                  foreach ($input['images'] as $i) {
+                    if ($i) {
+                      $name=$i->getClientOriginalName();
+                      $files=explode('.',$name);
+                      $extension=end($files);
+                      if ($extension=='JPG' || $extension=='jpg' || $extension=='png' || $extension=='PNG' ) {
+                        $new_name=date("Ymd_his")."_".$incident->id."_".$incident->title."_".$files[0].".".$extension;
+                        $i->move('files/evidence/',$new_name);
+                        //consideraremos esto una limitante en el documento de vison.
+                        usleep(100000);
+                        $im=new Image;
+                        $im->file = "files/evidence/".$new_name;
+                        $im->name=$new_name;
+                        $im->incidents_id=$incident->id;
+                        $im->evidence_types_id="1";
+                        $im->save();
+                        echo $new_name."<br>";
+                      }
+                    }
                   }
-                }*/
+                }
                 $history=new IncidentHistory;
                 $history->datetime=date('Y-m-d H:i:s');
                 $history->description="Incidente Editado";
@@ -530,6 +675,13 @@ protected $layout = 'layouts.master';
                   $incident_rule->incidents_id=$incident->id;
                   $incident_rule->save();
                 }
+                foreach ($delete as $del) {
+                  if (File::exists($input[$del])) {
+                    File::delete($input[$del]);
+                    $image=Image::where('name','=',explode("/",$input[$del])[2]);
+                    $image->delete();
+                  }
+                }
 
                 return Redirect::to('incident/view/'.$incident->id);
 
@@ -540,8 +692,10 @@ protected $layout = 'layouts.master';
 
     }
 
+
   public function view($id)
   {
+
     //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $incident=Incident::find($id);
 
@@ -550,10 +704,11 @@ protected $layout = 'layouts.master';
     $listed=array();
     $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
     $location=array();
+
     foreach ($black_preview as $b) {
       if ($b->src->blacklist) {
         array_push($listed,$b->src);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->src->id." and datetime=(select max(updated_at) from occurences_history)")->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
@@ -561,18 +716,22 @@ protected $layout = 'layouts.master';
       }
       if ($b->dst->blacklist) {
         array_push($listed,$b->dst);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
       }
     }
+
+    $message=$this->ready($incident);
+
     return $this->layout = View::make('incident.view', array(
       'det_time'=>$det_time,
       'occ_time'=>$occ_time,
       'incident'=>$incident,
       'listed'=>$listed,
-      'location'=>$location
+      'location'=>$location,
+      'message'=>$message,
       ));
 
   }

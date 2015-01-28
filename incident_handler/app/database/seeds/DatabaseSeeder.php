@@ -37,7 +37,6 @@ class DatabaseSeeder extends Seeder {
 			  //$this->call('ImageTableSeeder');
 			  //$this->command->info('Done!12');
 
-
 			  //$this->call('ApplicationTableSeeder');
 			  //$this->command->info('Done!6');
 				$this->call('IncidentStatusTableSeeder');
@@ -58,6 +57,14 @@ class DatabaseSeeder extends Seeder {
 				//$this->call('EventsTypeTableSeeder');
 			  //$this->call('EventsTableSeeder');
 			  //$this->call('AttackerHistorySeeder');
+				$this->call('RulesTableSeeder');
+				$this->command->info('Mother of Rules');
+
+				$this->call('OccurrenceTypeSeeder');
+				$this->command->info('Mother of OccurenceType');
+
+				$this->call('EvidenceTypeSeeder');
+				$this->command->info('Mother of EvidenceTypeSeeder');
 
 
 

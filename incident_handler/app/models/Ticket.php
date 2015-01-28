@@ -6,7 +6,7 @@ class Ticket extends Eloquent {
      * @var string
      */
     protected $table = 'tickets';
-    protected $fillable = ['otrs_ticket_id','otrs_ticket_number','datetime','incident_handler_id'];
+    protected $fillable = ['otrs_ticket_id','otrs_ticket_number','datetime','incident_handler_id','incidents_id','internal_number'];
     protected $softDelete = true;
 
     public function incidentHandler(){
@@ -17,4 +17,7 @@ class Ticket extends Eloquent {
         return $this->hasMany('TicketHistory','tickets_id','id');
     }
 
+    public function incident(){
+        return $this->belongsTo('Incident','incidents_id','id');
+    }
 }

@@ -46,7 +46,7 @@
           <li class="has-sub ">
 						<a href="javascript:;">
 						    <b class="caret pull-right"></b>
-						    <i class="fa fa-user"></i>
+						    <i class="fa fa-suitcase"></i>
 						    <span>Clientes</span>
 					    </a>
 						<ul class="sub-menu">

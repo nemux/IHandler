@@ -4,18 +4,20 @@
    {
 
      public function run()
-     {
+       {
+         TimeType::create([
 
-       $faker = Faker\Factory::create();
+                  'name' => 'Detección' ,
+                  'description' =>'Hora en que se detectó',
 
 
-            foreach (range (1,5) as $index) {
-
-                  TimeType::create([
-                  'name' => $faker->word,
-                  'description' => $faker->paragraph($nbSentences = 2),
                                           ]);
-        }
+        TimeType::create([
 
-       }
+                 'name' => 'Ocurrencia' ,
+                 'description' =>'Hora en que ocurrió',
+
+
+                                         ]);
+      }
 }

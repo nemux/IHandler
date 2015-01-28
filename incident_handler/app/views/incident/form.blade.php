@@ -24,7 +24,7 @@
 	<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
 	<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
 	<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
-	<link href="/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+	<link href="/assets/plugins/bootstrap-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
 	<link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
 	<link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
@@ -38,6 +38,7 @@
     var sid_added=new Array();
     var count_rule=0;
     var count_event=0;
+    var count_todel=0;
 
     function validateSid(sid){
       for (var i = 0; i < sid_added.length; i++) {
@@ -47,7 +48,11 @@
       }
       return "0";
     }
-
+    function delFile(name,div){
+      count_todel=count_todel+1;
+      $("#todel").append('<input type="hidden" name="del_'+count_todel+'" value="files/evidence/'+name+'">');
+      div.parent().parent().css('display','none');
+    }
     function addButton(){
       //sid,rule,message,translate,rule_is,why
       var sid=$("#search_sid").val();
@@ -61,6 +66,8 @@
         addRule(sid,rule,message,translate,rule_is,why);
       }
     }
+
+
     $(document).ready(function() {
       FormPlugins.init();
       TableManageDefault.init();
@@ -68,6 +75,23 @@
       Form2.init();
       Form3.init();
       Form4.init();
+      $("#attack").val("<?php echo $incident->attacks_id ?>");
+      $("#images").change(function(){
+        //get the input and UL list
+        var input = document.getElementById('images');;
+        var list = $("#files_list");
+
+        //empty list for now...
+        list.empty();
+
+        //for every file...
+        for (var x = 0; x < input.files.length; x++) {
+        	//add to list
+        	var li = document.createElement('li');
+        	li.innerHTML = 'File ' + (x + 1) + ':  ' + input.files[x].name;
+        	list.append(li);
+        }
+      });
 
       $("#search_sid").keyup(function (e){
 
@@ -356,9 +380,9 @@
                               <td>
                                 <select name="criticity" class="form-control">
                                   <option value="">Severidad</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='Bajo'){ echo "selected"; } ?> value="Bajo">Bajo</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='Medio'){ echo "selected"; } ?> value="Medio">Medio</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='Alto'){ echo "selected"; } ?> value="Alto">Alto</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='BAJA'){ echo "selected"; } ?> value="BAJA">BAJA</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='MEDIA'){ echo "selected"; } ?> value="MEDIA">MEDIA</option>
+                                  <option <?php if(isset($update) && $incident->criticity=='ALTA'){ echo "selected"; } ?> value="ALTA">ALTA</option>
                                 </select>
                               </td>
                               <td>
@@ -385,12 +409,53 @@
                                   <?php }?>
                                 </select>
                               </td>
-                              <td>
-                                {{ Form::select('attack_id', $attack, $incident->attacks_id,[
-                                          'class'=>'form-control parsley-validated',]);
-                                }}
+                              <td width="20%">
+                                <select name="attack_id" class="form-control" id="attack">
+                                        
+                                        <optgroup label="Otros">
+                                          <option value="1">Otros</option>
+                                        </optgroup>
+                                        <optgroup label="Contenido Abusivo">
+                                          <option value="2">Spam</option>
+                                          <option value="3">Defacement</option>
+                                          <option value="4">Acoso / Coacción</option>
+                                        </optgroup>
+                                        <optgroup label="Código Dañino">
+                                          <option value="5">Virus</option>
+                                          <option value="6">Gusano</option>
+                                          <option value="7">Troyano</option>
+                                          <option value="8">Spyware</option>
+                                        </optgroup>
+                                        <optgroup label="Recolección de información">
+                                          <option value="9">Escaneo de vulnerabilidades</option>
+                                          <option value="10">Sniffing</option>
+                                          <option value="11">Ingeniería Social</option>
+                                        </optgroup>
+                                          <optgroup label="Intrusiones">
+                                          <option value="12">Inyección SQL</option>
+                                          <option value="13">Pharming</option>
+                                          <option value="14">Inyección remota de archivos</option>
+                                          <option value="15">Ataques de fuerza bruta</option>
+
+                                          <option value="16">Explotación de vulnerabilidades</option>
+                                          <option value="17">Cross-Site Scripting</option>
+                                          <option value="18">Inyección otros tipos</option>
+                                        </optgroup>
+                                        <optgroup label="Disponibilidad">
+                                          <option value="19">DoS / DDoS</option>
+                                          <option value="20">Fallo (hw/sw)</option>
+                                          <option value="21">Error humano</option>
+                                        </optgroup>
+                                        <optgroup label="Fraude">
+                                          <option value="22">Copyright</option>
+                                          <option value="23">Suplantación / Spoofing</option>
+                                          <option value="24">Phishing</option>
+                                        </optgroup>
+
+                                        </select>
+
                               </td>
-                              <td>
+                              <td width="30%">
                                 {{ Form::select('category_id', $categories, $incident->categories_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
@@ -398,13 +463,16 @@
 
                             </tr>
                             <tr>
-                              <td colspan="3">
+                              <td colspan="5">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
 
                               </td>
-                              <td colspan="2">
+                            </tr>
+                            <tr>
+
+                              <td colspan="5">
                                 {{ Form::select('sensor_id', $sensor,$incident->sensors_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
@@ -429,12 +497,11 @@
                             <tr>
 
                               <td colspan="5" >
-                                {{Form::text('stream',$incident->stream,[
-                                      'class'=>'form-control parsley-validated',
-                                      "data-parsley-pattern"=>"",
-                                      "data-parsley-required"=>"true",
-                                      "placeholder"=>"Flujo"]);
-                                }}
+                                <select id="" name="stream" class="form-control">
+                                  <option>INTRUSIÓN</option>
+                                  <option>EXTRUSIÓN</option>
+                                  <option>LOCAL</option>
+                                </select>
                               </td>
                             </tr>
 
@@ -634,7 +701,7 @@
                                   <tbody>
 
                                       <tr>
-                                        <td>
+                                        <td >
                                           <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
                                           <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
                                         </td>
@@ -659,7 +726,7 @@
                                           <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
                                         </td>
 
-                                        <td>
+                                        <td width="150px">
                                           {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
                                                     'class'=>'form-control parsley-validated',
                                                     'id'=>'src_occurences',
@@ -691,6 +758,9 @@
                                     <?php if (isset($update)): ?>
                                       <?php $i=0; ?>
                                       <?php foreach ($incident_occurence as $io): ?>
+
+
+
                                         <?php $i++; ?>
                                         <tr onclick="removeEvent(this)" style="cursor:pointer">
 
@@ -723,7 +793,8 @@
                                             ,
                                             <?php echo $io->src->function ?>
                                             ,
-                                            <?php echo $io->src->location ?>
+                                            <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->src->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
+                                            <?php echo $hist->location ?>
                                             ,
                                             <?php echo $io->src->type->name ?>
                                             ,
@@ -747,7 +818,8 @@
                                             ,
                                             <?php echo $io->dst->function ?>
                                             ,
-                                            <?php echo $io->dst->location ?>
+                                            <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
+                                            <?php echo $hist->location ?>
                                             ,
                                             <?php echo $io->dst->type->name ?>
                                             ,
@@ -782,27 +854,60 @@
 
 
                     <!--</div>-->
-                      <div class="form-group" style="display:none">
+                      <div class="form-group" style="">
                         <table class="table" >
                           <tr>
                             <td style="width:15%">
-                              Imagenes relacionadas:
+                              Añadir archivos de evidencia:
                             </td>
                             <td colspan="4">
-
-                                <input class="btn btn-default" type="file" name="images[]" multiple="">
+                                <a name="button" class="btn btn-primary" onclick="$('#images').click()">Seleccionar archivos</a>
+                                <input class="btn btn-default" type="file" id="images" name="images[]" multiple="" style="display:none">
                             </td>
                           </tr>
                           <tr>
                             <td>
-                              Archivo Opcional de Evidencia: <br>
-                            </td>
-                            <td colspan="4">
 
-                                <input class="btn btn-default" type="file" name="file">
+                            </td>
+                            <td>
+                              <ul id="files_list">
+
+                              </ul>
                             </td>
                           </tr>
+                          <tr>
+                            <td>
+                              Archivos de evidencia almacenados
+                            </td>
+                            <td>
+                              <?php if (isset($update)): ?>
+                                <?php if (count($incident->images)>0): ?>
+                                  <div class="col-lg-12" style="padding-bottom:50px">.
+
+                                    <?php foreach ($incident->images as $i): ?>
+                                      <?php if ($i->evidence_types_id==1): ?>
+                                          <div class="col-lg-4">
+                                            <div class="col-lg-10">
+                                              <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                                                <?php echo $i->name ?>
+                                              </a>
+                                            </div>
+                                            <div class="col-lg-2">
+                                              <i class="fa fa-minus-circle" onclick="delFile('<?php echo $i->name ?>',$(this))"></i>
+                                            </div>
+                                          </div>
+                                      <?php endif ?>
+                                    <?php endforeach ?>
+                                  </div>
+                                <?php endif ?>
+                              <?php endif ?>
+                            </td>
+                          </tr>
+
                         </table>
+                        <div id="todel">
+
+                        </div>
                       </div>
 
 
@@ -915,6 +1020,10 @@
                           </div>
                         </div>
                       </div>
+
+
+
+
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
