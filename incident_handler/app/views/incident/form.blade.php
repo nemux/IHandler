@@ -38,6 +38,7 @@
     var sid_added=new Array();
     var count_rule=0;
     var count_event=0;
+    var count_todel=0;
 
     function validateSid(sid){
       for (var i = 0; i < sid_added.length; i++) {
@@ -47,7 +48,11 @@
       }
       return "0";
     }
-
+    function delFile(name,div){
+      count_todel=count_todel+1;
+      $("#todel").append('<input type="hidden" name="del_'+count_todel+'" value="files/evidence/'+name+'">');
+      div.parent().parent().css('display','none');
+    }
     function addButton(){
       //sid,rule,message,translate,rule_is,why
       var sid=$("#search_sid").val();
@@ -61,6 +66,8 @@
         addRule(sid,rule,message,translate,rule_is,why);
       }
     }
+
+
     $(document).ready(function() {
       FormPlugins.init();
       TableManageDefault.init();
@@ -68,6 +75,23 @@
       Form2.init();
       Form3.init();
       Form4.init();
+      $("#attack").val("<?php echo $incident->attacks_id ?>");
+      $("#images").change(function(){
+        //get the input and UL list
+        var input = document.getElementById('images');;
+        var list = $("#files_list");
+
+        //empty list for now...
+        list.empty();
+
+        //for every file...
+        for (var x = 0; x < input.files.length; x++) {
+        	//add to list
+        	var li = document.createElement('li');
+        	li.innerHTML = 'File ' + (x + 1) + ':  ' + input.files[x].name;
+        	list.append(li);
+        }
+      });
 
       $("#search_sid").keyup(function (e){
 
@@ -385,8 +409,9 @@
                                   <?php }?>
                                 </select>
                               </td>
-                              <td>
-                                <select name="attack_id" class="form-control">
+                              <td width="20%">
+                                <select name="attack_id" class="form-control" id="attack">
+                                        
                                         <optgroup label="Otros">
                                           <option value="1">Otros</option>
                                         </optgroup>
@@ -430,7 +455,7 @@
                                         </select>
 
                               </td>
-                              <td>
+                              <td width="30%">
                                 {{ Form::select('category_id', $categories, $incident->categories_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
@@ -438,13 +463,16 @@
 
                             </tr>
                             <tr>
-                              <td colspan="3">
+                              <td colspan="5">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
 
                               </td>
-                              <td colspan="2">
+                            </tr>
+                            <tr>
+
+                              <td colspan="5">
                                 {{ Form::select('sensor_id', $sensor,$incident->sensors_id,[
                                           'class'=>'form-control parsley-validated',]);
                                 }}
@@ -826,27 +854,60 @@
 
 
                     <!--</div>-->
-                      <div class="form-group" style="display:none">
+                      <div class="form-group" style="">
                         <table class="table" >
                           <tr>
                             <td style="width:15%">
-                              Imagenes relacionadas:
+                              Añadir archivos de evidencia:
                             </td>
                             <td colspan="4">
-
-                                <input class="btn btn-default" type="file" name="images[]" multiple="">
+                                <a name="button" class="btn btn-primary" onclick="$('#images').click()">Seleccionar archivos</a>
+                                <input class="btn btn-default" type="file" id="images" name="images[]" multiple="" style="display:none">
                             </td>
                           </tr>
                           <tr>
                             <td>
-                              Archivo Opcional de Evidencia: <br>
-                            </td>
-                            <td colspan="4">
 
-                                <input class="btn btn-default" type="file" name="file">
+                            </td>
+                            <td>
+                              <ul id="files_list">
+
+                              </ul>
                             </td>
                           </tr>
+                          <tr>
+                            <td>
+                              Archivos de evidencia almacenados
+                            </td>
+                            <td>
+                              <?php if (isset($update)): ?>
+                                <?php if (count($incident->images)>0): ?>
+                                  <div class="col-lg-12" style="padding-bottom:50px">.
+
+                                    <?php foreach ($incident->images as $i): ?>
+                                      <?php if ($i->evidence_types_id==1): ?>
+                                          <div class="col-lg-4">
+                                            <div class="col-lg-10">
+                                              <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                                                <?php echo $i->name ?>
+                                              </a>
+                                            </div>
+                                            <div class="col-lg-2">
+                                              <i class="fa fa-minus-circle" onclick="delFile('<?php echo $i->name ?>',$(this))"></i>
+                                            </div>
+                                          </div>
+                                      <?php endif ?>
+                                    <?php endforeach ?>
+                                  </div>
+                                <?php endif ?>
+                              <?php endif ?>
+                            </td>
+                          </tr>
+
                         </table>
+                        <div id="todel">
+
+                        </div>
                       </div>
 
 
@@ -959,6 +1020,10 @@
                           </div>
                         </div>
                       </div>
+
+
+
+
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 	<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 	<script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>

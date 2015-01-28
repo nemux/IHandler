@@ -34,11 +34,11 @@
 
       </tr>
       <tr style="">
-        <td style="text-align:center;background:#d9d9d9">
+        <td style="text-align:center;background:#d9d9d9" colspan="1">
           <strong>Categoría:</strong>
         </td>
-        <td colspan="2" style="border-collapse: collapse;">
-          <table style="border-collapse: collapse;">
+        <td style="border-collapse: collapse;width:100%">
+          <table style="border-collapse: collapse;width:100%">
             <tr>
               <td colspan="2" style="text-align:center;background:#d9d9d9">
                 Descripción
@@ -65,19 +65,19 @@
       </tr>
 
       <tr>
-        <td style="text-align:center;background:#CCC;">
+        <td style="text-align:center;background:#d9d9d9;">
           <strong>Ticket:</strong>
         </td>
-        <td style="text-align:center;" colspan="5">
+        <td style="text-align:center;" colspan="2">
           <?php //echo $incident->ticket->internal_number ?>
         </td>
       </tr>
 
       <tr>
-        <td style="text-align:center;background:#CCC;">
+        <td style="text-align:center;background:#d9d9d9;">
           <strong>Status:</strong>
         </td>
-        <td style="text-align:center;" colspan="5">
+        <td style="text-align:center;" colspan="2">
           <?php echo $incident->status->name ?>
         </td>
       </tr>
@@ -213,10 +213,10 @@
       <?php endif ?>
 
       <tr>
-        <td style="text-align:center;background:#d9d9d9" colspan="5">
+        <td style="text-align:center;background:#d9d9d9" colspan="1">
           <strong>Descripción:</strong>
         </td>
-        <td colspan="2" style="text-align: justify; padding:10px;">
+        <td colspan="3" style="text-align: justify; padding:10px;">
           <?php echo $incident->description ?><br>
           <?php echo $incident->conclution ?>
         </td>

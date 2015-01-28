@@ -16,9 +16,10 @@ class CreateImagesTable extends Migration {
 
 	  		$table->increments('id');
       		$table->integer('incidents_id')->unsigned();
-      		$table->string('source');
+      		$table->string('source')->nullable();
       		$table->binary('file');
       		$table->string('name');
+					$table->integer('evidence_types_id')->unsigned();
         	$table->timestamps();
 			});
 	}

@@ -63,6 +63,9 @@ class DatabaseSeeder extends Seeder {
 				$this->call('OccurrenceTypeSeeder');
 				$this->command->info('Mother of OccurenceType');
 
+				$this->call('EvidenceTypeSeeder');
+				$this->command->info('Mother of EvidenceTypeSeeder');
+
 
 
 

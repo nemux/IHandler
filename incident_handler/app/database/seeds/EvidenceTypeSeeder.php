@@ -1,6 +1,6 @@
 <?php
 
-   class IncidentHandlerSeeder extends Seeder
+   class EvidenceTypeSeeder extends Seeder
    {
 
      public function run()
@@ -9,19 +9,17 @@
        $faker = Faker\Factory::create();
 
 
-                  IncidentHandler::create([
-                  'name' => 'admin',
-                  'lastname' => 'the',
-                  'mail'  => 'admin@admin.com',
-                  'phone' => '651564985618574',
+                  EvidenceType::create([
+                  'name' => 'Tipo_1',
+                  'description' => 'Es cuando se adjunta evidencia propia del incidente',
+
                   ]);
 
 
-                  IncidentHandler::create([
-                  'name' => 'Usuario 1',
-                  'lastname' => 'Usuario normalito',
-                  'mail'  => 'usuario@mortal.com',
-                  'phone' => '65156498561',
+                  EvidenceType::create([
+                  'name' => 'Tipo_2',
+                  'description' => 'Evidencia de que el cliente notificó la recepción del correo',
+
                   ]);
 
           /*

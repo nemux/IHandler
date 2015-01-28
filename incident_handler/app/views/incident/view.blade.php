@@ -2,14 +2,32 @@
 @section('content')
 
 
+<script charset="utf-8">
+var count_files=0;
+$(document).ready(function(){
+  $("#images").change(function(){
+    //get the input and UL list
+    var input = document.getElementById('images');
+    count_files=input.files.length;
+    if (count_files>0) {
+      $("#solved").removeClass("disabled");
 
+    }
+    if (count_files==0) {
+      $("#solved").removeClass("disabled");
+      $("#solved").addClass("disabled");
+    }
+    $("#file_message").text("("+count_files+") Archivos seleccionados");
+  });
+});
+</script>
   <!-- begin #page-loader -->
   <!-- <div id="page-loader" class="fade in"><span class="spinner"></span></div> -->
   <!-- end #page-loader -->
 
   <!-- begin #page-container -->
 
-      <h1 class="page-header">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> 22/01/2014</small></h1>
+      <h1 class="page-header">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> </small></h1>
       <!-- end page-header -->
 
       <div class="panel panel-inverse">
@@ -244,25 +262,73 @@
               </div>
           </div>
       </div>
+      <?php if (count($incident->images)>0): ?>
+        <div class="col-lg-12" style="padding-bottom:50px">.
+          <h4>Archivos de evidencia:</h4><br>
+          <?php foreach ($incident->images as $i): ?>
+            <?php if ($i->evidence_types_id=='1'): ?>
+              <div class="col-lg-3">
+                <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                  <?php echo $i->name ?>
+                </a>
+
+              </div>
+            <?php endif ?>
+          <?php endforeach ?>
+        </div>
+
+        <div class="col-lg-12" style="padding-bottom:50px">.
+          <h4>Evidencia de Resolución:</h4><br>
+          <?php foreach ($incident->images as $i): ?>
+            <?php if ($i->evidence_types_id=='2'): ?>
+              <div class="col-lg-3">
+                <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                  <?php echo $i->name ?>
+                </a>
+
+              </div>
+            <?php endif ?>
+          <?php endforeach ?>
+        </div>
+      <?php endif ?>
       <div class="col-lg-12" style="margin-bottom:50px">
 
 
-        {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus'))}}
+        {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
         <a class="btn btn-danger" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
 
 
-          <?php if ($incident->incidents_status_id==1): ?>
-            <input type="hidden" name="status" value="2">
-            <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-              <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-            {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ']);}}
+
+
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
+              <input type="hidden" name="status" value="2">
+              <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+                <input type="hidden" name="id" value="<?php echo $incident->id ?>">
+              <?php if ($incident->incidents_status_id==1 && $message==""): ?>
+                {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ']);}}
+              <?php endif ?>
+            <?php endif ?>
+
+          <?php if ($message!=""): ?>
+            <div class="col-lg-2 pull-right">
+              <?php echo $message ?>
+            </div>
           <?php endif ?>
 
-
+<!-- bloque de status 2 -->
           <?php if ($incident->incidents_status_id==2): ?>
             <input type="hidden" name="status" value="3">
               <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-            {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ']);}}
+
+              <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
+              <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
+
+                {{Form::submit('Mover a Resuelto',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
+            <div class="col-lg-1 pull-right">
+              <p id="file_message">
+
+              </p>
+            </div>
           <?php endif ?>
 
 
