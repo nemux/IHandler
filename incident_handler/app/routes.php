@@ -36,7 +36,6 @@ Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
   #Admin Routes
 });
 
-
 Route::group(array('before'=>'admin', 'prefix'=>'sensor'),function(){
 
   # User Routes
@@ -71,7 +70,7 @@ Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
   Route::get('update/{id}', 'CustomerController@getUpdate')->where(array('id'=>'^[0-9]+$'));
   Route::post('update', 'CustomerController@postUpdate');
   Route::get('view/{id}', 'CustomerController@view')->where(array('id'=>'^[0-9]+$'));
-  Route::get('import', 'CustomerController@import');
+  Route::post('importCustomers', 'OtrsController@importCustomers');
 
   #Admin Routes
 });
@@ -86,4 +85,7 @@ Route::group(array('prefix'=>'report'),function(){
 
 });
 
-Route::get('/otrs/{id}','OtrsController@sendTicket');
+Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
+  Route::get('import','OtrsController@import');
+});
+

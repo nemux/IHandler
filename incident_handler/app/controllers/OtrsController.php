@@ -2,44 +2,61 @@
 
 class OtrsController extends BaseController{
 
+   public function import(){
+      return $this->layout = View::make("otrs.import", array(
+        'actions'=> array('OtrsController@importCustomers' => 'Importar Clientes'
+                          ),
+        'title'=>"Importar información desde OTRS",
+        'total'=>0
+        ));
+    }
+
+    public function importCustomers()
+    {
+      //Import all OTRS Customers
+      $oc = new Otrs\Customer();
+      $customers = $oc->getAll();
+      $log = new Log\Logger();
+
+      $total_inserted = 0;
+      foreach($customers as $k => $v){
+
+        $cu = $oc->getCustomerInfo($v['UserName']);
+
+        $exists = Customer::where('otrs_userID','=', $cu->UserID)->count();
+
+        if ($exists == 0){
+          $customer = new Customer;
+
+          $customer->name = $cu->UserFirstname . " " . $cu->UserLastname;
+          $customer->company = $cu->UserTitle;
+          $customer->mail = $cu->UserEmail;
+          $customer->phone = $cu->UserPhone;
+          $customer->otrs_userID = $cu->UserID;
+          $customer->otrs_userlogin = $cu->UserLogin;
+          $customer->otrs_usercustomerID = $cu->UserCustomerID;
+          $customer->otrs_validID = $cu->ValidID;
+          $customer->save();
+          $total_inserted++;
+        }
+      }
+
+      $log->write(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
+      return array("total_inserted" => $total_inserted);
+      //return Redirect::to('otrs/import');
+    }
+
 
   public function sendTicket($id){
 
-    $u = new Otrs\User();
-    $o = new Otrs\Customer();
-    $t = new Otrs\Ticket();
     $a = new Otrs\Article();
-    //$incident = Incident::find($id);
-    //$ticket = new Ticket;
-
-
-    //$ticket_info = $ticketOtrs->createTicket($incident->title, 3, "ldeleon",$incident->description);
-
-    //$ticket->otrs_ticket_id = $ticket_info->TicketID;
-    //$ticket->otrs_ticket_number = $ticket_info->TicketNumber;
-    //$ticket->incident_handler_id = $ticket_info-> Auth::user()->id;
-
-    //print_r($o->getAll());
-    //print_r($o->getAll());
-  /*
-  foreach ($u->getAll() as $k=>$v){
-    print("[");
-    print($k);
-    print("]=>");
-    foreach($v as $k2 => $v2){
-      print("[");
-      print($k2);
-      print("]=>");
-      print($v2);
-      print("<br/>");
-    }*/
-    //print_r($v);
 
     print_r($a->AllSenderTypeList());
     print("<br/>");
     print_r($a->AllArticleTypeList());
 
   }
+
 
   public function test(){
     /*

@@ -50,8 +50,19 @@
 						    <span>Clientes</span>
 					    </a>
 						<ul class="sub-menu">
-						    <li><a href="/customer/import">Crear</a></li>
 						    <li><a href="/customer/">Ver</a></li>
+						</ul>
+					</li>
+
+
+          <li class="has-sub ">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-user"></i>
+						    <span>OTRS</span>
+					    </a>
+						<ul class="sub-menu">
+						    <li><a href="/otrs/import">Importar Informaci&oacute;n</a></li>
 						</ul>
 					</li>
 					@endif

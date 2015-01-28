@@ -23,15 +23,15 @@ class DatabaseSeeder extends Seeder {
 			  $this->call('CategoryTableSeeder');
 
 			  $this->command->info('Done!10');
-			  $this->call('CustomerTableSeeder');
+			 // $this->call('CustomerTableSeeder');
 
-			  $this->command->info('Done!11');
+			  //$this->command->info('Done!11');
 			  $this->command->info('Done!8');
 
 			  $this->command->info('Done!9');
 			  //until here we are good¡
 			  $this->call('AttackTableSeeder');
-        $this->call('SensorSeeder');
+        //$this->call('SensorSeeder');
 			  //$this->call('IncidentTableSeeder');
 			  //$this->command->info('Done!14');
 			  //$this->call('ImageTableSeeder');

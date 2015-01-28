@@ -74,6 +74,17 @@ return array(
 			'schema'   => 'public',
 		),
 
+    'log' => array(
+			'driver'   => 'pgsql',
+			'host'     => 'localhost',
+			'database' => 'log',
+			'username' => 'log',
+			'password' => 'password',
+			'charset'  => 'utf8',
+			'prefix'   => '',
+			'schema'   => 'public',
+		),
+
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',

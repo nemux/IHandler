@@ -49,7 +49,6 @@ class Ticket extends Otrs {
 
       $ArticleID = $article->createArticle($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer, $body);
 
-
       // Use the Ticket ID to retrieve the Ticket Number.
       $TicketNr = $this->getTicketNumber($TicketID);
 

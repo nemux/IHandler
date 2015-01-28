@@ -18,19 +18,23 @@
     <!-- begin panel -->
       <div class="panel panel-inverse" data-sortable-id="form-validation-1">
         <div class="panel-heading">
-          <h4 class="panel-title">Importe clientes desde OTRS</h4>
+          <h4 class="panel-title">Importar Informaci&oacute;n desde OTRS</h4>
         </div>
+
+        @foreach($actions as $action => $buttonName)
         <div class="panel-body panel-form">
            {{ Form::open( array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"import-form")) }}
             <div class="form-group width-full">
-              <div class="col-md-12 col-sm-12">
-             {{ Form::submit('Importar',['class'=>'btn btn-primary width-200 height-50']);}}
-            </div>
+              <div class="col-md-12 col-sm-12">  {{ Form::submit($buttonName,['class'=>'btn btn-primary width-200 height-50']);}}</div>
             </div>
            {{ Form::close() }}
         </div>
+        @endforeach
+
       </div>
     </div>
   </div>
   <!-- end panel -->
+
+</div>
 @stop
