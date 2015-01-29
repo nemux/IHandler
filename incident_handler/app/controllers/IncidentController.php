@@ -157,6 +157,14 @@ protected $layout = 'layouts.master';
           $incident->incidents_status_id = $status;
           $incident->save();
         }
+
+        if($input['send_recomendation']){
+          return View::make('incident.recomendation',array(
+            'title'=>'Agregar recomendaci&oacute;n',
+            'action'=>'IncidentController@addRecomendation',
+            'incident' => $incident
+            ));
+        }
       }
       return Redirect::to('incident/view/'.$incident->id);
     }
@@ -720,6 +728,18 @@ protected $layout = 'layouts.master';
     return $pdf->stream();
 
   }
+
+  public function addRecomendation(){
+
+    $id = Input::get('id');
+    $recomendation = Input::get('recomendations');
+    $incident = Incident::find($id);
+
+    $this->sendRecomendation($incident, $recomendation);
+    $url = '/incident/view/'.$id;
+    Redirect::to($url);
+  }
+
   public function index(){
 
     /*if (Auth::user()->type->name == 'admin')
@@ -790,6 +810,20 @@ protected $layout = 'layouts.master';
     $ticketIM->internal_number = $in;
 
     $ticketIM->save();
+  }
+
+    private function sendRecomendation($incident, $recomendation){
+
+    $otrsR = new Otrs\Article();
+    $user = Auth::user();
+    $r = new Recomendation();
+
+    $articleID = $otrsR->createArticle($incident->ticket->otrs_ticket_id, $user->id, $user->incidentHandler->mail, $incident->title, $incident->customer, $recomendation);
+
+    $r->incidents_id = $incident->id;
+    $r->otrs_article_id = $articleID;
+    $r->content = $recomendation;
+    $r->save();
   }
 }
 

@@ -24,7 +24,7 @@ $(document).ready(function(){
   $('#falso_positivo').click(function (){
 
   });
-  return_abierto
+
 
 
 });
@@ -334,8 +334,8 @@ $(document).ready(function(){
 
                 <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
                 <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
-
-                  {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
+                {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved', 'style'=>'margin-left:2px']);}}
+                {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
               <div class="col-lg-1 pull-right">
                 <p id="file_message">
 
