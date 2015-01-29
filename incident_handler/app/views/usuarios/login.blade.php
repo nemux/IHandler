@@ -20,6 +20,7 @@
 	<link href="assets/css/style-responsive.min.css" rel="stylesheet" />
 	<link href="assets/css/theme/default.css" rel="stylesheet" id="theme" />
 	<!-- ================== END BASE CSS STYLE ================== -->
+	@include('include.head')
 </head>
   <body>
   	<div class="login-cover">
@@ -33,7 +34,7 @@
             <!-- begin brand -->
             <div class="login-header">
                 <div class="brand">
-                    <span class="logo"></span> Global Cybersec
+                    <i class="fa fa-eye"></i> Global Cybersec
                     <small>Incident Response System</small>
                 </div>
                 <div class="icon">
@@ -55,14 +56,14 @@
                  {{ Form::close() }}
             </div>
         </div>
-         <ul class="login-bg-list">
+         <!--<ul class="login-bg-list">
             <li class="active"><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-1.jpg" alt="" /></a></li>
             <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-2.jpg" alt="" /></a></li>
             <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-3.jpg" alt="" /></a></li>
             <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-4.jpg" alt="" /></a></li>
             <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-5.jpg" alt="" /></a></li>
             <li><a href="#" data-click="change-bg"><img src="assets/img/login-bg/bg-6.jpg" alt="" /></a></li>
-        </ul>
+        </ul>-->
   <!-- ================== BEGIN BASE JS ================== -->
 	<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
 	<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
@@ -91,5 +92,3 @@
 
   </body>
 </html>
-
-
