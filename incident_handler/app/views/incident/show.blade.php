@@ -69,7 +69,7 @@
           <strong>Ticket:</strong>
         </td>
         <td style="text-align:center;" colspan="2">
-          <?php //echo $incident->ticket->internal_number ?>
+          {{ $ticket_number }}
         </td>
       </tr>
 

@@ -146,63 +146,17 @@ protected $layout = 'layouts.master';
               }
             }
             $incident->save();
-
+            $this->sendTicket($incident,$status);
           }
-
-
         }
 
 
       if ($status=="2") {
-        $u = new Otrs\User();
-        $ticketOtrs = new Otrs\Ticket();
-        $ticketIM = new Ticket;
 
-
-        $incident->incidents_status_id=$status;
+        //$this->sendTicket($incident,$status);
+        $incident->incidents_status_id = $status;
         $incident->save();
-
-        $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
-        $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
-        $listed=array();
-        $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
-        $location=array();
-        foreach ($black_preview as $b) {
-          if ($b->src->blacklist) {
-            array_push($listed,$b->src);
-            $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
-            array_push($location,$loc);
-            //print_r($loc);
-            //echo "<br>";
-          }
-          if ($b->dst->blacklist) {
-            array_push($listed,$b->dst);
-            $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
-            array_push($location,$loc);
-            //print_r($loc);
-            //echo "<br>";
-          }
-        }
-
-       $htmlReport= $this->layout = View::make('incident.show', array(
-         'det_time'=>$det_time,
-         'occ_time'=>$occ_time,
-         'incident'=>$incident,
-         'listed'=>$listed,
-         'location'=>$location
-      ))->render();
-
-        //print_r($ticketOtrs->getPriorities());
-        $ticket_info = $ticketOtrs->createTicket($incident->title, 1, $incident->customer->otrs_userID,$htmlReport);
-        $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-        $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-        $ticketIM->incident_handler_id = Auth::user()->id;
-        $ticketIM->incidents_id = $id;
-        $ticketIM->save();
-
       }
-
-
 
       }
       return Redirect::to('incident/view/'.$incident->id);
@@ -257,9 +211,6 @@ protected $layout = 'layouts.master';
         $keys=array_keys($input);
         //print_r($keys);
         $events=array();
-
-
-
 
 
         foreach ($keys as $k) {
@@ -680,14 +631,8 @@ protected $layout = 'layouts.master';
                     $image->delete();
                   }
                 }
-
                 return Redirect::to('incident/view/'.$incident->id);
-
-
-
       }
-
-
     }
 
 
@@ -787,7 +732,66 @@ protected $layout = 'layouts.master';
     'incident'=>$incident,
     ));
   }
+
+  protected function sendticket($incident, $status){
+    $u = new Otrs\User();
+    $ticketOtrs = new Otrs\Ticket();
+    $ticketIM = new Ticket;
+
+
+    $incident->incidents_status_id=$status;
+    $incident->save();
+
+    $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
+    $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
+    $listed=array();
+    $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
+    $location=array();
+    foreach ($black_preview as $b) {
+      if ($b->src->blacklist) {
+        array_push($listed,$b->src);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+      if ($b->dst->blacklist) {
+        array_push($listed,$b->dst);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+    }
+
+    $tn = DB::table('tickets')
+            ->join('incidents', 'tickets.incidents_id', '=', 'incidents.id')
+            ->join('customers', 'incidents.customers_id', '=', 'customers.id')
+            ->where('customers.id','=', $incident->customers_id)
+            ->count();
+
+    $in = $incident->customer->otrs_userID."-".($tn+1);
+
+
+    $htmlReport= $this->layout = View::make('incident.show', array(
+      'det_time'=>$det_time,
+      'occ_time'=>$occ_time,
+      'incident'=>$incident,
+      'listed'=>$listed,
+      'location'=>$location,
+      'ticket_number' => $in
+    ))->render();
+
+    //print_r($ticketOtrs->getPriorities());
+    $ticket_info = $ticketOtrs->createTicket($incident->title, $incident->risk, $incident->customer,$htmlReport);
+    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+    $ticketIM->incident_handler_id = Auth::user()->id;
+    $ticketIM->incidents_id = $incident->id;
+    $ticketIM->internal_number = $in;
+
+    $ticketIM->save();
+  }
 }
 
-
- ?>
+?>

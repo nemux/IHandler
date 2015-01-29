@@ -13,7 +13,14 @@
 
 App::before(function($request)
 {
-	//
+  /*
+	if ((time() - Session::activity()) > (Config::get('session.lifetime') * 60))
+  {
+    // Session expired
+    Redirect::to('/');
+  }
+  */
+
 });
 
 

@@ -38,7 +38,7 @@ class Ticket extends Otrs {
                                                       "Lock",         "unlock",
                                                       "PriorityID",   $priority,
                                                       "State",        "new",
-                                                      "CustomerUser", $customer,
+                                                      "CustomerUser", $customer->otrs_userID,
                                                       "OwnerID",      $userInfo['UserID'],
                                                       "UserID",       $userInfo['UserID'],
                                                      ));
@@ -48,7 +48,6 @@ class Ticket extends Otrs {
       # returns an Article ID.
 
       $ArticleID = $article->createArticle($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer, $body);
-
 
       // Use the Ticket ID to retrieve the Ticket Number.
       $TicketNr = $this->getTicketNumber($TicketID);
