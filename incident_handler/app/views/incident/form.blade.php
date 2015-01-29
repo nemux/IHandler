@@ -71,6 +71,7 @@
     $(document).ready(function() {
       FormPlugins.init();
       TableManageDefault.init();
+      
       Form1.init();
       Form2.init();
       Form3.init();
@@ -411,7 +412,7 @@
                               </td>
                               <td width="20%">
                                 <select name="attack_id" class="form-control" id="attack">
-                                        
+
                                         <optgroup label="Otros">
                                           <option value="1">Otros</option>
                                         </optgroup>

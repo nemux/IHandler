@@ -29,6 +29,9 @@
                                             <th>#</th>
                                             <th>Título</th>
                                             <th>
+                                              Status
+                                            </th>
+                                            <th>
                                               Creación
                                             </th>
                                             <th>
@@ -49,6 +52,9 @@
                                           </td>
                                           <td>
                                             <?php echo $in->title ?>
+                                          </td>
+                                          <td>
+                                            <?php echo $in->status->name ?>
                                           </td>
                                           <td>
                                             <?php echo $in->created_at ?>

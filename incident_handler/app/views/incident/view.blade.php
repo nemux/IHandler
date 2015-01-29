@@ -5,6 +5,7 @@
 <script charset="utf-8">
 var count_files=0;
 $(document).ready(function(){
+
   $("#images").change(function(){
     //get the input and UL list
     var input = document.getElementById('images');
@@ -264,7 +265,7 @@ $(document).ready(function(){
       </div>
       <?php if (count($incident->images)>0): ?>
         <div class="col-lg-12" style="padding-bottom:50px">.
-          <h4>Archivos de evidencia:</h4><br>
+          <h4>Evidencia del incidente:</h4><br>
           <?php foreach ($incident->images as $i): ?>
             <?php if ($i->evidence_types_id=='1'): ?>
               <div class="col-lg-3">
@@ -278,7 +279,7 @@ $(document).ready(function(){
         </div>
 
         <div class="col-lg-12" style="padding-bottom:50px">.
-          <h4>Evidencia de Resolución:</h4><br>
+          <h4>Evidencia de Cierre:</h4><br>
           <?php foreach ($incident->images as $i): ?>
             <?php if ($i->evidence_types_id=='2'): ?>
               <div class="col-lg-3">
@@ -314,16 +315,21 @@ $(document).ready(function(){
               <?php echo $message ?>
             </div>
           <?php endif ?>
-
-<!-- bloque de status 2 -->
           <?php if ($incident->incidents_status_id==2): ?>
             <input type="hidden" name="status" value="3">
+
+              <input type="hidden" name="id" value="<?php echo $incident->id ?>">
+            {{Form::submit('Mover a Cerrado',['class'=>'btn btn-primary pull-right ']);}}
+          <?php endif ?>
+<!-- bloque de status 2 -->
+          <?php if ($incident->incidents_status_id==3): ?>
+            <input type="hidden" name="status" value="4">
               <input type="hidden" name="id" value="<?php echo $incident->id ?>">
 
               <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
               <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
 
-                {{Form::submit('Mover a Resuelto',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
+                {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
             <div class="col-lg-1 pull-right">
               <p id="file_message">
 
@@ -332,12 +338,7 @@ $(document).ready(function(){
           <?php endif ?>
 
 
-          <?php if ($incident->incidents_status_id==3): ?>
-            <input type="hidden" name="status" value="4">
 
-              <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-            {{Form::submit('Mover a Cerrado',['class'=>'btn btn-primary pull-right ']);}}
-          <?php endif ?>
         {{ Form::close() }}
         </form>
       </div>

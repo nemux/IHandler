@@ -241,8 +241,6 @@ protected $layout = 'layouts.master';
       $sensor_object= new Sensor;
       $input = Input::all();
 
-
-
       $incident=new Incident;
       $attack=Attack::lists('name', 'id');
       $categories=Category::lists('name', 'id');
@@ -780,11 +778,11 @@ protected $layout = 'layouts.master';
   }
   public function index(){
 
-    if (Auth::user()->type->name == 'admin')
+    /*if (Auth::user()->type->name == 'admin')
       $incident=Incident::all();
     else
-      $incident = Incident::where('incident_handler_id','=',Auth::user()->id)->get();
-
+      $incident = Incident::where('incident_handler_id','=',Auth::user()->id)->get();*/
+    $incident=Incident::all();
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
     ));
