@@ -29,6 +29,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
+                                            <th>Cliente</th>
+                                            <th>IP</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -40,9 +42,13 @@
                                             <?php echo $i ?>
                                           </td>
                                           <td>
-                                            <?php echo $s->name ?> 
+                                            <?php echo $s->name ?>
                                           </td>
-                                        </tr>
+                                            <td>{{$s->customers->company}}
+                                          </td>
+                                         </td>
+                                            <td>{{$s->ip}}
+                                         </td>
                                       <?php endforeach ?>
                                     </tbody>
                                 </table>

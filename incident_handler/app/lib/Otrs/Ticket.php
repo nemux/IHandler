@@ -38,7 +38,7 @@ class Ticket extends Otrs {
                                                       "Lock",         "unlock",
                                                       "PriorityID",   $priority,
                                                       "State",        "new",
-                                                      "CustomerUser", $customer,
+                                                      "CustomerUser", $customer->otrs_userID,
                                                       "OwnerID",      $userInfo['UserID'],
                                                       "UserID",       $userInfo['UserID'],
                                                      ));

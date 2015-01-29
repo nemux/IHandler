@@ -23,9 +23,8 @@ class CreateIncidentsTable extends Migration {
       $table->longText('description')->nullable();
 			$table->string('file')->nullable();
 			$table->longText('conclution');
-			$table->longText('recomendation');
+			$table->longText('recomendation')->nullable();
 			$table->integer('categories_id')->unsigned();
-
 			$table->integer('attacks_id')->unsigned();
 			$table->integer('customers_id')->unsigned();
 			$table->string('stream')->nullable();

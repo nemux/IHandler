@@ -14,6 +14,7 @@ protected $layout = 'layouts.master';
       if ($input) {
         $sensor->name=$input['name'];
         $sensor->ip=$input['ip'];
+        $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
         return Redirect::to('sensor/view/'.$sensor->id);
@@ -38,6 +39,7 @@ protected $layout = 'layouts.master';
       if ($input) {
         $sensor->ip=$input['ip'];
         $sensor->name=$input['name'];
+        $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
         return Redirect::to('sensor/view/'.$sensor->id);

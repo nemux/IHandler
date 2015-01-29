@@ -355,7 +355,7 @@
                                 <select name="risk" class="form-control">
                                   <option value="">Riesgo</option>
                                   <?php $option=""; ?>
-                                  <?php for($i=0;$i<11;$i++){ ?>
+                                  <?php for($i=1;$i<11;$i++){ ?>
 
 
                                     <?php if (isset($update)): ?>
@@ -411,7 +411,7 @@
                               </td>
                               <td width="20%">
                                 <select name="attack_id" class="form-control" id="attack">
-                                        
+
                                         <optgroup label="Otros">
                                           <option value="1">Otros</option>
                                         </optgroup>
@@ -794,7 +794,9 @@
                                             <?php echo $io->src->function ?>
                                             ,
                                             <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->src->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
-                                            <?php echo $hist->location ?>
+                                            <?php if ($hist){
+                                                echo $hist->location;
+                                              }?>
                                             ,
                                             <?php echo $io->src->type->name ?>
                                             ,

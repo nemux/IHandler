@@ -62,7 +62,7 @@
                         <div class="col-md-10 col-sm-10">
                           {{Form::text('montage', $sensor->montage,[
                                     'class'=>'form-control parsley-validated',
-                                    "data-parsley-pattern"=>"^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+                                    "data-parsley-pattern"=>"^(.)+$",
                                     "data-parsley-required"=>"true"]);
                           }}
                         </div>
@@ -71,7 +71,7 @@
 
                       <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2">
-                            {{ Form::label('customers_id', 'Tipo de acceso:') }}
+                            {{ Form::label('customers_id', 'Cliente:') }}
                         </label>
                         <div class="col-md-10 col-sm-10">
                             {{ Form::select('customers_id', $customer,$sensor->customers_id,[

@@ -33,13 +33,15 @@ class Article extends Otrs {
                                                          "HistoryType",    "WebRequestCustomer",
                                                          "HistoryComment", "Creado desde GCS Incident System",
                                                          "From",           'GCS-IM System <gcs_im@globalcybersec.com>',
+                                                         'To', $customer->mail,
                                                          "Subject",        $title,
                                                          "ContentType",    "text/html; charset=UTF-8",
                                                          "Body",           $body,
                                                          "UserID",         $userId,
+                                                         "HistoryComment", 'Ticket generado por el Sistema GCS-IM',
                                                          "OrigHeader", array(
                                                            'From' => $userEmail,
-                                                           'To' => 'Postmaster',
+                                                           'To' => $customer->mail,
                                                            'Subject' => $title,
                                                            'Body' => $body
                                                          ),
