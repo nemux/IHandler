@@ -13,14 +13,14 @@
 			<!-- end page-header -->
 
 			<!-- begin row -->
-			
+
 				<!-- end col-3 -->
 
 
         <div class="row">
         <!-- begin col-4 -->
         <div class="col-md-4 col-sm-6">
-          <div class="widget widget-stats bg-orange">
+          <div class="widget widget-stats bg-blue">
             <div class="stats-icon stats-icon-lg">
               <i class="fa fa-globe fa-fw"></i>
             </div>
@@ -42,7 +42,7 @@
 
         <!-- begin col-4 -->
         <div class="col-md-4 col-sm-6">
-          <div class="widget widget-stats bg-red">
+          <div class="widget widget-stats bg-black">
             <div class="stats-icon stats-icon-lg">
               <i class="fa fa-search  fa-fw"></i>
             </div>
@@ -64,7 +64,7 @@
 
         <!-- begin col-4 -->
         <div class="col-md-4 col-sm-6">
-          <div class="widget widget-stats bg-green-darker">
+          <div class="widget widget-stats bg-blue">
             <div class="stats-icon stats-icon-lg">
               <i class="fa fa-thumbs-o-up  fa-fw"></i>
             </div>

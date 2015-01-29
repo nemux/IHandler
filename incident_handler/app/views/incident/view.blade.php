@@ -22,9 +22,16 @@ $(document).ready(function(){
   });
 
   $('#falso_positivo').click(function (){
+    $('#next_status').val('5');
+    $('#send').click();
 
   });
-  return_abierto
+  $('#return_abierto').click(function (){
+    $('#next_status').val("1");
+    $('#send').click();
+
+  });
+  //
 
 
 });
@@ -41,9 +48,7 @@ $(document).ready(function(){
       <div class="panel panel-inverse">
           <div class="panel-heading">
               <div class="panel-heading-btn">
-                  <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
-                  <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                  <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a> -->
+
               </div>
               <h4 class="panel-title">Título: {{ $incident->title }}  </h4>
           </div>
@@ -227,7 +232,11 @@ $(document).ready(function(){
                               <?php $count=0 ?>
                               <?php foreach ($location as $l): ?>
                                 <?php $count++; ?>
-                                <?php print_r($l->location) ?><br>
+                                <?php
+                                if (isset($l->location)) {
+                                  print_r($l->location);
+                                }
+                                 ?><br>
                               <?php endforeach ?>
                             </td>
                           </tr>
@@ -299,18 +308,22 @@ $(document).ready(function(){
           <?php endforeach ?>
         </div>
       <?php endif ?>
+
+      <!-- botones de camnbio-->
       <div class="col-lg-12" style="margin-bottom:50px">
 
 
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
         <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
-            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id): ?>
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
               <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
-                <input type="hidden" name="status" value="2" id="next_status">
-                <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+
+
                   <input type="hidden" name="id" value="<?php echo $incident->id ?>">
                 <?php if ($incident->incidents_status_id==1 && $message==""): ?>
-                  {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ']);}}
+                  <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+                  <input type="hidden" name="status" value="2" id="next_status">
+                  {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
                 <?php endif ?>
               <?php endif ?>
 
@@ -319,14 +332,27 @@ $(document).ready(function(){
                 <?php echo $message ?>
               </div>
             <?php endif ?>
+
             <?php if ($incident->incidents_status_id==2): ?>
-              <input type="hidden" name="status" value="3" id="next_status">
+              <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+              <input type="hidden" name="status" id="next_status" value="3">
                 <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
                 <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
-              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ']);}}
+              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
               <a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>
             <?php endif ?>
+
+
+            <?php if ($incident->incidents_status_id==5): ?>
+
+              <input type="hidden" name="status" id="next_status" value="1">
+                <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
+
+              {{Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+
+            <?php endif ?>
+
   <!-- bloque de status 2 -->
             <?php if ($incident->incidents_status_id==3): ?>
               <input type="hidden" name="status" value="4" id="next_status">

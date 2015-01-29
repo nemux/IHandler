@@ -59,6 +59,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('manage/{id}', 'IncidentController@edit');
   Route::post('manage', 'IncidentController@change_status');
   Route::get('pdf/{id}', 'IncidentController@pdf');
+  //Route::get('show/{id}', 'IncidentController@pdf');
 });
 
 Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
@@ -87,4 +88,5 @@ Route::group(array('prefix'=>'report'),function(){
 
 Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
   Route::get('import','OtrsController@import');
+  Route::get('result','OtrsController@result');
 });

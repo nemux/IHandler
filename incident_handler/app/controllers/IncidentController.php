@@ -105,9 +105,15 @@ protected $layout = 'layouts.master';
       $input = Input::all();
       $id = $input['id'];
       $status = $input['status'];
+
+
       $incident=Incident::find($id);
 
       if ( $id && $status) {
+        if ($status=="1") {
+          $incident->incidents_status_id = $status;
+          $incident->save();
+        }
 
         if ($status=="2") {
           $incident->incidents_status_id = $status;
@@ -704,7 +710,7 @@ protected $layout = 'layouts.master';
       }
     }
 
-
+    
     $html= $this->layout = View::make('incident.show', array(
       'det_time'=>$det_time,
       'occ_time'=>$occ_time,

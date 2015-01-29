@@ -14,14 +14,14 @@
 
 				<!-- begin header navigation right -->
 				<ul class="nav navbar-nav navbar-right">
-					<li>
+					<!--<li>
 						<form class="navbar-form full-width">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Enter keyword" />
 								<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
 							</div>
 						</form>
-					</li>
+					</li>-->
 					<!--
 					<li class="dropdown">
 						<a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
@@ -85,7 +85,7 @@
 
 					-->
             <li class="media" >
-							<div style="padding-top:3px;color:#FFF">
+							<div style="padding-top:18px;color:#FFF">
 
             			<?php echo date("d-m-Y") ?>
             		<a id="new_clock" ></a>
