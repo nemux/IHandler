@@ -11,6 +11,8 @@
          ['name' => 'Investigación','description' => 'En el proceso de ser investigado y resuelto.'],
          ['name' => 'Resuelto','description' => 'La solución ha sido implementada pero la validación de que volvió a la normalidad por parte del negocio o el usuario final tofavía no ha ocurrido.'],
          ['name' => 'Cerrado','description' => 'El usuario o el negocio ha acordado que el incidente ha sido resueldo y que el estado normal de las operaciones ha sido restaurado.'],
+         ['name' => 'Falso Positivo','description' => 'El incidente se cierra con un estado de "Falso Positivo"'],
+
        ];
 
        foreach($incidentStatus as $i)

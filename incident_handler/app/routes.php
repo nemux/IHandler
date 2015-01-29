@@ -88,4 +88,3 @@ Route::group(array('prefix'=>'report'),function(){
 Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
   Route::get('import','OtrsController@import');
 });
-

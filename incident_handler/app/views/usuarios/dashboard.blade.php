@@ -13,23 +13,7 @@
 			<!-- end page-header -->
 
 			<!-- begin row -->
-			<div class="row">
-				<!-- begin col-3 -->
-				<div class="col-md-3 col-sm-5">
-					<div class="widget widget-stats bg-aqua">
-						<div class="stats-icon"><i class="fa fa-clock-o"></i></div>
-						<div class="stats-info">
-							<h4>Hora</h4>
-						</div>
-						<div class="stats-number">
-                <p id="dash-clock"></p>
-						</div>
-            <div class="stats-link">
-               UTC/GMT -6 horas
-            </div>
-					</div>
-				</div>
-        </div>
+			
 				<!-- end col-3 -->
 
 

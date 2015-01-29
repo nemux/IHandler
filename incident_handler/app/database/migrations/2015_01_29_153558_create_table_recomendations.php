@@ -21,7 +21,7 @@ class CreateTableRecomendations extends Migration {
 		});
 
     Schema::table('recomendations',function(Blueprint $table){
-      $table->foreign('incidents_id')->references('incidents')->on('id');
+      $table->foreign('incidents_id')->references('id')->on('incidents');
     });
 	}
 

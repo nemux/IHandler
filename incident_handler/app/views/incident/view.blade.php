@@ -20,6 +20,13 @@ $(document).ready(function(){
     }
     $("#file_message").text("("+count_files+") Archivos seleccionados");
   });
+
+  $('#falso_positivo').click(function (){
+
+  });
+  return_abierto
+
+
 });
 </script>
   <!-- begin #page-loader -->
@@ -296,51 +303,48 @@ $(document).ready(function(){
 
 
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
-        <a class="btn btn-danger" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
-
-
-
-
-            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
-              <input type="hidden" name="status" value="2">
-              <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-                <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-              <?php if ($incident->incidents_status_id==1 && $message==""): ?>
-                {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ']);}}
+        <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id): ?>
+              <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
+                <input type="hidden" name="status" value="2" id="next_status">
+                <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+                  <input type="hidden" name="id" value="<?php echo $incident->id ?>">
+                <?php if ($incident->incidents_status_id==1 && $message==""): ?>
+                  {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ']);}}
+                <?php endif ?>
               <?php endif ?>
+
+            <?php if ($message!=""): ?>
+              <div class="col-lg-2 pull-right">
+                <?php echo $message ?>
+              </div>
             <?php endif ?>
+            <?php if ($incident->incidents_status_id==2): ?>
+              <input type="hidden" name="status" value="3" id="next_status">
+                <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
+                <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
-          <?php if ($message!=""): ?>
-            <div class="col-lg-2 pull-right">
-              <?php echo $message ?>
-            </div>
-          <?php endif ?>
-          <?php if ($incident->incidents_status_id==2): ?>
-            <input type="hidden" name="status" value="3">
+              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ']);}}
+              <a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>
+            <?php endif ?>
+  <!-- bloque de status 2 -->
+            <?php if ($incident->incidents_status_id==3): ?>
+              <input type="hidden" name="status" value="4" id="next_status">
+                <input type="hidden" name="id" value="<?php echo $incident->id ?>">
 
-              <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-            {{Form::submit('Mover a Cerrado',['class'=>'btn btn-primary pull-right ']);}}
-          <?php endif ?>
-<!-- bloque de status 2 -->
-          <?php if ($incident->incidents_status_id==3): ?>
-            <input type="hidden" name="status" value="4">
-              <input type="hidden" name="id" value="<?php echo $incident->id ?>">
+                <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
+                <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
 
-              <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
-              <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
+                  {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
+              <div class="col-lg-1 pull-right">
+                <p id="file_message">
 
-                {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved']);}}
-            <div class="col-lg-1 pull-right">
-              <p id="file_message">
-
-              </p>
-            </div>
-          <?php endif ?>
-
-
-
+                </p>
+              </div>
+            <?php endif ?>
+            <?php endif ?>
         {{ Form::close() }}
-        </form>
+
       </div>
 
 

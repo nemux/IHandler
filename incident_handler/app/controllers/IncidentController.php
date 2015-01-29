@@ -70,9 +70,9 @@ protected $layout = 'layouts.master';
         return "Debe tener registradas las fechas para detección y ocurrencia";
       }
 
-      /*if ($incident->risk=="") {
-        return "Se debe seleccionar un ni";
-      }*/
+      if ($incident->risk<1) {
+        return "Se debe seleccionar un nivel de riesgo";
+      }
       if ($incident->criticity=="") {
         return "Se debe elegir un nivel de criticidad";
       }
@@ -109,23 +109,27 @@ protected $layout = 'layouts.master';
 
       if ( $id && $status) {
 
-
+        if ($status=="2") {
+          $incident->incidents_status_id = $status;
+          $incident->save();
+        }
         if ($status=="3") {
-
+          $this->sendTicket($incident,$status);
+          $incident->incidents_status_id = $status;
+          $incident->save();
+        }
+        if ($status=="4") {
           $count_images=0;
           foreach ($input['images'] as $i) {
             if ($i) {
               $count_images++;
             }
           }
-
-
           if ($count_images>0) {
 
             $incident->incidents_status_id=$status;
             foreach ($input['images'] as $i) {
               if ($i) {
-
                 $name=$i->getClientOriginalName();
                 print_r($i);
                 $files=explode('.',$name);
@@ -146,18 +150,13 @@ protected $layout = 'layouts.master';
               }
             }
             $incident->save();
-            $this->sendTicket($incident,$status);
           }
         }
 
-
-      if ($status=="2") {
-
-        //$this->sendTicket($incident,$status);
-        $incident->incidents_status_id = $status;
-        $incident->save();
-      }
-
+        if ($status=="5") {
+          $incident->incidents_status_id = $status;
+          $incident->save();
+        }
       }
       return Redirect::to('incident/view/'.$incident->id);
     }
