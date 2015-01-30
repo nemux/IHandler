@@ -10,7 +10,7 @@ class CreateUsersTable extends Migration {
 	 *
 	 * @return void
 	 */
-		
+
 		//
 		 public function up()
   {
@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration {
       $table->integer('type');
       $table->string('other');
       $table->timestamps();
+      $table->softDeletes();
     });
 	}
 

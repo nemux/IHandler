@@ -6,9 +6,11 @@ class IncidentHandler extends Eloquent {
 	 * The database table used by the model.
 	 * @var string
 	 */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
 	protected $table = 'incident_handler';
 	protected $fillable = ['name','lastname','mail','phone'];
-	protected $softDelete = true;
 
 	public function access(){
 		return $this->hasOne('Access','incident_handler_id','id');

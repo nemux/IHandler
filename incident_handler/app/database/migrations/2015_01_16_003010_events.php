@@ -20,6 +20,7 @@ class Events extends Migration {
 	    $table->integer('occurrences_types_id')->unsigned();
 			$table->boolean('blacklist')->default("0");
       $table->timestamps();
+      $table->softDeletes();
 
 		});
 

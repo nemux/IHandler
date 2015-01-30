@@ -16,6 +16,8 @@ class CreateReportsTable extends Migration {
 		{
 			$table->increments('id');
       $table->integer('customers_id')->unsigned();
+      $table->timestamps();
+      $table->softDeletes();
 		});
 
     Schema::table('reports', function(Blueprint $table){

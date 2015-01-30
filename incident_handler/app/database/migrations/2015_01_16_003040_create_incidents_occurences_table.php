@@ -21,6 +21,7 @@ class CreateIncidentsOccurencesTable extends Migration {
 			$table->integer('destiny_id')->unsigned();
 			$table->integer('incidents_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 
 		//

@@ -18,6 +18,7 @@ class CreateIncidentsRulesTable extends Migration {
 			$table->integer('rules_id')->unsigned();
 			$table->integer('incidents_id')->unsigned();
 			$table->timestamps();
+      $table->softDeletes();
 		}	);
 	}
 

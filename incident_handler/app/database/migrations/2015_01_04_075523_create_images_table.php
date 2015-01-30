@@ -21,6 +21,7 @@ class CreateImagesTable extends Migration {
       		$table->string('name');
 					$table->integer('evidence_types_id')->unsigned();
         	$table->timestamps();
+          $table->softDeletes();
 			});
 	}
 

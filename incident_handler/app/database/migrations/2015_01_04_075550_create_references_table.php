@@ -24,6 +24,7 @@ class CreateReferencesTable extends Migration {
 			$table->string('sid')->nullable();
       $table->integer('incidents_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

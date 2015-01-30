@@ -20,6 +20,7 @@ class CreateTimeTable extends Migration {
 			$table->integer('time_types_id')->unsigned();
       $table->integer('incidents_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

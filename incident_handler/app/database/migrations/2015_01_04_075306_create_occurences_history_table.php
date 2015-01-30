@@ -24,6 +24,7 @@ class CreateOccurencesHistoryTable extends Migration {
       $table->integer('occurences_id')->unsigned();
       $table->integer('incident_handler_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

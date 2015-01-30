@@ -6,9 +6,12 @@ class Incident extends Eloquent{
 	 * The database table used by the model.
 	 * @var string
 	 */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
 	protected $table = 'incidents';
 	protected $fillable = ['risk','stream','criticity','impact','description','file','conclution','recomendation','sensors_id','categories_id','attacks_id','customers_id','incident_handler_id','incidents_status_id'];
-	protected $softDelete = true;
+
 
   /*HAS MANY*/
   public function reference()

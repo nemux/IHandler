@@ -5,9 +5,12 @@ class TicketHistory extends Eloquent {
    * The database table used by the model.
    * @var string
    */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
   protected $table = 'tickets_history';
   protected $fillable = ['datetime','incident_handler_id','tickets_status_id','tickets_id'];
-  protected $softDelete = true;
+
 
 
   public function incidentHandler(){

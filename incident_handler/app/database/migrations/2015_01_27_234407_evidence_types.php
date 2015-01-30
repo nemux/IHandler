@@ -15,12 +15,10 @@ class EvidenceTypes extends Migration {
 		Schema::create('evidence_types', function(Blueprint $table){
 
 					$table->increments('id');
-
 					$table->string('name');
-
 					$table->string('description');
-
 					$table->timestamps();
+          $table->softDeletes();
 			});
 
 			Schema::table("images",function(Blueprint $table){

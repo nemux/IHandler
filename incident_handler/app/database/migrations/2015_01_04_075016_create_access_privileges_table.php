@@ -17,6 +17,7 @@ class CreateAccessPrivilegesTable extends Migration {
       $table->increments('id');
       $table->integer('access_types_id')->unsigned();
       $table->integer('privileges_id')->unsigned();
+      $table->softDeletes();
 		}	);
 		//
 	}

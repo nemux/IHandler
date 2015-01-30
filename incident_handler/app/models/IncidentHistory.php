@@ -5,9 +5,12 @@ class IncidentHistory extends Eloquent {
 	 * The database table used by the model.
 	 * @var string
 	 */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
 	protected $table = 'incidents_history';
 	protected $fillable = ['datetime','description','incidents_status_id','incident_handler_id','incidents_id'];
-	protected $softDelete = true;
+
 
 	public function incident_handler(){
 		return $this->belongsTo('IncidentHandler','incident_handler_id','id');

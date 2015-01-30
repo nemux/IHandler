@@ -19,6 +19,7 @@ class CreateMethodsTable extends Migration {
       $table->string('description')->nullable();
       $table->integer('incidents_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

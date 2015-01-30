@@ -12,7 +12,7 @@ class ManyToManyRelationship extends Migration {
 	*/
 	public function up()
 	{
-		
+
 
 		Schema::table('incidents_rules', function(Blueprint $table)
 		{

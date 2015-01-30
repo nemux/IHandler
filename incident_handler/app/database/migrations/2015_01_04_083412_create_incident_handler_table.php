@@ -21,6 +21,7 @@ class CreateIncidentHandlerTable extends Migration {
       $table->string('mail',60);
       $table->string('phone',50);
       $table->timestamps();
+      $table->softDeletes();
 		//
      } );
 	}

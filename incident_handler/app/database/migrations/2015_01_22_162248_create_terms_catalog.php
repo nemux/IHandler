@@ -17,6 +17,8 @@ class CreateTermsCatalog extends Migration {
 			$table->increments('id');
       $table->string('term');
       $table->text('description');
+      $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

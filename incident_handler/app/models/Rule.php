@@ -8,9 +8,12 @@ class Rule extends Eloquent  {
    * The database table used by the model.
    * @var string
    */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
   protected $table = 'rules';
   protected $fillable = ['sid','rule','message','translate','rule_is','why'];
-  protected $softDelete = true;
+
 
 
   public function incidents()

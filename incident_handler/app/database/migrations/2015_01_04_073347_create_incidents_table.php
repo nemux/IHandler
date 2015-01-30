@@ -32,6 +32,7 @@ class CreateIncidentsTable extends Migration {
 			$table->integer('incident_handler_id')->unsigned();
 			$table->integer('sensors_id')->unsigned();
 			$table->timestamps();
+      $table->softDeletes();
 
 		});
 	}

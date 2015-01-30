@@ -21,6 +21,7 @@ class CreateTicketsTable extends Migration {
 			$table->string('internal_number')->nullable();
 			$table->integer('incidents_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

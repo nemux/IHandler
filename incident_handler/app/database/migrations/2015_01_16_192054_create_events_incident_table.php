@@ -17,6 +17,8 @@ class CreateEventsIncidentTable extends Migration {
 			$table->increments('id');
 			$table->integer('occurrences_id')->unsigned();
 			$table->integer('incidents_id')->unsigned();
+      $table->timestamps();
+      $table->softDeletes();
 		}	);
 	}
 

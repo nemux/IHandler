@@ -18,6 +18,7 @@ class CreateIncidentsStatusTable extends Migration {
 			$table->string('name');
       $table->string('description',400);
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

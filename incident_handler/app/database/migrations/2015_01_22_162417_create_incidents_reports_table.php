@@ -17,6 +17,8 @@ class CreateIncidentsReportsTable extends Migration {
 			$table->increments('id');
       $table->integer('incidents_id')->unsigned();
       $table->integer('reports_id')->unsigned();
+      $table->timestamps();
+      $table->softDeletes();
 		});
 
     Schema::table('incident_report', function(Blueprint $table){

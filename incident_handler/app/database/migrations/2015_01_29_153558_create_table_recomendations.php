@@ -19,6 +19,7 @@ class CreateTableRecomendations extends Migration {
       $table->integer('incidents_id')->unsigned();
       $table->string('otrs_article_id')->nullable();
       $table->timestamps();
+      $table->softDeletes();
 		});
 
     Schema::table('recomendations',function(Blueprint $table){

@@ -18,6 +18,7 @@ class CreateTicketsStatus extends Migration {
       $table->string('name');
       $table->string('desciption');
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

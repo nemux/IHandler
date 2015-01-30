@@ -6,6 +6,9 @@ class Time extends Eloquent {
 	 * The database table used by the model.
 	 * @var string
 	 */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
 	protected $table = 'time';
 	protected $fillable = ['datetime','zone','time_types_id','incidents_id'];
 	protected $softDelete = true;

@@ -24,6 +24,7 @@ class CreateCustomersTable extends Migration {
       $table->string('otrs_usercustomerID');
       $table->string('otrs_validID');
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

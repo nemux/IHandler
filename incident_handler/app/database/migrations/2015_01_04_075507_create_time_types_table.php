@@ -18,6 +18,7 @@ class CreateTimeTypesTable extends Migration {
       $table->string('name');
       $table->string('description',300);
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

@@ -20,6 +20,7 @@ class CreateTicketsHistoryTable extends Migration {
      	$table->integer('tickets_status_id')->unsigned();
      	$table->integer('tickets_id')->unsigned();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

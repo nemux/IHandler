@@ -23,6 +23,7 @@ class CreateAccessTable extends Migration {
       $table->boolean('active');
       $table->rememberToken()->nullable();
       $table->timestamps();
+      $table->softDeletes();
 		});
 	}
 

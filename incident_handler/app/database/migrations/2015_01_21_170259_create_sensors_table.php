@@ -20,6 +20,7 @@ class CreateSensorsTable extends Migration {
 			$table->integer('customers_id')->unsigned();
 			$table->string('montage');
 			$table->timestamps();
+      $table->softDeletes();
 
 		});
 		Schema::table('sensors', function(Blueprint $table)

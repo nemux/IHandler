@@ -6,9 +6,12 @@ class Image extends Eloquent {
 	 * The database table used by the model.
 	 * @var string
 	 */
+  use SoftDeletingTrait;
+
+  protected $dates = ['deleted_at'];
 	protected $table = 'images';
 	protected $fillable = ['source','file','name','incidents_id','evidence_types_id'];
-	protected $softDelete = true;
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 * @var array
