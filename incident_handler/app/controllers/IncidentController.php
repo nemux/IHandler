@@ -105,9 +105,23 @@ protected $layout = 'layouts.master';
       $input = Input::all();
       $id = $input['id'];
       $status = $input['status'];
+
+
       $incident=Incident::find($id);
 
       if ( $id && $status) {
+
+        if(isset($input['send_recomendation'])){
+          return View::make('incident.recomendation',array(
+            'title'=>'Agregar recomendaci&oacute;n',
+            'action'=>'IncidentController@addRecomendation',
+            'incident' => $incident
+            ));
+        }
+        if ($status=="1") {
+          $incident->incidents_status_id = $status;
+          $incident->save();
+        }
 
         if ($status=="2") {
           $incident->incidents_status_id = $status;
@@ -150,20 +164,13 @@ protected $layout = 'layouts.master';
               }
             }
             $incident->save();
+            $this->closeTicket($incident->ticket->otrs_ticket_id);
           }
         }
 
         if ($status=="5") {
           $incident->incidents_status_id = $status;
           $incident->save();
-        }
-
-        if($input['send_recomendation']){
-          return View::make('incident.recomendation',array(
-            'title'=>'Agregar recomendaci&oacute;n',
-            'action'=>'IncidentController@addRecomendation',
-            'incident' => $incident
-            ));
         }
       }
       return Redirect::to('incident/view/'.$incident->id);
@@ -434,10 +441,8 @@ protected $layout = 'layouts.master';
         'occ_time'=>$occ_time,
         'update'=>'1',
       ));
-
-
-
     }
+
     public function postUpdate()
     {
 
@@ -675,6 +680,8 @@ protected $layout = 'layouts.master';
 
     $message=$this->ready($incident);
 
+    $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
+
     return $this->layout = View::make('incident.view', array(
       'det_time'=>$det_time,
       'occ_time'=>$occ_time,
@@ -682,6 +689,7 @@ protected $layout = 'layouts.master';
       'listed'=>$listed,
       'location'=>$location,
       'message'=>$message,
+      'recomendations' => $recomendations
       ));
 
   }
@@ -690,41 +698,11 @@ protected $layout = 'layouts.master';
     //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $incident=Incident::find($id);
 
-    $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
-    $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
-    $listed=array();
-    $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
-    $location=array();
-    foreach ($black_preview as $b) {
-      if ($b->src->blacklist) {
-        array_push($listed,$b->src);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
-        array_push($location,$loc);
-        //print_r($loc);
-        //echo "<br>";
-      }
-      if ($b->dst->blacklist) {
-        array_push($listed,$b->dst);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
-        array_push($location,$loc);
-        //print_r($loc);
-        //echo "<br>";
-      }
-    }
-
-
-    $html= $this->layout = View::make('incident.show', array(
-      'det_time'=>$det_time,
-      'occ_time'=>$occ_time,
-      'incident'=>$incident,
-      'listed'=>$listed,
-      'location'=>$location
-
-      ));
+    $htmlReport = $this->renderReport($incident);
 
     $pdf = App::make('dompdf');
 
-    $pdf->loadHTML($html,1);
+    $pdf->loadHTML($htmlReport,1);
     return $pdf->stream();
 
   }
@@ -733,11 +711,12 @@ protected $layout = 'layouts.master';
 
     $id = Input::get('id');
     $recomendation = Input::get('recomendations');
-    $incident = Incident::find($id);
 
+    $incident = Incident::find($id);
     $this->sendRecomendation($incident, $recomendation);
     $url = '/incident/view/'.$id;
-    Redirect::to($url);
+
+    return Redirect::to($url);
   }
 
   public function index(){
@@ -757,10 +736,61 @@ protected $layout = 'layouts.master';
     $ticketOtrs = new Otrs\Ticket();
     $ticketIM = new Ticket;
 
-
     $incident->incidents_status_id=$status;
     $incident->save();
 
+    $tn = DB::table('tickets')
+            ->join('incidents', 'tickets.incidents_id', '=', 'incidents.id')
+            ->join('customers', 'incidents.customers_id', '=', 'customers.id')
+            ->where('customers.id','=', $incident->customers_id)
+            ->count();
+
+    $in = $incident->customer->otrs_userID."-".($tn+1);
+    $ticketIM->internal_number = $in;
+    $ticketIM->incident_handler_id = Auth::user()->id;
+    $ticketIM->incidents_id = $incident->id;
+    $ticketIM->save();
+
+    $htmlReport = $this->renderReport($incident);
+
+    //print_r($ticketOtrs->getPriorities());
+    $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
+    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+    $ticketIM->save();
+  }
+
+  private function closeTicket($ticketID){
+
+    $ticketOtrs = new Otrs\Ticket();
+    $t = Ticket::where('otrs_ticket_id','=',$ticketID)->first();
+    Log::info($t);
+
+    $ticketIM = Ticket::find($t->id);
+    Log::info($ticketIM);
+
+    $htmlReport = $this->renderReport($ticketIM->incident);
+    $res = $ticketOtrs->close($ticketID, $htmlReport);
+  }
+
+    private function sendRecomendation($incident, $recomendation){
+
+    $otrsR = new Otrs\Article();
+    $user = Auth::user();
+    $r = new Recomendation();
+    $r->incidents_id = $incident->id;
+    $r->content = $recomendation;
+    $r->save();
+
+    $htmlReport = $this->renderReport($incident);
+
+    $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $user->id, $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
+
+    $r->otrs_article_id = $articleID;
+    $r->save();
+  }
+
+  private function renderReport($incident){
     $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
     $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
     $listed=array();
@@ -783,47 +813,16 @@ protected $layout = 'layouts.master';
       }
     }
 
-    $tn = DB::table('tickets')
-            ->join('incidents', 'tickets.incidents_id', '=', 'incidents.id')
-            ->join('customers', 'incidents.customers_id', '=', 'customers.id')
-            ->where('customers.id','=', $incident->customers_id)
-            ->count();
+    $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
 
-    $in = $incident->customer->otrs_userID."-".($tn+1);
-
-
-    $htmlReport= $this->layout = View::make('incident.show', array(
+    return $htmlReport = $this->layout = View::make('incident.show', array(
       'det_time'=>$det_time,
       'occ_time'=>$occ_time,
       'incident'=>$incident,
       'listed'=>$listed,
       'location'=>$location,
-      'ticket_number' => $in
+      'recomendations' => $recomendations
     ))->render();
-
-    //print_r($ticketOtrs->getPriorities());
-    $ticket_info = $ticketOtrs->createTicket($incident->title, $incident->risk, $incident->customer,$htmlReport);
-    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-    $ticketIM->incident_handler_id = Auth::user()->id;
-    $ticketIM->incidents_id = $incident->id;
-    $ticketIM->internal_number = $in;
-
-    $ticketIM->save();
-  }
-
-    private function sendRecomendation($incident, $recomendation){
-
-    $otrsR = new Otrs\Article();
-    $user = Auth::user();
-    $r = new Recomendation();
-
-    $articleID = $otrsR->createArticle($incident->ticket->otrs_ticket_id, $user->id, $user->incidentHandler->mail, $incident->title, $incident->customer, $recomendation);
-
-    $r->incidents_id = $incident->id;
-    $r->otrs_article_id = $articleID;
-    $r->content = $recomendation;
-    $r->save();
   }
 }
 

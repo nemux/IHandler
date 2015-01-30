@@ -71,7 +71,7 @@
     $(document).ready(function() {
       FormPlugins.init();
       TableManageDefault.init();
-      
+
       Form1.init();
       Form2.init();
       Form3.init();
@@ -280,18 +280,23 @@
 </script>
 @stop
 @section('content')
+<?php $display_form=""; ?>
+<?php if (isset($incident->status->id) && $incident->status->id>1): ?>
+  <?php $display_form="style='display:none'"; ?>
+<?php endif ?>
+
 <div class="row">
 <div class="panel panel-inverse">
 			    <div class="panel-heading">
 
-			        <h4 class="panel-title"><?php echo $title ?></h4>
+			        <h4 class="panel-title"><?php echo $title ?> </h4>
 			    </div>
 			    <div class="panel-body">
                     {{ Form::model($incident,array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form", "enctype"=>"multipart/form-data")) }}
 
                     <!--<form id="fileupload" action="<?php echo $action ?>" method="POST" enctype="multipart/form-data">-->
                         <div class="form-group">
-                          <table class="table table-bordered">
+                          <table class="table table-bordered" <?php echo $display_form ?>>
                             <tr>
                               <td>
                                 Fecha y Hora de detección
@@ -351,7 +356,7 @@
                             </tr>
                           </table>
                           <table class="table table-bordered">
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td>
                                 <select name="risk" class="form-control">
                                   <option value="">Riesgo</option>
@@ -463,7 +468,7 @@
                               </td>
 
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td colspan="5">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
                                           'class'=>'form-control parsley-validated',]);
@@ -471,7 +476,7 @@
 
                               </td>
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
 
                               <td colspan="5">
                                 {{ Form::select('sensor_id', $sensor,$incident->sensors_id,[
@@ -484,7 +489,7 @@
 
 
 
-                            <tr>
+                            <tr <?php echo $display_form ?>>
 
                               <td colspan="5" >
                                 {{Form::text('title',$incident->title,[
@@ -495,7 +500,7 @@
                                 }}
                               </td>
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
 
                               <td colspan="5" >
                                 <select id="" name="stream" class="form-control">
@@ -506,7 +511,7 @@
                               </td>
                             </tr>
 
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td colspan="5" >
                                 {{Form::textarea('description',$incident->description,[
                                       'class'=>'form-control parsley-validated',
@@ -519,13 +524,13 @@
                               </td>
                             </tr>
 
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td colspan="5">
                                 <h4>Añadir Reglas de Detección</h4>
                               </td>
                             </tr>
 
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td style="width:10%"><br>
                                 <a style="width:100%" href="#modal-dialog" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
                                 <a style="width:100%" class="btn btn-sm btn-success" onclick="addButton()"><i class="fa fa-plus"></i> Añadir</a>
@@ -564,7 +569,7 @@
                               </td>
                             </tr>
 
-                            <tr>
+                            <tr <?php echo $display_form ?>>
 
                               <td colspan="5">
 
@@ -659,13 +664,13 @@
                                 </div>
                               </td>
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td colspan="5">
                                 <h4>Añadir Eventos</h4>
 
                               </td>
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td style="width:10%"><br>
                                 <!--<a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>-->
                                 <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
@@ -752,7 +757,7 @@
 
 
                             </tr>
-                            <tr>
+                            <tr <?php echo $display_form ?>>
                               <td colspan="5">
                                 <table class="table table-bordered table-striped" id="events">
 
@@ -822,7 +827,9 @@
                                             <?php echo $io->dst->function ?>
                                             ,
                                             <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
-                                            <?php echo $hist->location ?>
+                                            <?php if ($hist){
+                                                echo $hist->location;
+                                              }?>
                                             ,
                                             <?php echo $io->dst->type->name ?>
                                             ,

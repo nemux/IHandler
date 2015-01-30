@@ -15,9 +15,10 @@ class CreateTableRecomendations extends Migration {
 		Schema::create('recomendations', function(Blueprint $table)
 		{
 			$table->increments('id');
-      $table->longText('content');
+      $table->longText('content')->nullable();
       $table->integer('incidents_id')->unsigned();
-      $table->string('otrs_article_id');
+      $table->string('otrs_article_id')->nullable();
+      $table->timestamps();
 		});
 
     Schema::table('recomendations',function(Blueprint $table){

@@ -23,7 +23,7 @@ class Article extends Otrs {
      *
      */
 
-    public function createArticle($TicketID, $userId, $userEmail, $title, $customer, $body) {
+    public function create($TicketID, $userId, $userEmail, $title, $customerEmail, $body) {
 
        $ArticleID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                          "TicketObject",   "ArticleCreate",
@@ -33,7 +33,7 @@ class Article extends Otrs {
                                                          "HistoryType",    "WebRequestCustomer",
                                                          "HistoryComment", "Creado desde GCS Incident System",
                                                          "From",           'GCS-IM System <gcs_im@globalcybersec.com>',
-                                                         'To', $customer->mail,
+                                                         'To', $customerEmail,
                                                          "Subject",        $title,
                                                          "ContentType",    "text/html; charset=UTF-8",
                                                          "Body",           $body,
@@ -41,7 +41,7 @@ class Article extends Otrs {
                                                          "HistoryComment", 'Ticket generado por el Sistema GCS-IM',
                                                          "OrigHeader", array(
                                                            'From' => $userEmail,
-                                                           'To' => $customer->mail,
+                                                           'To' => $customerEmail,
                                                            'Subject' => $title,
                                                            'Body' => $body
                                                          ),

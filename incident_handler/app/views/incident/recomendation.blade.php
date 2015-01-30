@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 @section('content')
 
@@ -88,7 +87,8 @@
                         <label class="control-label col-md-2 col-sm-2">
                         </label>
                         <div class="col-md-10 col-sm-10">
-                          {{Form::submit('Guardar',['class'=>'btn btn-primary pull-right ']);}}
+                          {{Form::submit('Guardar',['class'=>'btn btn-primary pull-right', 'style'=>'margin-left:2px']);}}
+                          {{ link_to(URL::previous(), 'Cancelar', ['class' => 'btn btn-danger pull-right']) }}
                         </div>
                       </div>
                     {{ Form::close() }}

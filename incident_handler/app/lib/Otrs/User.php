@@ -11,7 +11,7 @@ class User extends Otrs{
   }
 
 
-  private function userSearch($field, $pattern){
+  private function search($field, $pattern){
     $usersList = $this->client->__soapCall("Dispatch",
                                            array($this->username,$this->password,
                                                  "UserObject","UserSearch",
@@ -30,7 +30,7 @@ class User extends Otrs{
    */
   public function getAll(){
     $search = "*";
-    $usersList = $this->userSearch("Search","*");
+    $usersList = $this->search("Search","*");
     if (sizeof($usersList) > 0){
       $ul = $this->formatOtrsArray($usersList);
       $userData = array();
@@ -58,7 +58,7 @@ class User extends Otrs{
    *
    * @return array(UserInfo). Array with all the Information from the user.
    */
-  public function getUserInfo($user){
+  public function getInfo($user){
     /*
     $usersList = $this->userSearch("UserLogin",$user);
 

@@ -17,7 +17,18 @@
 				<!-- begin sidebar nav -->
 				<ul class="nav">
 					<li class="nav-header">Menú</li>
+					<li class="has-sub ">
+						<a href="javascript:;">
+								<b class="caret pull-right"></b>
+								<i class="fa fa-bookmark"></i>
+								<span>Incidentes</span>
 
+						</a>
+						<ul class="sub-menu">
+								<li class=""><a href="/incident/create">Crear</a></li>
+								<li><a href="/incident/">Ver</a></li>
+						</ul>
+					</li>
           @if (Auth::user()->type->name == 'admin')
 					<li class="has-sub ">
 						<a href="javascript:;">
@@ -31,6 +42,18 @@
 						</ul>
 					</li>
 
+          <li class="has-sub ">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-circle-o-notch"></i>
+						    <span>OTRS</span>
+					    </a>
+						<ul class="sub-menu">
+						    <li><a href="/otrs/import">Importar Informaci&oacute;n</a></li>
+						</ul>
+					</li>
+
+
 					<li class="has-sub ">
 						<a href="javascript:;">
 								<b class="caret pull-right"></b>
@@ -43,42 +66,20 @@
 						</ul>
 					</li>
 
-          <li class="has-sub ">
-						<a href="javascript:;">
-						    <b class="caret pull-right"></b>
-						    <i class="fa fa-suitcase"></i>
-						    <span>Clientes</span>
-					    </a>
-						<ul class="sub-menu">
-						    <li><a href="/customer/">Ver</a></li>
-						</ul>
-					</li>
-
-
-          <li class="has-sub ">
-						<a href="javascript:;">
-						    <b class="caret pull-right"></b>
-						    <i class="fa fa-user"></i>
-						    <span>OTRS</span>
-					    </a>
-						<ul class="sub-menu">
-						    <li><a href="/otrs/import">Importar Informaci&oacute;n</a></li>
-						</ul>
-					</li>
-					@endif
-
 					<li class="has-sub ">
 						<a href="javascript:;">
 								<b class="caret pull-right"></b>
-								<i class="fa fa-bookmark"></i>
-								<span>Incidentes</span>
-
-						</a>
+								<i class="fa fa-suitcase"></i>
+								<span>Clientes</span>
+							</a>
 						<ul class="sub-menu">
-								<li class=""><a href="/incident/create">Crear</a></li>
-								<li><a href="/incident/">Ver</a></li>
+								<li><a href="/customer/">Ver</a></li>
 						</ul>
 					</li>
+
+					@endif
+
+
 
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>

@@ -46,7 +46,7 @@ class Customer extends Otrs {
    *
    * @return string Return the CustomerID.
    */
-  public function getCustomerById($id){
+  public function getById($id){
     $customerID = $this->client->__soapCall("Dispatch",
                                          array($this->username,$this->password,
                                                "CustomerUserObject","CustomerIDs",
@@ -67,7 +67,7 @@ class Customer extends Otrs {
    *
    * @return stdClass Returns the data from the user.
    */
-  public function getCustomerInfo($user){
+  public function getInfo($user){
     $customerInfo = $this->client->__soapCall("Dispatch",
                                          array($this->username,$this->password,
                                                "CustomerUserObject","CustomerUserDataGet",

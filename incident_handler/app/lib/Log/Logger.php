@@ -5,7 +5,7 @@ namespace Log;
 class Logger {
 
 
-  public function write($user_id, $username, $action){
+  private function write($user_id, $username, $action){
 
     $log = new \Logger;
 
@@ -18,6 +18,18 @@ class Logger {
     $ip = $request->getClientIp();
     $log->ip =  $ip;
     $log->save();
+  }
+
+  public function info($user_id, $username, $action){
+    $this->write($user_id, $username, 'INFO:'.$action);
+  }
+
+  public function error($user_id, $username, $action){
+    $this->write($user_id, $username, 'ERROR:'.$action);
+  }
+
+    public function warning($user_id, $username, $action){
+    $this->write($user_id, $username, 'WARNING:'.$action);
   }
 
 }

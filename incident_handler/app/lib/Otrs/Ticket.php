@@ -22,13 +22,13 @@ class Ticket extends Otrs {
      *
      */
 
-    public function createTicket($title, $priority, $customer, $body) {
+    public function create($title, $priority, $customer, $body) {
 
       //Before create ticket, search the ID for the user assigned to Incident Manager System
       $user = new User;
       $article = new Article;
 
-      $userInfo = $user->getUserInfo($this->incidentHandler);
+      $userInfo = $user->getInfo($this->incidentHandler);
 
       # Create a new ticket. The function returns the Ticket ID.
       $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
@@ -47,10 +47,10 @@ class Ticket extends Otrs {
       # A ticket is not usefull without at least one article. The function create and
       # returns an Article ID.
 
-      $ArticleID = $article->createArticle($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer, $body);
+      $ArticleID = $article->create($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer->mail, $body);
 
       // Use the Ticket ID to retrieve the Ticket Number.
-      $TicketNr = $this->getTicketNumber($TicketID);
+      $TicketNr = $this->getNumber($TicketID);
 
       // Make sure the ticket number is not displayed in scientific notation
       // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
@@ -73,13 +73,63 @@ class Ticket extends Otrs {
      *
      */
 
-  public function getTicketNumber($TicketID){
+  public function getNumber($TicketID){
      $TicketNr = $this->client->__soapCall("Dispatch",array($this->username, $this->password,
                                                        "TicketObject",   "TicketNumberLookup",
                                                        "TicketID",       $TicketID,
                                                        ));
     return $TicketNr;
 
+  }
+
+  public function getInfo($ticketID){
+
+     $user = new User;
+     $userInfo = $user->getInfo($this->incidentHandler);
+
+     $ticketInfo = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                      "TicketObject", "TicketGet",
+                                                      "TicketID",     $ticketID,
+                                                      "UserID",     $userInfo['UserID'],
+                                                     ));
+    //return $ticketInfo;
+
+    return $this->formatOtrsArray($ticketInfo);
+  }
+
+  public function close($ticketID, $message){
+
+     $user = new User;
+     $article = new Article;
+     $customer =  new Customer;
+
+
+     $userInfo = $user->getInfo($this->incidentHandler);
+     $ticketInfo = $this->getInfo($ticketID);
+     $customerInfo = $customer->getInfo($ticketInfo['CustomerUserID']);
+
+     $articleID = $article->create($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo->UserEmail, $message);
+
+     $success1 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                      "TicketObject", "TicketStateSet",
+                                                      "State",        "closed successful",
+                                                      "TicketID",     $ticketID,
+                                                      "ArticleID",    $articleID,
+                                                      "UserID",   $userInfo['UserID']
+                                                     ));
+    $success2 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                      "TicketObject", "TicketLockSet",
+                                                      "Lock",        "lock",
+                                                      "TicketID",     $ticketID,
+                                                      "UserID",   $userInfo['UserID']
+                                                     ));
+
+    if ($success1 && $success2)
+      $success = 1;
+    else
+      $success = 0;
+
+    return $success;
   }
 
   public function getPriorities(){
