@@ -1,10 +1,43 @@
 @extends('layouts.master')
 @section('content')
 
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+  <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
+  <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+  <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+  <link href="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet" />
+  <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="/assets/plugins/pace/pace.min.js"></script>
+  <!-- ================== END BASE JS ================== -->
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="/assets/plugins/ckeditor/ckeditor.js"></script>
+  <script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
+  <script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
+  <script src="/assets/js/form-wysiwyg.demo.min.js"></script>
+  <script src="/assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
+
+  <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+  <link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
+  <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+  <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+  <link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+  <link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
+  <link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
+  <!-- ================== END PAGE LEVEL STYLE ================== -->
 
 <script charset="utf-8">
 var count_files=0;
 $(document).ready(function(){
+  Form1.init();
 
   $("#images").change(function(){
     //get the input and UL list
@@ -41,6 +74,7 @@ $(document).ready(function(){
 
   <!-- begin #page-container -->
 
+
       <h1 class="page-header">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> </small></h1>
       <!-- end page-header -->
 
@@ -52,6 +86,19 @@ $(document).ready(function(){
               <h4 class="panel-title">Título: {{ $incident->title }}  </h4>
           </div>
           <div class="panel-body">
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+                <?php foreach ($incident->observations as $o): ?>
+                  <div class="form-group">
+
+                    <div class="alert alert-info">
+                      <span class="close" data-dismiss="alert">×</span>
+                      <strong><?php echo $o->created_at ?></strong>
+                      <br><?php echo $o->content ?>
+
+                    </div>
+                  </div>
+                <?php endforeach ?>
+              <?php endif ?>
               <div class="form-group">
                 <table class="table table-bordered">
                   <tr>
@@ -73,9 +120,10 @@ $(document).ready(function(){
                         </tr>
                         <tr>
                           <td style="width:15%">
-                            <?php echo $incident->category->id ?>
+                            <?php echo ($incident->category->id)-1 ?>
                           </td>
-                          <td>
+                          <td style="text-align: justify;">
+                            <strong><?php echo $incident->category->name ?></strong>.
                             <?php echo $incident->category->description ?>
                           </td>
                         </tr>
@@ -115,7 +163,7 @@ $(document).ready(function(){
 
                   <tr>
                     <td style="text-align:center;background:#CCC;">
-                      <strong>Indicador:</strong>
+                      <strong>IOC:</strong>
                     </td>
                     <td style="text-align:center;">
                       <?php foreach ($incident->incidentRule as $r ): ?>
@@ -324,6 +372,9 @@ $(document).ready(function(){
 
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
         <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
+        <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+          <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir comentario</a>
+        <?php endif ?>
             <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
               <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
 
@@ -393,5 +444,34 @@ $(document).ready(function(){
   <!-- end page container -->
 
 
+<div class="modal fade" id="modal-dialog">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h4 class="modal-title">Modal Dialog</h4>
+										</div>
+										<div class="modal-body">
+											<div class="col-lg-12">
+											  {{Form::open(array('method'=>'POST','action' => 'IncidentController@addObservation','enctype'=>'multipart/form-data'))}}
+                         {{Form::textarea('observation',null,[
+                               'class'=>'form-control parsley-validated',
+                               "data-parsley-pattern"=>"",
+                               "data-parsley-required"=>"true",
+                               "placeholder"=>"Observaciones del incidente",
+                               "id"=>"description",
+                               ]);
+                         }}
+                         <input type="hidden" name="incident_id" value="<?php echo $incident->id ?>">
+                         <input type="hidden" name="handler_id" value="<?php echo $incident->handler->id ?>">
+                         {{Form::submit('Guardar comentario',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
+                       {{ Form::close() }}
+											</div>
+                    </div>
+										<div class="modal-footer">
 
+										</div>
+									</div>
+								</div>
+							</div>
 @stop

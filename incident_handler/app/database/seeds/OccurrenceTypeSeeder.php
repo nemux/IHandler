@@ -7,14 +7,14 @@
      {
        OccurenceType::create([
 
-                'name' => 'Attacker' ,
+                'name' => 'External' ,
                 'description' =>'Wey que ataca',
 
 
                                         ]);
       OccurenceType::create([
 
-               'name' => 'Target' ,
+               'name' => 'Internal' ,
                'description' =>'Wey que lo atacan',
 
 

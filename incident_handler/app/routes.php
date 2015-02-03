@@ -60,6 +60,10 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::post('manage', 'IncidentController@change_status');
   Route::get('pdf/{id}', 'IncidentController@pdf');
   Route::post('add/recomendation', 'IncidentController@addRecomendation');
+  Route::post('add/Observation', 'IncidentController@addObservation');
+  Route::get('open/', 'IncidentController@openStatus');
+  Route::get('investigation/', 'IncidentController@investigationStatus');
+  Route::get('solved/', 'IncidentController@solvedStatus');
   //Route::get('show/{id}', 'IncidentController@pdf');
   Route::get('sensor/get/{id}','SensorController@customerSensor');
 });
@@ -94,4 +98,3 @@ Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
 });
 
 Route::get('otrs/{id}', 'OtrsController@test');
-

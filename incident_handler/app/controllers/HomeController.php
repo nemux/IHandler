@@ -25,6 +25,8 @@ class HomeController extends BaseController {
 
   public function dashboard()
   {
-    return View::make('usuarios.dashboard');
+		$date_minor= date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 3 hour'));
+		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('created_at','>=',$date_minor)->get();
+    return View::make('usuarios.dashboard',array('notification'=>$notification));
   }
 }
