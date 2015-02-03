@@ -239,6 +239,9 @@ protected $layout = 'layouts.master';
           }
         }
 
+        if ($input['sensor_id'] == 0)
+          return "Debe seleccionar un sensor";
+
 
         $incident->risk=$input['risk'];
         $incident->criticity=$input['criticity'];
@@ -695,16 +698,12 @@ protected $layout = 'layouts.master';
   }
   public function pdf($id)
   {
-    //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $incident=Incident::find($id);
-
     $htmlReport = $this->renderReport($incident);
-
     $pdf = App::make('dompdf');
 
     $pdf->loadHTML($htmlReport,1);
     return $pdf->stream();
-
   }
 
   public function addRecomendation(){
@@ -721,11 +720,8 @@ protected $layout = 'layouts.master';
 
   public function index(){
 
-    /*if (Auth::user()->type->name == 'admin')
-      $incident=Incident::all();
-    else
-      $incident = Incident::where('incident_handler_id','=',Auth::user()->id)->get();*/
     $incident=Incident::all();
+
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
     ));
@@ -753,7 +749,6 @@ protected $layout = 'layouts.master';
 
     $htmlReport = $this->renderReport($incident);
 
-    //print_r($ticketOtrs->getPriorities());
     $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
     $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
     $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
@@ -764,10 +759,8 @@ protected $layout = 'layouts.master';
 
     $ticketOtrs = new Otrs\Ticket();
     $t = Ticket::where('otrs_ticket_id','=',$ticketID)->first();
-    Log::info($t);
 
     $ticketIM = Ticket::find($t->id);
-    Log::info($ticketIM);
 
     $htmlReport = $this->renderReport($ticketIM->incident);
     $res = $ticketOtrs->close($ticketID, $htmlReport);
