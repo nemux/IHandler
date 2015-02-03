@@ -65,10 +65,10 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database' => 'incident_handler',
-			'username' => 'incident',
-			'password' => 'password',
+			'host'     => '192.168.1.239',
+			'database' => 'laravel',
+			'username' => 'imanager',
+			'password' => '.dataBDlaravel.',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
@@ -76,10 +76,10 @@ return array(
 
     'log' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '192.168.1.239',
 			'database' => 'log',
 			'username' => 'log',
-			'password' => 'password',
+			'password' => 'log',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
