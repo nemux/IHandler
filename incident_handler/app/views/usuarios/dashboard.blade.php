@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+
        <!-- begin breadcrumb -->
 			<ol class="breadcrumb pull-right">
 				<li><a href="/">Home</a></li>
@@ -32,8 +33,8 @@
                             where('incidents_status_id','=',1)->count() }}
             </div>
             <div class="stats-link">
-              <a href="#">
-                Ver Detalles <i class="fa fa-arrow-circle-o-right"></i>
+              <a href="/incident/open">
+                Ir <i class="fa fa-arrow-circle-o-right"></i>
               </a>
             </div>
           </div>
@@ -54,8 +55,8 @@
                             where('incidents_status_id','=',2)->count() }}
             </div>
             <div class="stats-link">
-              <a href="#">
-                Ver Detalles <i class="fa fa-arrow-circle-o-right"></i>
+              <a href="/incident/investigation">
+                Ir <i class="fa fa-arrow-circle-o-right"></i>
               </a>
             </div>
           </div>
@@ -76,13 +77,31 @@
                             where('incidents_status_id','=',3)->count() }}
             </div>
             <div class="stats-link">
-              <a href="#">
+              <a href="/incident/solved">
                 Ver Detalles <i class="fa fa-arrow-circle-o-right"></i>
               </a>
             </div>
           </div>
         </div>
         <!-- end col-4 -->
+
 			</div>
 			<!-- end row -->
+			<script charset="utf-8">
+				$(document).ready(function (){
+					<?php foreach ($notification as $n): ?>
+						$.gritter.add({
+							title:"<?php echo $n->created_at ?>",
+							text:"<a href='/incident/view/<?php echo $n->incidents_id ?>'>Comentario sobre incidente</a>",
+							image:"/assets/img/handler.png",
+							sticky:true,
+							time:"",
+							class_name:"my-sticky-class"
+						});
+					<?php endforeach ?>
+
+				});
+			</script>
+
+
 @stop

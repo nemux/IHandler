@@ -705,7 +705,29 @@ protected $layout = 'layouts.master';
     $pdf->loadHTML($htmlReport,1);
     return $pdf->stream();
   }
+  public function addObservation(){
+    $input=Input::all();
+    //print_r($input);
+    $incident_id=$input['incident_id'];
+    $observation=new Observation;
+    $observation->content=$input['observation'];
+    $observation->incident_handler_id=$input['handler_id'];
+    $observation->incidents_id=$incident_id;
 
+    $observation->save();
+
+    $incident=Incident::find($incident_id);
+
+    $history=new IncidentHistory;
+    $history->description="Se añadió observación al incidente";
+    $history->incidents_status_id=$incident->incidents_status_id;
+    $history->incident_handler_id=$incident->handler->id;
+    $history->datetime=date("Y-m-d H:i:s");
+    $history->save();
+
+    return Redirect::to('/incident/view/'.$observation->incidents_id);
+
+  }
   public function addRecomendation(){
 
     $id = Input::get('id');
@@ -718,10 +740,30 @@ protected $layout = 'layouts.master';
     return Redirect::to($url);
   }
 
+
+
   public function index(){
 
     $incident=Incident::all();
 
+    return $this->layout = View::make('incident.index', array(
+    'incident'=>$incident,
+    ));
+  }
+  public function openStatus(){
+    $incident=Incident::where("incidents_status_id",'=','1')->where('incident_handler_id','=',Auth::user()->id)->get();
+    return $this->layout = View::make('incident.index', array(
+    'incident'=>$incident,
+    ));
+  }
+  public function investigationStatus(){
+    $incident=Incident::where("incidents_status_id",'=','2')->where('incident_handler_id','=',Auth::user()->id)->get();
+    return $this->layout = View::make('incident.index', array(
+    'incident'=>$incident,
+    ));
+  }
+  public function solvedStatus(){
+    $incident=Incident::where("incidents_status_id",'=','3')->where('incident_handler_id','=',Auth::user()->id)->get();
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
     ));

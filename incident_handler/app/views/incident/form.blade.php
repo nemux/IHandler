@@ -32,6 +32,10 @@
 	<link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 	<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
 	<!-- ================== END PAGE LEVEL STYLE ================== -->
+
+<script charset="utf-8">
+
+</script>
 <script>
 
     var ip_added=new Array();
@@ -47,6 +51,17 @@
         }
       }
       return "0";
+    }
+    function validateEntry(validate){
+
+      for (var i = 0; i < validate.length; i++) {
+        var re = /^[A-Za-záéíóú0-9\'\"\-\,\.\s\n\t\>\/]*$/;
+        if (!re.test(validate[i])) {
+          console.log(validate[i]);
+          console.log(re.test(validate[i]));
+          return "1";
+        }
+      }
     }
     function delFile(name,div){
       count_todel=count_todel+1;
@@ -143,6 +158,10 @@
 </script>
 <script charset="utf-8">
   function addRule(sid,rule,message,translate,rule_is,why){
+    validate=[sid,rule,message,translate,rule_is,why];
+    if (validateEntry(validate)=="1") {
+      return 0;
+    }
     count_rule=count_rule+1;
     //'sid','rule','message','translate','rule_is','why'
     var str='<tr onclick="removeRule(this,\''+sid+'\')" style="cursor:pointer">'
@@ -198,6 +217,11 @@
     var dst_occurences=$("#dst_occurences").val();
     var src_blacklist=0;
     var dst_blacklist=0;
+
+    validate=[src_ip,dst_ip,src_port,dst_port,src_protocol,dst_protocol,dst_occurences,src_occurences,dst_location,src_location,dst_function,src_function,dst_operative_system,src_operative_system];
+    if (validateEntry(validate)=="1") {
+      return 0;
+    }
     if ($("#src_blacklist").attr('checked')) {
         src_blacklist=1;
     }

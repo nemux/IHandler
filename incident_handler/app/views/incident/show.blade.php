@@ -49,7 +49,8 @@
             <td style="text-align:center">
               <?php echo $incident->category->id ?>
             </td>
-            <td style="">
+            <td style="text-align: justify;">
+              <?php echo $incident->category->name ?>. 
               <?php echo $incident->category->description ?>
             </td>
           </tr>
@@ -88,7 +89,7 @@
     </tr>
     <tr>
       <td style="text-align:center;background:#d9d9d9">
-        <strong>Indicador:</strong>
+        <strong>IOC:</strong>
       </td>
       <td colspan="2" style="text-align:center">
         <?php foreach ($incident->incidentRule as $r ): ?>

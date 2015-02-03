@@ -97,7 +97,7 @@
 							</a>
 							<ul class="dropdown-menu animated fadeInLeft">
 								<li class="arrow"></li>
-	              <li><a href="javascript:;"><span class="badge badge-anger pull-right">2</span> Inbox</a></li>
+	              
 	              <li class="divider"></li>
 								<li><a href="/logout">Log Out</a></li>
 							</ul>

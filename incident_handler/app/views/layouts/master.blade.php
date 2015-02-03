@@ -47,6 +47,9 @@
 			App.init();
       startTime();
 			//Dashboard.init();
+      //Notification.init();
+
+
 		});
 	</script>
 
