@@ -120,14 +120,12 @@
                 async: true,
                 cache: false,
                 success: function(ret){
-                     //console.log(ret);
                      if (ret!="") {
                        response=ret.split("\`");
                        if (validateSid(response[0])=="0") {
                          addRule(response[0],response[1],response[2],response[3],response[4],response[5]);
 
                        }
-
 
                      }
                  },
@@ -138,13 +136,23 @@
           }
       });
 
-
+    $('#customers_id').change(function(){
+      $.get('/incident/sensor/get/'+$('#customers_id').val(),
+        function( data ){
+          $('#sensor_id').empty();
+				  $.each(data, function(key, element) {
+					    $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+				    });
+      });
     });
+
+
     function removeRule(tr,sid){
       $(tr).remove();
       var index=sid_added.indexOf(sid);
       sid_added.splice(index,1);
     }
+    });
 
 
 </script>
@@ -302,6 +310,7 @@
     ip_added.splice(index,1);
   }
 </script>
+
 @stop
 @section('content')
 <?php $display_form=""; ?>
@@ -495,7 +504,7 @@
                             <tr <?php echo $display_form ?>>
                               <td colspan="5">
                                 {{ Form::select('customers_id', $customer,$incident->customers_id,[
-                                          'class'=>'form-control parsley-validated',]);
+                                          'class'=>'form-control parsley-validated', 'id'=>'customers_id']);
                                 }}
 
                               </td>
@@ -503,15 +512,14 @@
                             <tr <?php echo $display_form ?>>
 
                               <td colspan="5">
-                                {{ Form::select('sensor_id', $sensor,$incident->sensors_id,[
-                                          'class'=>'form-control parsley-validated',]);
+                                {{
+                                   Form::select('sensor_id', array('0' => 'Seleccione un cliente'),'0',[
+                                          'class'=>'form-control parsley-validated','id'=>'sensor_id']);
                                 }}
 
                               </td>
 
                             </tr>
-
-
 
                             <tr <?php echo $display_form ?>>
 

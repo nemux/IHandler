@@ -81,6 +81,18 @@ protected $layout = 'layouts.master';
         ));
     }
 
+  public function customerSensor($id){
+    //$id = Input::get('customers_id');
+
+    //$sensors = DB::table('sensors')->select('id','name')->where('customers_id','=',$id)->lists();
+    $sensors = DB::table('sensors')->where('customers_id','=',$id)->lists('name','id');
+
+    if (count($sensors) < 1)
+      return array('0' => 'No hay sensores registrados');
+    else
+      return $sensors;
+  }
+
   /**
    * Setup the layout used by the controller.
    *
