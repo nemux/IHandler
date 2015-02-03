@@ -15,6 +15,9 @@ class LoginController extends Controller{
 
     public function doLogin()
     {
+
+      $log = new Log\Logger();
+
       $userData = array(
         'username' => Input::get('username'),
         'password' => Input::get('password')
@@ -30,6 +33,7 @@ class LoginController extends Controller{
 
       if ($validator->passes()) {
         if(Auth::attempt($userData)) {
+          $log::info(Auth::user()->id,Auth::user()->username,'Inicio sesión');
           return Redirect::to('/');
         }
         else{

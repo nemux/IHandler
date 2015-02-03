@@ -21,6 +21,7 @@ protected $layout = 'layouts.master';
         $customer->mail = $input['mail'];
         $customer->save();
 
+        $log::info(Auth::user()->id,Auth::user()->username,'Se actualizo el cliente con ID: '. $customer->id);
         return Redirect::to('customer/view/'.$customer->id);
       }
     }
