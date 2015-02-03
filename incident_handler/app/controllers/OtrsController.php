@@ -22,7 +22,7 @@ class OtrsController extends BaseController{
         $total_inserted = 0;
         foreach($customers as $k => $v){
 
-          $cu = $oc->getCustomerInfo($v['UserName']);
+          $cu = $oc->getInfo($v['UserName']);
 
           $exists = Customer::where('otrs_userID','=', $cu->UserID)->count();
 
@@ -42,7 +42,7 @@ class OtrsController extends BaseController{
           }
         }
 
-        $log->write(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
+        $log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
         //return array("total_inserted" => $total_inserted);
         return $this->layout = View::make("otrs.result", array(
           'result'=>'Clientes insertados: '.$total_inserted,

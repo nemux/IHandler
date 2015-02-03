@@ -36,6 +36,10 @@ class Incident extends Eloquent{
 	{
 		return $this->hasMany('IncidentOccurence','incidents_id','id');
 	}
+  public function observations()
+  {
+    return $this->hasMany('Observation','incidents_id','id');
+  }
 
 	public function times()
 	{

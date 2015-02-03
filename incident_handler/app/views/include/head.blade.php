@@ -48,6 +48,20 @@
 <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script src="/assets/js/dashboard.min.js"></script>
 <script src="/assets/js/apps.min.js"></script>
+	<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<!-- ================== END PAGE LEVEL STYLE ================== -->
+
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="/assets/plugins/pace/pace.min.js"></script>
+
+
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
+	<script src="/assets/js/ui-modal-notification.demo.min.js"></script>
+	<script src="/assets/js/apps.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+	<!-- ================== END BASE JS ================== -->
 <!-- ================== END PAGE LEVEL JS ================== -->
 <style media="screen">
 	#new_clock:hover{

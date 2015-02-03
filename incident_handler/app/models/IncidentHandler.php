@@ -25,6 +25,9 @@ class IncidentHandler extends Eloquent {
 	public function tickets(){
 		return $this->hasMany('Ticket','incident_handler_id','id');
 	}
+  public function observations(){
+    return $this->hasMany('Observation','incident_handler_id','id');
+  }
 
 	public function attackerHistory(){
 		return $this->hasMany('AttackerHistory','incident_handler_id','id');
