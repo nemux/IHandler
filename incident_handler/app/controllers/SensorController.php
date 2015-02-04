@@ -37,6 +37,7 @@ protected $layout = 'layouts.master';
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
       $sensor=Sensor::find($id);
+      $log = new Log\Logger();
 
       if ($input) {
         $sensor->ip=$input['ip'];

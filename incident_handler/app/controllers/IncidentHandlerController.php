@@ -12,6 +12,7 @@ protected $layout = 'layouts.master';
       $handler=new IncidentHandler;
       $access=new Access;
       $types=AccessType::lists('name', 'id');
+      $log = new Log\Logger();
 
       if ($input) {
         $handler->name=$input['name'];
@@ -26,7 +27,9 @@ protected $layout = 'layouts.master';
         $access->incident_handler_id=$handler->id;
         $access->active=0;
         $access->save();
+
         $log->info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
+
         return Redirect::to('handler/view/'.$handler->id);
       }
       else{
@@ -50,6 +53,7 @@ protected $layout = 'layouts.master';
       $handler=IncidentHandler::find($id);
       $access=$handler->access;
       $types=AccessType::lists('name', 'id');
+      $log = new Log\Logger();
 
       if ($input) {
         $handler->name=$input['name'];
@@ -64,7 +68,6 @@ protected $layout = 'layouts.master';
         $access->incident_handler_id=$handler->id;
         $access->active=0;
         $access->save();
-
         $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó el Incident Handler con ID: '. $handler->id);
         return Redirect::to('handler/view/'.$handler->id);
       }

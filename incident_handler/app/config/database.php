@@ -80,7 +80,6 @@ return array(
 			'database' => 'log',
 			'username' => 'log',
 			'password' => 'password',
-
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',

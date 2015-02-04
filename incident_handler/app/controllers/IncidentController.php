@@ -12,7 +12,6 @@ protected $layout = 'layouts.master';
       return View::make('/');
     }
 
-
     public function edit($id)
     {
       $incident = Incident::find($id);
@@ -105,6 +104,7 @@ protected $layout = 'layouts.master';
       $input = Input::all();
       $id = $input['id'];
       $status = $input['status'];
+      $log = new Log\Logger();
 
 
       $incident=Incident::find($id);
@@ -177,14 +177,11 @@ protected $layout = 'layouts.master';
       return Redirect::to('incident/view/'.$incident->id);
     }
 
-    public function validateSingle($input){
-      $rules=array($input=>'required');
-      $validator = Validator::make($input, $rules);
-      if ($validator->fails())
-      {
-          echo "1";
-      } else {
-          echo "0";
+    public function validateEntry($input){
+      foreach ($input as $i) {
+        if (!preg_match("/^[A-Za-záéíóú0-9\'\"\-\,\.\s\n\t\>\/]*$/",$i)) {
+          return "1";
+        }
       }
     }
 
@@ -223,7 +220,9 @@ protected $layout = 'layouts.master';
       $occ_time=new Time;
 
       if ($input) {
-
+        if ($this->validateEntry(array($input['title'],))=="1") {
+          return Redirect::to('/incident');
+        }
         $keys=array_keys($input);
         //print_r($keys);
         $events=array();
@@ -241,8 +240,9 @@ protected $layout = 'layouts.master';
           }
         }
 
-        if ($input['sensor_id'] == 0)
+        if ($input['sensor_id'] == 0 || !$input['sensor_id'])
           return "Debe seleccionar un sensor";
+
 
 
         $incident->risk=$input['risk'];
@@ -389,7 +389,6 @@ protected $layout = 'layouts.master';
           $incident_rule->save();
         }
         $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
-
         return Redirect::to('incident/view/'.$incident->id);
       }
       else{
@@ -453,10 +452,15 @@ protected $layout = 'layouts.master';
     {
 
       $input = Input::all();
+      $log = new Log\Logger();
 
+      if ($input['sensor_id'] == 0 || !$input['sensor_id'])
+        return "Debe seleccionar un sensor";
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
-
+      if ($this->validateEntry(array($input['title'],))=="1") {
+        return Redirect::to('/incident/view/'.$input['id']);
+      }
       $sensor_object= new Sensor;
       $input = Input::all();
       $incident=Incident::find($id);
@@ -705,14 +709,17 @@ protected $layout = 'layouts.master';
     $incident=Incident::find($id);
     $htmlReport = $this->renderReport($incident);
     $pdf = App::make('dompdf');
+    $log = new Log\Logger();
 
     $pdf->loadHTML($htmlReport,1);
     //Log
     $log->info(Auth::user()->id,Auth::user()->username,'Se visualizó el reporte PDF del Incidente con ID: '. $incident->id );
+
     return $pdf->stream();
   }
   public function addObservation(){
     $input=Input::all();
+
     //print_r($input);
     $incident_id=$input['incident_id'];
     $observation=new Observation;
@@ -725,6 +732,7 @@ protected $layout = 'layouts.master';
     $incident=Incident::find($incident_id);
 
     $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
     $history->description="Se añadió observación al incidente";
     $history->incidents_status_id=$incident->incidents_status_id;
     $history->incident_handler_id=$incident->handler->id;
@@ -732,6 +740,57 @@ protected $layout = 'layouts.master';
     $history->save();
 
     return Redirect::to('/incident/view/'.$observation->incidents_id);
+
+  }
+
+  public function addAnnex(){
+    $input=Input::all();
+    if ($this->validateEntry(array($input['title'],$input['field']))=="1") {
+      return Redirect::to('/incident/view/'.$input['incident_id']);
+    }
+    //print_r($input);
+    $incident_id=$input['incident_id'];
+    $annex=new Annex;
+    $annex->content=$input['observation'];
+    $annex->incident_handler_id=$input['handler_id'];
+    $annex->incidents_id=$incident_id;
+    $annex->title=$input['title'];
+    $annex->field=$input['field'];
+
+    $annex->save();
+
+    $incident=Incident::find($incident_id);
+
+    $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
+    $history->description="Se añadió Anexo al incidente";
+    $history->incidents_status_id=$incident->incidents_status_id;
+    $history->incident_handler_id=$incident->handler->id;
+    $history->datetime=date("Y-m-d H:i:s");
+    $history->save();
+
+    return Redirect::to('/incident/view/'.$annex->incidents_id);
+
+  }
+  public function delAnnex($id){
+
+
+    $annex=Annex::find($id);
+    //print_r($annex);
+    //return 0;
+
+
+    $incident=Incident::find($annex->incidents_id);
+    $annex->delete();
+    $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
+    $history->description="Se añadió borró Anexo del incidente";
+    $history->incidents_status_id=$incident->incidents_status_id;
+    $history->incident_handler_id=$incident->handler->id;
+    $history->datetime=date("Y-m-d H:i:s");
+    $history->save();
+
+    return Redirect::to('/incident/view/'.$annex->incidents_id);
 
   }
   public function addRecomendation(){
@@ -779,6 +838,7 @@ protected $layout = 'layouts.master';
     $u = new Otrs\User();
     $ticketOtrs = new Otrs\Ticket();
     $ticketIM = new Ticket;
+    $log = new Log\Logger();
 
     $incident->incidents_status_id=$status;
     $incident->save();
@@ -807,6 +867,7 @@ protected $layout = 'layouts.master';
   private function closeTicket($ticketID){
 
     $ticketOtrs = new Otrs\Ticket();
+    $log = new Log\Logger();
     $t = Ticket::where('otrs_ticket_id','=',$ticketID)->first();
 
     $ticketIM = Ticket::find($t->id);
@@ -816,6 +877,7 @@ protected $layout = 'layouts.master';
 
     //Log
     $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+
   }
 
     private function sendRecomendation($incident, $recomendation){
@@ -826,6 +888,7 @@ protected $layout = 'layouts.master';
     $r->incidents_id = $incident->id;
     $r->content = $recomendation;
     $r->save();
+    $log = new Log\Logger();
 
     $htmlReport = $this->renderReport($incident);
 

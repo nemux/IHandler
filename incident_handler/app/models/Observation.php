@@ -13,4 +13,8 @@ class Observation extends Eloquent {
   protected $table = 'observations';
   protected $fillable = ['content','incidents_id','incident_handler_id'];
 
+  public function incident()
+  {
+    return $this->belongsTo('Incident','incidents_id','id');
+  }
 }

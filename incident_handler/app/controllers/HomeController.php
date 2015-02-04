@@ -27,6 +27,11 @@ class HomeController extends BaseController {
   {
 		$date_minor= date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 3 hour'));
 		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('created_at','>=',$date_minor)->get();
-    return View::make('usuarios.dashboard',array('notification'=>$notification));
+
+		$closure=Incident::
+				where('updated_at','<',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days')))->
+				where('incidents_status_id','=','3')->get();
+    //return date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days'));
+		return View::make('usuarios.dashboard',array('notification'=>$notification,'closure'=>$closure));
   }
 }

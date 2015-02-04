@@ -17,7 +17,7 @@ class OtrsController extends BaseController{
         //Import all OTRS Customers
         $oc = new Otrs\Customer();
         $customers = $oc->getAll();
-        $log = new Log\Logger();
+        //$log = new Log\Logger();
 
         $total_inserted = 0;
         foreach($customers as $k => $v){
@@ -42,7 +42,7 @@ class OtrsController extends BaseController{
           }
         }
 
-        $log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
+        //$log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
         //return array("total_inserted" => $total_inserted);
         return $this->layout = View::make("otrs.result", array(
           'result'=>'Clientes insertados: '.$total_inserted,

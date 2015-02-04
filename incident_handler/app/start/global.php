@@ -49,7 +49,7 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 
 App::error(function(Exception $exception, $code)
 {
-	Log::error($exception);
+/*	Log::error($exception);
 
   if ($code == 404 ) {
 
@@ -57,13 +57,16 @@ App::error(function(Exception $exception, $code)
     404 => 'No encontrado.'
    );
 
-   $error = array(
-     'code' => $code,
-     'error_msg' => $text[$code]
-   );
+
+		$error = array(
+			'code' => $code,
+			'error_msg' => $text[$code]
+		);
 
   return Response::view("error.error", $error, $code);
   }
+  */
+
 
 });
 

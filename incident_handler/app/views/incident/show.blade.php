@@ -26,7 +26,8 @@
 </style>
 
 <body>
-<div  >
+
+<div  style="margin-bottom:20px">
   <table>
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">
@@ -50,7 +51,7 @@
               <?php echo $incident->category->id ?>
             </td>
             <td style="text-align: justify;">
-              <?php echo $incident->category->name ?>. 
+              <?php echo $incident->category->name ?>.
               <?php echo $incident->category->description ?>
             </td>
           </tr>
@@ -258,7 +259,37 @@
       </td>
     </tr>
   </table>
+
+
+  <?php foreach ($incident->annexes as $a ): ?>
+
+          <div class="col-lg-12" style="margin-bottom:20px;padding-top:20px">
+            <div class="form-group" >
+
+              <table class="table table-bordered" style="width:100%">
+                <tr style="text-align:center;background:#CCC;">
+                  <td colspan="2">
+                      <strong> <?php echo $a->title ?></strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;background:#CCC;width:15%">
+                    <?php echo $a->field ?>
+                  </td>
+                  <td>
+                    <?php echo $a->content ?>
+                  </td>
+                </tr>
+
+              </table>
+
+          </div>
+          </div>
+
+  <?php endforeach ?>
 </div>
+
+
 </body>
 
 
