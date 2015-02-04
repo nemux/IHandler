@@ -50,6 +50,20 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+
+   $text = array(
+    401 => 'No autorizado.',
+    403 => 'Prohibido.',
+    404 => 'No encontrado'
+   );
+
+   $error = array(
+     'code' => $code,
+     'error_msg' => $text[$code]
+   );
+
+  return Response::view("error.error", $error, $code);
+
 });
 
 /*

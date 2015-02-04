@@ -65,10 +65,17 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
+<<<<<<< HEAD
+			'host'     => '192.168.1.239',
+			'database' => 'laravel',
+			'username' => 'imanager',
+			'password' => '.dataBDlaravel.',
+=======
 			'host'     => 'localhost',
 			'database' => 'incident_handler',
 			'username' => 'postgres',
 			'password' => 'temp0ral',
+>>>>>>> 48215ff6ceed6cc99d3db86007388c55661541f6
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
@@ -76,10 +83,15 @@ return array(
 
     'log' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '192.168.1.239',
 			'database' => 'log',
+<<<<<<< HEAD
+			'username' => 'log',
+			'password' => 'log',
+=======
 			'username' => 'postgres',
 			'password' => 'temp0ral',
+>>>>>>> 48215ff6ceed6cc99d3db86007388c55661541f6
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
