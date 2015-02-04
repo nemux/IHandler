@@ -9,7 +9,7 @@
   @yield('head')
 </head>
 
-<body onload="startTime()" style="background-image: url('/assets/img/login-bg/bg-1.jpg');">
+<body onload="startTime()" style="background-image: url('/assets/img/login-bg/bg-1.jpg');background-size: cover;">
 
 	<!-- begin #page-loader -->
 	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
