@@ -92,7 +92,18 @@
 					<?php foreach ($notification as $n): ?>
 						$.gritter.add({
 							title:"<?php echo $n->created_at ?>",
-							text:"<a href='/incident/view/<?php echo $n->incidents_id ?>'>Comentario sobre incidente</a>",
+							text:"<a href='/incident/view/<?php echo $n->incidents_id ?>'>Comentario sobre incidente<br><?php echo $n->incident->title ?></a>",
+							image:"/assets/img/handler.png",
+							sticky:true,
+							time:"",
+							class_name:"my-sticky-class"
+						});
+					<?php endforeach ?>
+
+					<?php foreach ($closure as $n): ?>
+						$.gritter.add({
+							title:"<?php echo $n->title ?>",
+							text:"<a href='/incident/view/<?php echo $n->id ?>'>Este incidente lleva más de 5 días sin cerrar</a>",
 							image:"/assets/img/handler.png",
 							sticky:true,
 							time:"",

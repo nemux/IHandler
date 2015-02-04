@@ -38,6 +38,7 @@
 var count_files=0;
 $(document).ready(function(){
   Form1.init();
+  Form2.init();
 
   $("#images").change(function(){
     //get the input and UL list
@@ -332,8 +333,39 @@ $(document).ready(function(){
 
                     </td>
                   </tr>
+
                 </table>
               </div>
+
+              <?php foreach ($incident->annexes as $a ): ?>
+
+
+                        <div class="form-group" >
+
+                          <table class="table table-bordered" width="100%">
+                            <tr style="text-align:center;background:#CCC;">
+                              <td colspan="2">
+                                  <strong> <?php echo $a->title ?></strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="text-align:center;background:#CCC;width:15%">
+                                <?php echo $a->field ?>
+                              </td>
+                              <td>
+                                <?php echo $a->content ?>
+                              </td>
+                            </tr>
+
+                          </table>
+                          <div class="col-lg-12">
+                            <a class="btn btn-default pull-right" href="/incident/del/Annex/<?php echo $a->id ?>">Borrar anexo</a>
+                          </div>
+                      </div>
+
+
+              <?php endforeach ?>
+
           </div>
       </div>
       <?php if (count($incident->images)>0): ?>
@@ -373,7 +405,10 @@ $(document).ready(function(){
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
         <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
         <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-          <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir comentario</a>
+          <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
+          <?php if ($incident->incidents_status_id<3): ?>
+              <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
+          <?php endif ?>
         <?php endif ?>
             <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
               <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
@@ -449,7 +484,7 @@ $(document).ready(function(){
 									<div class="modal-content">
 										<div class="modal-header">
 											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-											<h4 class="modal-title">Modal Dialog</h4>
+											<h4 class="modal-title">Añadir Observaciones</h4>
 										</div>
 										<div class="modal-body">
 											<div class="col-lg-12">
@@ -474,4 +509,48 @@ $(document).ready(function(){
 									</div>
 								</div>
 							</div>
+        <div class="modal fade" id="modal-dialog2">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                              <h4 class="modal-title">Añadir anexo</h4>
+                            </div>
+                            <div class="modal-body">
+                              <div class="col-lg-12">
+                                <div class="form-group" style="padding:20px">
+                                  {{Form::open(array('method'=>'POST','action' => 'IncidentController@addAnnex','enctype'=>'multipart/form-data'))}}
+                                    {{Form::text('title',null,[
+                                          'class'=>'form-control parsley-validated',
+                                          "data-parsley-pattern"=>"",
+                                          "data-parsley-required"=>"true",
+                                          "placeholder"=>"Título"]);
+                                    }}<br>
+                                    {{Form::text('field',null,[
+                                          'class'=>'form-control parsley-validated',
+                                          "data-parsley-pattern"=>"",
+                                          "data-parsley-required"=>"true",
+                                          "placeholder"=>"Nombre del campo"]);
+                                    }}<br>
+                                   {{Form::textarea('observation',null,[
+                                         'class'=>'form-control parsley-validated',
+                                         "data-parsley-pattern"=>"",
+                                         "data-parsley-required"=>"true",
+                                         "placeholder"=>"Observaciones del incidente",
+                                         "id"=>"conclutions",
+                                         ]);
+                                   }}
+                                   <input type="hidden" name="incident_id" value="<?php echo $incident->id ?>">
+                                   <input type="hidden" name="handler_id" value="<?php echo $incident->handler->id ?>">
+                                   {{Form::submit('Guardar comentario',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
+                                 {{ Form::close() }}
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 @stop

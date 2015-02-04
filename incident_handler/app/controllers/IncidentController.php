@@ -12,7 +12,6 @@ protected $layout = 'layouts.master';
       return View::make('/');
     }
 
-
     public function edit($id)
     {
       $incident = Incident::find($id);
@@ -176,14 +175,11 @@ protected $layout = 'layouts.master';
       return Redirect::to('incident/view/'.$incident->id);
     }
 
-    public function validateSingle($input){
-      $rules=array($input=>'required');
-      $validator = Validator::make($input, $rules);
-      if ($validator->fails())
-      {
-          echo "1";
-      } else {
-          echo "0";
+    public function validateEntry($input){
+      foreach ($input as $i) {
+        if (!preg_match("/^[A-Za-záéíóú0-9\'\"\-\,\.\s\n\t\>\/]*$/",$i)) {
+          return "1";
+        }
       }
     }
 
@@ -221,7 +217,9 @@ protected $layout = 'layouts.master';
       $occ_time=new Time;
 
       if ($input) {
-
+        if ($this->validateEntry(array($input['title'],))=="1") {
+          return Redirect::to('/incident');
+        }
         $keys=array_keys($input);
         //print_r($keys);
         $events=array();
@@ -239,8 +237,9 @@ protected $layout = 'layouts.master';
           }
         }
 
-        if ($input['sensor_id'] == 0)
+        if ($input['sensor_id'] == 0 || !$input['sensor_id'])
           return "Debe seleccionar un sensor";
+
 
 
         $incident->risk=$input['risk'];
@@ -450,10 +449,13 @@ protected $layout = 'layouts.master';
     {
 
       $input = Input::all();
-
+      if ($input['sensor_id'] == 0 || !$input['sensor_id'])
+        return "Debe seleccionar un sensor";
       //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
-
+      if ($this->validateEntry(array($input['title'],))=="1") {
+        return Redirect::to('/incident/view/'.$input['id']);
+      }
       $sensor_object= new Sensor;
       $input = Input::all();
       $incident=Incident::find($id);
@@ -705,8 +707,9 @@ protected $layout = 'layouts.master';
     $pdf->loadHTML($htmlReport,1);
     return $pdf->stream();
   }
-  public function addObservation(){
+  public function addObservation(){ ///////////////////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     $input=Input::all();
+
     //print_r($input);
     $incident_id=$input['incident_id'];
     $observation=new Observation;
@@ -719,6 +722,7 @@ protected $layout = 'layouts.master';
     $incident=Incident::find($incident_id);
 
     $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
     $history->description="Se añadió observación al incidente";
     $history->incidents_status_id=$incident->incidents_status_id;
     $history->incident_handler_id=$incident->handler->id;
@@ -726,6 +730,57 @@ protected $layout = 'layouts.master';
     $history->save();
 
     return Redirect::to('/incident/view/'.$observation->incidents_id);
+
+  }
+
+  public function addAnnex(){
+    $input=Input::all();
+    if ($this->validateEntry(array($input['title'],$input['field']))=="1") {
+      return Redirect::to('/incident/view/'.$input['incident_id']);
+    }
+    //print_r($input);
+    $incident_id=$input['incident_id'];
+    $annex=new Annex;
+    $annex->content=$input['observation'];
+    $annex->incident_handler_id=$input['handler_id'];
+    $annex->incidents_id=$incident_id;
+    $annex->title=$input['title'];
+    $annex->field=$input['field'];
+
+    $annex->save();
+
+    $incident=Incident::find($incident_id);
+
+    $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
+    $history->description="Se añadió Anexo al incidente";
+    $history->incidents_status_id=$incident->incidents_status_id;
+    $history->incident_handler_id=$incident->handler->id;
+    $history->datetime=date("Y-m-d H:i:s");
+    $history->save();
+
+    return Redirect::to('/incident/view/'.$annex->incidents_id);
+
+  }
+  public function delAnnex($id){
+
+
+    $annex=Annex::find($id);
+    //print_r($annex);
+    //return 0;
+
+
+    $incident=Incident::find($annex->incidents_id);
+    $annex->delete();
+    $history=new IncidentHistory;
+    $history->incidents_id=$incident->id;
+    $history->description="Se añadió borró Anexo del incidente";
+    $history->incidents_status_id=$incident->incidents_status_id;
+    $history->incident_handler_id=$incident->handler->id;
+    $history->datetime=date("Y-m-d H:i:s");
+    $history->save();
+
+    return Redirect::to('/incident/view/'.$annex->incidents_id);
 
   }
   public function addRecomendation(){

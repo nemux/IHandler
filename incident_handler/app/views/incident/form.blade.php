@@ -32,6 +32,9 @@
 	<link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 	<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
 	<!-- ================== END PAGE LEVEL STYLE ================== -->
+  <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+	<link href="/assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+	<!-- ================== END PAGE LEVEL STYLE ================== -->
 
 <script charset="utf-8">
 
@@ -319,655 +322,715 @@
 <?php endif ?>
 
 <div class="row">
-<div class="panel panel-inverse">
-			    <div class="panel-heading">
 
-			        <h4 class="panel-title"><?php echo $title ?> </h4>
-			    </div>
-			    <div class="panel-body">
-                    {{ Form::model($incident,array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form", "enctype"=>"multipart/form-data")) }}
+      <div class="panel panel-inverse">
+                        <div class="panel-heading">
 
-                    <!--<form id="fileupload" action="<?php echo $action ?>" method="POST" enctype="multipart/form-data">-->
-                        <div class="form-group">
-                          <table class="table table-bordered" <?php echo $display_form ?>>
-                            <tr>
-                              <td>
-                                Fecha y Hora de detección
-                              </td>
-                              <td>
-                                <div class="input-group bootstrap-timepicker">
-                                  <?php if (!isset($update)) {
-                                    ?>
-                                      <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+                            <h4 class="panel-title"><?php echo $title ?></h4>
+                        </div>
+                        <div class="panel-body">
+  {{ Form::model($incident,array('action' => $action,'role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form", "enctype"=>"multipart/form-data")) }}
+								<div id="wizard">
+									<ol>
+										<li>
+										    Datos principales
+										    <small>Fechas, clientes, sensores, título y categorización de incidente.</small>
+										</li>
+										<li>
+										    Eventos e indicadores
+										    <small>Añadir reglas e indicadores sobre eventos.</small>
+										</li>
+										<li>
+										    Cuerpo del incidente
+										    <small>Descripción y recomendaciones del evento.</small>
+										</li>
+										<li>
+										    Arvhivos adicionales, y almacenado
+										    <small>Archivos de evidencia adicionale<s></s>.</small>
+										</li>
+									</ol>
+									<!-- begin wizard step-1 -->
+									<div>
+                    <?php if ($display_form!=""): ?>
+                      <div class="col-lg-12">
+                        <h1>
+                        <span class="fa-stack fa-2x">
+                          <i class="fa fa-eye fa-stack-1x"></i>
+                          <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                        </span>No disponible para este Status de Incidente
+                        </h1>
+                      </div>
+                    <?php endif ?>
+                    <table class="table table-bordered" <?php echo $display_form ?>>
+                      <tr>
+                        <td width="15%">
+                          Fecha y Hora de detección
+                        </td>
+                        <td width="35%">
+                          <div class="input-group bootstrap-timepicker">
+                            <?php if (!isset($update)) {
+                              ?>
+                                <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
 
-                                    <?php
-                                  }else{ ?>
-                                      <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($det_time->datetime)) ?>" />
-                                    <?php } ?>
-                                  <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-                                </div><br>
-                                <div class="input-group bootstrap-timepicker">
+                              <?php
+                            }else{ ?>
+                                <input data-date-format="dd-mm-yyyy" name="det_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($det_time->datetime)) ?>" />
+                              <?php } ?>
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                          </div><br>
+                          <div class="input-group bootstrap-timepicker">
 
-                                  <?php if (!isset($update)) {
-                                    ?>
-                                      <input name="det_time" id="" type="text" class="form-control timepicker" />
-                                    <?php
-                                  }else{ ?>
-                                      <input name="det_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($det_time->datetime)) ?>"/>
-                                    <?php } ?>
+                            <?php if (!isset($update)) {
+                              ?>
+                                <input name="det_time" id="" type="text" class="form-control timepicker" />
+                              <?php
+                            }else{ ?>
+                                <input name="det_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($det_time->datetime)) ?>"/>
+                              <?php } ?>
 
 
-                                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                                </div>
-                              </td>
-                              <td>
-                                Fecha y hora de Ocurrencia
-                              </td>
-                              <td>
-                                <div class="input-group bootstrap-timepicker">
-                                  <?php if (!isset($update)) {
-                                    ?>
-                                      <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
+                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                          </div>
+                        </td>
+                        <td width="15%">
+                          Fecha y hora de Ocurrencia
+                        </td>
+                        <td>
+                          <div class="input-group bootstrap-timepicker">
+                            <?php if (!isset($update)) {
+                              ?>
+                                <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y') ?>" />
 
-                                    <?php
-                                  }else{ ?>
-                                      <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($occ_time->datetime)) ?>" />
-                                    <?php } ?>
-                                  <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-                                </div><br>
-                                <div class="input-group bootstrap-timepicker">
-                                  <?php if (!isset($update)) {
-                                    ?>
-                                      <input name="occ_time" id="" type="text" class="form-control timepicker" />
-                                    <?php
-                                  }else{ ?>
-                                      <input name="occ_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($occ_time->datetime)) ?>"/>
-                                    <?php } ?>
-                                  <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                                </div>
-                              </td>
-                            </tr>
+                              <?php
+                            }else{ ?>
+                                <input data-date-format="dd-mm-yyyy" name="occ_date" type="text" class="form-control datepicker-default" id="" placeholder="Select Date" value="<?php echo date('d-m-Y',strtotime($occ_time->datetime)) ?>" />
+                              <?php } ?>
+                            <span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+                          </div><br>
+                          <div class="input-group bootstrap-timepicker">
+                            <?php if (!isset($update)) {
+                              ?>
+                                <input name="occ_time" id="" type="text" class="form-control timepicker" />
+                              <?php
+                            }else{ ?>
+                                <input name="occ_time" id="" type="text" class="form-control timepicker" value="<?php echo date('h:i A',strtotime($occ_time->datetime)) ?>"/>
+                              <?php } ?>
+                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <!--Fin fechas-->
+
+                      <tr <?php echo $display_form ?>>
+                        <td>
+                          <select name="risk" class="form-control">
+                            <option value="">Riesgo</option>
+                            <?php $option=""; ?>
+                            <?php for($i=1;$i<11;$i++){ ?>
+
+
+                              <?php if (isset($update)): ?>
+                                <?php if ($incident->risk==$i): ?>
+                                  <?php $option="selected"; ?>
+                                <?php endif ?>
+                                <?php if ($incident->risk!=$i): ?>
+                                  <?php $option=""; ?>
+                                <?php endif ?>
+
+                              <?php endif ?>
+                              <?php if (!isset($update)): ?>
+                                <?php $option=""; ?>
+                              <?php endif ?>
+
+                              <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php }?>
+
+                          </select>
+
+                        </td>
+                        <td>
+                          <select name="criticity" class="form-control">
+                            <option value="">Severidad</option>
+                            <option <?php if(isset($update) && $incident->criticity=='BAJA'){ echo "selected"; } ?> value="BAJA">BAJA</option>
+                            <option <?php if(isset($update) && $incident->criticity=='MEDIA'){ echo "selected"; } ?> value="MEDIA">MEDIA</option>
+                            <option <?php if(isset($update) && $incident->criticity=='ALTA'){ echo "selected"; } ?> value="ALTA">ALTA</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select name="impact" class="form-control">
+                            <option value="">Impacto</option>
+                            <?php $option=""; ?>
+                            <?php for($i=0;$i<11;$i++){ ?>
+
+
+                              <?php if (isset($update)): ?>
+                                <?php if ($incident->impact==$i): ?>
+                                  <?php $option="selected"; ?>
+                                <?php endif ?>
+                                <?php if ($incident->impact!=$i): ?>
+                                  <?php $option=""; ?>
+                                <?php endif ?>
+
+                              <?php endif ?>
+                              <?php if (!isset($update)): ?>
+                                <?php $option=""; ?>
+                              <?php endif ?>
+
+                              <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php }?>
+                          </select>
+                        </td>
+                        <td width="20%">
+                          <select name="attack_id" class="form-control" id="attack">
+
+                                  <optgroup label="Otros">
+                                    <option value="1">Otros</option>
+                                  </optgroup>
+                                  <optgroup label="Contenido Abusivo">
+                                    <option value="2">Spam</option>
+                                    <option value="3">Defacement</option>
+                                    <option value="4">Acoso / Coacción</option>
+                                  </optgroup>
+                                  <optgroup label="Código Dañino">
+                                    <option value="5">Virus</option>
+                                    <option value="6">Gusano</option>
+                                    <option value="7">Troyano</option>
+                                    <option value="8">Spyware</option>
+                                  </optgroup>
+                                  <optgroup label="Recolección de información">
+                                    <option value="9">Escaneo de vulnerabilidades</option>
+                                    <option value="10">Sniffing</option>
+                                    <option value="11">Ingeniería Social</option>
+                                  </optgroup>
+                                    <optgroup label="Intrusiones">
+                                    <option value="12">Inyección SQL</option>
+                                    <option value="13">Pharming</option>
+                                    <option value="14">Inyección remota de archivos</option>
+                                    <option value="15">Ataques de fuerza bruta</option>
+
+                                    <option value="16">Explotación de vulnerabilidades</option>
+                                    <option value="17">Cross-Site Scripting</option>
+                                    <option value="18">Inyección otros tipos</option>
+                                  </optgroup>
+                                  <optgroup label="Disponibilidad">
+                                    <option value="19">DoS / DDoS</option>
+                                    <option value="20">Fallo (hw/sw)</option>
+                                    <option value="21">Error humano</option>
+                                  </optgroup>
+                                  <optgroup label="Fraude">
+                                    <option value="22">Copyright</option>
+                                    <option value="23">Suplantación / Spoofing</option>
+                                    <option value="24">Phishing</option>
+                                  </optgroup>
+
+                                  </select>
+
+                        </td>
+
+
+                      </tr>
+                      <tr>
+                        <td colspan="4">
+                          {{ Form::select('category_id', $categories, $incident->categories_id,[
+                                    'class'=>'form-control parsley-validated',]);
+                          }}
+                        </td>
+                      </tr>
+                      <tr <?php echo $display_form ?>>
+                        <td colspan="4">
+                          {{ Form::select('customers_id', $customer,$incident->customers_id,[
+                                    'class'=>'form-control parsley-validated', 'id'=>'customers_id']);
+                          }}
+
+                        </td>
+                      </tr>
+                      <tr <?php echo $display_form ?>>
+
+                        <td colspan="4">
+                          {{
+                             Form::select('sensor_id', array('0' => 'Sensor - Seleccione un cliente!'),'0',[
+                                    'class'=>'form-control parsley-validated','id'=>'sensor_id']);
+                          }}
+
+                        </td>
+
+                      </tr>
+
+
+                      <tr <?php echo $display_form ?>>
+
+                        <td colspan="4" >
+                          <select id="" name="stream" class="form-control">
+                            <option>INTRUSIÓN</option>
+                            <option>EXTRUSIÓN</option>
+                            <option>LOCAL</option>
+                          </select>
+                        </td>
+                      </tr>
+
+                      <tr <?php echo $display_form ?>>
+
+                        <td colspan="4" >
+                          {{Form::text('title',$incident->title,[
+                                'class'=>'form-control parsley-validated',
+                                "data-parsley-pattern"=>"",
+                                "data-parsley-required"=>"true",
+                                "placeholder"=>"Título"]);
+                          }}
+                        </td>
+                      </tr>
+                    </table>
+
+
+									</div>
+									<!-- end wizard step-1 -->
+
+
+									<!-- begin wizard step-2 -->
+									<div>
+                    <?php if ($display_form!=""): ?>
+                      <div class="col-lg-12">
+                        <h1>
+                        <span class="fa-stack fa-2x">
+                          <i class="fa fa-eye fa-stack-1x"></i>
+                          <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                        </span>No disponible para este Status de Incidente
+                        </h1>
+                      </div>
+                    <?php endif ?>
+                    <table class="table table-bordered">
+                      <tr <?php echo $display_form ?>>
+                        <td colspan="5">
+                          <h4>Añadir Reglas de Detección</h4>
+                        </td>
+                      </tr>
+
+                      <tr <?php echo $display_form ?>>
+                        <td style="width:10%"><br>
+                          <a style="width:100%" href="#modal-dialog" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
+                          <a style="width:100%" class="btn btn-sm btn-success" onclick="addButton()"><i class="fa fa-plus"></i> Añadir</a>
+
+                        </td>
+
+                        <td colspan="4">
+                          <table class="table">
+                            <tbody>
+
+
+                              <tr>
+                                <td>
+                                  <input id="search_sid" class="form-control" placeholder="sid" type="text" >
+                                </td>
+                                <td>
+                                  <input id="search_rule"  class="form-control" placeholder="rule" type="text" >
+                                </td>
+                                <td>
+                                  <input id="search_message"  class="form-control" placeholder="message" type="text" >
+                                </td>
+                                <td>
+                                  <input id="search_translate"  class="form-control" placeholder="translate" type="text" >
+                                </td>
+                                <td>
+                                  <input id="search_rule_is"  class="form-control" placeholder="qué es" type="text" >
+                                </td>
+                                <td>
+                                  <input id="search_why"  class="form-control" placeholder="why" type="text" >
+                                </td>
+                              </tr>
+
+                            </tbody>
                           </table>
-                          <table class="table table-bordered">
-                            <tr <?php echo $display_form ?>>
-                              <td>
-                                <select name="risk" class="form-control">
-                                  <option value="">Riesgo</option>
-                                  <?php $option=""; ?>
-                                  <?php for($i=1;$i<11;$i++){ ?>
 
+                        </td>
+                      </tr>
+                      <tr <?php echo $display_form ?>>
 
-                                    <?php if (isset($update)): ?>
-                                      <?php if ($incident->risk==$i): ?>
-                                        <?php $option="selected"; ?>
-                                      <?php endif ?>
-                                      <?php if ($incident->risk!=$i): ?>
-                                        <?php $option=""; ?>
-                                      <?php endif ?>
+                        <td colspan="5">
 
-                                    <?php endif ?>
-                                    <?php if (!isset($update)): ?>
-                                      <?php $option=""; ?>
-                                    <?php endif ?>
+                          <table class="table table-bordered table-striped table-hover">
+                            <tbody id="rules">
 
-                                    <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                                  <?php }?>
-
-                                </select>
-
-                              </td>
-                              <td>
-                                <select name="criticity" class="form-control">
-                                  <option value="">Severidad</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='BAJA'){ echo "selected"; } ?> value="BAJA">BAJA</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='MEDIA'){ echo "selected"; } ?> value="MEDIA">MEDIA</option>
-                                  <option <?php if(isset($update) && $incident->criticity=='ALTA'){ echo "selected"; } ?> value="ALTA">ALTA</option>
-                                </select>
-                              </td>
-                              <td>
-                                <select name="impact" class="form-control">
-                                  <option value="">Impacto</option>
-                                  <?php $option=""; ?>
-                                  <?php for($i=0;$i<11;$i++){ ?>
-
-
-                                    <?php if (isset($update)): ?>
-                                      <?php if ($incident->impact==$i): ?>
-                                        <?php $option="selected"; ?>
-                                      <?php endif ?>
-                                      <?php if ($incident->impact!=$i): ?>
-                                        <?php $option=""; ?>
-                                      <?php endif ?>
-
-                                    <?php endif ?>
-                                    <?php if (!isset($update)): ?>
-                                      <?php $option=""; ?>
-                                    <?php endif ?>
-
-                                    <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
-                                  <?php }?>
-                                </select>
-                              </td>
-                              <td width="20%">
-                                <select name="attack_id" class="form-control" id="attack">
-
-                                        <optgroup label="Otros">
-                                          <option value="1">Otros</option>
-                                        </optgroup>
-                                        <optgroup label="Contenido Abusivo">
-                                          <option value="2">Spam</option>
-                                          <option value="3">Defacement</option>
-                                          <option value="4">Acoso / Coacción</option>
-                                        </optgroup>
-                                        <optgroup label="Código Dañino">
-                                          <option value="5">Virus</option>
-                                          <option value="6">Gusano</option>
-                                          <option value="7">Troyano</option>
-                                          <option value="8">Spyware</option>
-                                        </optgroup>
-                                        <optgroup label="Recolección de información">
-                                          <option value="9">Escaneo de vulnerabilidades</option>
-                                          <option value="10">Sniffing</option>
-                                          <option value="11">Ingeniería Social</option>
-                                        </optgroup>
-                                          <optgroup label="Intrusiones">
-                                          <option value="12">Inyección SQL</option>
-                                          <option value="13">Pharming</option>
-                                          <option value="14">Inyección remota de archivos</option>
-                                          <option value="15">Ataques de fuerza bruta</option>
-
-                                          <option value="16">Explotación de vulnerabilidades</option>
-                                          <option value="17">Cross-Site Scripting</option>
-                                          <option value="18">Inyección otros tipos</option>
-                                        </optgroup>
-                                        <optgroup label="Disponibilidad">
-                                          <option value="19">DoS / DDoS</option>
-                                          <option value="20">Fallo (hw/sw)</option>
-                                          <option value="21">Error humano</option>
-                                        </optgroup>
-                                        <optgroup label="Fraude">
-                                          <option value="22">Copyright</option>
-                                          <option value="23">Suplantación / Spoofing</option>
-                                          <option value="24">Phishing</option>
-                                        </optgroup>
-
-                                        </select>
-
-                              </td>
-                              <td width="30%">
-                                {{ Form::select('category_id', $categories, $incident->categories_id,[
-                                          'class'=>'form-control parsley-validated',]);
-                                }}
-                              </td>
-
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-                              <td colspan="5">
-                                {{ Form::select('customers_id', $customer,$incident->customers_id,[
-                                          'class'=>'form-control parsley-validated', 'id'=>'customers_id']);
-                                }}
-
-                              </td>
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-
-                              <td colspan="5">
-                                {{
-                                   Form::select('sensor_id', array('0' => 'Seleccione un cliente'),'0',[
-                                          'class'=>'form-control parsley-validated','id'=>'sensor_id']);
-                                }}
-
-                              </td>
-
-                            </tr>
-
-                            <tr <?php echo $display_form ?>>
-
-                              <td colspan="5" >
-                                {{Form::text('title',$incident->title,[
-                                      'class'=>'form-control parsley-validated',
-                                      "data-parsley-pattern"=>"",
-                                      "data-parsley-required"=>"true",
-                                      "placeholder"=>"Título"]);
-                                }}
-                              </td>
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-
-                              <td colspan="5" >
-                                <select id="" name="stream" class="form-control">
-                                  <option>INTRUSIÓN</option>
-                                  <option>EXTRUSIÓN</option>
-                                  <option>LOCAL</option>
-                                </select>
-                              </td>
-                            </tr>
-
-                            <tr <?php echo $display_form ?>>
-                              <td colspan="5" >
-                                {{Form::textarea('description',$incident->description,[
-                                      'class'=>'form-control parsley-validated',
-                                      "data-parsley-pattern"=>"",
-                                      "data-parsley-required"=>"true",
-                                      "placeholder"=>"Descripción del incidente",
-                                      "id"=>"description",
-                                      ]);
-                                }}
-                              </td>
-                            </tr>
-
-                            <tr <?php echo $display_form ?>>
-                              <td colspan="5">
-                                <h4>Añadir Reglas de Detección</h4>
-                              </td>
-                            </tr>
-
-                            <tr <?php echo $display_form ?>>
-                              <td style="width:10%"><br>
-                                <a style="width:100%" href="#modal-dialog" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
-                                <a style="width:100%" class="btn btn-sm btn-success" onclick="addButton()"><i class="fa fa-plus"></i> Añadir</a>
-
-                              </td>
-
-                              <td colspan="4">
-                                <table class="table">
-                                  <tbody>
-
-
-                                    <tr>
+                               <?php if (isset($update)): ?>
+                                 <?php $i=0; ?>
+                                 <?php foreach ($incident_rule as $ir): ?>
+                                   <?php $i++; ?>
+                                    <tr onclick="removeRule(this,'<?php echo $ir->rule->sid ?>')" style="cursor:pointer">
                                       <td>
-                                        <input id="search_sid" class="form-control" placeholder="sid" type="text" >
+                                        <?php echo $ir->rule->sid ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->sid ?>" class="form-control"  type="text" name="sid_<?php echo $i ?>" >
                                       </td>
                                       <td>
-                                        <input id="search_rule"  class="form-control" placeholder="rule" type="text" >
+                                        <?php echo $ir->rule->rule ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->rule ?>" class="form-control"  type="text" name="rule_<?php echo $i ?>" >
                                       </td>
                                       <td>
-                                        <input id="search_message"  class="form-control" placeholder="message" type="text" >
+                                        <?php echo $ir->rule->message ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->message ?>" class="form-control"  type="text" name="message_<?php echo $i ?>" >
                                       </td>
                                       <td>
-                                        <input id="search_translate"  class="form-control" placeholder="translate" type="text" >
+                                        <?php echo $ir->rule->translate ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->translate ?>" class="form-control"  type="text" name="translate_<?php echo $i ?>" >
                                       </td>
                                       <td>
-                                        <input id="search_rule_is"  class="form-control" placeholder="qué es" type="text" >
+                                        <?php echo $ir->rule->rule_is ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->rule_is ?>" class="form-control"  type="text" name="ruleis_<?php echo $i ?>" >
                                       </td>
                                       <td>
-                                        <input id="search_why"  class="form-control" placeholder="why" type="text" >
+                                        <?php echo $ir->rule->why ?>
+                                        <input style="display:none" value="<?php echo $ir->rule->why ?>" class="form-control"  type="text" name="why_<?php echo $i ?>" >
                                       </td>
                                     </tr>
+                                    <script>
+                                    if (validateSid(<?php echo $ir->rule->sid ?>)=="0") {
+                                      sid_added.push(<?php echo $ir->rule->sid ?>);
 
-                                  </tbody>
-                                </table>
+                                    }
+                                    count_rule=<?php echo $i ?>;
+                                    </script>
+                                 <?php endforeach ?>
 
-                              </td>
-                            </tr>
+                               <?php endif ?>
+                            </tbody>
+                          </table>
+                        </td>
 
-                            <tr <?php echo $display_form ?>>
+                      </tr>
+                      <tr <?php echo $display_form ?>>
+                        <td colspan="5">
+                          <h4>Añadir Eventos</h4>
 
-                              <td colspan="5">
+                        </td>
+                      </tr>
+                      <tr <?php echo $display_form ?>>
+                        <td style="width:10%"><br>
+                          <!--<a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>-->
+                          <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
 
-                                <table class="table table-bordered table-striped table-hover">
-                                  <tbody id="rules">
+                        </td>
+                        <td colspan="4">
+                          <table class="table table-bordered table-striped " >
+                            <thead>
+                              <th>
+                                IP
+                              </th>
+                              <th>
+                                Puerto
+                              </th>
+                              <th>
+                                Protocolo
+                              </th>
+                              <th>
+                                Sistema Operativo
+                              </th>
+                              <th>
+                                Función
+                              </th>
+                              <th>
+                                Localidad
+                              </th>
+                              <th>
+                                Tipo
+                              </th>
+                              <th>
+                                Blacklist
+                              </th>
+                            </thead>
+                            <tbody>
 
-                                     <?php if (isset($update)): ?>
-                                       <?php $i=0; ?>
-                                       <?php foreach ($incident_rule as $ir): ?>
-                                         <?php $i++; ?>
-                                          <tr onclick="removeRule(this,'<?php echo $ir->rule->sid ?>')" style="cursor:pointer">
-                                            <td>
-                                              <?php echo $ir->rule->sid ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->sid ?>" class="form-control"  type="text" name="sid_<?php echo $i ?>" >
-                                            </td>
-                                            <td>
-                                              <?php echo $ir->rule->rule ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->rule ?>" class="form-control"  type="text" name="rule_<?php echo $i ?>" >
-                                            </td>
-                                            <td>
-                                              <?php echo $ir->rule->message ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->message ?>" class="form-control"  type="text" name="message_<?php echo $i ?>" >
-                                            </td>
-                                            <td>
-                                              <?php echo $ir->rule->translate ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->translate ?>" class="form-control"  type="text" name="translate_<?php echo $i ?>" >
-                                            </td>
-                                            <td>
-                                              <?php echo $ir->rule->rule_is ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->rule_is ?>" class="form-control"  type="text" name="ruleis_<?php echo $i ?>" >
-                                            </td>
-                                            <td>
-                                              <?php echo $ir->rule->why ?>
-                                              <input style="display:none" value="<?php echo $ir->rule->why ?>" class="form-control"  type="text" name="why_<?php echo $i ?>" >
-                                            </td>
-                                          </tr>
-                                          <script>
-                                          if (validateSid(<?php echo $ir->rule->sid ?>)=="0") {
-                                            sid_added.push(<?php echo $ir->rule->sid ?>);
+                                <tr>
+                                  <td >
+                                    <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
+                                    <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
+                                    <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
+                                    <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
+                                    <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
+                                    <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
+                                    <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
+                                  </td>
 
-                                          }
-                                          count_rule=<?php echo $i ?>;
-                                          </script>
-                                       <?php endforeach ?>
+                                  <td width="150px">
+                                    {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                              'class'=>'form-control parsley-validated',
+                                              'id'=>'src_occurences',
+                                              ]);
+                                    }}
+                                    <br>
+                                    {{ Form::select('dst_occurences_types_id', $occurences_types, $incident->categories_id,[
+                                                'class'=>'form-control parsley-validated',
+                                                'id'=>'dst_occurences',
+                                                ]);
+                                    }}
+                                  </td>
+                                  <td>
+                                    <input id="src_blacklist" class="checkbox" type="checkbox" name="search_src_blacklist" value="1"><br><br>
+                                    <input id="dst_blacklist" class="checkbox"  type="checkbox"  name="search_dst_blacklist" value="1">
+                                  </td>
+                                </tr>
 
-                                     <?php endif ?>
-                                  </tbody>
-                                </table>
-                              </td>
-
-                            </tr>
-
-                            <tr>
-                              <td colspan="5" >
-                               <div class="form-group">
-                                 {{Form::textarea('conclution',$incident->conclution,[
-                                       'class'=>'form-control parsley-validated',
-                                       "data-parsley-pattern"=>"",
-                                       "data-parsley-required"=>"true",
-                                       "placeholder"=>"Conclusiones",
-                                       "id"=>"conclutions"]);
-                                 }}
-                               </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colspan="5" >
-                                <div class="form-group">
-                                  {{Form::textarea('recomendation',$incident->recomendation,[
-                                        'class'=>'form-control parsley-validated',
-                                        "data-parsley-pattern"=>"",
-                                        "data-parsley-required"=>"true",
-                                        "placeholder"=>"Recomendaciones",
-                                        "id"=>"recomendations"]);
-                                  }}
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colspan="5">
-                                <div class="form-group">
-
-                                      {{Form::textarea('references',$references->link,[
-                                            'class'=>'form-control parsley-validated',
-                                            "data-parsley-pattern"=>"",
-                                            "data-parsley-required"=>"true",
-                                            "placeholder"=>"Referencias",
-                                            "id"=>"references",
-                                            ]);
-                                      }}
-
-                                </div>
-                              </td>
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-                              <td colspan="5">
-                                <h4>Añadir Eventos</h4>
-
-                              </td>
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-                              <td style="width:10%"><br>
-                                <!--<a style="width:100%" href="#modal-dialog2" class="btn btn-sm btn-success" data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>-->
-                                <a onclick="addEvent()" style="width:100%" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Añadir</a>
-
-                              </td>
-                              <td colspan="4">
-                                <table class="table table-bordered table-striped " >
-                                  <thead>
-                                    <th>
-                                      IP
-                                    </th>
-                                    <th>
-                                      Puerto
-                                    </th>
-                                    <th>
-                                      Protocolo
-                                    </th>
-                                    <th>
-                                      Sistema Operativo
-                                    </th>
-                                    <th>
-                                      Función
-                                    </th>
-                                    <th>
-                                      Localidad
-                                    </th>
-                                    <th>
-                                      Tipo
-                                    </th>
-                                    <th>
-                                      Blacklist
-                                    </th>
-                                  </thead>
-                                  <tbody>
-
-                                      <tr>
-                                        <td >
-                                          <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
-                                          <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
-                                          <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
-                                          <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
-                                          <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
-                                          <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
-                                        </td>
-                                        <td>
-                                          <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
-                                          <input id="dst_location"  type="text" class="form-control" name="search_dst_location" placeholder="destino">
-                                        </td>
-
-                                        <td width="150px">
-                                          {{ Form::select('src_occurences_types_id', $occurences_types, $incident->categories_id,[
-                                                    'class'=>'form-control parsley-validated',
-                                                    'id'=>'src_occurences',
-                                                    ]);
-                                          }}
-                                          <br>
-                                          {{ Form::select('dst_occurences_types_id', $occurences_types, $incident->categories_id,[
-                                                      'class'=>'form-control parsley-validated',
-                                                      'id'=>'dst_occurences',
-                                                      ]);
-                                          }}
-                                        </td>
-                                        <td>
-                                          <input id="src_blacklist" class="checkbox" type="checkbox" name="search_src_blacklist" value="1"><br><br>
-                                          <input id="dst_blacklist" class="checkbox"  type="checkbox"  name="search_dst_blacklist" value="1">
-                                        </td>
-                                      </tr>
-
-                                  </tbody>
-                                </table>
-                              </td>
+                            </tbody>
+                          </table>
+                        </td>
 
 
-                            </tr>
-                            <tr <?php echo $display_form ?>>
-                              <td colspan="5">
-                                <table class="table table-bordered table-striped" id="events">
+                      </tr>
+                      <tr <?php echo $display_form ?>>
+                        <td colspan="5">
+                          <table class="table table-bordered table-striped" id="events">
 
-                                    <?php if (isset($update)): ?>
-                                      <?php $i=0; ?>
-                                      <?php foreach ($incident_occurence as $io): ?>
+                              <?php if (isset($update)): ?>
+                                <?php $i=0; ?>
+                                <?php foreach ($incident_occurence as $io): ?>
 
 
 
-                                        <?php $i++; ?>
-                                        <tr onclick="removeEvent(this)" style="cursor:pointer">
+                                  <?php $i++; ?>
+                                  <tr onclick="removeEvent(this)" style="cursor:pointer">
 
-                                          <td style="display:none">
-                                            <input style="display:none" type="text" class="form-control" name="srcip_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->ip ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstip_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->ip ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcport_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->port ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstport_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->port ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcprotocol_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->protocol ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstprotocol_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->protocol ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcoperativesystem_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->operative_system ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstoperativesystem_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->operative_system ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcfunction_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->function ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
-                                            <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
-                                            <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
-                                            <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
-                                            <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
-                                          </td>
-                                          <td colspan="2">
-                                            <?php echo $io->src->ip ?>
-                                            ,
-                                            <?php echo $io->src->port ?>
-                                            ,
-                                            <?php echo $io->src->protocol ?>
-                                            ,
-                                            <?php echo $io->src->operative_system ?>
-                                            ,
-                                            <?php echo $io->src->function ?>
-                                            ,
-                                            <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->src->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
-                                            <?php if ($hist){
-                                                echo $hist->location;
-                                              }?>
-                                            ,
-                                            <?php echo $io->src->type->name ?>
-                                            ,
-                                            <?php if ($io->src->blacklist) {
-                                              echo "1";
-                                            }else{
-                                              echo "0";
-                                            } ?>
+                                    <td style="display:none">
+                                      <input style="display:none" type="text" class="form-control" name="srcip_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->ip ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstip_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->ip ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcport_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->port ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstport_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->port ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcprotocol_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->protocol ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstprotocol_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->protocol ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcoperativesystem_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->operative_system ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstoperativesystem_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->operative_system ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcfunction_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->function ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
+                                      <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
+                                      <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                    </td>
+                                    <td colspan="2">
+                                      <?php echo $io->src->ip ?>
+                                      ,
+                                      <?php echo $io->src->port ?>
+                                      ,
+                                      <?php echo $io->src->protocol ?>
+                                      ,
+                                      <?php echo $io->src->operative_system ?>
+                                      ,
+                                      <?php echo $io->src->function ?>
+                                      ,
+                                      <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->src->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
+                                      <?php if ($hist){
+                                          echo $hist->location;
+                                        }?>
+                                      ,
+                                      <?php echo $io->src->type->name ?>
+                                      ,
+                                      <?php if ($io->src->blacklist) {
+                                        echo "1";
+                                      }else{
+                                        echo "0";
+                                      } ?>
 
 
-                                          </td>
-                                          <td colspan="2">
+                                    </td>
+                                    <td colspan="2">
 
-                                            <?php echo $io->dst->ip ?>
-                                            ,
-                                            <?php echo $io->dst->port ?>
-                                            ,
-                                            <?php echo $io->dst->protocol ?>
-                                            ,
-                                            <?php echo $io->dst->operative_system ?>
-                                            ,
-                                            <?php echo $io->dst->function ?>
-                                            ,
-                                            <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
-                                            <?php if ($hist){
-                                                echo $hist->location;
-                                              }?>
-                                            ,
-                                            <?php echo $io->dst->type->name ?>
-                                            ,
-                                            <?php if ($io->dst->blacklist) {
-                                              echo "1";
-                                            }else{
-                                              echo "0";
-                                            } ?>
+                                      <?php echo $io->dst->ip ?>
+                                      ,
+                                      <?php echo $io->dst->port ?>
+                                      ,
+                                      <?php echo $io->dst->protocol ?>
+                                      ,
+                                      <?php echo $io->dst->operative_system ?>
+                                      ,
+                                      <?php echo $io->dst->function ?>
+                                      ,
+                                      <?php $hist= DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id='.$io->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
+                                      <?php if ($hist){
+                                          echo $hist->location;
+                                        }?>
+                                      ,
+                                      <?php echo $io->dst->type->name ?>
+                                      ,
+                                      <?php if ($io->dst->blacklist) {
+                                        echo "1";
+                                      }else{
+                                        echo "0";
+                                      } ?>
 
-                                          </td>
-                                        </tr>
-                                        <script charset="utf-8">
-                                          count_event=<?php echo $i ?>;
-                                        </script>
-                                      <?php endforeach ?>
+                                    </td>
+                                  </tr>
+                                  <script charset="utf-8">
+                                    count_event=<?php echo $i ?>;
+                                  </script>
+                                <?php endforeach ?>
 
-                                    <?php endif ?>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-
-                              <td colspan="5">
-
-                              </td>
-
-                            </tr>
+                              <?php endif ?>
 
                           </table>
-                        </div>
+                        </td>
+                      </tr>
+                      <tr>
 
+                        <td colspan="5">
 
-                    <!--</div>-->
-                      <div class="form-group" style="">
-                        <table class="table" >
-                          <tr>
-                            <td style="width:15%">
-                              Añadir archivos de evidencia:
-                            </td>
-                            <td colspan="4">
-                                <a name="button" class="btn btn-primary" onclick="$('#images').click()">Seleccionar archivos</a>
-                                <input class="btn btn-default" type="file" id="images" name="images[]" multiple="" style="display:none">
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
+                        </td>
 
-                            </td>
-                            <td>
-                              <ul id="files_list">
+                      </tr>
 
-                              </ul>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Archivos de evidencia almacenados
-                            </td>
-                            <td>
-                              <?php if (isset($update)): ?>
-                                <?php if (count($incident->images)>0): ?>
-                                  <div class="col-lg-12" style="padding-bottom:50px">.
+                    </table>
+									</div>
+									<!-- end wizard step-2 -->
+									<!-- begin wizard step-3 -->
+									<div>
+										<table class="table table-bordered">
+            <tr <?php echo $display_form ?>>
+              <td colspan="5" >
+                {{Form::textarea('description',$incident->description,[
+                      'class'=>'form-control parsley-validated',
+                      "data-parsley-pattern"=>"",
+                      "data-parsley-required"=>"true",
+                      "placeholder"=>"Descripción del incidente",
+                      "id"=>"description",
+                      ]);
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5" >
+               <div class="form-group">
+                 {{Form::textarea('conclution',$incident->conclution,[
+                       'class'=>'form-control parsley-validated',
+                       "data-parsley-pattern"=>"",
+                       "data-parsley-required"=>"true",
+                       "placeholder"=>"Conclusiones",
+                       "id"=>"conclutions"]);
+                 }}
+               </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5" >
+                <div class="form-group">
+                  {{Form::textarea('recomendation',$incident->recomendation,[
+                        'class'=>'form-control parsley-validated',
+                        "data-parsley-pattern"=>"",
+                        "data-parsley-required"=>"true",
+                        "placeholder"=>"Recomendaciones",
+                        "id"=>"recomendations"]);
+                  }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <div class="form-group">
 
-                                    <?php foreach ($incident->images as $i): ?>
-                                      <?php if ($i->evidence_types_id==1): ?>
-                                          <div class="col-lg-4">
-                                            <div class="col-lg-10">
-                                              <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
-                                                <?php echo $i->name ?>
-                                              </a>
-                                            </div>
-                                            <div class="col-lg-2">
-                                              <i class="fa fa-minus-circle" onclick="delFile('<?php echo $i->name ?>',$(this))"></i>
-                                            </div>
+                      {{Form::textarea('references',$references->link,[
+                            'class'=>'form-control parsley-validated',
+                            "data-parsley-pattern"=>"",
+                            "data-parsley-required"=>"true",
+                            "placeholder"=>"Referencias",
+                            "id"=>"references",
+                            ]);
+                      }}
+
+                </div>
+              </td>
+            </tr>
+          </table>
+									</div>
+									<!-- end wizard step-3 -->
+									<!-- begin wizard step-4 -->
+									<div>
+									    <div class="form-group" style="">
+                                          <table class="table" >
+                                            <tr>
+                                              <td style="width:15%">
+                                                Añadir archivos de evidencia:
+                                              </td>
+                                              <td colspan="4">
+                                                  <a name="button" class="btn btn-primary" onclick="$('#images').click()">Seleccionar archivos</a>
+                                                  <input class="btn btn-default" type="file" id="images" name="images[]" multiple="" style="display:none">
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+
+                                              </td>
+                                              <td>
+                                                <ul id="files_list">
+
+                                                </ul>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+                                                Archivos de evidencia almacenados
+                                              </td>
+                                              <td>
+                                                <?php if (isset($update)): ?>
+                                                  <?php if (count($incident->images)>0): ?>
+                                                    <div class="col-lg-12" style="padding-bottom:50px">.
+
+                                                      <?php foreach ($incident->images as $i): ?>
+                                                        <?php if ($i->evidence_types_id==1): ?>
+                                                            <div class="col-lg-4">
+                                                              <div class="col-lg-10">
+                                                                <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                                                                  <?php echo $i->name ?>
+                                                                </a>
+                                                              </div>
+                                                              <div class="col-lg-2">
+                                                                <i class="fa fa-minus-circle" onclick="delFile('<?php echo $i->name ?>',$(this))"></i>
+                                                              </div>
+                                                            </div>
+                                                        <?php endif ?>
+                                                      <?php endforeach ?>
+                                                    </div>
+                                                  <?php endif ?>
+                                                <?php endif ?>
+                                              </td>
+                                            </tr>
+
+                                          </table>
+                                          <div id="todel">
+
                                           </div>
+                                        </div>
+
+
+                                      <?php if (isset($update)): ?>
+                                        <input type="text" name="id" value="<?php echo $incident->id ?>" style="display:none">
                                       <?php endif ?>
-                                    <?php endforeach ?>
-                                  </div>
-                                <?php endif ?>
-                              <?php endif ?>
-                            </td>
-                          </tr>
+                                        <div class="form-group">
+                                          <label class="control-label col-md-2 col-sm-2">
+                                          </label>
+                                          <div class="col-md-10 col-sm-10">
 
-                        </table>
-                        <div id="todel">
-
+                                            {{Form::submit('Guardar Incidente',['class'=>'btn btn-lg btn-primary pull-right ']);}}
+                                          </div>
+                                        </div>
+									</div>
+									<!-- end wizard step-4 -->
+								</div>
+							{{ Form::close() }}
                         </div>
-                      </div>
+                    </div>
+                    <!-- end panel -->
 
-
-                    <?php if (isset($update)): ?>
-                      <input type="text" name="id" value="<?php echo $incident->id ?>" style="display:none">
-                    <?php endif ?>
-                      <div class="form-group">
-                        <label class="control-label col-md-2 col-sm-2">
-                        </label>
-                        <div class="col-md-10 col-sm-10">
-
-                          {{Form::submit('Guardar',['class'=>'btn btn-primary pull-right ']);}}
-                        </div>
-                      </div>
-                    {{ Form::close() }}
-
-			    </div>
-			</div>
 		</div>
 		<!-- end #content -->
 
@@ -1087,4 +1150,15 @@
   <script src="/assets/js/table-manage-default.demo.min.js"></script>
   <script src="/assets/js/apps.min.js"></script>
   <!-- ================== END PAGE LEVEL JS ================== -->
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="/assets/plugins/bootstrap-wizard/js/bwizard.js"></script>
+	<script src="/assets/js/form-wizards.demo.min.js"></script>
+	<script src="/assets/js/apps.min.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+  <script>
+		$(document).ready(function() {
+			//App.init();
+			FormWizard.init();
+		});
+	</script>
 @stop
