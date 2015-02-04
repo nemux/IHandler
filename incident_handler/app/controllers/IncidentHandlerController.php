@@ -26,7 +26,7 @@ protected $layout = 'layouts.master';
         $access->incident_handler_id=$handler->id;
         $access->active=0;
         $access->save();
-        $log::info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
+        //$log::info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
         return Redirect::to('handler/view/'.$handler->id);
       }
       else{
@@ -65,7 +65,7 @@ protected $layout = 'layouts.master';
         $access->active=0;
         $access->save();
 
-        $log::info(Auth::user()->id,Auth::user()->username,'Se actualizó el Incident Handler con ID: '. $handler->id);
+        //$log::info(Auth::user()->id,Auth::user()->username,'Se actualizó el Incident Handler con ID: '. $handler->id);
         return Redirect::to('handler/view/'.$handler->id);
       }
 

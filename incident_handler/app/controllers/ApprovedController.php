@@ -43,7 +43,7 @@ protected $layout = 'layouts.master';
 
     }
 
-    
+
 
     public function change()
     {

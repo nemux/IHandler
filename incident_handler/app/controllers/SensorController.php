@@ -17,7 +17,7 @@ protected $layout = 'layouts.master';
         $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
-        $log::info(Auth::user()->id,Auth::user()->username,'Se creó el Sensor con ID: '. $sensor->id);
+        //$log::info(Auth::user()->id,Auth::user()->username,'Se creó el Sensor con ID: '. $sensor->id);
         return Redirect::to('sensor/view/'.$sensor->id);
       }
       else{
@@ -43,7 +43,7 @@ protected $layout = 'layouts.master';
         $sensor->montage=$input['montage'];
         $sensor->customers_id=$input['customers_id'];
         $sensor->save();
-        $log::info(Auth::user()->id,Auth::user()->username,'Se actualizó el Sensor con ID: '. $sensor->id);
+        //$log::info(Auth::user()->id,Auth::user()->username,'Se actualizó el Sensor con ID: '. $sensor->id);
         return Redirect::to('sensor/view/'.$sensor->id);
       }
     }

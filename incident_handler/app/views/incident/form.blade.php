@@ -111,7 +111,13 @@
         	list.append(li);
         }
       });
-
+      $.get('/incident/sensor/get/'+$('#customers_id').val(),
+        function( data ){
+          $('#sensor_id').empty();
+          $.each(data, function(key, element) {
+              $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+            });
+      });
       $("#search_sid").keyup(function (e){
 
         if(e.which == 13 && validateSid($("#search_sid").val())) {
@@ -146,6 +152,24 @@
 				  $.each(data, function(key, element) {
 					    $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
 				    });
+      });
+    });
+    $('#customers_id').click(function(){
+      $.get('/incident/sensor/get/'+$('#customers_id').val(),
+        function( data ){
+          $('#sensor_id').empty();
+          $.each(data, function(key, element) {
+              $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+            });
+      });
+    });
+    $('#customers_id').keyup(function(){
+      $.get('/incident/sensor/get/'+$('#customers_id').val(),
+        function( data ){
+          $('#sensor_id').empty();
+          $.each(data, function(key, element) {
+              $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+            });
       });
     });
 
