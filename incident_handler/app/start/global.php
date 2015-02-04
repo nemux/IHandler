@@ -51,10 +51,10 @@ App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
 
+  if ($code == 404 ) {
+
    $text = array(
-    401 => 'No autorizado.',
-    403 => 'Prohibido.',
-    404 => 'No encontrado'
+    404 => 'No encontrado.'
    );
 
    $error = array(
@@ -63,6 +63,7 @@ App::error(function(Exception $exception, $code)
    );
 
   return Response::view("error.error", $error, $code);
+  }
 
 });
 

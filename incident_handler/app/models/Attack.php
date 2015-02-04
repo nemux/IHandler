@@ -10,7 +10,7 @@ class Attack extends Eloquent {
 
   protected $dates = ['deleted_at'];
 	protected $table = 'attacks';
-	protected $fillable = ['name','description'];
+	protected $fillable = ['name','description', 'attack_parent_id'];
 
 
 	public function incident(){

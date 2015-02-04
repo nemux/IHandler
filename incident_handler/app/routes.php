@@ -83,6 +83,10 @@ Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
 });
 
 Route::get('incident/view/{id}','IncidentController@view');
+Route::get('/attack','AttackController@index');
+Route::get('/attack/{id}','AttackController@get_byID');
+
+
 
 Route::group(array('prefix'=>'report'),function(){
   # Report Routes

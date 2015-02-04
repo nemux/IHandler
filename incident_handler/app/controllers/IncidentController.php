@@ -172,7 +172,7 @@ protected $layout = 'layouts.master';
           $incident->incidents_status_id = $status;
           $incident->save();
         }
-        $log::info(Auth::user()->id,Auth::user()->username,'Se actualizo el incidente con ID: '. $incident->id. ' a estatus '. $incident->incidents_status_id);
+        $log->info(Auth::user()->id,Auth::user()->username,'Se actualizo el incidente con ID: '. $incident->id. ' a estatus '. $incident->incidents_status_id);
       }
       return Redirect::to('incident/view/'.$incident->id);
     }
@@ -209,6 +209,7 @@ protected $layout = 'layouts.master';
 
       $sensor_object= new Sensor;
       $input = Input::all();
+      $log = new Log\Logger();
 
       $incident=new Incident;
       $attack=Attack::lists('name', 'id');
@@ -387,7 +388,7 @@ protected $layout = 'layouts.master';
           $incident_rule->incidents_id=$incident->id;
           $incident_rule->save();
         }
-        $log::info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
 
         return Redirect::to('incident/view/'.$incident->id);
       }
@@ -648,7 +649,7 @@ protected $layout = 'layouts.master';
                     $image->delete();
                   }
                 }
-                $log::info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
+                $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
                 return Redirect::to('incident/view/'.$incident->id);
       }
     }
@@ -707,7 +708,7 @@ protected $layout = 'layouts.master';
 
     $pdf->loadHTML($htmlReport,1);
     //Log
-    $log::info(Auth::user()->id,Auth::user()->username,'Se visualizó el reporte PDF del Incidente con ID: '. $incident->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se visualizó el reporte PDF del Incidente con ID: '. $incident->id );
     return $pdf->stream();
   }
   public function addObservation(){
@@ -800,7 +801,7 @@ protected $layout = 'layouts.master';
     $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
     $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
     $ticketIM->save();
-    $log::info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id );
   }
 
   private function closeTicket($ticketID){
@@ -814,7 +815,7 @@ protected $layout = 'layouts.master';
     $res = $ticketOtrs->close($ticketID, $htmlReport);
 
     //Log
-    $log::info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
   }
 
     private function sendRecomendation($incident, $recomendation){
@@ -834,7 +835,7 @@ protected $layout = 'layouts.master';
     $r->save();
 
     //Log
-    $log::info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id );
   }
 
   private function renderReport($incident){
