@@ -12,7 +12,7 @@ protected $layout = 'layouts.master';
       $customer=Customer::lists('company', 'id');
       $log = new Log\Logger();
 
-      if ($input) {
+      if (isset($input['name'])) {
         $sensor->name=$input['name'];
         $sensor->ip=$input['ip'];
         $sensor->montage=$input['montage'];

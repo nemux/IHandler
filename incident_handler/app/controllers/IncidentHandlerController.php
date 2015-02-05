@@ -14,7 +14,7 @@ protected $layout = 'layouts.master';
       $types=AccessType::lists('name', 'id');
       $log = new Log\Logger();
 
-      if ($input) {
+      if (isset($input['name'])) {
         $handler->name=$input['name'];
         $handler->lastname=$input['lastname'];
         $handler->phone=$input['phone'];

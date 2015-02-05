@@ -65,7 +65,7 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '10.30.12.106',
 			'database' => 'incident_handler',
 			'username' => 'incident',
 			'password' => 'password',
@@ -74,9 +74,9 @@ return array(
 			'schema'   => 'public',
 		),
 
-    'log' => array(
+		'log' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
+			'host'     => '10.30.12.106',
 			'database' => 'log',
 			'username' => 'log',
 			'password' => 'password',
