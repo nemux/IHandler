@@ -163,6 +163,7 @@
             });
       });
     });
+
     $('#customers_id').keyup(function(){
       $.get('/incident/sensor/get/'+$('#customers_id').val(),
         function( data ){

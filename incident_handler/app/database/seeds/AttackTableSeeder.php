@@ -164,7 +164,7 @@
        ]);
 
        Attack::create([
-         'name' => 'SQL Inyection',
+         'name' => 'SQL Injection',
          'description' => '',
          'attack_parent_id' => 1,
        ]);

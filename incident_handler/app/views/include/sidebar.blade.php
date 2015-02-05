@@ -72,8 +72,21 @@
 								<i class="fa fa-suitcase"></i>
 								<span>Clientes</span>
 							</a>
+
 						<ul class="sub-menu">
 								<li><a href="/customer/">Ver</a></li>
+						</ul>
+					</li>
+
+            <li class="has-sub ">
+						<a href="javascript:;">
+						    <b class="caret pull-right"></b>
+						    <i class="fa fa-crosshairs "></i>
+						    <span>Attacks</span>
+					    </a>
+						<ul class="sub-menu">
+                <li><a href="/attack/create">Crear ataque</a></li>
+						    <li><a href="/attack">Ver ataques</a></li>
 						</ul>
 					</li>
 
