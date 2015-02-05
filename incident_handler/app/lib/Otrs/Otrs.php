@@ -19,9 +19,9 @@ abstract class Otrs {
 
   public function __construct(){
 
-    $this->url      = "http://192.168.1.134/otrs/rpc.pl";
-    $this->username = "some_user";
-    $this->password = "some_pass";
+    $this->url      = "http://192.95.57.64/otrs/rpc.pl";
+    $this->username = "botencio";
+    $this->password = "zRRIaucwAEuo";
     $this->incidentHandler = "gcs_im";
 
     $this->client = new SoapClient(null, array('location'  =>  $this->url,
@@ -64,5 +64,3 @@ abstract class Otrs {
     return $arrayInfo;
   }
 }
-
-

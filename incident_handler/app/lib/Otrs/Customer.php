@@ -98,7 +98,7 @@ class Customer extends Otrs {
       $userInfo->UserTitle = $userInfoTmp['UserTitle'];
       $userInfo->UserCustomerID = $userInfoTmp['UserCustomerID'];
       $userInfo->UserShowTickets = $userInfoTmp['UserShowTickets'];
-      $userInfo->UserLanguage = $userInfoTmp['UserLanguage'];
+      //$userInfo->UserLanguage = $userInfoTmp['UserLanguage'];
       $userInfo->Source = $userInfoTmp['Source'];
       return $userInfo;
     } else {

@@ -121,6 +121,7 @@ protected $layout = 'layouts.master';
         if ($status=="1") {
           $incident->incidents_status_id = $status;
           $incident->save();
+
         }
 
         if ($status=="2") {
@@ -129,6 +130,44 @@ protected $layout = 'layouts.master';
         }
         if ($status=="3") {
           $this->sendTicket($incident,$status);
+          ////////////////////////variables para correo///////////////////////////////////////////////////////////
+          $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
+          $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
+          $listed=array();
+          $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
+          $location=array();
+          foreach ($black_preview as $b) {
+            if ($b->src->blacklist) {
+              array_push($listed,$b->src);
+              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+              array_push($location,$loc);
+              //print_r($loc);
+              //echo "<br>";
+            }
+            if ($b->dst->blacklist) {
+              array_push($listed,$b->dst);
+              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+              array_push($location,$loc);
+              //print_r($loc);
+              //echo "<br>";
+            }
+          }
+          $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
+          //////////////////////////////////////////////////////////////////////////////////
+
+
+
+          Mail::send('incident.show',array(
+            'det_time'=>$det_time,
+            'occ_time'=>$occ_time,
+            'incident'=>$incident,
+            'listed'=>$listed,
+            'location'=>$location,
+            'recomendations' => $recomendations
+          ),
+          function ($message) use ($incident){
+            $message->to($incident->customer->mail)->subject('Informe sobre incidente de seguridad::'.$incident->title.'');
+          });
           $incident->incidents_status_id = $status;
           $incident->save();
         }
@@ -219,7 +258,7 @@ protected $layout = 'layouts.master';
       $det_time=new Time;
       $occ_time=new Time;
 
-      if (isset($input['tittle'])) {
+      if (isset($input['title'])) {
         if ($this->validateEntry(array($input['title'],))=="1") {
           return Redirect::to('/incident');
         }
@@ -293,9 +332,9 @@ protected $layout = 'layouts.master';
         $history->incidents_id=$incident->id;
         $history->save();
 
-        $det_time->datetime=$input['det_date'].' '.date("H:i:s",strtotime($input['det_time']));
+        $det_time->datetime=date('Y-m-d',strtotime($input['det_date'])).' '.date("H:i:s",strtotime($input['det_time']));
         $det_time->zone="UTC/GMT -6 horas";
-        $occ_time->datetime=$input['occ_date'].' '.date("H:i:s",strtotime($input['occ_time']));
+        $occ_time->datetime=date('Y-m-d',strtotime($input['occ_date'])).' '.date("H:i:s",strtotime($input['occ_time']));
         $occ_time->zone="UTC/GMT -6 horas";
         $det_time->time_types_id=1;
         $occ_time->time_types_id=2;
@@ -542,9 +581,9 @@ protected $layout = 'layouts.master';
                 $history->incidents_id=$incident->id;
                 $history->save();
 
-                $det_time->datetime=$input['det_date'].' '.date("H:i:s",strtotime($input['det_time']));
+                $det_time->datetime=date('Y-m-d',strtotime($input['det_date'])).' '.date("H:i:s",strtotime($input['det_time']));
                 $det_time->zone="UTC/GMT -6 horas";
-                $occ_time->datetime=$input['occ_date'].' '.date("H:i:s",strtotime($input['occ_time']));
+                $occ_time->datetime=date('Y-m-d',strtotime($input['occ_date'])).' '.date("H:i:s",strtotime($input['det_time']));
                 $occ_time->zone="UTC/GMT -6 horas";
                 $det_time->time_types_id=1;
                 $occ_time->time_types_id=2;

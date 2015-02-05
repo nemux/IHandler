@@ -20,9 +20,9 @@ protected $layout = 'layouts.master';
         $handler->phone=$input['phone'];
         $handler->mail=$input['mail'];
         $handler->save();
-
+        $pass=substr(str_shuffle($chars),0,8);
         $access->username=$input['username'];
-        $access->password=substr(str_shuffle($chars),0,8);
+        $access->password=Hash::make($pass);
         $access->access_types_id=$input['access_types_id'];
         $access->incident_handler_id=$handler->id;
         $access->active=0;
@@ -30,6 +30,9 @@ protected $layout = 'layouts.master';
 
         $log->info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
 
+        Mail::send('usuarios.mail',array('user'=>$input['username'],'pass'=>$pass),function ($message){
+          $message->to(Input::get('mail'))->subject('Alta en Indcident Manager');
+        });
         return Redirect::to('handler/view/'.$handler->id);
       }
       else{
