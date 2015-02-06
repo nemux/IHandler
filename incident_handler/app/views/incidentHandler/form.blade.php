@@ -65,7 +65,7 @@
 													{{Form::text('phone', $handler->phone,[
 																		'class'=>'form-control parsley-validated',
 																		"data-parsley-pattern"=>"^[\d]{8,10}$",
-																		"data-parsley-required"=>"true"]);
+																		"data-parsley-required"=>"false"]);
 													}}
 												</div>
 											</div>

@@ -15,7 +15,6 @@ class LoginController extends Controller{
 
     public function doLogin()
     {
-
       $log = new Log\Logger();
 
       $userData = array(
@@ -28,7 +27,6 @@ class LoginController extends Controller{
         'password'=>'required|alpha_num|between:5,15'
       );
 
-
       $validator = Validator::make($userData, $rules);
 
       if ($validator->passes()) {
@@ -40,6 +38,7 @@ class LoginController extends Controller{
           return Redirect::to('/login')->with('message', 'Your username/password combination was incorrect');
         }
       } else {
+	return 'UserName:'.$userData['username'] . ' Password: '. $userData['password'];
         return Redirect::to('/login')->withErrors($validator);
       }
     }

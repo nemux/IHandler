@@ -9,7 +9,7 @@
 			</ol>
 			<!-- end breadcrumb -->
 			<!-- begin page-header -->
-      <h1 class="page-header" style="color:#FFF">Bienvenido {{ Auth::user()->incidentHandler->access->username." " }}
+      <h1 class="page-header" style="color:#FFF">Bienvenido {{ Auth::user()->incidentHandler->name." ". Auth::user()->incidentHandler->lastname }}
                                               </h1>
 			<!-- end page-header -->
 

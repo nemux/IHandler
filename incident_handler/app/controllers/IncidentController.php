@@ -167,6 +167,7 @@ protected $layout = 'layouts.master';
             }
             $incident->save();
             $this->closeTicket($incident->ticket->otrs_ticket_id);
+            $this->sendEmail($incident,'[GSC-IM]-Cierre de reporte sobre incidente de seguridad::'.$incident->title.'.');
           }
         }
 
