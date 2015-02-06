@@ -606,19 +606,19 @@
                                   <input id="search_sid" class="form-control" placeholder="sid" type="text" >
                                 </td>
                                 <td>
-                                  <input id="search_rule"  class="form-control" placeholder="rule" type="text" >
+                                  <input id="search_rule"  class="form-control" placeholder="regla" type="text" >
                                 </td>
                                 <td>
-                                  <input id="search_message"  class="form-control" placeholder="message" type="text" >
+                                  <input id="search_message"  class="form-control" placeholder="indicador" type="text" >
                                 </td>
                                 <td>
-                                  <input id="search_translate"  class="form-control" placeholder="translate" type="text" >
+                                  <input id="search_translate"  class="form-control" placeholder="traducción" type="text" >
                                 </td>
                                 <td>
                                   <input id="search_rule_is"  class="form-control" placeholder="qué es" type="text" >
                                 </td>
                                 <td>
-                                  <input id="search_why"  class="form-control" placeholder="why" type="text" >
+                                  <input id="search_why"  class="form-control" placeholder="por qué ocurre" type="text" >
                                 </td>
                               </tr>
 
@@ -707,7 +707,7 @@
                                 Sistema Operativo
                               </th>
                               <th>
-                                Función
+                                MAC
                               </th>
                               <th>
                                 Localidad

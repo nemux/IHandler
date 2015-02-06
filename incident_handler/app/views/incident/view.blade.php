@@ -76,7 +76,7 @@ $(document).ready(function(){
   <!-- begin #page-container -->
 
 
-      <h1 class="page-header">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> </small></h1>
+      <h1 class="page-header" style="color:#FFF">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> </small></h1>
       <!-- end page-header -->
 
       <div class="panel panel-inverse">
@@ -113,7 +113,7 @@ $(document).ready(function(){
                       <strong>Categoría:</strong>
                     </td>
                     <td colspan="2" style="text-align:center;padding:0">
-                      <table class="table table-bordered" style="padding:0;margin-bottom:0">
+                      <table class="table table-bordered" style="padding:0;margin-bottom:0;width:100%">
                         <tr style="background:#CCC">
                           <td colspan="2">
                             Descripción
@@ -370,11 +370,11 @@ $(document).ready(function(){
       </div>
       <?php if (count($incident->images)>0): ?>
         <div class="col-lg-12" style="padding-bottom:50px">.
-          <h4>Evidencia del incidente:</h4><br>
+          <h4 style="color:#FFF">Evidencia del incidente:</h4><br>
           <?php foreach ($incident->images as $i): ?>
             <?php if ($i->evidence_types_id=='1'): ?>
               <div class="col-lg-3">
-                <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                <a href="/files/evidence/<?php echo $i->name ?>" target="blank" style="color:#FFF"><i class="fa fa-cube fa-2x"></i>
                   <?php echo $i->name ?>
                 </a>
 
@@ -384,11 +384,11 @@ $(document).ready(function(){
         </div>
 
         <div class="col-lg-12" style="padding-bottom:50px">.
-          <h4>Evidencia de Cierre:</h4><br>
+          <h4 style="color:#FFF">Evidencia de Cierre:</h4><br>
           <?php foreach ($incident->images as $i): ?>
             <?php if ($i->evidence_types_id=='2'): ?>
               <div class="col-lg-3">
-                <a href="/files/evidence/<?php echo $i->name ?>" target="blank"><i class="fa fa-cube fa-2x"></i>
+                <a href="/files/evidence/<?php echo $i->name ?>" target="blank" style="color:#FFF"><i class="fa fa-cube fa-2x"></i>
                   <?php echo $i->name ?>
                 </a>
 

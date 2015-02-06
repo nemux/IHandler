@@ -23,19 +23,23 @@ class Customer extends Otrs {
                                                "UserLogin","*",
                                               )
                                          ) ;
-    $tmpCustomerInfo = $this->formatOtrsArray($customersList);
+    if (sizeof($customersList) > 0 ){
 
-    if (sizeof($tmpCustomerInfo) > 0 ){
-      $CustomerInfo = array();
-      $i = 0;
-      foreach($tmpCustomerInfo as $k => $v){
-        $CustomerInfo[$i] =  array("UserName" => $k, "Name"=> $v);
-        $i++;
-      }
-      return $CustomerInfo;
+    	$tmpCustomerInfo = $this->formatOtrsArray($customersList);
+    	if (sizeof($tmpCustomerInfo) > 0 ){
+      		$CustomerInfo = array();
+      		$i = 0;
+      		foreach($tmpCustomerInfo as $k => $v){
+        		$CustomerInfo[$i] =  array("UserName" => $k, "Name"=> $v);
+        		$i++;
+      		}
+      		return $CustomerInfo;
+    	}
+        else
+      		return array("error_code" => 0, "error_description" => "No data.");
     }
-    else
-      return array("error_code" => 0, "error_description" => "No data.");
+     else 
+      		return array("error_code" => 0, "error_description" => "No data.");
   }
 
 

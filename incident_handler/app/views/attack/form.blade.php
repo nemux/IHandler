@@ -10,7 +10,7 @@
   <!-- ================== END PAGE LEVEL JS ================== -->
   <script src="/assets/plugins/pace/pace.min.js"></script>
 
-<h1 class="page-header"><?php echo $title ?></h1>
+<h1 class="page-header" style="color:#FFF"><?php echo $title ?></h1>
       <!-- end page-header -->
 
       <!-- begin row -->

@@ -1,9 +1,9 @@
-
+<!DOCTYPE html>
+<html>
 <head>
   <meta charset="utf-8" />
   <title>{{$incident->title}}</title>
-</head>
-<style media="screen">
+  <style media="screen">
   body{
 
     font-family:Arial, Helvetica, sans-serif;
@@ -24,9 +24,8 @@
     margin-bottom:5px;
   }
 </style>
-
+</head>
 <body>
-
 <div  style="margin-bottom:20px">
   <table>
     <tr>
@@ -39,14 +38,14 @@
       <td style="text-align:center;background:#d9d9d9" colspan="1">
         <strong>Categoría:</strong>
       </td>
-      <td style="border-collapse: collapse;width:100%">
+      <td style="border-collapse: collapse;width:100%" colspan="2">
         <table style="border-collapse: collapse;width:100%">
           <tr>
-            <td colspan="2" style="text-align:center;background:#d9d9d9">
+            <td colspan="2" style="text-align:center;background:#d9d9d9;">
               Descripción
             </td>
           </tr>
-          <tr>
+          <tr style="width:100%">
             <td style="text-align:center">
               <?php echo $incident->category->id ?>
             </td>
@@ -107,7 +106,6 @@
       <td colspan="2" style="text-align:center">
         <?php
             echo $incident->stream;
-
         ?>
       </td>
     </tr>
@@ -125,7 +123,7 @@
         ?>
       </td>
     </tr>
-    <tr >
+    <tr>
 
       <td style="text-align:center;background:#d9d9d9">
         <strong>Severidad:</strong>
@@ -153,11 +151,8 @@
 
           ?>
         </div>
-
       </td>
-
     </tr>
-
     <tr>
       <td style="text-align:center;background:#d9d9d9">
         <strong>Dirección IP de Origen:</strong>
@@ -280,19 +275,10 @@
                     <?php echo $a->content ?>
                   </td>
                 </tr>
-
               </table>
-
+            </div>
           </div>
-          </div>
-
   <?php endforeach ?>
 </div>
-
-
 </body>
-
-
-
-  </div>
-  <!-- end page container -->
+</html>

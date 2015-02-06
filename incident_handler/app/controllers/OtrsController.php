@@ -20,6 +20,7 @@ class OtrsController extends BaseController{
         //$log = new Log\Logger();
 
         $total_inserted = 0;
+	if (!array_key_exists("error_code",$customers)){
         foreach($customers as $k => $v){
 
           $cu = $oc->getInfo($v['UserName']);
@@ -41,7 +42,7 @@ class OtrsController extends BaseController{
             $total_inserted++;
           }
         }
-
+        }
         //$log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
         //return array("total_inserted" => $total_inserted);
         return $this->layout = View::make("otrs.result", array(

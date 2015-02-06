@@ -73,7 +73,7 @@ protected $layout = 'layouts.master';
         return "Se debe seleccionar un nivel de riesgo";
       }
       if ($incident->criticity=="") {
-        return "Se debe elegir un nivel de criticidad";
+        return "Se debe elegir un nivel de severidad";
       }
       if ($incident->impact=="") {
         return "Se debe elegir un nivel de impacto";
