@@ -31,7 +31,7 @@ protected $layout = 'layouts.master';
         $log->info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
 
         Mail::send('usuarios.mail',array('user'=>$input['username'],'pass'=>$pass),function ($message){
-          $message->to(Input::get('mail'))->subject('Alta en Indcident Manager');
+          $message->to(Input::get('mail'))->subject('[GSC-IM]-Alta en Incident Manager');
         });
         return Redirect::to('handler/view/'.$handler->id);
       }

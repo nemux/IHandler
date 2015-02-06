@@ -130,45 +130,8 @@ protected $layout = 'layouts.master';
         }
         if ($status=="3") {
           $this->sendTicket($incident,$status);
-          ////////////////////////variables para correo///////////////////////////////////////////////////////////
-          $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
-          $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
-          $listed=array();
-          $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
-          $location=array();
-          foreach ($black_preview as $b) {
-            if ($b->src->blacklist) {
-              array_push($listed,$b->src);
-              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
-              array_push($location,$loc);
-              //print_r($loc);
-              //echo "<br>";
-            }
-            if ($b->dst->blacklist) {
-              array_push($listed,$b->dst);
-              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
-              array_push($location,$loc);
-              //print_r($loc);
-              //echo "<br>";
-            }
-          }
-          $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
-          //////////////////////////////////////////////////////////////////////////////////
-
-
-
-          Mail::send('incident.show',array(
-            'det_time'=>$det_time,
-            'occ_time'=>$occ_time,
-            'incident'=>$incident,
-            'listed'=>$listed,
-            'location'=>$location,
-            'recomendations' => $recomendations
-          ),
-          function ($message) use ($incident){
-            $message->to($incident->customer->mail)->subject('Informe sobre incidente de seguridad::'.$incident->title.'');
-          });
           $incident->incidents_status_id = $status;
+	  $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.');
           $incident->save();
         }
         if ($status=="4") {
@@ -839,8 +802,8 @@ protected $layout = 'layouts.master';
 
     $incident = Incident::find($id);
     $this->sendRecomendation($incident, $recomendation);
+    $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.');
     $url = '/incident/view/'.$id;
-
     return Redirect::to($url);
   }
 
@@ -900,7 +863,7 @@ protected $layout = 'layouts.master';
     $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
     $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
     $ticketIM->save();
-    $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
   }
 
   private function closeTicket($ticketID){
@@ -937,8 +900,51 @@ protected $layout = 'layouts.master';
     $r->save();
 
     //Log
-    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id );
+    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id . ' referente al incidente: ' . $incident->id);
   }
+
+  private function sendEmail($incident, $subject){
+          ////////////////////////variables para correo///////////////////////////////////////////////////////////
+          $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
+          $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
+          $listed=array();
+          $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
+          $location=array();
+          foreach ($black_preview as $b) {
+            if ($b->src->blacklist) {
+              array_push($listed,$b->src);
+              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+              array_push($location,$loc);
+              //print_r($loc);
+              //echo "<br>";
+            }
+            if ($b->dst->blacklist) {
+              array_push($listed,$b->dst);
+              $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+              array_push($location,$loc);
+              //print_r($loc);
+              //echo "<br>";
+            }
+          }
+          $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
+          //////////////////////////////////////////////////////////////////////////////////
+
+          Mail::send('incident.show',array(
+            'det_time'=>$det_time,
+            'occ_time'=>$occ_time,
+            'incident'=>$incident,
+            'listed'=>$listed,
+            'location'=>$location,
+            'recomendations' => $recomendations
+          ),
+          function ($message) use ($incident, $subject){
+            $log = new Log\Logger();
+
+            $message->to($incident->customer->mail)->subject($subject);
+            $log->info(Auth::user()->id,Auth::user()->username,'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
+          });
+  }
+
 
   private function renderReport($incident){
     $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();

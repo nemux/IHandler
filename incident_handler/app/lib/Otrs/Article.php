@@ -35,7 +35,7 @@ class Article extends Otrs {
                                                          "From",           'GCS-IM System <csirt@globalcybersec.com>',
                                                          'To', $customerEmail,
                                                          "Subject",        $title,
-                                                         "ContentType",    "text/html; charset=ISO-8859-1",
+                                                         "ContentType",    "text/html; charset=UTF-8",
                                                          "Body",           $body,
                                                          "UserID",         $userId,
                                                          "HistoryComment", 'Ticket generado por el Sistema GCS-IM',
