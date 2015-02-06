@@ -17,9 +17,9 @@ class CreateIncidentHandlerTable extends Migration {
 	{
       $table->increments('id');
       $table->string('name',50);
-      $table->string('lastname',50);
+      $table->string('lastname',50)->nullable();
       $table->string('mail',60);
-      $table->string('phone',50);
+      $table->string('phone',50)->nullable();
       $table->timestamps();
       $table->softDeletes();
 		//

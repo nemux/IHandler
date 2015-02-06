@@ -17,6 +17,7 @@
                   'active'=>'1',
 
                                           ]);
+/*
         Access::create([
 
                   'username' => 'user1' ,
@@ -26,7 +27,7 @@
                   'active'=>'1',
 
                                           ]);
-       /*
+       
 
             foreach (range (1,35) as $index) {
 

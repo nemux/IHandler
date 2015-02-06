@@ -10,13 +10,13 @@
 
 
                   IncidentHandler::create([
-                  'name' => 'admin',
+                  'name' => 'Administrator',
                   'lastname' => 'the',
                   'mail'  => 'admin@admin.com',
                   'phone' => '651564985618574',
                   ]);
 
-
+/*
                   IncidentHandler::create([
                   'name' => 'Usuario 1',
                   'lastname' => 'Usuario normalito',
@@ -24,7 +24,6 @@
                   'phone' => '65156498561',
                   ]);
 
-          /*
             foreach (range (1,35) as $index) {
 
 
