@@ -64,6 +64,14 @@ class OtrsController extends BaseController{
 
 
   public function test($id){
+
+
+      $user = new Otrs\User;
+ 
+    $o = new Otrs\Customer();
+    print_r($o->getAll());
+
+      //$userInfo = $user->getInfo('gcs_im');
     /*
     $o = new Otrs\Customer();
     $u = new Otrs\User();
@@ -127,11 +135,9 @@ class OtrsController extends BaseController{
   //print_r($d);
   //return array("function"=>'get/otrs');
 
-  $ticket = new Otrs\Ticket();
+  //$ticket = new Otrs\Ticket();
 
-
-
-  print_r($ticket->getInfo($id));
+  //print_r($ticket->getInfo($id));
 
   }
 

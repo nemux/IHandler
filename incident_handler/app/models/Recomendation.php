@@ -9,7 +9,7 @@ class Recomendation extends Eloquent {
 	 */
   use SoftDeletingTrait;
 
-  protected $dates = ['deleted_at'];
+        protected $dates = ['deleted_at'];
 	protected $table = 'recomendations';
 	protected $fillable = ['content','incidents_id','otrs_article_id'];
 

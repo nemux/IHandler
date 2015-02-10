@@ -14,8 +14,10 @@ abstract class Otrs {
 
 
   public function getUrl() { return $this->url;}
-  public function getUsername() { return $this->username;}
-  public function getPassword() { return $this->password;}
+  public function getSoapUsername() { return $this->username;}
+  public function getSoapPassword() { return $this->password;}
+  public function getOtrsUser() { return $this->incidentHandler;}
+
 
   public function __construct(){
 

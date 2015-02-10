@@ -123,19 +123,19 @@ protected $layout = 'layouts.master';
           $incident->save();
 
         }
-
-        if ($status=="2") {
+	if ($status=="2") {
           $incident->incidents_status_id = $status;
           $incident->save();
           $this->sendTicket($incident,$status);
-          $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+          $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
           //$this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
-	        $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
+	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();
         }
+
         if ($status=="4") {
           $count_images=0;
           foreach ($input['images'] as $i) {
@@ -169,7 +169,7 @@ protected $layout = 'layouts.master';
             }
             $incident->save();
             $this->closeTicket($incident->ticket->otrs_ticket_id);
-            $this->sendEmail($incident,'[GSC-IM]-Cierre de reporte sobre incidente de seguridad::'.$incident->title.'.');
+            $this->sendEmail($incident,'[GCS-IM]-Cierre de reporte sobre incidente de seguridad::'.$incident->title.'.');
           }
         }
 
@@ -184,7 +184,8 @@ protected $layout = 'layouts.master';
 
     public function validateEntry($input){
       foreach ($input as $i) {
-        if (!preg_match("/^[A-Za-záéíóú0-9\'\"\-\,\.\s\n\t\>\/]*$/",$i)) {
+        if (0==1) {
+	//!preg_match("/^[A-Za-záéíóú0\"\;\'\\;\'\(\)\-\,\.\s\n\t\>\/\&,$i)
           return "1";
         }
       }
@@ -259,7 +260,10 @@ protected $layout = 'layouts.master';
         $incident->title=$input['title'];
         $incident->incidents_status_id=1;
         $incident->description=$input['description'];
-        $incident->conclution=$input['conclution'];
+        if (isset($input['conclution'])) {
+         $incident->conclution=$input['conclution'];
+        }
+        $incident->conclution="";
         $incident->recomendation=$input['recomendation'];
         $incident->incident_handler_id=Auth::user()->incident_handler_id;
         $incident->sensors_id=$input['sensor_id'];
@@ -331,10 +335,10 @@ protected $layout = 'layouts.master';
 
 
 
-          if($input['srcip_'.$e]=='')
-            return "Ip no puede ir vacía";
-          if($input['dstip_'.$e]=='')
-            return "Ip no puede ir vacía";
+          //if($input['srcip_'.$e]=='')
+            //return "Ip no puede ir vacía";
+          //if($input['dstip_'.$e]=='')
+            //return "Ip no puede ir vacía";
           $src->ip=$input['srcip_'.$e];
           $src->occurrences_types_id=$input['srcoccurencestype_'.$e];
           $src->save();
@@ -506,7 +510,10 @@ protected $layout = 'layouts.master';
                 $incident->customers_id=$input['customers_id'];
                 $incident->title=$input['title'];
                 $incident->description=$input['description'];
-                $incident->conclution=$input['conclution'];
+                if (isset($input['conclution'])) {
+                 $incident->conclution=$input['conclution'];
+                }
+                $incident->conclution="";
                 $incident->recomendation=$input['recomendation'];
                 $incident->sensors_id=$input['sensor_id'];
                 $incident->stream=$input['stream'];
@@ -585,10 +592,10 @@ protected $layout = 'layouts.master';
 
                   $src->blacklist=$input['srcblacklist_'.$e];
                   $dst->blacklist=$input['dstblacklist_'.$e];
-                  if($input['srcip_'.$e]=='')
-                    return "Ip no puede ir vacía";
-                  if($input['dstip_'.$e]=='')
-                    return "Ip no puede ir vacía";
+                  //if($input['srcip_'.$e]=='')
+                    //return "Ip no puede ir vacía";
+                  //if($input['dstip_'.$e]=='')
+                    //return "Ip no puede ir vacía";
                   $src->ip=$input['srcip_'.$e];
                   $src->occurrences_types_id=$input['srcoccurencestype_'.$e];
                   $src->save();
@@ -804,7 +811,8 @@ protected $layout = 'layouts.master';
 
     $incident = Incident::find($id);
     $this->sendRecomendation($incident, $recomendation);
-    $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.', 'El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación al siguiente evento:');
+    //$this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.');
+    $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación del siguiente evento:');
     $url = '/incident/view/'.$id;
     return Redirect::to($url);
   }
@@ -838,7 +846,7 @@ protected $layout = 'layouts.master';
     ));
   }
 
-  protected function sendticket($incident, $status){
+  protected function sendTicket($incident, $status){
     $u = new Otrs\User();
     $ticketOtrs = new Otrs\Ticket();
     $ticketIM = new Ticket;
@@ -851,6 +859,7 @@ protected $layout = 'layouts.master';
             ->join('incidents', 'tickets.incidents_id', '=', 'incidents.id')
             ->join('customers', 'incidents.customers_id', '=', 'customers.id')
             ->where('customers.id','=', $incident->customers_id)
+            ->whereNull('tickets.deleted_at')
             ->count();
 
     $in = $incident->customer->otrs_userID."-".($tn+1);
@@ -888,21 +897,24 @@ protected $layout = 'layouts.master';
 
     $otrsR = new Otrs\Article();
     $user = Auth::user();
+    $userOtrs = new Otrs\User();
     $r = new Recomendation();
+    $log = new Log\Logger();
+
     $r->incidents_id = $incident->id;
     $r->content = $recomendation;
     $r->save();
-    $log = new Log\Logger();
-
+    
+    $uOtrsInfo = $userOtrs->getInfo($userOtrs->getOtrsUser());
     $htmlReport = $this->renderReport($incident);
-
-    $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $user->id, $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
+    $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $uOtrsInfo['UserID'], $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
 
     $r->otrs_article_id = $articleID;
     $r->save();
 
     //Log
-    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id . ' referente al incidente: ' . $incident->id);
+    $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id . ' referente al incidente: ' . $incident->id.' con
+    OtrsArticleID: ' . $r->otrs_article_id);
   }
 
   private function sendEmail($incident, $subject, $body=null){
@@ -938,11 +950,12 @@ protected $layout = 'layouts.master';
             'listed'=>$listed,
             'location'=>$location,
             'recomendations' => $recomendations,
-            'body' => $body
+	    'body' => $body
           ),
           function ($message) use ($incident, $subject){
             $log = new Log\Logger();
 
+            //$message->to($incident->customer->mail)->cc('soc@globalcybersec.com')->subject($subject);
             $message->to($incident->customer->mail)->subject($subject);
             $log->info(Auth::user()->id,Auth::user()->username,'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
           });
