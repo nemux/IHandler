@@ -29,6 +29,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nombre</th>
+																						<th>Usuario</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -42,6 +43,9 @@
                                           <td>
                                             <?php echo $h->name ?> <?php echo $h->lastname ?>
                                           </td>
+																					<td>
+																						<?php echo $h->access->username ?>
+																					</td>
                                         </tr>
                                       <?php endforeach ?>
                                     </tbody>

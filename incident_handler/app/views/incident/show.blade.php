@@ -98,11 +98,11 @@
     </tr>
     <tr>
       <td style="text-align:center;background:#d9d9d9">
-        <strong>IoC:</strong>
+        <strong>Indicador de Compromiso:</strong>
       </td>
       <td colspan="2" style="text-align:center">
         <?php foreach ($incident->incidentRule as $r ): ?>
-          "<?php echo $r->rule->message ?>"<br>
+          <?php echo $r->rule->message ?><br>
           <?php //print_r($r) ?>
         <?php endforeach ?>
         <?php //print_r($incident->incidentRule); ?>
