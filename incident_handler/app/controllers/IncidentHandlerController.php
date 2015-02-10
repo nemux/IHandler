@@ -8,7 +8,7 @@ protected $layout = 'layouts.master';
     public function create()
     {
       $input = Input::all();
-      $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $chars = "\#\*\.\!\_\<\>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $handler=new IncidentHandler;
       $access=new Access;
       $types=AccessType::lists('name', 'id');
@@ -51,7 +51,7 @@ protected $layout = 'layouts.master';
     public function postUpdate()
     {
       $input = Input::all();
-      //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $chars = "\#\*\.\!\_\<\>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
       $handler=IncidentHandler::find($id);
       $access=$handler->access;
@@ -64,14 +64,18 @@ protected $layout = 'layouts.master';
         $handler->phone=$input['phone'];
         $handler->mail=$input['mail'];
         $handler->save();
-
         $access->username=$input['username'];
-        //$access->pass=substr(str_shuffle($chars),0,8);
+        $pass=substr(str_shuffle($chars),0,8);
+        $access->password=Hash::make($pass);
         $access->access_types_id=$input['access_types_id'];
         $access->incident_handler_id=$handler->id;
         $access->active=0;
         $access->save();
         $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó el Incident Handler con ID: '. $handler->id);
+
+        Mail::send('usuarios.mail',array('user'=>$input['username'],'pass'=>$pass),function ($message){
+          $message->to(Input::get('mail'))->subject('[GSC-IM]-Actualización en Incident Manager');
+        });
         return Redirect::to('handler/view/'.$handler->id);
       }
 

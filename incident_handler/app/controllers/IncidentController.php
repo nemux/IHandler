@@ -131,7 +131,7 @@ protected $layout = 'layouts.master';
         if ($status=="3") {
           $this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
-	  $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.');
+	        $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.');
           $incident->save();
         }
         if ($status=="4") {
@@ -670,30 +670,29 @@ protected $layout = 'layouts.master';
 
     $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$id)->first();
     $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$id)->first();
-    $listed=array();
-    $black_preview=IncidentOccurence::where("incidents_id","=",$id)->get ();
-    $location=array();
 
+    $listed=array();
+    $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
+    $location=array();
     foreach ($black_preview as $b) {
       if ($b->src->blacklist) {
         array_push($listed,$b->src);
-        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->src->id." and datetime=(select max(updated_at) from occurences_history)")->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
-
       }
       if ($b->dst->blacklist) {
         array_push($listed,$b->dst);
-        $loc=DB::table('occurences_history')->select(DB::raw('location'))->whereRaw('occurences_id='.$b->dst->id." and datetime=(select max(updated_at) from occurences_history)")->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
       }
     }
 
-    $message=$this->ready($incident);
 
+    $message=$this->ready($incident);
     $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
 
     return $this->layout = View::make('incident.view', array(

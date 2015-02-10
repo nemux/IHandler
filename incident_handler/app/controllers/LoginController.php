@@ -10,7 +10,6 @@ class LoginController extends Controller{
         return Redirect::to('/dashboard');
       else
         return View::make('usuarios.login');
-
     }
 
     public function doLogin()
@@ -23,8 +22,8 @@ class LoginController extends Controller{
         );
 
       $rules = array(
-        'username'=>'required|alpha_num|min:5',
-        'password'=>'required|alpha_num|between:5,15'
+        'username'=>'required|alpha|min:5',
+        'password'=>'required|between:5,15'
       );
 
       $validator = Validator::make($userData, $rules);
@@ -38,7 +37,6 @@ class LoginController extends Controller{
           return Redirect::to('/login')->with('message', 'Your username/password combination was incorrect');
         }
       } else {
-	return 'UserName:'.$userData['username'] . ' Password: '. $userData['password'];
         return Redirect::to('/login')->withErrors($validator);
       }
     }

@@ -46,8 +46,8 @@
             </td>
           </tr>
           <tr style="width:100%">
-            <td style="text-align:center">
-              <?php echo $incident->category->id ?>
+            <td style="text-align:center;width:25%">
+              <?php echo ($incident->category->id)-1; ?>
             </td>
             <td style="text-align: justify;">
               <?php echo $incident->category->name ?>.
@@ -81,7 +81,7 @@
 
     <tr>
       <td style="text-align:center;background:#d9d9d9;">
-        <strong>Status:</strong>
+        <strong>Estatus:</strong>
       </td>
       <td style="text-align:center;" colspan="2">
         <?php echo $incident->status->name ?>
@@ -89,7 +89,7 @@
     </tr>
     <tr>
       <td style="text-align:center;background:#d9d9d9">
-        <strong>IOC:</strong>
+        <strong>IoC:</strong>
       </td>
       <td colspan="2" style="text-align:center">
         <?php foreach ($incident->incidentRule as $r ): ?>

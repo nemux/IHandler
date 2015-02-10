@@ -175,13 +175,13 @@
     });
 
 
-    function removeRule(tr,sid){
-      $(tr).remove();
-      var index=sid_added.indexOf(sid);
-      sid_added.splice(index,1);
-    }
-    });
 
+    });
+function removeRule(tr,sid){
+  $(tr).remove();
+  var index=sid_added.indexOf(sid);
+  sid_added.splice(index,1);
+}
 
 </script>
 <script charset="utf-8">

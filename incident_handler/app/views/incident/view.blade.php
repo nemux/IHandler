@@ -164,7 +164,7 @@ $(document).ready(function(){
 
                   <tr>
                     <td style="text-align:center;background:#CCC;">
-                      <strong>IOC:</strong>
+                      <strong>IoC:</strong>
                     </td>
                     <td style="text-align:center;">
                       <?php foreach ($incident->incidentRule as $r ): ?>

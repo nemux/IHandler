@@ -11,10 +11,71 @@
 
                   IncidentHandler::create([
                   'name' => 'Administrator',
-                  'lastname' => 'the',
                   'mail'  => 'admin@admin.com',
-                  'phone' => '651564985618574',
+                  'phone' => '',
                   ]);
+                  IncidentHandler::create([
+                  'name' => 'René Alejandro',
+                  'lastname' => 'Guevara Canales',
+                  'mail'  => 'rguevara@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Eduardo',
+                  'lastname' => 'Candia Guerrero',
+                  'mail'  => 'ecandia@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Sergio Fabián',
+                  'lastname' => 'García Ruíz',
+                  'mail'  => 'sgarcia@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'David',
+                  'lastname' => 'Tejada Rentería',
+                  'mail'  => 'dtejada@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Fernando',
+                  'lastname' => 'Vázquez',
+                  'mail'  => 'fvazquez@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Hugo Ulises',
+                  'lastname' => 'Vázquez Martínez',
+                  'mail'  => 'hvazquez@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Jaime Alejandro',
+                  'lastname' => 'Victoria Miguel',
+                  'mail'  => 'avictoria@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Isaac',
+                  'lastname' => 'González Vázquez',
+                  'mail'  => 'igonzalez@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Alonso',
+                  'lastname' => 'Villalobos Montes',
+                  'mail'  => 'avillalobos@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+                  IncidentHandler::create([
+                  'name' => 'Josue',
+                  'lastname' => 'Araujo Mayorga',
+                  'mail'  => 'jaraujo@globalcybersec.com',
+                  'phone' => '',
+                  ]);
+
+
 
 /*
                   IncidentHandler::create([
