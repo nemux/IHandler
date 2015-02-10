@@ -164,11 +164,11 @@ $(document).ready(function(){
 
                   <tr>
                     <td style="text-align:center;background:#CCC;">
-                      <strong>IoC:</strong>
+                      <strong>Indicador de Compromiso:</strong>
                     </td>
                     <td style="text-align:center;">
                       <?php foreach ($incident->incidentRule as $r ): ?>
-                        "<?php echo $r->rule->message ?>"<br>
+                        <?php echo $r->rule->message ?><br>
                         <?php //print_r($r) ?>
                       <?php endforeach ?>
                       <?php //print_r($incident->incidentRule); ?>
@@ -417,8 +417,12 @@ $(document).ready(function(){
                   <input type="hidden" name="id" value="<?php echo $incident->id ?>">
                 <?php if ($incident->incidents_status_id==1 && $message==""): ?>
                   <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+                  <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
                   <input type="hidden" name="status" value="2" id="next_status">
-                  {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+                  <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
+                    {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+                  <?php endif ?>
+
                 <?php endif ?>
               <?php endif ?>
 
@@ -432,11 +436,12 @@ $(document).ready(function(){
             <?php if ($incident->incidents_status_id==2): ?>
               <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
               <input type="hidden" name="status" id="next_status" value="3">
-                <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
+
                 <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
               {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
-              <a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>
+              {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
+              <!--<a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>-->
             <?php endif ?>
 
 

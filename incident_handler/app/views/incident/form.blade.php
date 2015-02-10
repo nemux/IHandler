@@ -80,7 +80,7 @@
       var rule_is=$("#search_rule_is").val();
       var why=$("#search_why").val();
 
-      if (sid && rule && message && translate && rule_is && why) {
+      if (message) {
         addRule(sid,rule,message,translate,rule_is,why);
       }
     }
@@ -449,7 +449,7 @@ function removeRule(tr,sid){
                       <tr <?php echo $display_form ?>>
                         <td>
                           <select name="risk" class="form-control">
-                            <option value="">Riesgo</option>
+                            <option value="">*Riesgo</option>
                             <?php $option=""; ?>
                             <?php for($i=1;$i<11;$i++){ ?>
 
@@ -475,7 +475,7 @@ function removeRule(tr,sid){
                         </td>
                         <td>
                           <select name="criticity" class="form-control">
-                            <option value="">Severidad</option>
+                            <option value="">*  Severidad</option>
                             <option <?php if(isset($update) && $incident->criticity=='BAJA'){ echo "selected"; } ?> value="BAJA">BAJA</option>
                             <option <?php if(isset($update) && $incident->criticity=='MEDIA'){ echo "selected"; } ?> value="MEDIA">MEDIA</option>
                             <option <?php if(isset($update) && $incident->criticity=='ALTA'){ echo "selected"; } ?> value="ALTA">ALTA</option>
@@ -483,7 +483,7 @@ function removeRule(tr,sid){
                         </td>
                         <td>
                           <select name="impact" class="form-control">
-                            <option value="">Impacto</option>
+                            <option value="">*Impacto</option>
                             <?php $option=""; ?>
                             <?php for($i=0;$i<11;$i++){ ?>
 
@@ -559,7 +559,7 @@ function removeRule(tr,sid){
                                 'class'=>'form-control parsley-validated',
                                 "data-parsley-pattern"=>"",
                                 "data-parsley-required"=>"true",
-                                "placeholder"=>"Título"]);
+                                "placeholder"=>"*Título"]);
                           }}
                         </td>
                       </tr>
@@ -603,14 +603,15 @@ function removeRule(tr,sid){
 
                               <tr>
                                 <td>
+                                  <input id="search_message"  class="form-control" placeholder="indicador" type="text" >
+                                </td>
+                                <td>
                                   <input id="search_sid" class="form-control" placeholder="sid" type="text" >
                                 </td>
                                 <td>
                                   <input id="search_rule"  class="form-control" placeholder="regla" type="text" >
                                 </td>
-                                <td>
-                                  <input id="search_message"  class="form-control" placeholder="indicador" type="text" >
-                                </td>
+
                                 <td>
                                   <input id="search_translate"  class="form-control" placeholder="traducción" type="text" >
                                 </td>
@@ -698,6 +699,15 @@ function removeRule(tr,sid){
                                 IP
                               </th>
                               <th>
+                                Localidad
+                              </th>
+                              <th>
+                                Tipo
+                              </th>
+                              <th>
+                                Blacklist
+                              </th>
+                              <th>
                                 Puerto
                               </th>
                               <th>
@@ -709,15 +719,7 @@ function removeRule(tr,sid){
                               <th>
                                 MAC
                               </th>
-                              <th>
-                                Localidad
-                              </th>
-                              <th>
-                                Tipo
-                              </th>
-                              <th>
-                                Blacklist
-                              </th>
+
                             </thead>
                             <tbody>
 
@@ -725,22 +727,6 @@ function removeRule(tr,sid){
                                   <td >
                                     <input id="src_ip"  type="text" class="form-control" name="search_src_ip" placeholder="origen"><br>
                                     <input id="dst_ip"  type="text" class="form-control" name="search_dst_ip" placeholder="destino">
-                                  </td>
-                                  <td>
-                                    <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
-                                    <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
-                                  </td>
-                                  <td>
-                                    <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
-                                    <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
-                                  </td>
-                                  <td>
-                                    <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
-                                    <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
-                                  </td>
-                                  <td>
-                                    <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
-                                    <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
                                   </td>
                                   <td>
                                     <input id="src_location"  type="text" class="form-control" name="search_src_location" placeholder="origen"><br>
@@ -764,6 +750,23 @@ function removeRule(tr,sid){
                                     <input id="src_blacklist" class="checkbox" type="checkbox" name="search_src_blacklist" value="1"><br><br>
                                     <input id="dst_blacklist" class="checkbox"  type="checkbox"  name="search_dst_blacklist" value="1">
                                   </td>
+                                  <td>
+                                    <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
+                                    <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_protocol"  type="text" class="form-control" name="search_src_protocol" placeholder="origen"><br>
+                                    <input id="dst_protocol"  type="text" class="form-control" name="search_dst_protocol" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_operative_system"  type="text" class="form-control" name="search_src_operative_system" placeholder="origen"><br>
+                                    <input id="dst_operative_system"  type="text" class="form-control" name="search_dst_operative_system" placeholder="destino">
+                                  </td>
+                                  <td>
+                                    <input id="src_function"  type="text" class="form-control" name="search_src_function" placeholder="origen"><br>
+                                    <input id="dst_function"  type="text" class="form-control" name="search_dst_function" placeholder="destino">
+                                  </td>
+
                                 </tr>
 
                             </tbody>
@@ -892,7 +895,7 @@ function removeRule(tr,sid){
                 }}
               </td>
             </tr>
-            <tr>
+            <!--<tr>
               <td colspan="5" >
                <div class="form-group">
                  {{Form::textarea('conclution',$incident->conclution,[
@@ -904,7 +907,7 @@ function removeRule(tr,sid){
                  }}
                </div>
               </td>
-            </tr>
+            </tr>-->
             <tr>
               <td colspan="5" >
                 <div class="form-group">

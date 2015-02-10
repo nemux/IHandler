@@ -29,16 +29,24 @@
                                             <th>#</th>
                                             <th>Título</th>
                                             <th>
+                                              Indicadores
+                                            </th>
+                                            <th>
                                               Status
+                                            </th>
+
+                                            <th>
+                                              Handler
+                                            </th>
+
+                                            <th>
+                                              Cliente
                                             </th>
                                             <th>
                                               Creación
                                             </th>
                                             <th>
                                               Última actualización
-                                            </th>
-                                            <th>
-                                              Handler
                                             </th>
                                         </tr>
                                     </thead>
@@ -50,20 +58,30 @@
                                           <td>
                                             <?php echo $i ?>
                                           </td>
-                                          <td>
+                                          <td width="15%">
                                             <?php echo $in->title ?>
                                           </td>
                                           <td>
+                                            <?php foreach ($in->incidentRule as $ir): ?>
+                                              <?php echo $ir->rule->message ?>
+                                            <?php endforeach ?>
+                                          </td>
+                                          <td>
                                             <?php echo $in->status->name ?>
+                                          </td>
+
+                                          <td>
+                                            <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
+                                          </td>
+
+                                          <td>
+                                            <?php echo $in->customer->company ?>
                                           </td>
                                           <td>
                                             <?php echo $in->created_at ?>
                                           </td>
                                           <td>
                                             <?php echo $in->updated_at ?>
-                                          </td>
-                                          <td>
-                                            <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
                                           </td>
                                         </tr>
                                       <?php endforeach ?>
