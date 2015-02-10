@@ -35,7 +35,7 @@
                           <div class="col-md-10 col-sm-10">
                             {{Form::text('name',$sensor->name,[
                                   'class'=>'form-control parsley-validated',
-                                  "data-parsley-pattern"=>"^[A-Za-z\á\é\í\ó\ú\Á\É\Í\Ó\Ú\ñ\s]+$",
+                                  "data-parsley-pattern"=>"^[A-Za-z0-9\á\é\í\ó\ú\Á\É\Í\Ó\Ú\ñ\s]+$",
                                   "data-parsley-required"=>"true"]);
                             }}
                           </div>

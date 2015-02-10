@@ -127,11 +127,13 @@ protected $layout = 'layouts.master';
         if ($status=="2") {
           $incident->incidents_status_id = $status;
           $incident->save();
+          $this->sendTicket($incident,$status);
+          $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
-          $this->sendTicket($incident,$status);
+          //$this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
-	        $this->sendEmail($incident,'[GSC-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.');
+	        $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();
         }
         if ($status=="4") {
@@ -802,7 +804,7 @@ protected $layout = 'layouts.master';
 
     $incident = Incident::find($id);
     $this->sendRecomendation($incident, $recomendation);
-    $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.');
+    $this->sendEmail($incident,'[GSC-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.', 'El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación al siguiente evento:');
     $url = '/incident/view/'.$id;
     return Redirect::to($url);
   }
@@ -903,7 +905,7 @@ protected $layout = 'layouts.master';
     $log->info(Auth::user()->id,Auth::user()->username,'Se agregó una Recomendación con ID: '. $r->id . ' referente al incidente: ' . $incident->id);
   }
 
-  private function sendEmail($incident, $subject){
+  private function sendEmail($incident, $subject, $body=null){
           ////////////////////////variables para correo///////////////////////////////////////////////////////////
           $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
           $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
@@ -935,7 +937,8 @@ protected $layout = 'layouts.master';
             'incident'=>$incident,
             'listed'=>$listed,
             'location'=>$location,
-            'recomendations' => $recomendations
+            'recomendations' => $recomendations,
+            'body' => $body
           ),
           function ($message) use ($incident, $subject){
             $log = new Log\Logger();

@@ -27,6 +27,15 @@
 </head>
 <body>
 <div  style="margin-bottom:20px">
+
+ @if isset($body)
+  <div>
+    <p>
+       {{ $body }}
+    </p>
+  </div>
+  <br/>
+  @endif
   <table>
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">

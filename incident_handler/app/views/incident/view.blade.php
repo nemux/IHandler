@@ -435,7 +435,8 @@ $(document).ready(function(){
                 <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
                 <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
-              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send', 'style'=>'margin-left:2px']);}}
+              {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
               <a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>
             <?php endif ?>
 
