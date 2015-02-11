@@ -58,8 +58,9 @@
     function validateEntry(validate){
 
       for (var i = 0; i < validate.length; i++) {
-        var re = /^[A-Za-záéíóú0-9\'\"\-\,\.\s\n\t\>\/]*$/;
-        if (!re.test(validate[i])) {
+        var re = /^[A-Za-záéíóú0\"\;\'\(\)\-\,\.\s\n\t\>\/\&]*$/;
+        if (0==1) {
+	//!re.test(validate[i])
           console.log(validate[i]);
           console.log(re.test(validate[i]));
           return "1";
@@ -370,7 +371,7 @@ function removeRule(tr,sid){
 										    <small>Descripción y recomendaciones del evento.</small>
 										</li>
 										<li>
-										    Arvhivos adicionales, y almacenado
+										    Archivos adicionales, y almacenado
 										    <small>Archivos de evidencia adicionale<s></s>.</small>
 										</li>
 									</ol>

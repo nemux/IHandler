@@ -26,16 +26,13 @@
 </style>
 </head>
 <body>
-<div  style="margin-bottom:20px">
-
- @if isset($body)
+@if ( isset($body))
   <div>
-    <p>
-       {{ $body }}
-    </p>
+    <p>{{ $body }} </p>
   </div>
-  <br/>
-  @endif
+<br/>
+@endif
+<div  style="margin-bottom:20px">
   <table>
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">
@@ -169,7 +166,10 @@
       <td colspan="2" style="text-align:center">
 
           <?php foreach ($incident->srcDst as $ip): ?>
-            <?php echo $ip->src->ip ?><br>
+            <?php
+            if($ip->src->ip!=""){
+            echo $ip->src->ip.'<br>';}
+            ?>
           <?php endforeach ?>
 
       </td>
@@ -182,7 +182,10 @@
       <td colspan="2" style="text-align:center">
 
           <?php foreach ($incident->srcDst as $ip): ?>
-            <?php echo $ip->dst->ip ?><br>
+            <?php
+            if($ip->dst->ip!=""){
+            echo $ip->dst->ip.'<br>';}
+            ?>
           <?php endforeach ?>
 
       </td>

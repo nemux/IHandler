@@ -236,9 +236,15 @@ $(document).ready(function(){
                     </td>
                     <td style="text-align:center;">
                       <table>
-                        <?php foreach ($incident->srcDst as $ip): ?>
-                          <?php echo $ip->src->ip ?><br>
-                        <?php endforeach ?>
+
+                          <?php foreach ($incident->srcDst as $ip): ?>
+                            <?php
+                            if($ip->src->ip!=""){
+                            echo $ip->src->ip.'<br>';
+                          }
+                            ?>
+                          <?php endforeach ?>
+                        
                       </table>
                     </td>
                   </tr>
@@ -250,7 +256,11 @@ $(document).ready(function(){
                     <td style="text-align:center;">
                       <table>
                         <?php foreach ($incident->srcDst as $ip): ?>
-                          <?php echo $ip->dst->ip ?><br>
+                          <?php
+                          if($ip->dst->ip!=""){
+                          echo $ip->dst->ip.'<br>';
+                          }
+                          ?>
                         <?php endforeach ?>
                       </table>
                     </td>
@@ -438,6 +448,7 @@ $(document).ready(function(){
               <input type="hidden" name="status" id="next_status" value="3">
 
                 <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
+
               {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
               {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
               <!--<a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>-->
