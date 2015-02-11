@@ -630,12 +630,11 @@ protected $layout = 'layouts.master';
 
                 foreach ($rules as $r) {
                   $rule=new Rule;
-                  //sid','rule','message','translate','rule_is','why
+                  //sid','rule','message','translate','rule_is','why'
                   if (Rule::where('sid','=',$input['sid_'.$r])->first()) {
                     $rule=Rule::where('sid','=',$input['sid_'.$r])->first();
                   }else{
                     $rule=new Rule;
-
                   }
 
                   $rule->sid=$input['sid_'.$r];
