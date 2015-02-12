@@ -27,9 +27,18 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>
+                                              Ticket
+                                            </th>
                                             <th>Título</th>
                                             <th>
                                               Indicadores
+                                            </th>
+                                            <th>
+                                              Fecha detección
+                                            </th>
+                                            <th>
+                                              Sensor
                                             </th>
                                             <th>
                                               Status
@@ -42,29 +51,48 @@
                                             <th>
                                               Cliente
                                             </th>
-                                            <th>
-                                              Creación
-                                            </th>
+
                                             <th>
                                               Última actualización
+                                            </th>
+                                            <th>
+						Enviar correo
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                       <?php $i=0; ?>
                                       <?php foreach ($incident as $in): ?>
-                                        <tr onclick="location.href = '/incident/view/<?php echo $in->id ?>'"  style="cursor:pointer">
+                                        <tr >
                                           <?php $i++; ?>
                                           <td>
                                             <?php echo $i ?>
                                           </td>
-                                          <td width="15%">
+                                          <td>
+                                            @if (isset($in->ticket->internal_number))
+                                              {{ $in->ticket->internal_number }}
+                                            @else
+                                              {{ "Por asignar....."}}
+                                            @endif
+                                          </td>
+                                          <td onclick="location.href = '/incident/view/<?php echo $in->id ?>'"  style="cursor:pointer" width="15%">
+                                          <?php $i++; ?>
                                             <?php echo $in->title ?>
                                           </td>
                                           <td>
                                             <?php foreach ($in->incidentRule as $ir): ?>
                                               <?php echo $ir->rule->message ?>
                                             <?php endforeach ?>
+                                          </td>
+                                          <td>
+                                            <?php
+                                              $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$in->id)->first();
+
+                                              echo $det_time['datetime'];
+                                             ?>
+                                          </td>
+                                          <td>
+                                            <?php echo $in->sensor->name ?>
                                           </td>
                                           <td>
                                             <?php echo $in->status->name ?>
@@ -77,11 +105,12 @@
                                           <td>
                                             <?php echo $in->customer->company ?>
                                           </td>
-                                          <td>
-                                            <?php echo $in->created_at ?>
-                                          </td>
+
                                           <td>
                                             <?php echo $in->updated_at ?>
+                                          </td>
+                                          <td>
+                                            <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
                                           </td>
                                         </tr>
                                       <?php endforeach ?>
