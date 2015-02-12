@@ -118,6 +118,7 @@ protected $layout = 'layouts.master';
             'incident' => $incident
             ));
         }
+
         if ($status=="1") {
           $incident->incidents_status_id = $status;
           $incident->save();
@@ -127,12 +128,12 @@ protected $layout = 'layouts.master';
           $incident->incidents_status_id = $status;
           $incident->save();
           $this->sendTicket($incident,$status);
-          $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+          $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
           //$this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
-	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
+	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();
         }
 
@@ -302,9 +303,9 @@ protected $layout = 'layouts.master';
         $history->incidents_id=$incident->id;
         $history->save();
 
-        $det_time->datetime=date('Y-m-d',strtotime($input['det_date'])).' '.date("H:i:s",strtotime($input['det_time']));
+        $det_time->datetime=date("Y-m-d H:i:s",strtotime($input['det_date']));
         $det_time->zone="UTC/GMT -6 horas";
-        $occ_time->datetime=date('Y-m-d',strtotime($input['occ_date'])).' '.date("H:i:s",strtotime($input['occ_time']));
+        $occ_time->datetime=date("Y-m-d H:i:s",strtotime($input['occ_date']));
         $occ_time->zone="UTC/GMT -6 horas";
         $det_time->time_types_id=1;
         $occ_time->time_types_id=2;
@@ -355,6 +356,8 @@ protected $layout = 'layouts.master';
 
           $dst->ip=$input['dstip_'.$e];
           $dst->occurrences_types_id=$input['dstoccurencestype_'.$e];
+
+
           $dst->save();
           //'port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'
           $dst_history->port=$input['dstport_'.$e];
@@ -367,11 +370,16 @@ protected $layout = 'layouts.master';
           $dst_history->incident_handler_id=Auth::user()->incident_handler_id;
           $dst_history->save();
 
+
+
+
           $src_dst=new IncidentOccurence;
           $src_dst->source_id=$src->id;
           $src_dst->destiny_id=$dst->id;
           $src_dst->incidents_id=$incident->id;
           $src_dst->save();
+
+
         }
 
         foreach ($rules as $r) {
@@ -461,6 +469,7 @@ protected $layout = 'layouts.master';
     {
 
       $input = Input::all();
+      
       $log = new Log\Logger();
 
       if ($input['sensor_id'] == 0 || !$input['sensor_id'])
@@ -554,9 +563,9 @@ protected $layout = 'layouts.master';
                 $history->incidents_id=$incident->id;
                 $history->save();
 
-                $det_time->datetime=date('Y-m-d',strtotime($input['det_date'])).' '.date("H:i:s",strtotime($input['det_time']));
+                $det_time->datetime=date("Y-m-d H:i:s",strtotime($input['det_date']));
                 $det_time->zone="UTC/GMT -6 horas";
-                $occ_time->datetime=date('Y-m-d',strtotime($input['occ_date'])).' '.date("H:i:s",strtotime($input['det_time']));
+                $occ_time->datetime=date("Y-m-d H:i:s",strtotime($input['occ_date']));
                 $occ_time->zone="UTC/GMT -6 horas";
                 $det_time->time_types_id=1;
                 $occ_time->time_types_id=2;
@@ -598,6 +607,7 @@ protected $layout = 'layouts.master';
                     //return "Ip no puede ir vacía";
                   $src->ip=$input['srcip_'.$e];
                   $src->occurrences_types_id=$input['srcoccurencestype_'.$e];
+
                   $src->save();
                   $src_history=new OccurenceHistory;
                   //'port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'
@@ -812,7 +822,7 @@ protected $layout = 'layouts.master';
     $incident = Incident::find($id);
     $this->sendRecomendation($incident, $recomendation);
     //$this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.');
-    $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Analistas de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación del siguiente evento:');
+    $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación del siguiente evento:');
     $url = '/incident/view/'.$id;
     return Redirect::to($url);
   }
@@ -825,6 +835,7 @@ protected $layout = 'layouts.master';
 
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
+
     ));
   }
   public function openStatus(){
@@ -845,6 +856,14 @@ protected $layout = 'layouts.master';
     'incident'=>$incident,
     ));
   }
+
+ public function mail($id){
+
+    $incident = Incident::find($id);
+
+    $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
+   return Redirect::to('/incident/');
+ }
 
   protected function sendTicket($incident, $status){
     $u = new Otrs\User();
@@ -904,7 +923,7 @@ protected $layout = 'layouts.master';
     $r->incidents_id = $incident->id;
     $r->content = $recomendation;
     $r->save();
-    
+
     $uOtrsInfo = $userOtrs->getInfo($userOtrs->getOtrsUser());
     $htmlReport = $this->renderReport($incident);
     $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $uOtrsInfo['UserID'], $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
@@ -955,8 +974,8 @@ protected $layout = 'layouts.master';
           function ($message) use ($incident, $subject){
             $log = new Log\Logger();
 
-            //$message->to($incident->customer->mail)->cc('soc@globalcybersec.com')->subject($subject);
-            $message->to($incident->customer->mail)->subject($subject);
+            $message->to($incident->customer->mail)->cc('soc@globalcybersec.com')->subject($subject);
+            //$message->to($incident->customer->mail)->subject($subject);
             $log->info(Auth::user()->id,Auth::user()->username,'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
           });
   }

@@ -8,7 +8,7 @@ protected $layout = 'layouts.master';
     public function create()
     {
       $input = Input::all();
-      $chars = "\#\*\.\!\_\<\>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $chars = "#*.!_<>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $handler=new IncidentHandler;
       $access=new Access;
       $types=AccessType::lists('name', 'id');
@@ -51,7 +51,7 @@ protected $layout = 'layouts.master';
     public function postUpdate()
     {
       $input = Input::all();
-      $chars = "\#\*\.\!\_\<\>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $chars = "#*.!_<>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $id=$input['id'];
       $handler=IncidentHandler::find($id);
       $access=$handler->access;
