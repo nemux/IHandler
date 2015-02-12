@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExtraSensorTable extends Migration {
+class CreateExtraCategoryTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,19 +12,20 @@ class CreateExtraSensorTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('extra_sensor', function(Blueprint $table){
+		Schema::create('extra_category', function(Blueprint $table){
 
 				$table->increments('id');
 					$table->integer('incidents_id')->unsigned();
-					$table->integer('sensor_id')->unsigned();
+					$table->integer('category_id')->unsigned();
 					$table->timestamps();
 
 			});
-			Schema::table('extra_sensor', function(Blueprint $table)
-			{
-				$table->foreign('incidents_id')->references('id')->on('incidents');
-				$table->foreign('sensor_id')->references('id')->on('sensors');
-			});
+		Schema::table('extra_category', function(Blueprint $table)
+		{
+			$table->foreign('incidents_id')->references('id')->on('incidents');
+			$table->foreign('category_id')->references('id')->on('categories');
+
+		});
 
 	}
 

@@ -60,6 +60,19 @@
               <?php echo $incident->category->description ?>
             </td>
           </tr>
+          <?php foreach ($incident->extraCategory as $ec): ?>
+              <tr style="width:100%">
+                <td style="text-align:center;width:25%">
+                  <?php echo ($ec->category->id)-1; ?>
+                </td>
+                <td style="text-align: justify;">
+                  <?php echo $ec->category->name ?>.
+                  <?php echo $ec->category->description ?>
+                </td>
+              </tr>
+          <?php endforeach ?>
+
+
         </table>
       </td>
     </tr>
@@ -67,8 +80,22 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Sensor:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
-        <?php echo $incident->sensor->name ?>
+      <td colspan="2" style="text-align:center;padding:0px">
+
+        <table style="margin:0px;padding:0px;width:100%;border-collapse: collapse;border:none"  >
+          <tr style="border:none">
+            <td style="padding:4px;text-align:center;">
+              <?php echo $incident->sensor->name ?>
+            </td>
+          </tr>
+          <?php foreach ($incident->extraSensor as $es): ?>
+            <tr style="margin:0px;padding:0px;border:none">
+              <td style="margin:0px;padding:4px;text-align:center;">
+                <?php echo $es->sensor->name ?>
+              </td>
+            </tr>
+          <?php endforeach ?>
+        </table>
       </td>
     </tr>
 

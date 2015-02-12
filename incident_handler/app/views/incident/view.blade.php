@@ -108,37 +108,61 @@ $(document).ready(function(){
                     </td>
 
                   </tr>
-                  <tr style="padding:0;">
-                    <td style="text-align:center;background:#CCC;width:200px">
+                  <tr style="padding:0px;margin:0px">
+                    <td style="text-align:center;background:#CCC" colspan="1">
                       <strong>Categoría:</strong>
                     </td>
-                    <td colspan="2" style="text-align:center;padding:0">
-                      <table class="table table-bordered" style="padding:0;margin-bottom:0;width:100%">
-                        <tr style="background:#CCC">
-                          <td colspan="2">
+                    <td style="border-collapse: collapse;width:100%;padding:0px" colspan="2">
+                      <table class="table" style="border-collapse: collapse;width:100%;margin:0px">
+                        <tr>
+                          <td colspan="2" style="text-align:center;background:#CCC;">
                             Descripción
                           </td>
                         </tr>
-                        <tr>
-                          <td style="width:15%">
-                            <?php echo ($incident->category->id)-1 ?>
+                        <tr style="width:100%">
+                          <td style="text-align:center;width:25%">
+                            <?php echo ($incident->category->id)-1; ?>
                           </td>
                           <td style="text-align: justify;">
-                            <strong><?php echo $incident->category->name ?></strong>.
+                            <?php echo $incident->category->name ?>.
                             <?php echo $incident->category->description ?>
                           </td>
                         </tr>
+                        <?php foreach ($incident->extraCategory as $ec): ?>
+                            <tr style="width:100%">
+                              <td style="text-align:center;width:25%">
+                                <?php echo ($ec->category->id)-1; ?>
+                              </td>
+                              <td style="text-align: justify;">
+                                <?php echo $ec->category->name ?>.
+                                <?php echo $ec->category->description ?>
+                              </td>
+                            </tr>
+                        <?php endforeach ?>
+
+
                       </table>
                     </td>
                   </tr>
+
                   <tr>
                     <td style="text-align:center;background:#CCC;">
                       <strong>Sensor:</strong>
                     </td>
-                    <td style="text-align:center;">
+                    <td style="text-align:center;padding:0px">
                       <?php echo $incident->sensor->name ?>
+                      <table class="table" style="margin:0px;padding:0px;">
+                        <?php foreach ($incident->extraSensor as $es): ?>
+                          <tr style="margin:0px;padding:0px;">
+                            <td style="margin:0px;padding:0px;">
+                              <?php echo $es->sensor->name ?>
+                            </td>
+                          </tr>
+                        <?php endforeach ?>
+                      </table>
                     </td>
                   </tr>
+
 
                   <tr>
                     <td style="text-align:center;background:#CCC;">
@@ -244,7 +268,7 @@ $(document).ready(function(){
                           }
                             ?>
                           <?php endforeach ?>
-                        
+
                       </table>
                     </td>
                   </tr>
@@ -458,7 +482,7 @@ $(document).ready(function(){
             <?php if ($incident->incidents_status_id==5): ?>
 
               <input type="hidden" name="status" id="next_status" value="1">
-                <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
+              <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
               {{Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
 

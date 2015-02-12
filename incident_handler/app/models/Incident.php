@@ -18,7 +18,7 @@ class Incident extends Eloquent{
 	{
 		return $this->hasOne('References','incidents_id','id');
 	}
-  
+
 
 	public function ticket()
 	{
@@ -40,6 +40,14 @@ class Incident extends Eloquent{
   public function observations()
   {
     return $this->hasMany('Observation','incidents_id','id');
+  }
+  public function extraSensor()
+  {
+    return $this->hasMany('ExtraSensor','incidents_id','id');
+  }
+  public function extraCategory()
+  {
+    return $this->hasMany('ExtraCategory','incidents_id','id');
   }
 
   public function annexes()

@@ -247,9 +247,24 @@ protected $layout = 'layouts.master';
           }
         }
 
+        $extra_sensors=array();
+        $extra_categories=array();
+
+        foreach ($keys as $k) {
+          if (strpos($k,'sensadd_') !== false) {
+              array_push($extra_sensors,explode('_',$k)[1]);
+          }
+        }
+        foreach ($keys as $k) {
+          if (strpos($k,'catadd_') !== false) {
+              array_push($extra_categories,explode('_',$k)[1]);
+          }
+        }
+
+
+
         if ($input['sensor_id'] == 0 || !$input['sensor_id'])
           return "Debe seleccionar un sensor";
-
 
 
         $incident->risk=$input['risk'];
@@ -271,6 +286,19 @@ protected $layout = 'layouts.master';
         $incident->stream=$input['stream'];
         //$incident->incident_handler_id='1';
         $incident->save();
+
+        foreach ($extra_sensors as $es) {
+          $extra=new ExtraSensor;
+          $extra->incidents_id=$incident->id;
+          $extra->sensor_id=$input['sensadd_'.$es];
+          $extra->save();
+        }
+        foreach ($extra_categories as $es) {
+          $extra=new ExtraCategory;
+          $extra->incidents_id=$incident->id;
+          $extra->category_id=$input['catadd_'.$es];
+          $extra->save();
+        }
 
         if ($input['images']) {
           foreach ($input['images'] as $i) {
@@ -469,7 +497,7 @@ protected $layout = 'layouts.master';
     {
 
       $input = Input::all();
-      
+
       $log = new Log\Logger();
 
       if ($input['sensor_id'] == 0 || !$input['sensor_id'])
@@ -510,6 +538,19 @@ protected $layout = 'layouts.master';
                       array_push($delete,$k);
                   }
                 }
+                $extra_sensors=array();
+                $extra_categories=array();
+
+                foreach ($keys as $k) {
+                  if (strpos($k,'sensadd_') !== false) {
+                      array_push($extra_sensors,explode('_',$k)[1]);
+                  }
+                }
+                foreach ($keys as $k) {
+                  if (strpos($k,'catadd_') !== false) {
+                      array_push($extra_categories,explode('_',$k)[1]);
+                  }
+                }
 
                 $incident->risk=$input['risk'];
                 $incident->criticity=$input['criticity'];
@@ -532,6 +573,27 @@ protected $layout = 'layouts.master';
                 $reference->save();
                 //$incident->incident_handler_id='1';
                 $incident->save();
+
+                $extra_sensor=$incident->extraSensor;
+                foreach ($extra_sensor as $es) {
+                  $es->delete();
+                }
+                $extra_category=$incident->extraCategory;
+                foreach ($extra_category as $ec) {
+                  $ec->delete();
+                }
+                foreach ($extra_sensors as $es) {
+                  $extra=new ExtraSensor;
+                  $extra->incidents_id=$incident->id;
+                  $extra->sensor_id=$input['sensadd_'.$es];
+                  $extra->save();
+                }
+                foreach ($extra_categories as $es) {
+                  $extra=new ExtraCategory;
+                  $extra->incidents_id=$incident->id;
+                  $extra->category_id=$input['catadd_'.$es];
+                  $extra->save();
+                }
 
                 if ($input['images']){
                   foreach ($input['images'] as $i) {

@@ -538,6 +538,20 @@ function removeRule(tr,sid){
                       <tr>
                         <td colspan="6">
                           <table id="category_table" class="table table-bordered" style="width:100%">
+                            <?php if (isset($update)): ?>
+                              <?php $cat_i=100; ?>
+                              <?php foreach ($incident->extraCategory as $ec ): ?>
+                                <?php $cat_i++; ?>
+                                  <tr width='100%'>
+                                    <td width='70%'>
+                                      {{ Form::select('catadd_'.$cat_i, $categories, $ec->category->id,['class'=>'form-control parsley-validated',]);}}
+                                    </td>
+                                    <td width='30%'>
+                                      <a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>
+                                    </td>
+                                  </tr>
+                              <?php endforeach ?>
+                            <?php endif ?>
                           </table>
                         </td>
                       </tr>
@@ -682,6 +696,23 @@ function removeRule(tr,sid){
                       <tr>
                         <td colspan="6">
                           <table id="sensors_table" class="table table-bordered" style="width:100%">
+                            <?php if (isset($update)): ?>
+                              <?php $i=100; ?>
+                              <?php foreach ($incident->extraSensor as $es): ?>
+                                <?php $i++; ?>
+                                  <tr width="70%">
+                                    <td>
+                                      {{
+                                         Form::select('addsens_'.$i,$sensor,$es->sensor->id,[
+                                                'class'=>'form-control parsley-validated']);
+                                      }}
+                                    </td>
+                                    <td wisth="30%">
+                                      <a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>
+                                    </td>
+                                  </tr>
+                              <?php endforeach ?>
+                            <?php endif ?>
                           </table>
                         </td>
                       </tr>
