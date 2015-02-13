@@ -12,6 +12,10 @@
   .wrapper{
     width:600px;
   }
+  .max-width{
+    width=700px;
+  }
+
   table, th, td {
      border: 1px solid black;
   }
@@ -33,7 +37,7 @@
 <br/>
 @endif
 <div  style="margin-bottom:20px">
-  <table>
+  <table class="max-width">
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">
         <strong>Incidente: <?php echo $incident->title ?></strong>
@@ -47,7 +51,7 @@
       <td style="border-collapse: collapse;width:100%" colspan="2">
         <table style="border-collapse: collapse;width:100%">
           <tr>
-            <td colspan="2" style="text-align:center;background:#d9d9d9;">
+            <td colspan="2" style="text-align:center;background:#d9d9d9;" width="100%">
               Descripción
             </td>
           </tr>
@@ -71,8 +75,6 @@
                 </td>
               </tr>
           <?php endforeach ?>
-
-
         </table>
       </td>
     </tr>
@@ -103,7 +105,7 @@
       <td style="text-align:center;background:#d9d9d9;">
         <strong>Ticket:</strong>
       </td>
-      <td style="text-align:center;" colspan="2">
+      <td style="text-align:center;" colspan="2" width="100%">
         @if (isset($incident->ticket->internal_number))
           {{ $incident->ticket->internal_number }}
         @else
@@ -116,7 +118,7 @@
       <td style="text-align:center;background:#d9d9d9;">
         <strong>Estatus:</strong>
       </td>
-      <td style="text-align:center;" colspan="2">
+      <td style="text-align:center;" colspan="2" width="100%">
         <?php echo $incident->status->name ?>
       </td>
     </tr>
@@ -124,7 +126,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Indicador de Compromiso:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
+      <td colspan="2" style="text-align:center" width="100%">
         <?php foreach ($incident->incidentRule as $r ): ?>
           <?php echo $r->rule->message ?><br>
           <?php //print_r($r) ?>
@@ -136,7 +138,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Flujo del ataque:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
+      <td colspan="2" style="text-align:center" width="100%">
         <?php
             echo $incident->stream;
         ?>
@@ -146,7 +148,7 @@
       <td style="text-align:center;background:#d9d9d9" >
         <strong>Fecha de detección:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
+      <td colspan="2" style="text-align:center" width="100%">
         <?php
             echo $det_time->datetime;
 
@@ -177,11 +179,10 @@
       }
 
        ?>
-      <td style="background-color:<?php echo $color ?>;color:<?php echo $font ?>;text-align:center" colspan="2">
+      <td style="background-color:<?php echo $color ?>;color:<?php echo $font ?>;text-align:center" colspan="2" width="100%">
         <div >
           <?php
               echo $incident->criticity;
-
           ?>
         </div>
       </td>
@@ -190,7 +191,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Dirección IP de Origen:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
+      <td colspan="2" style="text-align:center" width="100%">
 
           <?php foreach ($incident->srcDst as $ip): ?>
             <?php
@@ -206,7 +207,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Dirección IP Destino:</strong>
       </td>
-      <td colspan="2" style="text-align:center">
+      <td colspan="2" style="text-align:center" width="100%">
 
           <?php foreach ($incident->srcDst as $ip): ?>
             <?php
@@ -222,7 +223,7 @@
         <td style="text-align:center;background:#d9d9d9">
           <strong>Blacklist:</strong>
         </td>
-        <td colspan="2">
+        <td colspan="2" width="100%">
           <table style="border-collapse:collapse;width:100%">
             <tr>
               <th style="text-align:center;background:#d9d9d9">
@@ -261,7 +262,7 @@
       <td style="text-align:center;background:#d9d9d9" colspan="1">
         <strong>Descripción:</strong>
       </td>
-      <td colspan="3" style="text-align: justify; padding:10px;">
+      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
         <?php echo $incident->description ?><br>
         <?php echo $incident->conclution ?>
       </td>
@@ -271,7 +272,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Recomendación:</strong>
       </td>
-      <td colspan="2" style="text-align: justify; padding:10px;">
+      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
           {{ $incident->recomendation }} <br/>
          @if (count($recomendations) > 0 )
           @foreach($recomendations as $r )
@@ -287,7 +288,7 @@
       <td style="text-align:center;background:#d9d9d9">
         <strong>Referencia:</strong>
       </td>
-      <td colspan="2" style="text-align: justify; padding:10px;">
+      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
         <?php echo $incident->reference->link ?><br>
 
       </td>

@@ -12,18 +12,17 @@ class CreateUserTokenTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('extra_category', function(Blueprint $table){
+		Schema::create('user_token', function(Blueprint $table){
 
 				$table->increments('id');
-					$table->integer('handler_id')->unsigned();
+					$table->integer('incident_handler_id')->unsigned();
 					$table->string('token');
 					$table->timestamps();
 
 			});
-		Schema::table('extra_category', function(Blueprint $table)
+		Schema::table('user_token', function(Blueprint $table)
 		{
-			$table->foreign('incidents_id')->references('id')->on('incidents');
-			$table->foreign('category_id')->references('id')->on('categories');
+			$table->foreign('incident_handler_id')->references('id')->on('incident_handler');
 
 		});
 	}
