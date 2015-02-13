@@ -32,9 +32,12 @@ Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
   Route::get('update/{id}', 'IncidentHandlerController@getUpdate')->where(array('id'=>'^[0-9]+$'));
   Route::post('update', 'IncidentHandlerController@postUpdate');
   Route::get('view/{id}', 'IncidentHandlerController@view')->where(array('id'=>'^[0-9]+$'));
+
  // Route::get('larala','IncidentHandlerController@aproved');
   #Admin Routes
 });
+Route::post('handler/update/password', 'IncidentHandlerController@passwordUpdate');
+Route::post('handler/send/token', 'IncidentHandlerController@sendToken');
 
 Route::group(array('before'=>'admin', 'prefix'=>'sensor'),function(){
 

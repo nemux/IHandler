@@ -97,9 +97,11 @@
 							</a>
 							<ul class="dropdown-menu animated fadeInLeft">
 								<li class="arrow"></li>
-	              
+								<li><a href="#modal-message" class="	" data-toggle="modal">Change pass</a></li>
 	              <li class="divider"></li>
+
 								<li><a href="/logout">Log Out</a></li>
+
 							</ul>
 					  </li>
 				</ul>
@@ -107,3 +109,52 @@
 			</div>
 			<!-- end container-fluid -->
 		</div>
+					<div class="modal modal-message fade" id="modal-message">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h4 class="modal-title">Cambio de password</h4>
+										</div>
+										<div class="modal-body">
+
+											<div class="col-lg-4">
+												Password Anterior
+											</div>
+											<div class="col-lg-8">
+													<div class="form-group">
+														<input class="form-control" type="password" name="old_pass" value="">
+													</div>
+											</div>
+											<div class="col-lg-4">
+												Password Nuevo
+											</div>
+											<div class="col-lg-8">
+												<div class="form-group">
+													<input class="form-control" type="password" name="new_pass" value="">
+												</div>
+											</div>
+											<div class="col-lg-4">
+												Token
+											</div>
+											<div class="col-lg-8">
+												<div class="form-group">
+													<input class="form-control" type="text" name="token" value="">
+												</div>
+											</div>
+
+
+
+
+										</div>
+										<div class="modal-footer">
+											<a class="btn btn-default btn-sm pull-right" onclick="getToken()">Solicitar Token</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<script charset="utf-8">
+								function getToken(){
+									$.post( "/handler/send/token" );
+								}
+							</script>

@@ -55,9 +55,13 @@
                                             <th>
                                               Última actualización
                                             </th>
+                                            <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
                                             <th>
-						Enviar correo
+						                                        Enviar correo
                                             </th>
+
+
+                                            <?php endif ?>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,9 +113,12 @@
                                           <td>
                                             <?php echo $in->updated_at ?>
                                           </td>
-                                          <td>
-                                            <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
-                                          </td>
+                                          <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
+                                            <td>
+                                              <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
+                                            </td>
+
+                                          <?php endif ?>
                                         </tr>
                                       <?php endforeach ?>
                                     </tbody>

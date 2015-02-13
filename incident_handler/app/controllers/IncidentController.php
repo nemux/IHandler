@@ -925,6 +925,7 @@ protected $layout = 'layouts.master';
     $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
    return Redirect::to('/incident/');
  }
+ 
 
   protected function sendTicket($incident, $status){
     $u = new Otrs\User();

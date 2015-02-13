@@ -47,6 +47,21 @@ protected $layout = 'layouts.master';
       }
 
     }
+    public function updatePassword(){
+      $input = Input::all();
+    }
+    public function sendToken(){
+
+      $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      $token = substr(str_shuffle($chars),0,32);
+
+      Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
+        $user=IncidentHandler::find(Auth::user()->id);
+        $message->to($user->mail)->subject('[GSC-IM]-Cambio de password en Incident Manager');
+      });
+      return Redirect::to('/incident/');
+
+    }
 
     public function postUpdate()
     {
