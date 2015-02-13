@@ -332,9 +332,9 @@ protected $layout = 'layouts.master';
         $history->save();
 
         $det_time->datetime=date("Y-m-d H:i:s",strtotime($input['det_date']));
-        $det_time->zone="UTC/GMT -6 horas";
+        $det_time->zone="GMT -6 horas";
         $occ_time->datetime=date("Y-m-d H:i:s",strtotime($input['occ_date']));
-        $occ_time->zone="UTC/GMT -6 horas";
+        $occ_time->zone="GMT -6 horas";
         $det_time->time_types_id=1;
         $occ_time->time_types_id=2;
         $det_time->incidents_id=$incident->id;
@@ -626,9 +626,9 @@ protected $layout = 'layouts.master';
                 $history->save();
 
                 $det_time->datetime=date("Y-m-d H:i:s",strtotime($input['det_date']));
-                $det_time->zone="UTC/GMT -6 horas";
+                $det_time->zone="GMT -6 horas";
                 $occ_time->datetime=date("Y-m-d H:i:s",strtotime($input['occ_date']));
-                $occ_time->zone="UTC/GMT -6 horas";
+                $occ_time->zone="GMT -6 horas";
                 $det_time->time_types_id=1;
                 $occ_time->time_types_id=2;
                 $det_time->incidents_id=$incident->id;
@@ -789,7 +789,7 @@ protected $layout = 'layouts.master';
   public function pdf($id)
   {
     $incident=Incident::find($id);
-    $htmlReport = $this->renderReport($incident);
+    $htmlReport = $this->renderReport($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
     $pdf = App::make('dompdf');
     $log = new Log\Logger();
 
@@ -925,7 +925,7 @@ protected $layout = 'layouts.master';
     $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
    return Redirect::to('/incident/');
  }
- 
+
 
   protected function sendTicket($incident, $status){
     $u = new Otrs\User();
@@ -1031,7 +1031,7 @@ protected $layout = 'layouts.master';
             'listed'=>$listed,
             'location'=>$location,
             'recomendations' => $recomendations,
-	    'body' => $body
+	          'body' => $body
           ),
           function ($message) use ($incident, $subject){
             $log = new Log\Logger();
@@ -1043,7 +1043,7 @@ protected $layout = 'layouts.master';
   }
 
 
-  private function renderReport($incident){
+  private function renderReport($incident, $introduction=null){
     $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
     $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
     $listed=array();
@@ -1074,7 +1074,8 @@ protected $layout = 'layouts.master';
       'incident'=>$incident,
       'listed'=>$listed,
       'location'=>$location,
-      'recomendations' => $recomendations
+      'recomendations' => $recomendations,
+      'body' => $introduction
     ))->render();
   }
 }

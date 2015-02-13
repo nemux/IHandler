@@ -20,8 +20,7 @@
      border: 1px solid black;
   }
   img{
-    width:50%;
-    margin-left:18%;
+    width:700px;
     border-radius:6px;
     box-shadow: 10px 10px 5px #888888;
     margin-top:5px;
@@ -30,12 +29,21 @@
 </style>
 </head>
 <body>
+
+<div  style="text-align:left">
+  <img src="assets/img/gcs-header.jpg"/>
+</div>
+
+<br/>
+<br/>
+
 @if ( isset($body))
   <div>
     <p>{{ $body }} </p>
   </div>
 <br/>
 @endif
+
 <div  style="margin-bottom:20px">
   <table class="max-width">
     <tr>
@@ -280,10 +288,8 @@
             {{ $r->content }} <br/>
           @endforeach
          @endif
-
       </td>
     </tr>
-
     <tr>
       <td style="text-align:center;background:#d9d9d9">
         <strong>Referencia:</strong>
@@ -319,6 +325,15 @@
             </div>
           </div>
   <?php endforeach ?>
+</div>
+<div style="margin: 0px 20px; font-size: 80%; text-align: center; font-family: Helvetica,Arial,sans-serif;
+            color: rgb(200, 0, 0);"><small style="font-family: Helvetica,Arial,sans-serif;">
+          <big><strong>Informaci&oacute;n Confidencial</strong></big></small>
+</div>
+
+<div style="margin: 0px 20px; font-size: 80%; text-align: center; font-family: Helvetica,Arial,sans-serif;
+            color: rgb(30, 144, 255);"><small style="font-family: Helvetica,Arial,sans-serif;">
+            <strong>&copy; {{ date("Y") }} Global Cybersec</strong></small>
 </div>
 </body>
 </html>
