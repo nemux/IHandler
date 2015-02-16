@@ -369,6 +369,8 @@ function removeRule(tr,sid){
     var dst_occurences=$("#dst_occurences").val();
     var src_blacklist=0;
     var dst_blacklist=0;
+    var src_no_show = 0;
+    var dst_no_show = 0;
 
     validate=[src_ip,dst_ip,src_port,dst_port,src_protocol,dst_protocol,dst_occurences,src_occurences,dst_location,src_location,dst_function,src_function,dst_operative_system,src_operative_system];
     if (validateEntry(validate)=="1") {
@@ -379,6 +381,13 @@ function removeRule(tr,sid){
     }
     if ($("#dst_blacklist").attr('checked')) {
         dst_blacklist=1;
+    }
+
+    if ($("#src_no_show").attr('checked')) {
+        src_no_show=1;
+    }
+    if ($("#dst_no_show").attr('checked')) {
+        dst_no_show=1;
     }
 
 
@@ -402,6 +411,8 @@ function removeRule(tr,sid){
         +'<input type="text" class="form-control" name="dstoccurencestype_'+count_event+'" placeholder="destino" value="'+dst_occurences+'">'
         +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="destino" value="'+src_blacklist+'">'
         +'<input type="text" class="form-control" name="dstblacklist_'+count_event+'" placeholder="destino" value="'+dst_blacklist+'">'
+        +'<input type="text" class="form-control" name="src_no_show_'+count_event+'" placeholder="destino" value="'+src_no_show+'">'
+        +'<input type="text" class="form-control" name="dst_no_show_'+count_event+'" placeholder="destino" value="'+dst_no_show+'">'
       +'</td>'
 
       +'<td colspan="2">'
@@ -877,6 +888,9 @@ function removeRule(tr,sid){
                                 Blacklist
                               </th>
                               <th>
+                                No mostrar
+                              </th>
+                              <th>
                                 Puerto
                               </th>
                               <th>
@@ -918,6 +932,10 @@ function removeRule(tr,sid){
                                   <td>
                                     <input id="src_blacklist" class="checkbox" type="checkbox" name="search_src_blacklist" value="1"><br><br>
                                     <input id="dst_blacklist" class="checkbox"  type="checkbox"  name="search_dst_blacklist" value="1">
+                                  </td>
+                                  <td>
+                                    <input id="src_no_show" class="checkbox" type="checkbox" name="search_src_no_show" value="1"><br><br>
+                                    <input id="dst_no_show" class="checkbox"  type="checkbox"  name="search_dst_no_show" value="1">
                                   </td>
                                   <td>
                                     <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>

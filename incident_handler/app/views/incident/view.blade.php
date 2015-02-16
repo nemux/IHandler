@@ -263,7 +263,7 @@ $(document).ready(function(){
 
                           <?php foreach ($incident->srcDst as $ip): ?>
                             <?php
-                            if($ip->src->ip!=""){
+                            if($ip->src->ip!="" && $ip->src->show != false){
                             echo $ip->src->ip.'<br>';
                           }
                             ?>
@@ -281,7 +281,7 @@ $(document).ready(function(){
                       <table>
                         <?php foreach ($incident->srcDst as $ip): ?>
                           <?php
-                          if($ip->dst->ip!=""){
+                          if($ip->dst->ip!="" && $ip->dst->show != false ){
                           echo $ip->dst->ip.'<br>';
                           }
                           ?>

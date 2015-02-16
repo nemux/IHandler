@@ -357,6 +357,17 @@ protected $layout = 'layouts.master';
           if (Occurence::where('ip','=',$input['dstip_'.$e])->first()) {
             $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
           }
+
+          if ($input['src_no_show_'.$e] == '1')
+            $src->show = false;
+          else
+            $src->show = true;
+
+          if ($input['dst_no_show_'.$e] == '1')
+            $dst->show = false;
+          else
+            $dst->show = true;
+
           $src->blacklist=$input['srcblacklist_'.$e];
           $dst->blacklist=$input['dstblacklist_'.$e];
           $src_history=new OccurenceHistory;
@@ -660,6 +671,16 @@ protected $layout = 'layouts.master';
                   if (Occurence::where('ip','=',$input['dstip_'.$e])->first()) {
                     $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
                   }
+
+                  if ($input['src_no_show_'.$e] == '1')
+                    $src->show = false;
+                  else
+                    $src->show = true;
+
+                  if ($input['dst_no_show_'.$e] == '1')
+                    $dst->show = false;
+                  else
+                    $dst->show = true;
 
                   $src->blacklist=$input['srcblacklist_'.$e];
                   $dst->blacklist=$input['dstblacklist_'.$e];

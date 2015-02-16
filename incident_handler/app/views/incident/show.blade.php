@@ -203,8 +203,8 @@
 
           <?php foreach ($incident->srcDst as $ip): ?>
             <?php
-            if($ip->src->ip!=""){
-            echo $ip->src->ip.'<br>';}
+            if($ip->src->ip!="" && $ip->src->show != false){
+              echo $ip->src->ip.'<br>';}
             ?>
           <?php endforeach ?>
 
@@ -219,8 +219,8 @@
 
           <?php foreach ($incident->srcDst as $ip): ?>
             <?php
-            if($ip->dst->ip!=""){
-            echo $ip->dst->ip.'<br>';}
+            if($ip->dst->ip!="" && $ip->dst->show != false){
+              echo $ip->dst->ip.'<br>';}
             ?>
           <?php endforeach ?>
 

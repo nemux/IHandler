@@ -8,7 +8,7 @@ class Occurence extends Eloquent {
    */
 
   protected $table = 'occurrences';
-  protected $fillable = ['ip','src','dst','occurrences_types_id','blacklist'];
+  protected $fillable = ['ip','src','dst','occurrences_types_id','blacklist','show', 'location'];
 
   /**
    * The attributes excluded from the model's JSON form.
