@@ -29,10 +29,11 @@
 </style>
 </head>
 <body>
-
+<!--
 <div  style="text-align:left">
   <img src="assets/img/gcs-header.jpg"/>
 </div>
+-->
 
 <br/>
 <br/>
