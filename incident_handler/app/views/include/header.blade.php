@@ -123,7 +123,7 @@
 											</div>
 											<div class="col-lg-8">
 													<div class="form-group">
-														<input class="form-control" type="password" name="old_pass" value="">
+														<input class="form-control" type="password" id="old_pass" value="">
 													</div>
 											</div>
 											<div class="col-lg-4">
@@ -131,7 +131,7 @@
 											</div>
 											<div class="col-lg-8">
 												<div class="form-group">
-													<input class="form-control" type="password" name="new_pass" value="">
+													<input class="form-control" type="password" id="new_pass" value="">
 												</div>
 											</div>
 											<div class="col-lg-4">
@@ -139,7 +139,7 @@
 											</div>
 											<div class="col-lg-8">
 												<div class="form-group">
-													<input class="form-control" type="text" name="token" value="">
+													<input class="form-control" type="text" id="token" value="">
 												</div>
 											</div>
 
@@ -149,6 +149,7 @@
 										</div>
 										<div class="modal-footer">
 											<a class="btn btn-default btn-sm pull-right" onclick="getToken()">Solicitar Token</a>
+											<a class="btn btn-default btn-sm pull-right" onclick="confirmChange()">Cambiar Password</a>
 										</div>
 									</div>
 								</div>
@@ -156,5 +157,8 @@
 							<script charset="utf-8">
 								function getToken(){
 									$.post( "/handler/send/token" );
+								}
+								function confirmChange(){
+									$.post( "/handler/update/password",{ old_pass: $("#old_pass").val() ,new_pass: $("#new_pass").val() , token: $("#token").val()} );
 								}
 							</script>

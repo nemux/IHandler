@@ -14,7 +14,7 @@ class CreateUserTokenTable extends Migration {
 	{
 		Schema::create('user_token', function(Blueprint $table){
 
-				$table->increments('id');
+					$table->increments('id');
 					$table->integer('incident_handler_id')->unsigned();
 					$table->string('token');
 					$table->timestamps();

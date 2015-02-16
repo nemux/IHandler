@@ -69,48 +69,48 @@
                                       <?php foreach ($incident as $in): ?>
                                         <tr >
                                           <?php $i++; ?>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $i ?>
                                           </td>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             @if (isset($in->ticket->internal_number))
                                               {{ $in->ticket->internal_number }}
                                             @else
                                               {{ "Por asignar....."}}
                                             @endif
                                           </td>
-                                          <td onclick="location.href = '/incident/view/<?php echo $in->id ?>'"  style="cursor:pointer" width="15%">
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');"  style="cursor:pointer" width="15%">
                                           <?php $i++; ?>
                                             <?php echo $in->title ?>
                                           </td>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php foreach ($in->incidentRule as $ir): ?>
                                               <?php echo $ir->rule->message ?>
                                             <?php endforeach ?>
                                           </td>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php
                                               $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$in->id)->first();
 
                                               echo $det_time['datetime'];
                                              ?>
                                           </td>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $in->sensor->name ?>
                                           </td>
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $in->status->name ?>
                                           </td>
 
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
                                           </td>
 
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $in->customer->company ?>
                                           </td>
 
-                                          <td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $in->updated_at ?>
                                           </td>
                                           <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>

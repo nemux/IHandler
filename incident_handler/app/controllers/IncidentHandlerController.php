@@ -49,18 +49,38 @@ protected $layout = 'layouts.master';
     }
     public function updatePassword(){
       $input = Input::all();
+      return (print_r($input));
     }
     public function sendToken(){
 
       $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       $token = substr(str_shuffle($chars),0,32);
 
-      Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
-        $user=IncidentHandler::find(Auth::user()->id);
-        $message->to($user->mail)->subject('[GSC-IM]-Cambio de password en Incident Manager');
-      });
-      return Redirect::to('/incident/');
+      $user_token=IncidentHandlerToken::where('incident_handler_id',"=",Auth::user()->id);
+      if($user_token->first()){
+        $user_token=$user_token->first();
+        $user_token->token=$token;
+        $user_token->incident_handler_id=Auth::user()->id;
+        $user_token->save();
+        Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
+          $user=IncidentHandler::find(Auth::user()->id);
+          $message->to($user->mail)->subject('[GSC-IM] - Token de Confirmación - Incident Manager');
+        });
+        return Redirect::to('/incident/');
+      }else{
+        $user_token=new IncidentHandlerToken;
+        $user_token->token=$token;
+        $user_token->incident_handler_id=Auth::user()->id;
+        $user_token->save();
+        Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
+          $user=IncidentHandler::find(Auth::user()->id);
+          $message->to($user->mail)->subject('[GSC-IM] - Token de Confirmación - Incident Manager');
+        });
+        return Redirect::to('/incident/');
+      }
+      /*
 
+      */
     }
 
     public function postUpdate()
