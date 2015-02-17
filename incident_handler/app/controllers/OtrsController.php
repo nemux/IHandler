@@ -52,22 +52,24 @@ class OtrsController extends BaseController{
     }
 
 
-  public function sendTicket($id){
+ protected function sendTicket($incident_id){
+    $u = new Otrs\User();
+    $ticketOtrs = new Otrs\Ticket();
+    $incident=Incident::find($incident_id);
+    $ticketIM = Ticket::find($incident->ticket->id);
 
-    $a = new Otrs\Article();
+    $htmlReport = $this->renderReport($incident);
 
-    print_r($a->AllSenderTypeList());
-    print("<br/>");
-    print_r($a->AllArticleTypeList());
-
+    $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
+    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+    $ticketIM->save();
+    return 'Incident ID->'.$ticketIM->incidents_id.'\nTicket IM->'.$ticketIM->internal_number.'\nTicket OTRS->'.$ticketIM->otrs_ticket_number;
   }
-
 
   public function test($id){
 
-
-      $user = new Otrs\User;
- 
+    $user = new Otrs\User;
     $o = new Otrs\Customer();
     print_r($o->getAll());
 
@@ -141,7 +143,39 @@ class OtrsController extends BaseController{
 
   }
 
+  private function renderReport($incident, $introduction=null){
+    $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
+    $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
+    $listed=array();
+    $black_preview=IncidentOccurence::where("incidents_id","=",$incident->id)->get();
+    $location=array();
+    foreach ($black_preview as $b) {
+      if ($b->src->blacklist) {
+        array_push($listed,$b->src);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+      if ($b->dst->blacklist) {
+        array_push($listed,$b->dst);
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        array_push($location,$loc);
+        //print_r($loc);
+        //echo "<br>";
+      }
+    }
 
+    $recomendations = Recomendation::where('incidents_id','=',$incident->id)->get();
 
-
+    return $htmlReport = $this->layout = View::make('incident.show', array(
+      'det_time'=>$det_time,
+      'occ_time'=>$occ_time,
+      'incident'=>$incident,
+      'listed'=>$listed,
+      'location'=>$location,
+      'recomendations' => $recomendations,
+      'body' => $introduction
+    ))->render();
+  }
 }

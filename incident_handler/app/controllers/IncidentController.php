@@ -970,10 +970,13 @@ protected $layout = 'layouts.master';
     $htmlReport = $this->renderReport($incident);
 
     $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
-    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-    $ticketIM->save();
-    $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
+    if ($ticket_info['response_status'] == 0){
+      $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+      $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+      $ticketIM->save();
+      $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
+    } else
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al crear OTRS Ticket para el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
   }
 
   private function closeTicket($ticketID){
@@ -987,9 +990,10 @@ protected $layout = 'layouts.master';
     $htmlReport = $this->renderReport($ticketIM->incident);
     $res = $ticketOtrs->close($ticketID, $htmlReport);
 
-    //Log
-    $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
-
+    if ($res == 0 )
+      $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+    else
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al cerrar Ticket con ID en OTRS: '. $ticketIM->id );
   }
 
     private function sendRecomendation($incident, $recomendation){

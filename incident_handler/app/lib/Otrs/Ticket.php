@@ -30,8 +30,10 @@ class Ticket extends Otrs {
 
       $userInfo = $user->getInfo($this->incidentHandler);
 
-      # Create a new ticket. The function returns the Ticket ID.
-      $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+      try {
+
+        # Create a new ticket. The function returns the Ticket ID.
+        $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketCreate",
                                                       "Title",        $title,
                                                       "Queue",        "gcs_im_queue",
@@ -43,23 +45,24 @@ class Ticket extends Otrs {
                                                       "UserID",       $userInfo['UserID'],
                                                      ));
 
+        # A ticket is not usefull without at least one article. The function create and
+        # returns an Article ID.
 
-      # A ticket is not usefull without at least one article. The function create and
-      # returns an Article ID.
+        $ArticleID = $article->create($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer->mail, $body);
 
-      $ArticleID = $article->create($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer->mail, $body);
+        // Use the Ticket ID to retrieve the Ticket Number.
+        $TicketNr = $this->getNumber($TicketID);
 
-      // Use the Ticket ID to retrieve the Ticket Number.
-      $TicketNr = $this->getNumber($TicketID);
+        // Make sure the ticket number is not displayed in scientific notation
+        // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
+        $big_integer = 1202400000;
+        $Formatted_TicketNr = number_format($TicketNr, 0, '.', '');
 
-      // Make sure the ticket number is not displayed in scientific notation
-      // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
-      $big_integer = 1202400000;
-      $Formatted_TicketNr = number_format($TicketNr, 0, '.', '');
-
-      return array("TicketID" => $TicketID, "ArticleID" => $ArticleID, "TicketNumber" => $Formatted_TicketNr);
-
-  }
+        return array("response_status" => 0, "TicketID" => $TicketID, "ArticleID" => $ArticleID, "TicketNumber" => $Formatted_TicketNr);
+      } catch (Exception $e)  {
+        return array("response_status" => -1);
+      }
+    }
 
      /*
      * Get the Ticket Number using the TicketID.
@@ -93,7 +96,6 @@ class Ticket extends Otrs {
                                                       "UserID",     $userInfo['UserID'],
                                                      ));
     //return $ticketInfo;
-
     return $this->formatOtrsArray($ticketInfo);
   }
 
@@ -107,29 +109,31 @@ class Ticket extends Otrs {
      $userInfo = $user->getInfo($this->incidentHandler);
      $ticketInfo = $this->getInfo($ticketID);
      $customerInfo = $customer->getInfo($ticketInfo['CustomerUserID']);
+     try {
 
-     $articleID = $article->create($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo->UserEmail, $message);
+       $articleID = $article->create($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo->UserEmail, $message);
 
-     $success1 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+       $success1 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketStateSet",
                                                       "State",        "closed successful",
                                                       "TicketID",     $ticketID,
                                                       "ArticleID",    $articleID,
                                                       "UserID",   $userInfo['UserID']
                                                      ));
-    $success2 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+       $success2 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketLockSet",
                                                       "Lock",        "lock",
                                                       "TicketID",     $ticketID,
                                                       "UserID",   $userInfo['UserID']
                                                      ));
-
-    if ($success1 && $success2)
-      $success = 1;
-    else
-      $success = 0;
-
-    return $success;
+       if ($success1 && $success2)
+         $success = 0;
+       else
+         $success = -1;
+       return $success;
+     } catch (Exception $e) {
+        return $success = -1;
+      }
   }
 
   public function getPriorities(){
@@ -137,7 +141,6 @@ class Ticket extends Otrs {
                                                        "PriorityObject",   "PriorityList",
                                                        "Valid",       1,
                                                        ));
-
     return $this->formatOtrsArray($priorities);
   }
 }
