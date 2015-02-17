@@ -910,7 +910,11 @@ protected $layout = 'layouts.master';
 
   public function index(){
 
-    $incident=Incident::all();
+    //$incident=Incident::all();
+
+    //Estatus 4 = Cerrado
+    //Estatus 5 =  Falso Positivo
+    $incident = Incident::where('incidents_status_id','<','4')->get();
 
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
