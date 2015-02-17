@@ -914,7 +914,7 @@ protected $layout = 'layouts.master';
 
     //Estatus 4 = Cerrado
     //Estatus 5 =  Falso Positivo
-    $incident = Incident::where('incidents_status_id','<','4')->get();
+    $incident = Incident::where('incidents_status_id','<','4')-> orderBy('id','asc')->get();
 
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,

@@ -65,10 +65,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      <?php $i=0; ?>
+                                      <?php $i=1; ?>
                                       <?php foreach ($incident as $in): ?>
                                         <tr >
-                                          <?php $i++; ?>
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $i ?>
                                           </td>
@@ -80,7 +79,6 @@
                                             @endif
                                           </td>
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');"  style="cursor:pointer" width="15%">
-                                          <?php $i++; ?>
                                             <?php echo $in->title ?>
                                           </td>
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
@@ -117,9 +115,9 @@
                                             <td>
                                               <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
                                             </td>
-
                                           <?php endif ?>
                                         </tr>
+                                        <?php $i++; ?>
                                       <?php endforeach ?>
                                     </tbody>
                                 </table>
