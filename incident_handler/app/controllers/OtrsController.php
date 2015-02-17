@@ -58,13 +58,16 @@ class OtrsController extends BaseController{
     $incident=Incident::find($incident_id);
     $ticketIM = Ticket::find($incident->ticket->id);
 
-    $htmlReport = $this->renderReport($incident);
-
-    $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
-    $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-    $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-    $ticketIM->save();
-    return 'Incident ID->'.$ticketIM->incidents_id.'\nTicket IM->'.$ticketIM->internal_number.'\nTicket OTRS->'.$ticketIM->otrs_ticket_number;
+    if ($ticketIM->otrs_ticket_id == ""){
+      $htmlReport = $this->renderReport($incident);
+      $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
+      $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+      $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+      $ticketIM->save();
+      return 'Incident ID->'.$ticketIM->incidents_id.'\nTicket IM->'.$ticketIM->internal_number.'\nTicket OTRS->'.$ticketIM->otrs_ticket_number;
+    } else {
+      return "Ya se ha generado el ticket en OTRS anteriormente, el numero es->".$ticketIM->otrs_ticket_number;
+    }
   }
 
   public function test($id){
