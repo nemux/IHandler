@@ -131,7 +131,6 @@ protected $layout = 'layouts.master';
           $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
-          //$this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
 	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();

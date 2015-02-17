@@ -938,7 +938,7 @@ function removeRule(tr,sid){
                                     <input id="dst_no_show" class="checkbox"  type="checkbox"  name="search_dst_no_show" value="1">
                                   </td>
                                   <td>
-                                    <input id="src_port"  id="search_src_ip"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
+                                    <input id="src_port"  type="text" class="form-control" name="search_src_port" placeholder="origen"><br>
                                     <input id="dst_port"  type="text" class="form-control" name="search_dst_port" placeholder="destino">
                                   </td>
                                   <td>
@@ -1013,6 +1013,9 @@ function removeRule(tr,sid){
                                       <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
                                       <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
                                       <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="src_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->show){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="dst_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->show){ echo "1"; }else{ echo "0";} ?>">
+
                                     </td>
                                     <td colspan="2">
                                       <?php echo $io->src->ip ?>

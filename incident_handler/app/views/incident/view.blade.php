@@ -484,7 +484,7 @@ $(document).ready(function(){
               <input type="hidden" name="status" id="next_status" value="1">
               <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
 
-              {{Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+              {{--Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);--}}
 
             <?php endif ?>
 
