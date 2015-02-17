@@ -117,40 +117,40 @@
 											<h4 class="modal-title">Cambio de password</h4>
 										</div>
 										<div class="modal-body">
+										{{ Form::model(null,array('action' => 'IncidentHandlerController@passwordUpdate','role'=>"form", 'id'=>"form","class"=>"form-horizontal form-bordered","data-parsley-validate"=>"true", "name"=>"demo-form")) }}
 
 											<div class="col-lg-4">
 												Password Anterior
 											</div>
 											<div class="col-lg-8">
 													<div class="form-group">
-														<input class="form-control" type="password" id="old_pass" value="">
+														<input class="form-control" type="password" name="old_pass" value="">
 													</div>
-											</div>
+											</div><br>
 											<div class="col-lg-4">
 												Password Nuevo
 											</div>
 											<div class="col-lg-8">
 												<div class="form-group">
-													<input class="form-control" type="password" id="new_pass" value="">
+													<input class="form-control" type="password" name="new_pass" value="">
 												</div>
-											</div>
+											</div><br>
 											<div class="col-lg-4">
 												Token
 											</div>
 											<div class="col-lg-8">
 												<div class="form-group">
-													<input class="form-control" type="text" id="token" value="">
+													<input class="form-control" type="text" name="token" value="">
 												</div>
-											</div>
-
-
-
-
+											</div><br>
 										</div>
-										<div class="modal-footer">
+										<div class="modal-footer" >
+											<br>
+											<input type="submit" class="btn btn-primary btn-sm pull-right" value="Cambiar Password" style="margin-left:10px">
 											<a class="btn btn-default btn-sm pull-right" onclick="getToken()">Solicitar Token</a>
-											<a class="btn btn-default btn-sm pull-right" onclick="confirmChange()">Cambiar Password</a>
+
 										</div>
+										{{ Form::close() }}
 									</div>
 								</div>
 							</div>
@@ -158,7 +158,5 @@
 								function getToken(){
 									$.post( "/handler/send/token" );
 								}
-								function confirmChange(){
-									$.post( "/handler/update/password",{ old_pass: $("#old_pass").val() ,new_pass: $("#new_pass").val() , token: $("#token").val()} );
-								}
+
 							</script>

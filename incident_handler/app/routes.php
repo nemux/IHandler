@@ -37,7 +37,7 @@ Route::group(array('before'=>'admin', 'prefix'=>'handler'),function(){
   #Admin Routes
 });
 Route::post('handler/update/password', 'IncidentHandlerController@passwordUpdate');
-Route::get('handler/send/token', 'IncidentHandlerController@sendToken');
+Route::post('handler/send/token', 'IncidentHandlerController@sendToken');
 
 Route::group(array('before'=>'admin', 'prefix'=>'sensor'),function(){
 

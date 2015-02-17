@@ -350,30 +350,16 @@ protected $layout = 'layouts.master';
           $dst=new Occurence;
           $src=new Occurence;
 
-
           if (Occurence::where('ip','=',$input['srcip_'.$e])->first()) {
             $src=Occurence::where('ip','=',$input['srcip_'.$e])->first();
           }
           if (Occurence::where('ip','=',$input['dstip_'.$e])->first()) {
             $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
           }
-
-          if ($input['src_no_show_'.$e] == '1')
-            $src->show = false;
-          else
-            $src->show = true;
-
-          if ($input['dst_no_show_'.$e] == '1')
-            $dst->show = false;
-          else
-            $dst->show = true;
-
           $src->blacklist=$input['srcblacklist_'.$e];
           $dst->blacklist=$input['dstblacklist_'.$e];
           $src_history=new OccurenceHistory;
           $dst_history=new OccurenceHistory;
-
-
 
           //if($input['srcip_'.$e]=='')
             //return "Ip no puede ir vacía";
@@ -671,16 +657,6 @@ protected $layout = 'layouts.master';
                   if (Occurence::where('ip','=',$input['dstip_'.$e])->first()) {
                     $dst=Occurence::where('ip','=',$input['dstip_'.$e])->first();
                   }
-
-                  if ($input['src_no_show_'.$e] == '1')
-                    $src->show = false;
-                  else
-                    $src->show = true;
-
-                  if ($input['dst_no_show_'.$e] == '1')
-                    $dst->show = false;
-                  else
-                    $dst->show = true;
 
                   $src->blacklist=$input['srcblacklist_'.$e];
                   $dst->blacklist=$input['dstblacklist_'.$e];

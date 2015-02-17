@@ -31,7 +31,7 @@ protected $layout = 'layouts.master';
         $log->info(Auth::user()->id,Auth::user()->username,'Se creó el Incident Handler con ID: '. $handler->id);
 
         Mail::send('usuarios.mail',array('user'=>$input['username'],'pass'=>$pass),function ($message){
-          $message->to(Input::get('mail'))->subject('[GSC-IM]-Alta en Incident Manager');
+          $message->to(Input::get('mail'))->subject('[GCS-IM]-Alta en Incident Manager');
         });
         return Redirect::to('handler/view/'.$handler->id);
       }
@@ -47,9 +47,34 @@ protected $layout = 'layouts.master';
       }
 
     }
-    public function updatePassword(){
+    public function passwordUpdate(){
       $input = Input::all();
-      return (print_r($input));
+
+      $new_pass= $input['new_pass'];
+      $user_token=IncidentHandlerToken::where('incident_handler_id',"=",Auth::user()->id);
+      $userData = array(
+        'username' => Auth::user()->username,
+        'password' => $input['old_pass'],
+        );
+
+      if (Auth::attempt($userData) && $user_token->first()!=null && $user_token->first()->token==$input['token'] && (strtotime('now')- strtotime($user_token->first()->updated_at))<=600) {
+        $user=IncidentHandler::find(Auth::user()->id);
+        $user->access->password=Hash::make($new_pass);
+        $user->access->save();
+        Mail::send('usuarios.mail',array('user'=>Auth::user()->username,'pass'=>$new_pass),function ($message){
+          $user=IncidentHandler::find(Auth::user()->id);
+          $message->to($user->mail)->subject('[GCS-IM] - Cambio de password exitoso');
+        });
+
+      return Redirect::to('/incident/');
+    }else {
+      Mail::send('usuarios.mail',array('user'=>'','pass'=>''),function ($message){
+        $user=IncidentHandler::find(Auth::user()->id);
+        $message->to($user->mail)->subject('[GCS-IM] - Error en cambio de password');
+      });
+      return Redirect::to('/incident/');
+    }
+
     }
     public function sendToken(){
 
@@ -57,14 +82,14 @@ protected $layout = 'layouts.master';
       $token = substr(str_shuffle($chars),0,32);
 
       $user_token=IncidentHandlerToken::where('incident_handler_id',"=",Auth::user()->id);
-      if($user_token->first()){
+      if($user_token->first()!=null){
         $user_token=$user_token->first();
         $user_token->token=$token;
         $user_token->incident_handler_id=Auth::user()->id;
         $user_token->save();
         Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
           $user=IncidentHandler::find(Auth::user()->id);
-          $message->to($user->mail)->subject('[GSC-IM] - Token de Confirmación - Incident Manager');
+          $message->to($user->mail)->subject('[GCS-IM] - Token de Confirmación - Incident Manager');
         });
         return Redirect::to('/incident/');
       }else{
@@ -74,7 +99,7 @@ protected $layout = 'layouts.master';
         $user_token->save();
         Mail::send('usuarios.mail',array('user'=>null,'pass'=>null,'token'=>$token),function ($message){
           $user=IncidentHandler::find(Auth::user()->id);
-          $message->to($user->mail)->subject('[GSC-IM] - Token de Confirmación - Incident Manager');
+          $message->to($user->mail)->subject('[GCS-IM] - Token de Confirmación - Incident Manager');
         });
         return Redirect::to('/incident/');
       }
@@ -109,7 +134,7 @@ protected $layout = 'layouts.master';
         $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó el Incident Handler con ID: '. $handler->id);
 
         Mail::send('usuarios.mail',array('user'=>$input['username'],'pass'=>$pass),function ($message){
-          $message->to(Input::get('mail'))->subject('[GSC-IM]-Actualización en Incident Manager');
+          $message->to(Input::get('mail'))->subject('[GCS-IM]-Actualización en Incident Manager');
         });
         return Redirect::to('handler/view/'.$handler->id);
       }
