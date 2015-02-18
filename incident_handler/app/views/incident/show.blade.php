@@ -12,12 +12,11 @@
   .wrapper{
     width:600px;
   }
-  .max-width{
-    width=700px;
-  }
 
   table, th, td {
      border: 1px solid black;
+     table-layout: fixed;
+     width: 700px;
   }
   img{
     width:700px;
@@ -25,6 +24,15 @@
     box-shadow: 10px 10px 5px #888888;
     margin-top:5px;
     margin-bottom:5px;
+  }
+  td {
+
+        /* CSS 3 */
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
   }
 </style>
 </head>
@@ -46,7 +54,7 @@
 @endif
 
 <div  style="margin-bottom:20px">
-  <table class="max-width">
+  <table>
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">
         <strong>Incidente: <?php echo $incident->title ?></strong>
@@ -308,7 +316,7 @@
           <div class="col-lg-12" style="margin-bottom:20px;padding-top:20px">
             <div class="form-group" >
 
-              <table class="table table-bordered" class="max-width">
+              <table class="table table-bordered">
                 <tr style="text-align:center;background:#CCC;">
                   <td colspan="2">
                       <strong> <?php echo $a->title ?></strong>
