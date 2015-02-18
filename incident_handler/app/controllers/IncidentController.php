@@ -131,7 +131,6 @@ protected $layout = 'layouts.master';
           $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
-          //$this->sendTicket($incident,$status);
           $incident->incidents_status_id = $status;
 	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();
@@ -910,7 +909,11 @@ protected $layout = 'layouts.master';
 
   public function index(){
 
-    $incident=Incident::all();
+    //$incident=Incident::all();
+
+    //Estatus 4 = Cerrado
+    //Estatus 5 =  Falso Positivo
+    $incident = Incident::where('incidents_status_id','<','4')-> orderBy('id','asc')->get();
 
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,

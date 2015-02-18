@@ -14,7 +14,7 @@ class Ticket extends Otrs {
      * Create a ticket in Otrs.
      *
      * @param string $title The Title of the ticket.
-     * @param int $priority The priority of the ticket [1,2,3,4,5].
+     * @param int $priority The priority of the ticket [1,2,3,4,5,6,7,8,9,10].
      * @param string $customer The id of the customer.
      * @param string $body The text for the article.
      *
