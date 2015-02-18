@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,8 +9,6 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
-
 
 Route::get('/','HomeController@index');
 Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
@@ -85,6 +82,12 @@ Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
   Route::get('view/{id}', 'CustomerController@view')->where(array('id'=>'^[0-9]+$'));
   Route::post('importCustomers', 'OtrsController@importCustomers');
 
+  #Admin Routes
+});
+Route::group(array('before'=>'admin', 'prefix'=>'stats'),function(){
+  # User Routes
+  Route::get('/incident', 'StatsController@incident');
+  Route::post('/incident/graph', 'StatsController@incidentGraph');
   #Admin Routes
 });
 

@@ -92,7 +92,17 @@
 
 					@endif
 
+					<li class="has-sub ">
+							<a href="javascript:;">
+								<b class="caret pull-right"></b>
+								<i class="fa fa-bar-chart-o"></i>
+								<span>Estadísticas</span>
+							</a>
 
+						<ul class="sub-menu">
+								<li><a href="/stats/incident">De incidentes</a></li>
+						</ul>
+					</li>
 
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
