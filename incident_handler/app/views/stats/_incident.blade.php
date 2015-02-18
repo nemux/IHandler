@@ -1,12 +1,15 @@
 
 
-<script src="/assets/highcharts/js/highcharts.js"></script>
-<script src="/assets/highcharts/js/modules/exporting.js"></script>
 <script charset="utf-8">
   $(function () {
       $('#container').highcharts({
           title: {
-              text: 'Incidentes Mensuales',
+              <?php if ($option==1): ?>
+                text: "Incidentes Mensuales",
+              <?php endif ?>
+              <?php if ($option==2): ?>
+               text: "Incidentes por Día",
+              <?php endif ?>
               x: -20 //center
           },
           subtitle: {
@@ -15,11 +18,12 @@
           },
           xAxis: {
               categories: ["",<?php foreach ($incidents as $i): ?>
+
               <?php if ($option==1): ?>
                 "<?php echo date('F', mktime(0, 0, 0, $i->month, 10)); ?>",
               <?php endif ?>
               <?php if ($option==2): ?>
-                "<?php echo $i->day." ".date('F', mktime(0, 0, 0, $i->month, 10)); ?>",
+                "<?php echo date("d-m-Y",strtotime($i->date)); ?>",
               <?php endif ?>
 
               <?php endforeach ?>""]

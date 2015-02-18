@@ -84,10 +84,12 @@ Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){
 
   #Admin Routes
 });
-Route::group(array('before'=>'admin', 'prefix'=>'stats'),function(){
+Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   # User Routes
   Route::get('/incident', 'StatsController@incident');
   Route::post('/incident/graph', 'StatsController@incidentGraph');
+  Route::get('/ip', 'StatsController@ip');
+  Route::post('/ip/graph', 'StatsController@ipGraph');
   #Admin Routes
 });
 

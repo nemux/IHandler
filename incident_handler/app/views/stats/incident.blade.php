@@ -15,6 +15,8 @@
 	<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
 	<!-- ================== END PAGE LEVEL STYLE ================== -->
 
+<script src="/assets/highcharts/js/highcharts.js"></script>
+<script src="/assets/highcharts/js/modules/exporting.js"></script>
 <!DOCTYPE HTML>
 <html>
 	<head>
