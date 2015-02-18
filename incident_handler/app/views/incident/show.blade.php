@@ -308,7 +308,7 @@
           <div class="col-lg-12" style="margin-bottom:20px;padding-top:20px">
             <div class="form-group" >
 
-              <table class="table table-bordered" class="max-width"">
+              <table class="table table-bordered" class="max-width">
                 <tr style="text-align:center;background:#CCC;">
                   <td colspan="2">
                       <strong> <?php echo $a->title ?></strong>
