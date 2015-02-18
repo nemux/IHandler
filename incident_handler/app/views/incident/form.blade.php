@@ -407,11 +407,11 @@ function removeRule(tr,sid){
         +'<input type="text" class="form-control" name="dstfunction_'+count_event+'" placeholder="destino" value="'+dst_function+'">'
         +'<input type="text" class="form-control" name="srclocation_'+count_event+'" placeholder="origen" value="'+src_location+'"><br>'
         +'<input type="text" class="form-control" name="dstlocation_'+count_event+'" placeholder="destino" value="'+dst_location+'">'
-        +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="destino" value="'+src_occurences+'">'
+        +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="origen" value="'+src_occurences+'">'
         +'<input type="text" class="form-control" name="dstoccurencestype_'+count_event+'" placeholder="destino" value="'+dst_occurences+'">'
-        +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="destino" value="'+src_blacklist+'">'
+        +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="origen" value="'+src_blacklist+'">'
         +'<input type="text" class="form-control" name="dstblacklist_'+count_event+'" placeholder="destino" value="'+dst_blacklist+'">'
-        +'<input type="text" class="form-control" name="src_no_show_'+count_event+'" placeholder="destino" value="'+src_no_show+'">'
+        +'<input type="text" class="form-control" name="src_no_show_'+count_event+'" placeholder="origen" value="'+src_no_show+'">'
         +'<input type="text" class="form-control" name="dst_no_show_'+count_event+'" placeholder="destino" value="'+dst_no_show+'">'
       +'</td>'
 
@@ -990,9 +990,6 @@ function removeRule(tr,sid){
                               <?php if (isset($update)): ?>
                                 <?php $i=0; ?>
                                 <?php foreach ($incident_occurence as $io): ?>
-
-
-
                                   <?php $i++; ?>
                                   <tr onclick="removeEvent(this)" style="cursor:pointer">
 
@@ -1009,13 +1006,12 @@ function removeRule(tr,sid){
                                       <input style="display:none" type="text" class="form-control" name="dstfunction_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->function ?>">
                                       <input style="display:none" type="text" class="form-control" name="srclocation_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->location ?>"><br>
                                       <input style="display:none" type="text" class="form-control" name="dstlocation_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->location ?>">
-                                      <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->src->type->id ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcoccurencestype_<?php echo $i ?>" placeholder="origen" value="<?php echo $io->src->type->id ?>">
                                       <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
-                                      <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="origen" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
                                       <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
-                                      <input style="display:none" type="text" class="form-control" name="src_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->src->show){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="src_no_show_<?php echo $i ?>" placeholder="origen" value="<?php if($io->src->show){ echo "1"; }else{ echo "0";} ?>">
                                       <input style="display:none" type="text" class="form-control" name="dst_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->show){ echo "1"; }else{ echo "0";} ?>">
-
                                     </td>
                                     <td colspan="2">
                                       <?php echo $io->src->ip ?>
