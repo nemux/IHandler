@@ -14,9 +14,10 @@
   <link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
   <link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
   <!-- ================== END PAGE LEVEL STYLE ================== -->
+  <script src="/assets/highcharts/js/highcharts.js"></script>
+  <script src="/assets/highcharts/js/highcharts-3d.js"></script>
+  <script src="/assets/highcharts/js/modules/exporting.js"></script>
 
-<script src="/assets/highcharts/js/highcharts.js"></script>
-<script src="/assets/highcharts/js/modules/exporting.js"></script>
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -35,10 +36,11 @@ ${demo.css}
         $.ajax({
           type: "POST",
           url: "/stats/ip/graph",
-          data: { start: start, end: end, option:option},
+          data: { top:top,src_dst:src_dst,customer:customer,blacklist:blacklist},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
+            //console.log(result);
 
           }
         })
@@ -70,7 +72,7 @@ ${demo.css}
                                         </div>
                                         <div class="col-lg-9">
                                           <select id="top" class="form-control">
-                                            <?php for ($i=0; $i <11 ; $i++) { ?>
+                                            <?php for ($i=5; $i <21 ; $i++) { ?>
                                               <option value="<?php echo $i ?>"><?php echo $i ?></option>
                                             <?php } ?>
                                           </select>
