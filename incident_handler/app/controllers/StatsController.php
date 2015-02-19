@@ -58,26 +58,28 @@ protected $layout = 'layouts.master';
     {
         $input=Input::all();
 
+        //print_r($input);
+        if ($input['top']!='' && $input['src_dst']!='' && $input['customer']!='' && $input['blacklist']!="") {
 
-        if ($input['top']!='' && $input['src_dst'] && $input['customer']!='' && $input['blacklist']) {
           $top=$input['top'];
           $src_dst=$input['src_dst'];
           $customer=$input['customer'];
           $blacklist=$input['blacklist'];
           $join_occurence="";
           $set_blacklist="";
-          if ($src_dst==1) {
-            $join_occurrence="io.source_id";
-          }else if ($src_dst==2) {
-            $join_occurrence="io.destiny_id";
-          }
-          if ($blacklist==1) {
+          if ($input['src_dst']==1)
+            $join_occurence="io.source_id";
+          else if ($input['src_dst']==2)
+            $join_occurence="io.destiny_id";
+
+
+          if ($blacklist==0) {
             $set_blacklist="FALSE";
-          }else if ($blacklist==2) {
+          }else if ($blacklist==1) {
             $set_blacklist="TRUE";
           }
 
-          $incidents=DB::select(DB::raw("select
+          $ips=DB::select(DB::raw("select
                                           o.ip as ip,
                                           count(o.id)
                                         from
@@ -97,11 +99,11 @@ protected $layout = 'layouts.master';
                                               incidents as i,
                                               customers as c
                                             where
-                                              io.source_id=o.id
+                                              ".$join_occurence."=o.id
                                             and
                                               io.incidents_id=i.id
                                             and
-                                              c.customers_id=".$customer."
+                                              c.id=".$customer."
                                             and
                                               i.customers_id=c.id limit 1)
                                         group by
@@ -111,8 +113,8 @@ protected $layout = 'layouts.master';
                                         limit ".$top."
                                         "));
 
-          return $this->layout = View::make("ip._ip", array(
-            'ip'=>$ip,
+          return $this->layout = View::make("stats._ip", array(
+            'ips'=>$ips,
             'top'=>$top,
             'src_dst'=>$src_dst,
             'customer'=>$customer,
