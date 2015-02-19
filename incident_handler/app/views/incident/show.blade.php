@@ -15,8 +15,9 @@
 
   table, th, td {
      border: 1px solid black;
-     table-layout: fixed;
-     width: 700px;
+  }
+  .max-width {
+    width:700px;
   }
   img{
     width:700px;
@@ -26,7 +27,6 @@
     margin-bottom:5px;
   }
   td {
-
         /* CSS 3 */
         white-space: -o-pre-wrap;
         word-wrap: break-word;
@@ -54,7 +54,7 @@
 @endif
 
 <div  style="margin-bottom:20px">
-  <table>
+  <table class="max-width">
     <tr>
       <td colspan="3" style="text-align:center;background:#d9d9d9">
         <strong>Incidente: <?php echo $incident->title ?></strong>
@@ -316,7 +316,7 @@
           <div class="col-lg-12" style="margin-bottom:20px;padding-top:20px">
             <div class="form-group" >
 
-              <table class="table table-bordered">
+              <table class="max-width" style="table-layout: fixed;">
                 <tr style="text-align:center;background:#CCC;">
                   <td colspan="2">
                       <strong> <?php echo $a->title ?></strong>
