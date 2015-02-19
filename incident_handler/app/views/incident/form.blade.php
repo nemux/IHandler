@@ -252,11 +252,14 @@ function parse(){
         +'<input type="text" class="form-control" name="srclocation_'+count_event+'" placeholder="origen" value=""><br>'
         +'<input type="text" class="form-control" name="dstlocation_'+count_event+'" placeholder="destino" value="">'
 
-        +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="destino" value="'+src_type+'">'
+        +'<input type="text" class="form-control" name="srcoccurencestype_'+count_event+'" placeholder="origen" value="'+src_type+'">'
         +'<input type="text" class="form-control" name="dstoccurencestype_'+count_event+'" placeholder="destino" value="'+dst_type+'">'
 
-        +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="destino" value="0">'
+        +'<input type="text" class="form-control" name="srcblacklist_'+count_event+'" placeholder="origen" value="0">'
         +'<input type="text" class="form-control" name="dstblacklist_'+count_event+'" placeholder="destino" value="0">'
+
+        +'<input type="text" class="form-control" name="src_no_show_'+count_event+'" placeholder="origen"  value="0">'
+        +'<input type="text" class="form-control" name="dst_no_show_'+count_event+'" placeholder="destino" value="0">'
       +'</td>'
 
       +'<td colspan="2">'
@@ -274,6 +277,7 @@ function parse(){
 
         +','
         +src_type
+        +',0'
         +',0'
 
 
@@ -293,8 +297,7 @@ function parse(){
         +','
         +dst_type
         +',0'
-
-
+        +',0'
       +'</td>'
     +'</tr>';
 
@@ -391,7 +394,6 @@ function removeRule(tr,sid){
     }
 
 
-
     var str='<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
 
       +'<td style="display:none">'
@@ -432,7 +434,8 @@ function removeRule(tr,sid){
         +src_occurences
         +','
         +src_blacklist
-
+        +','
+        +src_no_show
       +'</td>'
       +'<td colspan="2">'
         +dst_ip
@@ -450,7 +453,8 @@ function removeRule(tr,sid){
         +dst_occurences
         +','
         +dst_blacklist
-
+        +','
+        + dst_no_show
       +'</td>'
     +'</tr>';
 
@@ -1010,8 +1014,8 @@ function removeRule(tr,sid){
                                       <input style="display:none" type="text" class="form-control" name="dstoccurencestype_<?php echo $i ?>" placeholder="destino" value="<?php echo $io->dst->type->id ?>">
                                       <input style="display:none" type="text" class="form-control" name="srcblacklist_<?php echo $i ?>" placeholder="origen" value="<?php if($io->src->blacklist){ echo "1"; }else{ echo "0";} ?>">
                                       <input style="display:none" type="text" class="form-control" name="dstblacklist_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->blacklist){ echo "1"; }else{ echo "0";} ?>">
-                                      <input style="display:none" type="text" class="form-control" name="src_no_show_<?php echo $i ?>" placeholder="origen" value="<?php if($io->src->show){ echo "1"; }else{ echo "0";} ?>">
-                                      <input style="display:none" type="text" class="form-control" name="dst_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->show){ echo "1"; }else{ echo "0";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="src_no_show_<?php echo $i ?>" placeholder="origen" value="<?php if($io->src->show){ echo "0"; }else{ echo "1";} ?>">
+                                      <input style="display:none" type="text" class="form-control" name="dst_no_show_<?php echo $i ?>" placeholder="destino" value="<?php if($io->dst->show){ echo "0"; }else{ echo "1";} ?>">
                                     </td>
                                     <td colspan="2">
                                       <?php echo $io->src->ip ?>

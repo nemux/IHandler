@@ -127,12 +127,12 @@ protected $layout = 'layouts.master';
 	if ($status=="2") {
           $incident->incidents_status_id = $status;
           $incident->save();
-          $this->sendTicket($incident,$status);
-          $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+          //$this->sendTicket($incident,$status);
+          //$this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
         }
         if ($status=="3") {
           $incident->incidents_status_id = $status;
-	        $this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
+	        //$this->sendEmail($incident,'[GCS-IM]-Actualización sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
           $incident->save();
         }
 
@@ -168,8 +168,8 @@ protected $layout = 'layouts.master';
               }
             }
             $incident->save();
-            $this->closeTicket($incident->ticket->otrs_ticket_id);
-            $this->sendEmail($incident,'[GCS-IM]-Cierre de reporte sobre incidente de seguridad::'.$incident->title.'.');
+            //$this->closeTicket($incident->ticket->otrs_ticket_id);
+            //$this->sendEmail($incident,'[GCS-IM]-Cierre de reporte sobre incidente de seguridad::'.$incident->title.'.');
           }
         }
 

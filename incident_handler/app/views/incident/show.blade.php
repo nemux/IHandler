@@ -141,7 +141,7 @@
     </tr>
     <tr>
       <td style="text-align:center;background:#d9d9d9">
-        <strong>Indicador de Compromiso:</strong>
+        <strong>Indicador de Compromiso Inicial:</strong>
       </td>
       <td colspan="2" style="text-align:center" width="100%">
         <?php foreach ($incident->incidentRule as $r ): ?>
