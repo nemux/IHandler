@@ -19,6 +19,7 @@ protected $layout = 'layouts.master';
         $option=$input['option'];
         $incidents=null;
 
+
         if ($input['start']!='' && $input['end']) {
           $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
           $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
@@ -28,6 +29,7 @@ protected $layout = 'layouts.master';
                                             from incidents as i, time as t
                                             where i.id=t.incidents_id and
                                             t.time_types_id=1
+                                            and i.customers_id=".$input['customer']."
                                             and t.datetime between '".$start."' and '".$end."'
                                             group by month order by month asc"));
           }else if ($option==2) {
@@ -36,6 +38,7 @@ protected $layout = 'layouts.master';
                                             from incidents as i, time as t
                                             where i.id=t.incidents_id and
                                             t.time_types_id=1
+                                            and i.customers_id=".$input['customer']."
                                             and t.datetime between '".$start."' and '".$end."'
                                             group by date order by date asc"));
           }

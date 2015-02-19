@@ -31,11 +31,11 @@ ${demo.css}
 		</script>
 
     <script charset="utf-8">
-      function graph(start,end,option){
+      function graph(start,end,option,customer,overlap){
         $.ajax({
           type: "POST",
           url: "/stats/incident/graph",
-          data: { start: start, end: end, option:option},
+          data: { start: start, end: end, option:option, customer: customer, overlap:overlap},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
@@ -61,8 +61,8 @@ ${demo.css}
                             <form class="form-horizontal form-bordered">
 
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label">Rango de fechas</label>
-                                    <div class="col-md-4">
+                                    <label class="col-md-2 control-label">Rango de fechas</label>
+                                    <div class="col-md-2">
                                         <div class="input-group input-daterange">
                                             <input type="text" class="form-control" id="start" placeholder="Fecha de Inicio" />
                                               <span class="input-group-addon">a</span>
@@ -78,9 +78,27 @@ ${demo.css}
 																					</select>
 																			</div>
 																		</div>
+																		<div class="col-lg-2">
+                                      <div class="form-group">
+                                        <select id="customer" class="form-control">
+                                          <?php $customers=Customer::all(); ?>
+                                          <?php foreach ($customers as $c): ?>
+                                            <option value="<?php echo $c->id ?>"><?php echo $c->name ?></option>
+                                          <?php endforeach ?>
+                                        </select>
+                                      </div>
+                                    </div>
+																		<div class="col-lg-2">
+                                      <div class="form-group">
+                                        <select id="overlap" class="form-control">
+                                        	<option val="1">Sobreponer Meses</option>
+																					<option val="2">Línea Única</option>
+                                        </select>
+                                      </div>
+                                    </div>
                                     <div class="col-lg-2">
                                       <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#option").val())'>Generar Gráfica</a>
+                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#option").val(),$("#customer").val(),$("#overlap").val())'>Generar Gráfica</a>
                                       </div>
                                     </div>
                                 </div>
