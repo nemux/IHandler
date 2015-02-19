@@ -185,7 +185,7 @@ protected $layout = 'layouts.master';
     public function validateEntry($input){
       foreach ($input as $i) {
         if (0==1) {
-	//!preg_match("/^[A-Za-záéíóú0\"\;\'\\;\'\(\)\-\,\.\s\n\t\>\/\&,$i)
+	        //!preg_match("/^[A-Za-záéíóú0\"\;\'\\;\'\(\)\-\,\.\s\n\t\>\/\&,$i)
           return "1";
         }
       }
@@ -259,8 +259,6 @@ protected $layout = 'layouts.master';
               array_push($extra_categories,explode('_',$k)[1]);
           }
         }
-
-
 
         if ($input['sensor_id'] == 0 || !$input['sensor_id'])
           return "Debe seleccionar un sensor";
@@ -405,16 +403,11 @@ protected $layout = 'layouts.master';
           $dst_history->incident_handler_id=Auth::user()->incident_handler_id;
           $dst_history->save();
 
-
-
-
           $src_dst=new IncidentOccurence;
           $src_dst->source_id=$src->id;
           $src_dst->destiny_id=$dst->id;
           $src_dst->incidents_id=$incident->id;
           $src_dst->save();
-
-
         }
 
         foreach ($rules as $r) {
@@ -424,7 +417,6 @@ protected $layout = 'layouts.master';
             $rule=Rule::where('sid','=',$input['sid_'.$r])->first();
           }else{
             $rule=new Rule;
-
           }
 
           $rule->sid=$input['sid_'.$r];
@@ -531,12 +523,12 @@ protected $layout = 'layouts.master';
                       array_push($events,explode('_',$k)[1]);
                   }
                 }
+
                 $rules=array();
                 foreach ($keys as $k) {
                   if (strpos($k,'sid_') !== false) {
                       array_push($rules,explode('_',$k)[1]);
                   }
-
                 }
 
                 $delete=array();
@@ -545,6 +537,7 @@ protected $layout = 'layouts.master';
                       array_push($delete,$k);
                   }
                 }
+
                 $extra_sensors=array();
                 $extra_categories=array();
 
@@ -972,13 +965,17 @@ protected $layout = 'layouts.master';
     $htmlReport = $this->renderReport($incident);
 
     $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
-    if ($ticket_info['response_status'] == 0){
+
+    if ($ticket_info['response_status']  < 0) {
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al crear OTRS Ticket para el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id .
+                  " [OTRS_DEBUG]:" .$ticket_info['error_description']);
+      return;
+    } else {
       $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
       $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
       $ticketIM->save();
       $log->info(Auth::user()->id,Auth::user()->username,'Se creo el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
-    } else
-      $log->error(Auth::user()->id,Auth::user()->username,'Error al crear OTRS Ticket para el Ticket con ID: '. $ticketIM->id . ' referente al incidente: ' . $incident->id );
+    }
   }
 
   private function closeTicket($ticketID){
@@ -992,10 +989,11 @@ protected $layout = 'layouts.master';
     $htmlReport = $this->renderReport($ticketIM->incident);
     $res = $ticketOtrs->close($ticketID, $htmlReport);
 
-    if ($res == 0 )
-      $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
+    if ($res["response_status"] < 0 )
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al cerrar OTRS Ticket con ID '. $ticketIM->id . ' referente al incidente: ' . $incident->id .
+                  " [OTRS_DEBUG]:" .$res['error_description']);
     else
-      $log->error(Auth::user()->id,Auth::user()->username,'Error al cerrar Ticket con ID en OTRS: '. $ticketIM->id );
+      $log->info(Auth::user()->id,Auth::user()->username,'Se cerro el Ticket con ID: '. $ticketIM->id );
   }
 
     private function sendRecomendation($incident, $recomendation){
@@ -1011,10 +1009,21 @@ protected $layout = 'layouts.master';
     $r->save();
 
     $uOtrsInfo = $userOtrs->getInfo($userOtrs->getOtrsUser());
+    if ($uOtrsInfo["response_status"] < 0 ) {
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al obtener información de OTRS User referente al incidente: ' . $incident->id .
+                  " [OTRS_DEBUG]:" .$uOtrsInfo['error_description']);
+      return ;
+    }
+
     $htmlReport = $this->renderReport($incident);
     $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $uOtrsInfo['UserID'], $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
+    if ($articleID["response_status"] < 0 ) {
+      $log->error(Auth::user()->id,Auth::user()->username,'Error al envuar OTRS Article referente al incidente: ' . $incident->id .
+                  " [OTRS_DEBUG]:" .$articleID['error_description']);
+      return ;
+      }
 
-    $r->otrs_article_id = $articleID;
+    $r->otrs_article_id = $articleID['ArticleID'];
     $r->save();
 
     //Log

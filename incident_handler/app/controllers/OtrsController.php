@@ -17,37 +17,40 @@ class OtrsController extends BaseController{
         //Import all OTRS Customers
         $oc = new Otrs\Customer();
         $customers = $oc->getAll();
-        //$log = new Log\Logger();
+        $log = new Log\Logger();
 
         $total_inserted = 0;
-	if (!array_key_exists("error_code",$customers)){
-        foreach($customers as $k => $v){
+	      if ($customers["response_status"] == 0){
+          foreach($customers as $k => $v){
 
-          $cu = $oc->getInfo($v['UserName']);
+              $cu = $oc->getInfo($v['UserName']);
+              if(!isset($cu['error_code'])){
 
-          $exists = Customer::where('otrs_userID','=', $cu->UserID)->count();
+                //Log::info("-------------------");
+                //Log::info($cu);
+                $exists = Customer::where('otrs_userID','=', $cu['UserID'])->count();
 
-          if ($exists == 0){
-            $customer = new Customer;
+                if ($exists == 0){
+                  $customer = new Customer();
 
-            $customer->name = $cu->UserFirstname . " " . $cu->UserLastname;
-            $customer->company = $cu->UserTitle;
-            $customer->mail = $cu->UserEmail;
-            $customer->phone = $cu->UserPhone;
-            $customer->otrs_userID = $cu->UserID;
-            $customer->otrs_userlogin = $cu->UserLogin;
-            $customer->otrs_usercustomerID = $cu->UserCustomerID;
-            $customer->otrs_validID = $cu->ValidID;
-            $customer->save();
-            $total_inserted++;
+                  $customer->name = $cu->UserFirstname . " " . $cu['UserLastname'];
+                  $customer->company = $cu['UserTitle'];
+                  $customer->mail = $cu['UserEmail'];
+                  $customer->phone = $cu['UserPhone'];
+                  $customer->otrs_userID = $cu['UserID'];
+                  $customer->otrs_userlogin = $cu['UserLogin'];
+                  $customer->otrs_usercustomerID = $cu['UserCustomerID'];
+                  $customer->otrs_validID = $cu['ValidID'];
+                  $customer->save();
+                  $total_inserted++;
+                }
+              }
           }
+          $log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
+          return $this->layout = View::make("otrs.result", array(
+            'result'=>'Clientes insertados: '.$total_inserted,
+          ));
         }
-        }
-        //$log->info(Auth::user()->id, Auth::user()->username, $total_inserted." Clientes Importados de OTRS." );
-        //return array("total_inserted" => $total_inserted);
-        return $this->layout = View::make("otrs.result", array(
-          'result'=>'Clientes insertados: '.$total_inserted,
-      ));
       }
     }
 

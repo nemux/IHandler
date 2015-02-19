@@ -12,13 +12,18 @@ class User extends Otrs{
 
 
   private function search($field, $pattern){
-    $usersList = $this->client->__soapCall("Dispatch",
+
+    try {
+      $usersList = $this->client->__soapCall("Dispatch",
                                            array($this->username,$this->password,
                                                  "UserObject","UserSearch",
                                                  $field,$pattern,
                                                 )
                                            );
-    return $usersList;
+      return $usersList;
+    } catch(SoapFault $s) {
+      return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on User::search().");
+    }
   }
 
 
@@ -29,24 +34,35 @@ class User extends Otrs{
    *
    */
   public function getAll(){
-    $search = "*";
-    $usersList = $this->search("Search","*");
-    if (sizeof($usersList) > 0){
-      $ul = $this->formatOtrsArray($usersList);
-      $userData = array();
 
-      $i = 0;
-      foreach($ul as $k=>$v){
-        $us = explode(" ", $v)[0];
-        $nm = explode(" ", $v)[1];
+    try {
+      $search = "*";
+      $usersList = $this->search("Search","*");
 
-        $userData[$i] = array("id" => $k, "UserName" => explode(" ", $v)[0], "FirstName" => explode(" ", $v)[1],
-                              "LastName" => explode(" ", $v)[2]);
-        $i++;
+      if(isset($usersList['error_code']))
+        throw new Exception($usersList);
+
+      if (sizeof($usersList) > 0){
+        $ul = $this->formatOtrsArray($usersList);
+        $userData = array();
+
+        $i = 0;
+        foreach($ul as $k=>$v){
+          $us = explode(" ", $v)[0];
+          $nm = explode(" ", $v)[1];
+          $userData[$i] = array("id" => $k, "UserName" => explode(" ", $v)[0], "FirstName" => explode(" ", $v)[1],
+                                "LastName" => explode(" ", $v)[2]);
+          $i++;
+        }
+        $userData["response_status"] = 0;
+        return $userData;
+      } else {
+        return array("response_status" => 0, "error_code" => 0, "error_description" => "No data.");
       }
-      return $userData;
-    } else {
-      return array("error_code" => 0, "error_description" => "No data.");
+    } catch(Exception $e) {
+      return array("response_status" => -1, "error_code" => $e["error_code"], "error_description" => $e["error_description"]);
+    } catch (SoapFault $s){
+      return array("response_status" => -1, "error_code" => 1, "error_description" => "Failes to connect to OTRS on User::getAll().");
     }
   }
 
@@ -79,15 +95,22 @@ class User extends Otrs{
     }
     */
 
+    try {
      $usersList = $this->client->__soapCall("Dispatch",
                                            array($this->username,$this->password,
                                                  "UserObject","GetUserData",
                                                  "User",$user,
                                                 )
                                            );
-    if (sizeof($usersList) > 0)
-     return $this->formatOtrsArray($usersList);
+    if (sizeof($usersList) > 0) {
+      $tmpData = $this->formatOtrsArray($usersList);
+      $tmpData["response_status"] = 0;
+       return $tmpData;
+    }
     else
-      return array("error_code" => 0, "error_description" => "No data.");
+      return array("response_status" => 0, "error_code" => 0, "error_description" => "No data.");
+   } catch(SoapFault $s) {
+      return array("response_status" => -1,"error_code" => 1, "error_description" => "Failed to connect to OTRS on User::getInfo().");
+    }
   }
 }

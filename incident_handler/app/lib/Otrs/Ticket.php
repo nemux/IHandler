@@ -28,40 +28,52 @@ class Ticket extends Otrs {
       $user = new User;
       $article = new Article;
 
-      $userInfo = $user->getInfo($this->incidentHandler);
-
       try {
 
-        # Create a new ticket. The function returns the Ticket ID.
-        $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
-                                                      "TicketObject", "TicketCreate",
-                                                      "Title",        $title,
-                                                      "Queue",        "gcs_im_queue",
-                                                      "Lock",         "unlock",
-                                                      "PriorityID",   $priority,
-                                                      "State",        "new",
-                                                      "CustomerUser", $customer->otrs_userID,
-                                                      "OwnerID",      $userInfo['UserID'],
-                                                      "UserID",       $userInfo['UserID'],
-                                                     ));
+        $userInfo = $user->getInfo($this->incidentHandler);
 
-        # A ticket is not usefull without at least one article. The function create and
-        # returns an Article ID.
+        if (isset($userInfo['error_code']))
+          throw new Exception($userInfo);
 
-        $ArticleID = $article->create($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer->mail, $body);
 
-        // Use the Ticket ID to retrieve the Ticket Number.
-        $TicketNr = $this->getNumber($TicketID);
+          # Create a new ticket. The function returns the Ticket ID.
+          $TicketID = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+                                                        "TicketObject", "TicketCreate",
+                                                        "Title",        $title,
+                                                        "Queue",        "gcs_im_queue",
+                                                        "Lock",         "unlock",
+                                                        "PriorityID",   $priority,
+                                                        "State",        "new",
+                                                        "CustomerUser", $customer->otrs_userID,
+                                                        "OwnerID",      $userInfo['UserID'],
+                                                        "UserID",       $userInfo['UserID'],
+                                                       ));
 
-        // Make sure the ticket number is not displayed in scientific notation
-        // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
-        $big_integer = 1202400000;
-        $Formatted_TicketNr = number_format($TicketNr, 0, '.', '');
+          # A ticket is not usefull without at least one article. The function create and
+          # returns an Article ID.
 
-        return array("response_status" => 0, "TicketID" => $TicketID, "ArticleID" => $ArticleID, "TicketNumber" => $Formatted_TicketNr);
-      } catch (Exception $e)  {
-        return array("response_status" => -1);
-      }
+          $ArticleID = $article->create($TicketID, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customer->mail, $body);
+
+          if (isset($ArticleID['error_code']))
+            throw new Exception($ArticleID);
+
+          // Use the Ticket ID to retrieve the Ticket Number.
+          $TicketNr = $this->getNumber($TicketID);
+
+          if (isset($TicketNr['error_code']))
+            throw new Exception($TicketNr);
+
+          // Make sure the ticket number is not displayed in scientific notation
+          // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
+          $big_integer = 1202400000;
+          $Formatted_TicketNr = number_format($TicketNr['TicketNr'], 0, '.', '');
+
+          return array("response_status" => 0, "TicketID" => $TicketID, "ArticleID" => $ArticleID['ArticleID'], "TicketNumber" => $Formatted_TicketNr);
+        } catch (Exception $e) {
+              return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+        } catch (FatalException  $s){
+            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::create().");
+        }
     }
 
      /*
@@ -77,26 +89,40 @@ class Ticket extends Otrs {
      */
 
   public function getNumber($TicketID){
+    try {
      $TicketNr = $this->client->__soapCall("Dispatch",array($this->username, $this->password,
                                                        "TicketObject",   "TicketNumberLookup",
                                                        "TicketID",       $TicketID,
                                                        ));
-    return $TicketNr;
-
+      return array ('TicketNr' => $TicketNr, "response_status" => 0 );
+    } catch(SoapFault $s) {
+      return array("response_status" => -1,"error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getNumber().");
+    }
   }
 
   public function getInfo($ticketID){
 
-     $user = new User;
-     $userInfo = $user->getInfo($this->incidentHandler);
+    $user = new User;
+    try {
+      $userInfo = $user->getInfo($this->incidentHandler);
 
-     $ticketInfo = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
+      if (isset($userInfo['error_code']))
+        throw new Exception($userInfo);
+
+      $ticketInfo = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketGet",
                                                       "TicketID",     $ticketID,
                                                       "UserID",     $userInfo['UserID'],
                                                      ));
-    //return $ticketInfo;
-    return $this->formatOtrsArray($ticketInfo);
+      //return $ticketInfo;
+      $tmpData = $this->formatOtrsArray($ticketInfo);
+      $tmpData["response_status"]=0;
+      return $tmpData;
+    } catch (Exception $e) {
+        return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+    } catch (SoapFault $s){
+        return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getInfo().");
+    }
   }
 
   public function close($ticketID, $message){
@@ -105,19 +131,34 @@ class Ticket extends Otrs {
      $article = new Article;
      $customer =  new Customer;
 
-
-     $userInfo = $user->getInfo($this->incidentHandler);
-     $ticketInfo = $this->getInfo($ticketID);
-     $customerInfo = $customer->getInfo($ticketInfo['CustomerUserID']);
      try {
 
-       $articleID = $article->create($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo->UserEmail, $message);
+       $userInfo = $user->getInfo($this->incidentHandler);
+
+       if (isset($userInfo['error_code']))
+        throw new Exception($userInfo);
+
+       $ticketInfo = $this->getInfo($ticketID);
+
+       if (isset($ticketInfo['error_code']))
+        throw new Exception($ticketInfo);
+
+       $customerInfo = $customer->getInfo($ticketInfo['CustomerUserID']);
+
+       if (isset($customerInfo['error_code']))
+         throw new Exception($customerInfo);
+
+
+       $articleID = $article->create($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo['UserEmail'], $message);
+
+       if (isset($articleID['error_code']))
+         throw new Exception($articleID);
 
        $success1 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                                                       "TicketObject", "TicketStateSet",
                                                       "State",        "closed successful",
                                                       "TicketID",     $ticketID,
-                                                      "ArticleID",    $articleID,
+                                                      "ArticleID",    $articleID['ArticleID'],
                                                       "UserID",   $userInfo['UserID']
                                                      ));
        $success2 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
@@ -127,21 +168,30 @@ class Ticket extends Otrs {
                                                       "UserID",   $userInfo['UserID']
                                                      ));
        if ($success1 && $success2)
-         $success = 0;
+         return array("response_status" => 0);
        else
-         $success = -1;
-       return $success;
+         return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close()");
+
      } catch (Exception $e) {
-        return $success = -1;
+          return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+     } catch(SoapFault $s){
+          return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close().");
       }
   }
 
   public function getPriorities(){
-    $priorities = $this->client->__soapCall("Dispatch",array($this->username, $this->password,
-                                                       "PriorityObject",   "PriorityList",
-                                                       "Valid",       1,
-                                                       ));
-    return $this->formatOtrsArray($priorities);
+
+    try {
+      $priorities = $this->client->__soapCall("Dispatch",array($this->username, $this->password,
+                                                         "PriorityObject",   "PriorityList",
+                                                         "Valid",       1,
+                                                         ));
+      $tmpData = $this->formatOtrsArray($priorities);
+      $tmpData["response_status"] = 0;
+      return $tmpData;
+    } catch(SoapFault $e) {
+      return array("response_status" => -1,"error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getPriorities().");
+    }
   }
 }
 
