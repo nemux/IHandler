@@ -65,50 +65,50 @@ protected $layout = 'layouts.master';
           $customer=$input['customer'];
           $blacklist=$input['blacklist'];
           $join_occurence="";
+          $set_blacklist="";
           if ($src_dst==1) {
-            $join_occurrence="io.source_id=o.id";
+            $join_occurrence="io.source_id";
           }else if ($src_dst==2) {
-            $join_occurrence="io.destiny_id=o.id";
+            $join_occurrence="io.destiny_id";
           }
           if ($blacklist==1) {
-            $join_occurrence="io.source_id=o.id";
+            $set_blacklist="FALSE";
           }else if ($blacklist==2) {
-            $join_occurrence="io.destiny_id=o.id";
+            $set_blacklist="TRUE";
           }
 
-          $incidents=DB::select(DB::raw(" select
-                                            o.id,
-                                            o.ip as ip,
-                                            oh.occurences_id,
-                                            count(*) as appear,
-                                            c.name
-                                          from
-                                            occurrences as o
-                                              inner join
-                                            occurences_history as oh
-                                              on
-                                            o.id=oh.occurences_id
-                                              inner join
-                                            incidents_occurences as io
-                                              on
-                                            ".$join_occurrence."
-                                              inner join
-                                            incidents as i
-                                              on
-                                            i.id=io.incidents_id
-                                              inner join
-                                            customers as c
-                                              on
-                                            c.id=i.customers_id
-                                          where
-                                            o.ip not like ''
+          $incidents=DB::select(DB::raw("select
+                                          o.ip as ip,
+                                          count(o.id)
+                                        from
+                                          occurrences as o,
+                                          occurences_history as oh
+                                        where
+                                          o.id=oh.occurences_id
+                                        and
+                                          o.ip not like ''
+                                        and
+                                          o.blacklist=".$set_blacklist."
+
+                                        and
+                                          o.id=(
+                                            select ".$join_occurence." from
+                                              incidents_occurences as io,
+                                              incidents as i,
+                                              customers as c
+                                            where
+                                              io.source_id=o.id
                                             and
-                                            c.id=".$customer."
-                                          group by
-                                            o.id,oh.occurences_id,c.name
-                                          order by
-                                            appear desc
-                                            ;
+                                              io.incidents_id=i.id
+                                            and
+                                              c.customers_id=".$customer."
+                                            and
+                                              i.customers_id=c.id limit 1)
+                                        group by
+                                          ip
+                                        order by
+                                          count desc
+                                        limit ".$top."
                                         "));
 
           return $this->layout = View::make("ip._ip", array(
