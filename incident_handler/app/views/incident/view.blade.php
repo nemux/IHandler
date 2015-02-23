@@ -444,8 +444,8 @@ $(document).ready(function(){
               <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
           <?php endif ?>
         <?php endif ?>
-            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
-              <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin'): ?>
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+              <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
 
 
                   <input type="hidden" name="id" value="<?php echo $incident->id ?>">
