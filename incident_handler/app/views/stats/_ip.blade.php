@@ -14,19 +14,19 @@
         $('#container').highcharts({
             chart: {
                 type: 'column',
-                margin: 75,
+                margin: 120,
                 options3d: {
                     enabled: true,
-                    alpha: 10,
-                    beta: 25,
-                    depth: 70
+                    alpha: 5,
+                    beta: 20,
+                    depth: 50
                 }
             },
             title: {
-                text: '3D chart with null values'
+                text: 'Direcciones IP'
             },
             subtitle: {
-                text: 'Notice the difference between a 0 value and a null point'
+                text: 'Top <?php echo $top ?> de direcciones <?php if($src_dst==1){ echo "de origen "; }else{ echo "destino ";} ?> <?php if($blacklist==1){ echo "que aparecen en blacklist"; } ?>'
             },
             plotOptions: {
                 column: {
@@ -35,7 +35,7 @@
             },
             xAxis: {
                 categories: [<?php foreach ($ips as $ip ): ?>
-                  "<?php echo $ip->ip ?>",
+                  "<h1><?php echo $ip->ip ?></h1>",
                 <?php endforeach ?>]
             },
             yAxis: {
@@ -44,7 +44,7 @@
                 }
             },
             series: [{
-                name: 'Cantidad',
+                name: 'Cantidad de ocurrencias',
                 data: [<?php foreach ($ips as $ip ): ?>
                   <?php echo $ip->count ?>,
                 <?php endforeach ?>]
@@ -55,18 +55,18 @@
 
 		</script>
 
-<div class="col-md-12">
+<div class="col-md-12" >
               <!-- begin panel -->
-                    <div class="panel panel-inverse" data-sortable-id="form-plugins-1">
+                    <div class="panel panel-inverse" data-sortable-id="form-plugins-1" style="height:500px">
                         <div class="panel-heading">
                             <div class="panel-heading-btn">
                             </div>
                             <h4 class="panel-title">Frecuencia de direcciones IP reportadas</h4>
                         </div>
                         <div class="panel-body panel-form">
-                            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                            <div id="container" style="min-width: 310px; height: 450px; margin: 0 auto;width:1800px"></div>
                             <div id="sliders">
-                                	
+
                                 </div>
                         </div>
                     </div>

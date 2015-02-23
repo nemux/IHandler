@@ -39,7 +39,7 @@ ${demo.css}
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
-
+						console.log(result);
           }
         })
       }
@@ -91,8 +91,8 @@ ${demo.css}
 																		<div class="col-lg-2">
                                       <div class="form-group">
                                         <select id="overlap" class="form-control">
-                                        	<option val="1">Sobreponer Meses</option>
-																					<option val="2">Línea Única</option>
+                                        	<option value="1">Sobreponer Meses</option>
+																					<option value="2">Línea Única</option>
                                         </select>
                                       </div>
                                     </div>

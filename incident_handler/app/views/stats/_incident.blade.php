@@ -48,7 +48,12 @@
               borderWidth: 0
           },
           series: [{
-              name: 'Incidentes por mes',
+            <?php if ($option==1): ?>
+              name: "Incidentes Mensuales",
+            <?php endif ?>
+            <?php if ($option==2): ?>
+             name: "Incidentes por Día",
+            <?php endif ?>
               data: [0,<?php foreach ($incidents as $i ): ?>
                 <?php echo $i->count ?>,
               <?php endforeach ?>,0]
