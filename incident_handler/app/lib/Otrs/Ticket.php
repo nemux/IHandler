@@ -176,7 +176,7 @@ class Ticket extends Otrs {
           return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
      } catch(SoapFault $s){
           return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close().");
-      }
+     }
   }
 
   public function getPriorities(){

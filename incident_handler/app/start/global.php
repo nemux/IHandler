@@ -46,29 +46,22 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 | shown, which includes a detailed stack trace during debug.
 |
 */
-
 App::error(function(Exception $exception, $code)
 {
-/*	Log::error($exception);
-
-  if ($code == 404 ) {
-
-   $text = array(
-    404 => 'No encontrado.'
-   );
+  $log = new Log\Logger();
 
 
-		$error = array(
-			'code' => $code,
-			'error_msg' => $text[$code]
-		);
+  $type = get_class($exception);
 
-  return Response::view("error.error", $error, $code);
+
+  //Errores de OTRS
+  if ($type == "SoapFault"){
+    $error_log = "[OTRS_DEBUG]: [Archivo]: " . $exception->getFile() . ".[Linea]: " . $exception->getLine() . ".[Mensaje]:" . $exception->getMessage();
+    $log->error(Auth::user()->id,Auth::user()->username, $error_log);
+    return Redirect::to($_SERVER['HTTP_REFERER']);
   }
-  */
-
-
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -98,3 +91,24 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+/*
+|--------------------------------------------------------------------------
+| Fatal Error Handler
+|--------------------------------------------------------------------------
+|
+| The "down" Artisan command gives you the ability to put an application
+| into maintenance mode. Here, you will define what is displayed back
+| to the user if maintenance mode is in effect for the application.
+|
+*/
+
+App::missing(function(Exception $exception)
+{
+   $error = array(
+			  'code' => 404,
+			  'error_msg' => 'No encontrado.'
+	 );
+  return Response::view("error.error", $error, $error['code']);
+
+});
