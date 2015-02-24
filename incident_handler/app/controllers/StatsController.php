@@ -156,7 +156,103 @@ protected $layout = 'layouts.master';
     }
 
 
+    public function attack()
+    {
 
+        return $this->layout = View::make("stats.attack", array(
+
+        ));
+
+    }
+    public function attackGraph()
+    {
+        $input=Input::all();
+
+        //print_r($input);
+        if ($input['start']!='' && $input['end']!='') {
+          $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+          $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+          $customer=$input['customer'];
+          $incidents=DB::select(DB::raw(" select
+                                            count(*) as total,
+                                            a.name as attack
+                                          from
+                                            incidents as i,
+                                            attacks as a,
+                                            time as t
+                                          where
+                                            i.customers_id=".$customer."
+                                          and
+                                            i.attacks_id=a.id
+                                          and
+                                            i.incidents_status_id>1
+                                          and
+                                            t.time_types_id=1
+                                          and
+                                            t.incidents_id=i.id
+                                          and
+                                            t.datetime between '".$start."' and '".$end."'
+                                          and
+                                            a.name!='Attack'
+                                          group by
+                                            a.name
+                                          order by
+                                            total desc
+                                          ;
+                                            "));
+          return $this->layout = View::make("stats._attack", array(
+            'incidents'=>$incidents,
+          ));
+        }
+    }
+
+    public function category()
+    {
+
+        return $this->layout = View::make("stats.category", array(
+
+        ));
+
+    }
+    public function categoryGraph()
+    {
+        $input=Input::all();
+
+        //print_r($input);
+        if ($input['start']!='' && $input['end']!='') {
+          $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+          $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+          $customer=$input['customer'];
+          $incidents=DB::select(DB::raw(" select
+                                            count(*) as total,
+                                            c.name as category
+                                          from
+                                            incidents as i,
+                                            categories as c,
+                                            time as t
+                                          where
+                                            i.customers_id=".$customer."
+                                          and
+                                            i.categories_id=c.id
+                                          and
+                                            i.incidents_status_id>1
+                                          and
+                                            t.time_types_id=1
+                                          and
+                                            t.incidents_id=i.id
+                                          and
+                                            t.datetime between '".$start."' and '".$end."'
+                                          group by
+                                            c.name
+                                          order by
+                                            total desc
+                                          ;
+                                            "));
+          return $this->layout = View::make("stats._category", array(
+            'incidents'=>$incidents,
+          ));
+        }
+    }
 
 
 }

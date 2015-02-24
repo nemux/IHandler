@@ -90,6 +90,10 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   Route::post('/incident/graph', 'StatsController@incidentGraph');
   Route::get('/ip', 'StatsController@ip');
   Route::post('/ip/graph', 'StatsController@ipGraph');
+  Route::get('/attack', 'StatsController@attack');
+  Route::post('/attack/graph', 'StatsController@attackGraph');
+  Route::get('/category', 'StatsController@category');
+  Route::post('/category/graph', 'StatsController@categoryGraph');
   #Admin Routes
 });
 
