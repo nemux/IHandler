@@ -396,10 +396,7 @@ $(document).ready(function(){
                             <a class="btn btn-default pull-right" href="/incident/del/Annex/<?php echo $a->id ?>">Borrar anexo</a>
                           </div>
                       </div>
-
-
               <?php endforeach ?>
-
           </div>
       </div>
       <?php if (count($incident->images)>0): ?>
@@ -440,9 +437,9 @@ $(document).ready(function(){
         <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
         <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
           <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
-          <?php if ($incident->incidents_status_id<3): ?>
-              <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
-          <?php endif ?>
+        <?php endif ?>
+        <?php if ($incident->incidents_status_id<3): ?>
+          <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
         <?php endif ?>
             <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
               <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
