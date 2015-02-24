@@ -939,8 +939,20 @@ protected $layout = 'layouts.master';
    return Redirect::to('/incident/');
  }
 
+ public function doc($id) {
+     //"Content-type"=>"text/html",
+     $headers = array(
+         "Content-type" => "application/vnd.ms-word",
+         "Content-Disposition"=>"attachment;Filename=Incidente_". $id  .".doc"
+     );
 
-  protected function sendTicket($incident, $status){
+     $incident=Incident::find($id);
+     $htmlReport = $this->renderReport($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
+
+     return Response::make($htmlReport,200, $headers);
+ }
+
+  private function sendTicket($incident, $status){
     $u = new Otrs\User();
     $ticketOtrs = new Otrs\Ticket();
     $ticketIM = new Ticket;

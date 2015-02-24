@@ -59,6 +59,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('manage/{id}', 'IncidentController@edit');
   Route::post('manage', 'IncidentController@change_status');
   Route::get('pdf/{id}', 'IncidentController@pdf');
+  Route::get('doc/{id}', 'IncidentController@doc');
   Route::post('add/recomendation', 'IncidentController@addRecomendation');
   Route::post('add/Observation', 'IncidentController@addObservation');
   Route::get('open/', 'IncidentController@openStatus');
