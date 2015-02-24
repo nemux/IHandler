@@ -435,6 +435,7 @@ $(document).ready(function(){
 
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
         <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-pdf-o"></i> Generar pdf</a>
+        <a class="btn btn-inverse" href="/incident/doc/<?php echo $incident->id ?>" target="blank"><i class="fa fa-file-word-o"></i> Generar doc</a>
         <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
           <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
         <?php endif ?>
