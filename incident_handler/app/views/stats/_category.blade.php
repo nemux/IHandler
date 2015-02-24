@@ -31,7 +31,7 @@ $(function () {
           name: 'Delivered amount',
           data: [
             <?php foreach ($incidents as $i): ?>
-            ['<?php echo $i->category ?> : <?php echo $i->total ?>', <?php echo $i->total ?>],
+            ['<?php echo explode("-",$i->category)[0] ?> : <?php echo $i->total ?>', <?php echo $i->total ?>],
             <?php endforeach ?>
 
           ]
@@ -66,7 +66,7 @@ $(function () {
           name: 'Delivered amount',
           data: [
             <?php foreach ($incidents as $i): ?>
-            ['<?php echo $i->category ?> : <?php echo number_format($i->total*100/$total,2)."%" ?>', <?php echo number_format($i->total*100/$total,2) ?>],
+            ['<?php echo explode("-",$i->category)[0] ?> : <?php echo number_format($i->total*100/$total,2)."%" ?>', <?php echo number_format($i->total*100/$total,2) ?>],
             <?php endforeach ?>
 
           ]
