@@ -38,7 +38,7 @@
 					    </a>
 						<ul class="sub-menu">
 						    <li><a href="/handler/create">Crear</a></li>
-						    <li><a href="/handler/">Ver</a></li>
+						    <li><a href="/handler/">Ver</a></li>style="display:none"
 						</ul>
 					</li>
 
@@ -100,9 +100,11 @@
 						<ul class="sub-menu">
 								<li><a href="/stats/incident">De incidentes</a></li>
 								<li><a href="/stats/ip">De direcciones IP</a></li>
+								<li><a href="/stats/handler">Incidentes por Handler</a></li>
+								<li><a href="/stats/category">Por Categorías</a></li>
+								<li><a href="/stats/attack">Por Ataques</a></li>
 						</ul>
 					</li>
-
                     <li class="has-sub ">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
@@ -117,6 +119,9 @@
                             <li><a href="/report/status">Incidentes por Status</a></li>
                         </ul>
                     </li>
+
+					<li><a href="/stats/blacklist"><i class="fa fa-list"></i> <span>Blacklist</span></a></li>
+                    
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
 			        <!-- end sidebar minify button -->

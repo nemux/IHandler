@@ -23,6 +23,10 @@ protected $layout = 'layouts.master';
           if ($input['start']!='' && $input['end']!='') {
             $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
             $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+            $sensor="";
+            if ($input['sensor']!="") {
+              $sensor="and i.sensors_id=".$input['sensor'];
+            }
             if ($option==1) {
 
               $incidents=DB::select(DB::raw(" select count(*), extract(month from t.datetime) as month
@@ -30,6 +34,7 @@ protected $layout = 'layouts.master';
                                               where i.id=t.incidents_id and
                                               t.time_types_id=1
                                               and i.customers_id=".$input['customer']."
+                                              ".$sensor."
                                               and t.datetime between '".$start."' and '".$end."'
                                               group by month order by month asc"));
             }else if ($option==2) {
@@ -40,6 +45,7 @@ protected $layout = 'layouts.master';
                                                 where i.id=t.incidents_id and
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
+                                                ".$sensor."
                                                 and t.datetime between '".$start."' and '".$end."'
                                                 group by date order by date asc"));
               }else if ($input['overlap']==1) {
@@ -48,6 +54,7 @@ protected $layout = 'layouts.master';
                                                 where i.id=t.incidents_id and
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
+                                                ".$sensor."
                                                 and t.datetime between '".$start."' and '".$end."'
                                                 group by month,year order by month,year asc"));
 
@@ -56,6 +63,7 @@ protected $layout = 'layouts.master';
                                                 where i.id=t.incidents_id and
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
+                                                ".$sensor."
                                                 and t.datetime between '".$start."' and '".$end."'
                                                 group by date order by date asc"));
                 return $this->layout = View::make("stats._incident_overlap", array(
@@ -63,6 +71,7 @@ protected $layout = 'layouts.master';
                   'option'=>$option,
                   'overlap'=>"0",
                   'months'=>$months,
+                  'sensor'=>$input['sensor'],
                 ));
               }
 
@@ -70,7 +79,7 @@ protected $layout = 'layouts.master';
             return $this->layout = View::make("stats._incident", array(
               'incidents'=>$incidents,
               'option'=>$option,
-
+              'sensor'=>$input['sensor'],
             ));
           }
 
@@ -156,7 +165,173 @@ protected $layout = 'layouts.master';
     }
 
 
+    public function attack()
+    {
+
+        return $this->layout = View::make("stats.attack", array(
+
+        ));
+
+    }
+    public function attackGraph()
+    {
+        $input=Input::all();
+
+        //print_r($input);
+        if ($input['start']!='' && $input['end']!='') {
+          $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+          $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+          $customer=$input['customer'];
+          $incidents=DB::select(DB::raw(" select
+                                            count(*) as total,
+                                            a.name as attack
+                                          from
+                                            incidents as i,
+                                            attacks as a,
+                                            time as t
+                                          where
+                                            i.customers_id=".$customer."
+                                          and
+                                            i.attacks_id=a.id
+                                          and
+                                            i.incidents_status_id>1
+                                          and
+                                            t.time_types_id=1
+                                          and
+                                            t.incidents_id=i.id
+                                          and
+                                            t.datetime between '".$start."' and '".$end."'
+                                          and
+                                            a.name!='Attack'
+                                          group by
+                                            a.name
+                                          order by
+                                            total desc
+                                          ;
+                                            "));
+          return $this->layout = View::make("stats._attack", array(
+            'incidents'=>$incidents,
+          ));
+        }
+    }
+
+    public function category()
+    {
+
+        return $this->layout = View::make("stats.category", array(
+
+        ));
+
+    }
+    public function categoryGraph()
+    {
+        $input=Input::all();
+
+        //print_r($input);
+        if ($input['start']!='' && $input['end']!='') {
+          $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+          $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+          $customer=$input['customer'];
+          $incidents=DB::select(DB::raw(" select
+                                            count(*) as total,
+                                            c.name as category
+                                          from
+                                            incidents as i,
+                                            categories as c,
+                                            time as t
+                                          where
+                                            i.customers_id=".$customer."
+                                          and
+                                            i.categories_id=c.id
+                                          and
+                                            i.incidents_status_id>1
+                                          and
+                                            t.time_types_id=1
+                                          and
+                                            t.incidents_id=i.id
+                                          and
+                                            t.datetime between '".$start."' and '".$end."'
+                                          group by
+                                            c.name
+                                          order by
+                                            total desc
+                                          ;
+                                            "));
+          return $this->layout = View::make("stats._category", array(
+            'incidents'=>$incidents,
+          ));
+        }
+    }
+    public function handler(){
+      return $this->layout = View::make("stats.handler", array(
+
+      ));
+    }
+    public function handlerGraph()
+    {
+        $input=Input::all();
+        $option=$input['option'];
+        $incidents=null;
 
 
+          if ($input['start']!='' && $input['end']!='') {
+            $handlers=IncidentHandler::all();
+            $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+            $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+            $customer=$input['customer'];
+            $sensor="";
+            if ($input['sensor']!="") {
+              $sensor="and i.sensors_id=".$input['sensor'];
+            }
+            $incidents_by_handler=array();
+            foreach ($handlers as $h) {
+              if ($h->id!=1 && $h->id!=20) {
+
+                $incidents=DB::select(DB::raw(" select count(*), date_trunc('day',t.datetime) as date
+                                                from incidents as i, time as t
+                                                where i.id=t.incidents_id and
+                                                t.time_types_id=1
+                                                and i.customers_id=".$input['customer']."
+                                                and i.incident_handler_id=".$h->id."
+                                                ".$sensor."
+                                                and t.datetime between '".$start."' and '".$end."'
+                                                group by date order by date asc"));
+                $incidents_by_handler[$h->id]['incidents']=$incidents;
+              }
+
+            }
+            //print_r($incidents_by_handler[2]['incidents']);
+            //return 0;
+            return $this->layout = View::make("stats._handler", array(
+              'incidents'=>$incidents,
+              'incidents_by_handler'=>$incidents_by_handler,
+              'handlers'=>$handlers,
+              'start'=>$start,
+              'end'=>$end,
+            ));
+          }
+
+
+
+    }
+    public function blacklist(){
+      $ips=DB::select(DB::raw("select o.ip, oh.location from occurrences as o, occurences_history oh where oh.occurences_id=o.id and blacklist=true and oh.id=(select id from occurences_history where occurences_id=o.id and location!='' order by id desc limit 1)"));
+      return $this->layout = View::make("stats.blacklist", array(
+        'blacklist'=>$ips,
+
+      ));
+    }
+    public function doc(){
+      $ips=DB::select(DB::raw("select o.ip, oh.location from occurrences as o, occurences_history oh where oh.occurences_id=o.id and blacklist=true and oh.id=(select id from occurences_history where occurences_id=o.id and location!='' order by id desc limit 1)"));
+      $html= $this->layout = View::make("stats.blacklist_doc", array(
+        'blacklist'=>$ips,
+
+      ));
+      $headers = array(
+          "Content-type" => "application/vnd.ms-word",
+          "Content-Disposition"=>"attachment;Filename=Blacklist.doc"
+      );
+      return Response::make($html,200, $headers);
+    }
 
 }

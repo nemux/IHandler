@@ -15,7 +15,9 @@
 	<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
 	<!-- ================== END PAGE LEVEL STYLE ================== -->
 
+
 <script src="/assets/highcharts/js/highcharts.js"></script>
+<script src="/assets/highcharts/js/highcharts-3d.js"></script>
 <script src="/assets/highcharts/js/modules/exporting.js"></script>
 <!DOCTYPE HTML>
 <html>
@@ -31,11 +33,11 @@ ${demo.css}
 		</script>
 
     <script charset="utf-8">
-      function graph(start,end,option,customer,overlap,sensor){
+      function graph(start,end,option,customer,overlap){
         $.ajax({
           type: "POST",
-          url: "/stats/incident/graph",
-          data: { start: start, end: end, option:option, customer: customer, overlap:overlap,sensor:sensor},
+          url: "/stats/attack/graph",
+          data: { start: start, end: end, customer: customer},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
@@ -61,7 +63,7 @@ ${demo.css}
                             <form class="form-horizontal form-bordered">
 
                                 <div class="form-group">
-                                    <label class="col-md-1 control-label">Rango de fechas</label>
+                                    <label class="col-md-2 control-label">Rango de fechas</label>
                                     <div class="col-md-2">
                                         <div class="input-group input-daterange">
                                             <input type="text" class="form-control" id="start" placeholder="Fecha de Inicio" />
@@ -70,14 +72,7 @@ ${demo.css}
 
                                         </div>
                                     </div>
-																		<div class="col-lg-1">
-																			<div class="input-group">
-																					<select class="form-control" id="option">
-																							<option value="1">Por mes</option>
-																							<option value="2">Por día</option>
-																					</select>
-																			</div>
-																		</div>
+
 																		<div class="col-lg-2">
                                       <div class="form-group">
                                         <select id="customer" class="form-control">
@@ -88,28 +83,10 @@ ${demo.css}
                                         </select>
                                       </div>
                                     </div>
-																		<div class="col-lg-2">
-                                      <div class="form-group">
-                                        <select id="sensor" class="form-control">
-																					<option value="">Sensor (Opcional)</option>
-                                          <?php $sensor=Sensor::all(); ?>
-                                          <?php foreach ($sensor as $s): ?>
-                                            <option value="<?php echo $s->id ?>"><?php echo $s->name ?></option>
-                                          <?php endforeach ?>
-                                        </select>
-                                      </div>
-                                    </div>
-																		<div class="col-lg-2">
-                                      <div class="form-group">
-                                        <select id="overlap" class="form-control">
-                                        	<option value="1">Sobreponer Meses</option>
-																					<option value="2">Línea Única</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="col-lg-1">
+
+                                    <div class="col-lg-2">
                                       <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#option").val(),$("#customer").val(),$("#overlap").val(),$("#sensor").val())'>Generar Gráfica</a>
+                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#option").val(),$("#customer").val(),$("#overlap").val())'>Generar Gráfica</a>
                                       </div>
                                     </div>
                                 </div>

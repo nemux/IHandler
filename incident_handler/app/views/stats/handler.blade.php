@@ -34,7 +34,7 @@ ${demo.css}
       function graph(start,end,option,customer,overlap,sensor){
         $.ajax({
           type: "POST",
-          url: "/stats/incident/graph",
+          url: "/stats/handler/graph",
           data: { start: start, end: end, option:option, customer: customer, overlap:overlap,sensor:sensor},
           success: function(result){
             $("#target").html("");
@@ -62,7 +62,7 @@ ${demo.css}
 
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">Rango de fechas</label>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="input-group input-daterange">
                                             <input type="text" class="form-control" id="start" placeholder="Fecha de Inicio" />
                                               <span class="input-group-addon">a</span>
@@ -70,7 +70,7 @@ ${demo.css}
 
                                         </div>
                                     </div>
-																		<div class="col-lg-1">
+																		<div class="col-lg-1" style="display:none">
 																			<div class="input-group">
 																					<select class="form-control" id="option">
 																							<option value="1">Por mes</option>
@@ -101,7 +101,7 @@ ${demo.css}
                                     </div>
 																		<div class="col-lg-2">
                                       <div class="form-group">
-                                        <select id="overlap" class="form-control">
+                                        <select id="overlap" class="form-control" style="display:none">
                                         	<option value="1">Sobreponer Meses</option>
 																					<option value="2">Línea Única</option>
                                         </select>
