@@ -314,5 +314,12 @@ protected $layout = 'layouts.master';
 
 
     }
+    public function blacklist(){
+      $ips=DB::select(DB::raw("select o.ip, oh.location from occurrences as o, occurences_history oh where oh.occurences_id=o.id and blacklist=true and oh.id=(select id from occurences_history where occurences_id=o.id and location!='' order by id desc limit 1)"));
+      return $this->layout = View::make("stats.blacklist", array(
+        'blacklist'=>$ips,
+
+      ));
+    }
 
 }
