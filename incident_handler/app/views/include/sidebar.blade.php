@@ -103,7 +103,7 @@
 								<li><a href="/stats/incident">De incidentes</a></li>
 								<li><a href="/stats/ip">De direcciones IP</a></li>
 								<li><a href="/stats/category">Por Categorías</a></li>
-								<li><a href="/stats/attacks">Por Ataques</a></li>
+								<li><a href="/stats/attack">Por Ataques</a></li>
 						</ul>
 					</li>
 

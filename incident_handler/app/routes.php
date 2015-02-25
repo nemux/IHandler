@@ -59,7 +59,6 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('manage/{id}', 'IncidentController@edit');
   Route::post('manage', 'IncidentController@change_status');
   Route::get('pdf/{id}', 'IncidentController@pdf');
-  Route::get('doc/{id}', 'IncidentController@doc');
   Route::post('add/recomendation', 'IncidentController@addRecomendation');
   Route::post('add/Observation', 'IncidentController@addObservation');
   Route::get('open/', 'IncidentController@openStatus');
@@ -95,6 +94,8 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   Route::post('/attack/graph', 'StatsController@attackGraph');
   Route::get('/category', 'StatsController@category');
   Route::post('/category/graph', 'StatsController@categoryGraph');
+  Route::get('/handler', 'StatsController@handler');
+  Route::post('/handler/graph', 'StatsController@handlerGraph');
   #Admin Routes
 });
 
