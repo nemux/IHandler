@@ -10,11 +10,11 @@ $days_between = floor((strtotime($end)-strtotime($start))/(60*60*24));;
 $(function () {
     $('#container').highcharts({
         title: {
-            text: 'Monthly Average Temperature',
+            text: 'Incidentes por Handler',
             x: -20 //center
         },
         subtitle: {
-            text: 'Source: WorldClimate.com',
+            text: 'Cantidad de incidentes reportados por Incident Handler',
             x: -20
         },
         xAxis: {
@@ -26,7 +26,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'Temperature (°C)'
+                text: ' Incidentes'
             },
             plotLines: [{
                 value: 0,
