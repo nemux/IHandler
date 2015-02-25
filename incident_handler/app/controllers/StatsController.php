@@ -321,5 +321,17 @@ protected $layout = 'layouts.master';
 
       ));
     }
+    public function doc(){
+      $ips=DB::select(DB::raw("select o.ip, oh.location from occurrences as o, occurences_history oh where oh.occurences_id=o.id and blacklist=true and oh.id=(select id from occurences_history where occurences_id=o.id and location!='' order by id desc limit 1)"));
+      $html= $this->layout = View::make("stats.blacklist_doc", array(
+        'blacklist'=>$ips,
+
+      ));
+      $headers = array(
+          "Content-type" => "application/vnd.ms-word",
+          "Content-Disposition"=>"attachment;Filename=Blacklist.doc"
+      );
+      return Response::make($html,200, $headers);
+    }
 
 }

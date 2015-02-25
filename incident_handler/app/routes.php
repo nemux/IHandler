@@ -98,6 +98,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   Route::get('/handler', 'StatsController@handler');
   Route::post('/handler/graph', 'StatsController@handlerGraph');
   Route::get('/blacklist', 'StatsController@blacklist');
+  Route::get('/blacklist/doc', 'StatsController@doc');
   #Admin Routes
 });
 

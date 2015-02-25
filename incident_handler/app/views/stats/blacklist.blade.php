@@ -26,7 +26,7 @@
                                 <table id="data-table" class="table table-striped table-bordered table-hover  ">
                                     <thead>
                                         <tr>
-                                            
+
                                             <th>
                                               IP
                                             </th>
@@ -37,7 +37,7 @@
                                     </thead>
                                     <tbody>
                                       <?php foreach ($blacklist as $b): ?>
-                                        <?php if (preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/', str_replace(" ","",$b->ip))): ?>
+                                        <?php if (preg_match('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/', str_replace(" ","",$b->ip)) && strlen($b->location)>3): ?>
                                           <tr>
                                             <td>
                                               <?php echo $b->ip ?>
@@ -50,11 +50,17 @@
                                       <?php endforeach ?>
                                     </tbody>
                                 </table>
+
+                            </div><br>
+                            <div class="col-lg-4">
+                              <a class="btn btn-primary" href="/stats/blacklist/doc/" target="blank"><i class="fa fa-file-word-o"></i> Generar doc</a>
                             </div>
                         </div>
                     </div>
+
                     <!-- end panel -->
                 </div>
+
 
   <!-- ================== BEGIN PAGE LEVEL JS ================== -->
   <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
