@@ -60,6 +60,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::post('manage', 'IncidentController@change_status');
   Route::get('pdf/{id}', 'IncidentController@pdf');
   Route::get('doc/{id}', 'IncidentController@doc');
+  Route::get('doc', 'IncidentController@docReport');
   Route::post('add/recomendation', 'IncidentController@addRecomendation');
   Route::post('add/Observation', 'IncidentController@addObservation');
   Route::get('open/', 'IncidentController@openStatus');
@@ -95,23 +96,26 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
 });
 
 Route::get('incident/view/{id}','IncidentController@view');
-Route::get('/attack/create','AttackController@get_create');
-Route::post('/attack/create','AttackController@post_create');
-Route::get('/attack','AttackController@index');
-Route::get('/attack/{id}','AttackController@get_byID');
-Route::get('/attack/view/{id}','AttackController@view');
-Route::get('/attack/update/{id}','AttackController@get_update');
-Route::post('/attack/update','AttackController@post_update');
+
+Route::group(array('before'=>'admin', 'prefix'=>'attack'),function() {
+    Route::get('create', 'AttackController@get_create');
+    Route::post('create', 'AttackController@post_create');
+    Route::get('/', 'AttackController@index');
+    Route::get('/{id}', 'AttackController@get_byID');
+    Route::get('view/{id}', 'AttackController@view');
+    Route::get('update/{id}', 'AttackController@get_update');
+    Route::post('update', 'AttackController@post_update');
+});
 
 
 
-Route::group(array('prefix'=>'report'),function(){
+Route::group(array('before'=>'auth', 'prefix'=>'report'),function(){
   # Report Routes
   Route::get('/', 'ReportController@index');
-  Route::get('create', 'ReportController@index');
-  Route::post('create', 'ReportController@postCreate');
-
+  Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status)'));
+  Route::post('/create', 'ReportController@create');
 });
+
 
 Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
   Route::get('import','OtrsController@import');

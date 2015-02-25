@@ -264,7 +264,7 @@
                   <?php $count++; ?>
                   <?php
                   if (isset($l->location)) {
-                    print_r($l->location);
+                     {{ $l->location }}
                   }
                   ?><br>
                 <?php endforeach ?>

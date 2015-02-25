@@ -799,7 +799,7 @@ protected $layout = 'layouts.master';
   public function pdf($id)
   {
     $incident=Incident::find($id);
-    $htmlReport = $this->renderReport($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
+    $htmlReport = $this->renderView($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
     $pdf = App::make('dompdf');
     $log = new Log\Logger();
 
@@ -940,14 +940,13 @@ protected $layout = 'layouts.master';
  }
 
  public function doc($id) {
-     //"Content-type"=>"text/html",
      $headers = array(
          "Content-type" => "application/vnd.ms-word",
          "Content-Disposition"=>"attachment;Filename=Incidente_". $id  .".doc"
      );
 
      $incident=Incident::find($id);
-     $htmlReport = $this->renderReport($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
+     $htmlReport = $this->renderView($incident,"El Equipo de Respuesta a Incidentes de <b>Global Cybersec</b> realiza el siguiente reporte referente al siguiente incidente:");
 
      return Response::make($htmlReport,200, $headers);
  }
@@ -974,7 +973,7 @@ protected $layout = 'layouts.master';
     $ticketIM->incidents_id = $incident->id;
     $ticketIM->save();
 
-    $htmlReport = $this->renderReport($incident);
+    $htmlReport = $this->renderView($incident);
 
     $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
 
@@ -998,7 +997,7 @@ protected $layout = 'layouts.master';
 
     $ticketIM = Ticket::find($t->id);
 
-    $htmlReport = $this->renderReport($ticketIM->incident);
+    $htmlReport = $this->renderView($ticketIM->incident);
     $res = $ticketOtrs->close($ticketID, $htmlReport);
 
     if ($res["response_status"] < 0 )
@@ -1027,7 +1026,7 @@ protected $layout = 'layouts.master';
       return ;
     }
 
-    $htmlReport = $this->renderReport($incident);
+    $htmlReport = $this->renderView($incident);
     $articleID = $otrsR->create($incident->ticket->otrs_ticket_id, $uOtrsInfo['UserID'], $user->incidentHandler->mail, $incident->title, $incident->customer->mail, $htmlReport);
     if ($articleID["response_status"] < 0 ) {
       $log->error(Auth::user()->id,Auth::user()->username,'Error al envuar OTRS Article referente al incidente: ' . $incident->id .
@@ -1088,7 +1087,7 @@ protected $layout = 'layouts.master';
   }
 
 
-  private function renderReport($incident, $introduction=null){
+  private function renderView($incident, $introduction=null){
     $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$incident->id)->first();
     $occ_time=Time::where('time_types_id','=','2')->where('incidents_id','=',$incident->id)->first();
     $listed=array();
@@ -1123,6 +1122,8 @@ protected $layout = 'layouts.master';
       'body' => $introduction
     ))->render();
   }
+
+
 }
 
 ?>
