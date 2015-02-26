@@ -17,7 +17,7 @@
   <script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
   <script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
   <script src="/assets/js/form-wysiwyg.demo.min.js"></script>
-  <script src="/assets/js/apps.min.js"></script>
+  <Script src="/assets/js/apps.min.js"></script>
   <!-- ================== END PAGE LEVEL JS ================== -->
 
   <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
@@ -317,11 +317,10 @@ $(document).ready(function(){
                               <?php $count=0 ?>
                               <?php foreach ($location as $l): ?>
                                 <?php $count++; ?>
-                                <?php
-                                if (isset($l->location)) {
-                                  print_r($l->location);
-                                }
-                                 ?><br>
+                                <?php if (isset($l->location)) { ?>
+                                    <?php print_r($l->location)  ?>
+                                <?php  } ?>
+                              <br>
                               <?php endforeach ?>
                             </td>
                           </tr>
