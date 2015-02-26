@@ -29,6 +29,20 @@
 								<li><a href="/incident/">Ver</a></li>
 						</ul>
 					</li>
+					<li class="has-sub ">
+							<a href="javascript:;">
+									<b class="caret pull-right"></b>
+									<i class="fa fa-file-text "></i>
+									<span>Reporte de Incidentes</span>
+							</a>
+							<ul class="sub-menu">
+									<li><a href="/report/date">por Fecha</a></li>
+									<li><a href="/report/handler">por Handler</a></li>
+									<li><a href="/report/category">por Categoría</a></li>
+									<li><a href="/report/severity">por Severidad</a></li>
+									<li><a href="/report/status">por Status</a></li>
+							</ul>
+					</li>
           @if (Auth::user()->type->name == 'admin')
 					<li class="has-sub ">
 						<a href="javascript:;">
@@ -105,23 +119,10 @@
 								<li><a href="/stats/attack">Por Ataques</a></li>
 						</ul>
 					</li>
-                    <li class="has-sub ">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-crosshairs "></i>
-                            <span>Reportes</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href="/report/date">Incidentes por fecha</a></li>
-                            <li><a href="/report/handler">Incidentes por Handler</a></li>
-                            <li><a href="/report/category">Incidentes por Categoría</a></li>
-                            <li><a href="/report/severity">Incidentes por Severidad</a></li>
-                            <li><a href="/report/status">Incidentes por Status</a></li>
-                        </ul>
-                    </li>
+
 
 					<li><a href="/stats/blacklist"><i class="fa fa-list"></i> <span>Blacklist</span></a></li>
-                    
+
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
 			        <!-- end sidebar minify button -->

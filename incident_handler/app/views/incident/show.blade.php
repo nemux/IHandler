@@ -17,7 +17,8 @@
      border: 1px solid black;
   }
   .max-width {
-    width:700px;
+    width:100%;
+    min-width:700px;
   }
   img{
     width:700px;
@@ -263,9 +264,9 @@
                 <?php foreach ($location as $l): ?>
                   <?php $count++; ?>
                   <?php
-                  if (isset($l->location)) {
+                  if (isset($l->location)) { ?>
                      {{ $l->location }}
-                  }
+                  <?php }
                   ?><br>
                 <?php endforeach ?>
               </td>
