@@ -17,7 +17,8 @@
      border: 1px solid black;
   }
   .max-width {
-    width:700px;
+    width:100%;
+    min-width:700px;
   }
   img{
     width:700px;
