@@ -37,10 +37,10 @@ class ReportController extends Controller{
 
         $incidents = Incident::where('customers_id','=',$customer_id)
             ->join('time',"incidents.id",'=','time.incidents_id')
-            ->where('time_types_id','=',$time_type)
+            ->where('time.time_types_id','=',$time_type)
             ->whereBetween('time.datetime',array(new DateTime($start_date), new DateTime($end_date)))
             ->get();
-        
+
         $htmlReport = $this->renderDocReport($incidents);
         return Response::make($htmlReport,200,$headers);
     }

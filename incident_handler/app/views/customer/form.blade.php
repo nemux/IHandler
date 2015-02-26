@@ -73,7 +73,7 @@
                         <div class="col-md-10 col-sm-10">
                            {{Form::text('mail', $customer->mail,[
                                     'class'=>'form-control parsley-validated',
-                                    "data-parsley-pattern"=>"^[a-zA-Z\-\_\d\.]+\@[a-zA-Z]+(\.[a-zA-Z]{2,5}){1,3}$",
+                                    "data-parsley-pattern"=>"(^[a-zA-Z\-\_\d\.]+\@[a-zA-Z]+(\.[a-zA-Z]{2,5}){1,3})(;([a-zA-Z\-\_\d\.]+\@[a-zA-Z]+(\.[a-zA-Z]{2,5}){1,3}))*$",
                                     "data-parsley-required"=>"true"]);
                           }}
                         </div>
