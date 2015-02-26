@@ -14,8 +14,8 @@ class ReportController extends Controller{
 
     public function create(){
         $input = Input::all();
-        $start_date = $input['start_date'];
-        $end_date = $input['end_date'];
+        $start_date = $input['start_date']. ' ' . '00:00:00';
+        $end_date = $input['end_date']. ' ' . '23:59:59';
         $time_type = $input['time_type'];
         $customer_id = $input['customer'];
 
@@ -40,7 +40,7 @@ class ReportController extends Controller{
             ->where('time_types_id','=',$time_type)
             ->whereBetween('time.datetime',array(new DateTime($start_date), new DateTime($end_date)))
             ->get();
-
+        
         $htmlReport = $this->renderDocReport($incidents);
         return Response::make($htmlReport,200,$headers);
     }
@@ -76,6 +76,8 @@ class ReportController extends Controller{
             ->where('time_types_id','=',$time_type)
             ->whereBetween('time.datetime',array(new DateTime($start_date), new DateTime($end_date)))
             ->get();
+        Log::info(DB::getQueryLog());
+        Log::info("----------------------------------------------");
 
         $htmlReport = $this->renderDocReport($incidents);
         return Response::make($htmlReport,200,$headers);

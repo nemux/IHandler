@@ -113,11 +113,7 @@
                     <strong>Ticket:</strong>
                 </td>
                 <td style="text-align:center;" colspan="2" width="100%">
-                    @if (isset($incident->ticket->internal_number))
-                        {{ $incident->ticket->internal_number }}
-                    @else
-                        {{ "Por asignar....."}}
-                    @endif
+                        {{ $incident->ticket }}
                 </td>
             </tr>
 

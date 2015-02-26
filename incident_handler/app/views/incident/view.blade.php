@@ -319,7 +319,7 @@ $(document).ready(function(){
                                 <?php $count++; ?>
                                 <?php
                                 if (isset($l->location)) {
-                                  {{ $l->location }}
+                                  print_r($l->location);
                                 }
                                  ?><br>
                               <?php endforeach ?>
