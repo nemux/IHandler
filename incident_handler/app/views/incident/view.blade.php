@@ -317,9 +317,9 @@ $(document).ready(function(){
                               <?php $count=0 ?>
                               <?php foreach ($location as $l): ?>
                                 <?php $count++; ?>
-                              <?php if (isset($l->location)) { ?>
-                                  {{ print_r($l->location) }}
-                              <?php  } ?>
+                                <?php if (isset($l->location)) { ?>
+                                    <?php print_r($l->location)  ?>
+                                <?php  } ?>
                               <br>
                               <?php endforeach ?>
                             </td>

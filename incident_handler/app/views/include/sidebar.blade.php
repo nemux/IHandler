@@ -52,7 +52,7 @@
 					    </a>
 						<ul class="sub-menu">
 						    <li><a href="/handler/create">Crear</a></li>
-						    <li><a href="/handler/">Ver</a></li>style="display:none"
+						    <li><a href="/handler/">Ver</a></li>
 						</ul>
 					</li>
 
