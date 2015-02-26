@@ -1079,9 +1079,11 @@ protected $layout = 'layouts.master';
           ),
           function ($message) use ($incident, $subject){
             $log = new Log\Logger();
+            $temp_mails = str_replace(array(",",";"), ",", $incident->customer->mail);
+            $mails = explode(",", $temp_mails);
 
-            $message->to($incident->customer->mail)->cc('soc@globalcybersec.com')->subject($subject);
-            //$message->to($incident->customer->mail)->subject($subject);
+            //$message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
+            $message->to($mails)->subject($subject);
             $log->info(Auth::user()->id,Auth::user()->username,'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
           });
   }
