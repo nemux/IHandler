@@ -120,7 +120,7 @@ Route::group(array('before'=>'admin', 'prefix'=>'attack'),function() {
 Route::group(array('before'=>'auth', 'prefix'=>'report'),function(){
   # Report Routes
   Route::get('/', 'ReportController@index');
-  Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status)'));
+  Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status|ip)'));
   Route::post('/create', 'ReportController@create');
 });
 

@@ -45,87 +45,36 @@
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group">
-                                <select id="customer" name="customer" class="form-control">
-                                    {{--*/ $customers = Customer::all(); /*--}}
-                                    @foreach ($customers as $c)
-                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                    @endforeach
+                                <input type="text" name="type_value" class="form-control" placeholder="IP1, IP2, IP3...">
+                                <input type="hidden" name="type" value="ip">
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select class="form-control" id="ip_type" name="ip_type">
+                                        <option value="1">Origen</option>
+                                        <option value="2">Destino</option>
                                 </select>
                             </div>
                         </div>
-                        @if (isset($type))
-                            @if ($type == 'handler')
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <select id="type" name="type_value" class="form-control">
-                                            {{--*/ $handler = IncidentHandler::all(); /*--}}
-                                            @foreach ($handler as $h)
-                                                <option value="{{ $h->id }}">{{ $h->name . ' ' . $h->lastname }}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" name="type" value="handler">
-                                    </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <select id="customer" name="customer" class="form-control">
+                                        <option value="0">Todos los Clientes</option>
+                                        {{--*/ $customers = Customer::all(); /*--}}
+                                        @foreach ($customers as $c)
+                                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                        @endforeach
+                                    </select><br/>
                                 </div>
-                            @endif
-                            @if ($type == 'category')
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <select id="type" name="type_value" class="form-control">
-                                            {{--*/ $category = Category::all(); /*--}}
-                                            @foreach ($category as $c)
-                                                <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" name="type" value="category">
-                                    </div>
-                                </div>
-                            @endif
-                            @if ($type == 'severity')
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <select id="type" name="type_value" class="form-control">
-                                            <option value="ALTA">ALTA</option>
-                                            <option value="MEDIA">MEDIA</option>
-                                            <option value="BAJA">BAJA</option>
-                                        </select>
-                                        <input type="hidden" name="type" value="severity">
-                                    </div>
-                                </div>
-                            @endif
-                            @if ($type == 'status')
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <select id="type" name="type_value" class="form-control">
-                                            {{--*/ $incidentStatus = IncidentStatus::all(); /*--}}
-                                            @foreach ($incidentStatus as $i)
-                                                <option value="{{ $i->id }}">{{ $i->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" name="type" value="status">
-                                    </div>
-                                </div>
-                            @endif
-                            @if ($type == 'ip')
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <input type="text" name="type_value" class="form-control">
-                                        <input type="hidden" name="type" value="status">
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-                        <div class="col-lg-2">
-                            <div class="input-group">
                                 <input type="submit" class="btn btn-default" id="generate" name="generate" value="Generar Reporte"/>
                             </div>
-                        </div>
                     </div>
                 </form>
             </div>
         </div>
         <!-- end panel -->
     </div>
-
     <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
     <script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>

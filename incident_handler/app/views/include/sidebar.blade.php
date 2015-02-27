@@ -36,11 +36,12 @@
 									<span>Reporte de Incidentes</span>
 							</a>
 							<ul class="sub-menu">
-									<li><a href="/report/date">por Fecha</a></li>
-									<li><a href="/report/handler">por Handler</a></li>
-									<li><a href="/report/category">por Categoría</a></li>
-									<li><a href="/report/severity">por Severidad</a></li>
-									<li><a href="/report/status">por Status</a></li>
+									<li><a href="/report/date">Por Fecha</a></li>
+									<li><a href="/report/handler">Por Handler</a></li>
+									<li><a href="/report/category">Por Categoría</a></li>
+									<li><a href="/report/severity">Por Severidad</a></li>
+									<li><a href="/report/status">Por Status</a></li>
+                                    <li><a href="/report/ip">Por Status</a></li>
 							</ul>
 					</li>
           @if (Auth::user()->type->name == 'admin')
@@ -99,7 +100,7 @@
 						    <span>Attacks</span>
 					    </a>
 						<ul class="sub-menu">
-                            <li><a href="/attack/create">Crear ataque</a></li>
+                            <li><a href="/attack/create">Agregar ataque</a></li>
 						    <li><a href="/attack">Ver ataques</a></li>
 						</ul>
 					</li>

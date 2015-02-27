@@ -43,7 +43,10 @@
     <br/>
 @endif
 
-@foreach($incidents as $incident)
+@foreach($incidents as $incident_tmp)
+    {{--*/
+     $incident = Incident::find($incident_tmp->id);
+    /*--}}
     <div  style="margin-bottom:20px">
         <table class="max-width">
             <tr>
@@ -113,7 +116,11 @@
                     <strong>Ticket:</strong>
                 </td>
                 <td style="text-align:center;" colspan="2" width="100%">
-                        {{ $incident->ticket }}
+                    @if(isset( $incident->ticket->internal_number))
+                        {{ $incident->ticket->internal_number }}
+                    @else
+                        {{ "Por asignar.." }}
+                    @endif
                 </td>
             </tr>
 
