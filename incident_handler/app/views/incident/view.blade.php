@@ -39,7 +39,7 @@ var count_files=0;
 $(document).ready(function(){
   Form1.init();
   Form2.init();
-
+  nobackbutton();
   $("#images").change(function(){
     //get the input and UL list
     var input = document.getElementById('images');
@@ -68,6 +68,18 @@ $(document).ready(function(){
   });
 
 });
+</script>
+
+<script charset="utf-8">
+$( "#send" ).click(function() {
+  this.addClass("disabled");
+});
+
+function nobackbutton(){
+   window.location.hash="no-back-button";
+   window.location.hash="Again-No-back-button" //chrome
+   window.onhashchange=function(){window.location.hash="no-back-button";}
+}
 </script>
   <!-- begin #page-loader -->
   <!-- <div id="page-loader" class="fade in"><span class="spinner"></span></div> -->
