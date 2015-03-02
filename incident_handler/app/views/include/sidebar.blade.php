@@ -41,7 +41,7 @@
 									<li><a href="/report/category">Por Categoría</a></li>
 									<li><a href="/report/severity">Por Severidad</a></li>
 									<li><a href="/report/status">Por Status</a></li>
-                                    <li><a href="/report/ip">Por Status</a></li>
+                                    <li><a href="/report/ip">Por IP</a></li>
 							</ul>
 					</li>
           @if (Auth::user()->type->name == 'admin')
