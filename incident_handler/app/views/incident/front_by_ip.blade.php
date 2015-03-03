@@ -34,11 +34,11 @@ ${demo.css}
     </script>
 
     <script charset="utf-8">
-      function graph(top,src_dst,customer,blacklist){
+      function buscar(){
         $.ajax({
           type: "POST",
-          url: "/stats/ip/graph",
-          data: { top:top,src_dst:src_dst,customer:customer,blacklist:blacklist},
+          url: "/incident/search/render/ip/",
+          data: { ip:$("#ip").val(),start:$("#start").val(),end:$("#end").val(),occurence:$("#occurence").val(),customer:$("#customer").val(),sensor:$("#sensor").val()},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
@@ -67,14 +67,26 @@ ${demo.css}
    								<div class="form-group">
    									<label class="control-label col-md-4 col-sm-4">Dirección IP :</label>
    									<div class="col-md-6 col-sm-6">
-   										<input class="form-control parsley-validated" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="hexa color code" data-required="true" />
+   										<input class="form-control parsley-validated" id="ip" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="hexa color code" data-required="true" />
    									</div>
    								</div>
+
+     <div class="form-group">
+       <label class="control-label col-md-4 col-sm-4">Rango de fechas</label>
+       <div class="col-md-6 col-sm-6">
+         <div class="input-group input-daterange">
+             <input type="text" class="form-control" id="start" name="start" placeholder="Fecha de Inicio" />
+             <span class="input-group-addon">a</span>
+             <input type="text" class="form-control" id="end" name="end" placeholder="Fecha Final" />
+         </div>
+       </div>
+     </div>
+
 
                    <div class="form-group">
    									<label class="control-label col-md-4 col-sm-4">Orien o Destino</label>
    									<div class="col-md-6 col-sm-6">
-   										<select class="form-control" name="">
+   										<select class="form-control" id="occurence" name="">
                          <option value="source_id">Origen</option>
                          <option value="destiny_id">Desinto</option>
    										</select>
@@ -86,7 +98,7 @@ ${demo.css}
                    <div class="form-group">
    									<label class="control-label col-md-4 col-sm-4">Sensor</label>
    									<div class="col-md-6 col-sm-6">
-   										<select class="form-control" name="">
+   										<select class="form-control" id="sensor">
                          <?php foreach ($sensors as $s): ?>
                            <option value="<?php echo $s->id ?>"><?php echo $s->name ?></option>
                          <?php endforeach ?>
@@ -98,9 +110,9 @@ ${demo.css}
    								</div>
                    <?php $customers=Customer::all(); ?>
                    <div class="form-group">
-   									<label class="control-label col-md-4 col-sm-4">Sensor</label>
+   									<label class="control-label col-md-4 col-sm-4">Cliente</label>
    									<div class="col-md-6 col-sm-6">
-   										<select class="form-control" name="">
+   										<select class="form-control" id="customer">
                          <?php foreach ($customers as $s): ?>
                            <option value="<?php echo $s->id ?>"><?php echo $s->name ?></option>
                          <?php endforeach ?>
@@ -113,7 +125,7 @@ ${demo.css}
    								<div class="form-group">
    									<label class="control-label col-md-4 col-sm-4"></label>
    									<div class="col-md-6 col-sm-6">
-   										<button type="submit" class="btn btn-danger">Validate</button>
+   										<a class="btn btn-primary" onclick="buscar()">buscar</a>
    									</div>
    								</div>
                                </form>
