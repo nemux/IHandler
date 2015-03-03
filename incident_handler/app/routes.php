@@ -70,6 +70,8 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('sensor/get/{id}','SensorController@customerSensor');
   Route::post('add/Annex', 'IncidentController@addAnnex');
   Route::get('del/Annex/{id}', 'IncidentController@delAnnex');
+  Route::get('search/ip/', 'IncidentController@searchIp');
+  Route::post('search/render/ip/', 'IncidentController@renderIp');
   Route::get('mail/{id}','IncidentController@mail');
 });
 
