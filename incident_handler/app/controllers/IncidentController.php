@@ -904,8 +904,31 @@ protected $layout = 'layouts.master';
   }
   public function renderIp(){
     $input = Input::all();
+    $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+    $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+  
+    $incidents=DB::select(DB::raw(" select
+      i.id
+    from
+      incidents as i,
+      occurrences as o,
+      incidents_occurences as io,
+      time as t
+    where
+      i.customers_id=".$input['customer']."
+    and
+      i.sensors_id=".$input['sensor']."
+    and
+      o.ip='".$input['ip']."'
+    and
+      io.incidents_id=i.id
+    and
+      t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
+    and
+      io.".$input['occurence']."=o.id
+    group by i.id"));
     return $this->layout = View::make("incident.by_ip", array(
-      'input'=>$input
+      'incidents'=>$incidents
     ));
   }
   public function index(){
