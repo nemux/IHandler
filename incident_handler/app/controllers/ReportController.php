@@ -107,7 +107,7 @@ class ReportController extends Controller{
                 break;
         }
 
-        $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
+        $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
             ->where('I.customers_id', '=', $customer_id)
             ->where($field, '=', $value)
             ->join('time AS T', "I.id", '=', 'T.incidents_id')
@@ -130,7 +130,7 @@ class ReportController extends Controller{
 
         if ($customer_id == 0) {
             $ips = explode(',', $value);
-            $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
+            $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
                 ->join('incidents_occurences AS io', 'I.id', '=', 'io.incidents_id')
                 ->join('occurrences AS o', $ip_type == 1 ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
                 ->join('time AS T', "I.id", '=', 'T.incidents_id')
@@ -142,7 +142,7 @@ class ReportController extends Controller{
                 ->get();
         } else {
             $ips = explode(',', $value);
-            $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
+            $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
                 ->join('incidents_occurences AS io', 'I.id', '=', 'io.incidents_id')
                 ->join('time AS T', "I.id", '=', 'T.incidents_id')
                 ->join('occurrences AS o', $ip_type == 1 ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
@@ -162,7 +162,7 @@ class ReportController extends Controller{
     private function csvFile($start_date,$end_date,$time_type,$customer_id){
 
 
-        $incidents = $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
+        $incidents = $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'Tim.datetime')
                                 ->join('time AS Tim',"I.id",'=','Tim.incidents_id')
                                 ->join('tickets as Tik','I.id','=','Tik.incidents_id')
                                 ->where('I.customers_id','=',$customer_id)
