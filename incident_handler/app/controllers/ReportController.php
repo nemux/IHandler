@@ -191,7 +191,7 @@ class ReportController extends Controller{
             Log::info("INCIDENT_ID-> " . $i->id);
 
             $tmp_str = $incident->title;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $title = "\"" . $tmp_str . "\"";
 
 
@@ -199,23 +199,23 @@ class ReportController extends Controller{
             $tmp_str = "[" . ($incident->category->id -1) . "|" . $incident->category->name . "|" . $incident->category->description . "]";
             foreach ($incident->extraCategory as $ec)
                 $tmp_str .= "[" . ($ec->category->id -1) . "|" . $ec->category->name . "|" . $ec->category->description . "]";
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $categorias = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->sensor->name;
             foreach ($incident->extraSensor as $es)
                 $tmp_str .= "|" . $es->sensor->name;
-            $tmp_str =  str_replace("\"","\\\"",$tmp_str);
+            $tmp_str =  str_replace("\"","\"\"",$tmp_str);
             $sensor = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->ticket->internal_number;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $ticket = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->status->name;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $status = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
@@ -226,20 +226,20 @@ class ReportController extends Controller{
                 $tmp_str .= $r->rule->message;
                 $tmp++;
             }
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $rules = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->stream;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $flujo_ataque = "\"" . $tmp_str . "\"";
 
             $tmp_str = $report_info[$incident->id]['det_time']['datetime'] .",". $report_info[$incident->id]['det_time']['zone'];
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $occurrence_datetime = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->criticity;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $severidad = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
@@ -252,7 +252,7 @@ class ReportController extends Controller{
                     $tmp++;
                 }
             }
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $ip_origen = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
@@ -265,7 +265,7 @@ class ReportController extends Controller{
                     $tmp++;
                 }
             }
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $ip_destino = "\"" . $tmp_str . "\"";
 
             $tmp_str = "";
@@ -276,27 +276,27 @@ class ReportController extends Controller{
                     $tmp_str .= "]";
                 }
             }
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $blacklist = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->description ."\n" .  $incident->conclution;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $descripcion = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->recomendation;
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $recomendacion = "\"" . $tmp_str . "\"";
 
             if (isset($incident->reference->link)) {
                 $tmp_str = $incident->reference->link;
-                $tmp_str = str_replace("\"","\\\"",$tmp_str);
+                $tmp_str = str_replace("\"","\"\"",$tmp_str);
                 $referencias = "\"" . $tmp_str . "\"";
             }
 
             $tmp_str = "";
             foreach ($incident->annexes as $a )
                 $tmp_str .= "[" . $a->title . "|" . $a->field . "|" . $a->content . "]";
-            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $anexos = "\"" . $tmp_str . "\"";
 
             $output .= implode(",", array(
