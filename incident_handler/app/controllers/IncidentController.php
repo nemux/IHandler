@@ -904,7 +904,9 @@ protected $layout = 'layouts.master';
   }
   public function renderIp(){
     $input = Input::all();
-    return print_r($input);
+    return $this->layout = View::make("incident.by_ip", array(
+      'input'=>$input
+    ));
   }
   public function index(){
 
