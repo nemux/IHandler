@@ -56,6 +56,7 @@
                         <div class="col-lg-2">
                             <div class="input-group">
                                 <input type="hidden" id="type" name="type" value="csv"/>
+                                <input type="hidden" id="type_value" name="type_value" value="csv"/>
                                 <input type="submit" class="btn btn-default" id="generate" name="generate" value="Generar Reporte"/>
                             </div>
                         </div>
