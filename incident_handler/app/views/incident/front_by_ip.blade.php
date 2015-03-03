@@ -50,84 +50,79 @@ ${demo.css}
 
   </head>
   <body>
-<div class="col-md-12">
-              <!-- begin panel -->
-                    <div class="panel panel-inverse" data-sortable-id="form-plugins-1">
-                        <div class="panel-heading">
-                            <div class="panel-heading-btn">
+    <div class="col-md-12">
+   			        <!-- begin panel -->
+                       <div class="panel panel-inverse" data-sortable-id="form-validation-2">
+                           <div class="panel-heading">
+                               <div class="panel-heading-btn">
 
-                            </div>
-                            <h4 class="panel-title">Búsqueda por IP</h4>
-                        </div>
-                        <div class="panel-body panel-form">
-                            <form class="form-horizontal form-bordered">
-
-                                <div class="form-group">
-                                    <div class="col-lg-2">
-
-                                        <div class="col-lg-3">
-                                          <div class="form-contol" style="margin-top:6px;">
-                                            <label >Top:</label>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-9">
-                                          <select id="top" class="form-control">
-                                            <?php for ($i=5; $i <21 ; $i++) { ?>
-                                              <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                                            <?php } ?>
-                                          </select>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-lg-2">
-                                      <div class="form-group">
-                                        <select id="src_dst" class="form-control">
-                                          <option value="1">Origen</option>
-                                          <option value="2">Destino</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                      <div class="form-group">
-                                        <select id="customer" class="form-control">
-                                          <?php $customers=Customer::all(); ?>
-                                          <?php foreach ($customers as $c): ?>
-                                            <option value="<?php echo $c->id ?>"><?php echo $c->name ?></option>
-                                          <?php endforeach ?>
-                                        </select>
-                                      </div>
-                                    </div>
-
-                                    <div class="col-lg-2">
-
-                                        <div class="col-lg-4">
-                                          <div class="form-contol" style="margin-top:6px;">
-                                            <label >Blacklist:</label>
-                                          </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                          <select id="blacklist" class="form-control">
-
-                                              <option value="0">No</option>
-                                              <option value="1">Si</option>
-
-                                          </select>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="col-lg-2">
-                                      <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#top").val(),$("#src_dst").val(),$("#customer").val(),$("#blacklist").val())'>Generar Gráfica</a>
-                                      </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- end panel -->
-                  </div>
+                               </div>
+                               <h4 class="panel-title">Búsqueda por </h4>
+                           </div>
+                           <div class="panel-body panel-form">
+                               <form class="form-horizontal form-bordered" data-parsley-validate="true">
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">AlphaNum* :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<input class="form-control" type="text" id="alphanum" name="alphanum"  data-type="alphanum" placeholder="Alphanumeric String."  data-parsley-required="true" />
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">Date ISO* :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<input class="form-control" type="text" id="data-dateIso" placeholder="YYYY-MM-DD"  data-parsley-required="true" />
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">Required Select Box :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<select class="form-control" id="select-required" name="selectBox" data-parsley-required="true">
+   											<option value="">Please choose</option>
+   											<option value="foo">Foo</option>
+   											<option value="bar">Bar</option>
+   										</select>
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">Required Radio Button :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<div class="radio">
+   											<label>
+   												<input type="radio" name="radiorequired" value="foo" id="radio-required" data-parsley-required="true" /> Radio Button 1
+   											</label>
+   										</div>
+   										<div class="radio">
+   											<label>
+   												<input type="radio" name="radiorequired" id="radio-required2" value="bar" /> Radio Button 2
+   											</label>
+   										</div>
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">Check at least 2 checkboxes :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<div class="checkbox"><label><input type="checkbox" id="mincheck" name="mincheck[]" data-parsley-mincheck="2" value="foo" required /> Checkbox 1</label></div>
+   										<div class="checkbox"><label><input type="checkbox" name="mincheck[]" value="bar" /> Checkbox 2</label></div>
+   										<div class="checkbox"><label><input type="checkbox" name="mincheck[]" value="baz" /> Checkbox 3</label></div>
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4">Regular Expression :</label>
+   									<div class="col-md-6 col-sm-6">
+   										<input class="form-control parsley-validated" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="hexa color code" data-required="true" />
+   									</div>
+   								</div>
+   								<div class="form-group">
+   									<label class="control-label col-md-4 col-sm-4"></label>
+   									<div class="col-md-6 col-sm-6">
+   										<button type="submit" class="btn btn-danger">Validate</button>
+   									</div>
+   								</div>
+                               </form>
+                           </div>
+                       </div>
+                       <!-- end panel -->
+                   </div>
 
 
 <div id="target">
