@@ -120,8 +120,9 @@ Route::group(array('before'=>'admin', 'prefix'=>'attack'),function() {
 Route::group(array('before'=>'auth', 'prefix'=>'report'),function(){
   # Report Routes
   Route::get('/', 'ReportController@index');
-  Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status|ip)'));
-  Route::post('/create', 'ReportController@create');
+  Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status|ip|csv)'));
+  Route::post('/create/doc', 'ReportController@create_doc');
+  Route::post('/create/csv', 'ReportController@create_csv');
 });
 
 
@@ -131,4 +132,4 @@ Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
 });
 
 Route::get('otrs/{id}', 'OtrsController@test');
-Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+Route::get('ro', 'OtrsController@sendTicket');

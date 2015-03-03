@@ -23,7 +23,7 @@
                 <h4 class="panel-title">Reporte</h4>
             </div>
             <div class="panel-body panel-form">
-                <form class="form-horizontal form-bordered" action="/report/create" method="POST">
+                <form class="form-horizontal form-bordered" action="/report/create/doc" method="POST">
                     <div class="form-group">
                         <label class="col-md-2 control-label">Rango de fechas</label>
                         <div class="col-md-2">

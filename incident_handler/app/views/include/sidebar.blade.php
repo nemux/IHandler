@@ -42,6 +42,7 @@
 									<li><a href="/report/severity">Por Severidad</a></li>
 									<li><a href="/report/status">Por Status</a></li>
                                     <li><a href="/report/ip">Por IP</a></li>
+                                    <li><a href="/report/csv">CSV de Tickets</a></li>
 							</ul>
 					</li>
           @if (Auth::user()->type->name == 'admin')

@@ -20,10 +20,10 @@
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                 </div>
-                <h4 class="panel-title">Reporte</h4>
+                <h4 class="panel-title">Reporte CSV</h4>
             </div>
             <div class="panel-body panel-form">
-                <form class="form-horizontal form-bordered" action="/report/create/doc" method="POST">
+                <form class="form-horizontal form-bordered" action="/report/create/csv" method="POST">
                     <div class="form-group">
                         <label class="col-md-2 control-label">Rango de fechas</label>
                         <div class="col-md-2">
@@ -45,36 +45,27 @@
                         </div>
                         <div class="col-lg-2">
                             <div class="form-group">
-                                <input type="text" name="type_value" class="form-control" placeholder="IP1, IP2, IP3...">
-                                <input type="hidden" name="type" value="ip">
+                                <select id="customer" name="customer" class="form-control">
+                                    {{--*/ $customers = Customer::all(); /*--}}
+                                    @foreach ($customers as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="input-group">
-                                <select class="form-control" id="ip_type" name="ip_type">
-                                        <option value="1">Origen</option>
-                                        <option value="2">Destino</option>
-                                </select>
-                            </div>
-                        </div>
-                            <div class="col-lg-2">
-                                <div class="form-group">
-                                    <select id="customer" name="customer" class="form-control">
-                                        <option value="0">Todos los Clientes</option>
-                                        {{--*/ $customers = Customer::all(); /*--}}
-                                        @foreach ($customers as $c)
-                                            <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                        @endforeach
-                                    </select><br/>
-                                </div>
+                                <input type="hidden" id="type" name="type" value="csv"/>
                                 <input type="submit" class="btn btn-default" id="generate" name="generate" value="Generar Reporte"/>
                             </div>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
         <!-- end panel -->
     </div>
+
     <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
     <script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
