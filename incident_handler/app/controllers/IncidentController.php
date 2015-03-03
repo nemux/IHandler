@@ -432,7 +432,7 @@ protected $layout = 'layouts.master';
           $incident_rule->incidents_id=$incident->id;
           $incident_rule->save();
         }
-        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incidente con ID: '. $incident->id );
         return Redirect::to('incident/view/'.$incident->id);
       }
       else{
