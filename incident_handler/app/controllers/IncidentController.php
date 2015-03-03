@@ -904,7 +904,7 @@ protected $layout = 'layouts.master';
   }
   public function renderIp(){
     $input = Input::all();
-    print_r($input);
+    return print_r($input);
   }
   public function index(){
 
