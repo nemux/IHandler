@@ -898,7 +898,14 @@ protected $layout = 'layouts.master';
   }
 
 
-
+  public function searchIp(){
+    return $this->layout = View::make("incident.by_ip", array(
+    ));
+  }
+  public function renderIp(){
+    $input = Input::all();
+    print_r($input);
+  }
   public function index(){
 
     //$incident=Incident::all();
