@@ -19,7 +19,7 @@ class ReportController extends Controller{
         ));
     }
 
-    public function create_doc(){
+    public function create(){
         $input = Input::all();
         $start_date = $input['start_date']. ' ' . '00:00:00';
         $end_date = $input['end_date']. ' ' . '23:59:59';
@@ -48,7 +48,9 @@ class ReportController extends Controller{
                 if ($input['type'] == 'ip') {
                     $ip_type = $input['ip_type'];
                     return $this->byTypeIP($start_date, $end_date, $time_type, $customer_id, $ip_type, $value);
-                } else
+                } else if ($input['type'] == 'csv')
+                    return $this->csvFile($start_date,$end_date,$time_type,$customer_id);
+                  else
                     return $this->byType($start_date, $end_date, $time_type, $customer_id, $type, $value);
             } else {
                 return $this->defaultReport($start_date, $end_date, $time_type, $customer_id);
@@ -297,7 +299,7 @@ class ReportController extends Controller{
             $tmp_str = str_replace("\"","\\\"",$tmp_str);
             $descripcion = "\"" . $tmp_str . "\"";
 
-            $tmp_str = "\"" . $incident->recomendation . "\"";
+            $tmp_str = $incident->recomendation;
             $tmp_str = str_replace("\"","\\\"",$tmp_str);
             $recomendacion = "\"" . $tmp_str . "\"";
 

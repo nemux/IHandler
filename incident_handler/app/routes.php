@@ -123,8 +123,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'report'),function(){
   # Report Routes
   Route::get('/', 'ReportController@index');
   Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status|ip|csv)'));
-  Route::post('/create/doc', 'ReportController@create_doc');
-  Route::post('/create/csv', 'ReportController@create_csv');
+  Route::post('/create/{doc_type}', 'ReportController@create')->where(array('doc_type' => '(doc|csv)'));
 });
 
 
