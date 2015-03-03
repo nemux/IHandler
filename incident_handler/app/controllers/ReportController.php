@@ -66,7 +66,7 @@ class ReportController extends Controller{
     private function defaultReport($start_date, $end_date, $time_type,$customer_id){
 
         $headers = array(
-            "Content-type" => "application/vnd.ms-word",
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
             "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
         );
 
@@ -84,7 +84,7 @@ class ReportController extends Controller{
 
     private function byType($start_date, $end_date, $time_type,$customer_id,$type,$value){
         $headers = array(
-            "Content-type" => "application/vnd.ms-word",
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
             "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
         );
 
@@ -124,7 +124,7 @@ class ReportController extends Controller{
     private function byTypeIP($start_date, $end_date, $time_type,$customer_id,$ip_type,$value)
     {
         $headers = array(
-            "Content-type" => "application/vnd.ms-word",
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
             "Content-Disposition" => "attachment;Filename=Reporte_incidentes.doc"
         );
 
@@ -187,8 +187,6 @@ class ReportController extends Controller{
         foreach ($incidents as  $i) {
             $incident = Incident::find($i->id);
             $tmp = 0;
-
-            Log::info("INCIDENT_ID-> " . $i->id);
 
             $tmp_str = $incident->title;
             $tmp_str = str_replace("\"","\"\"",$tmp_str);
@@ -312,7 +310,7 @@ class ReportController extends Controller{
 
 
         $headers = array(
-            'Content-Type' => 'text/csv',
+            'Content-Type' => 'text/csv;charset=utf-8',
             'Content-Disposition' => 'attachment; filename="tickets.csv"',
         );
 
