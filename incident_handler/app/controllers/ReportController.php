@@ -163,6 +163,161 @@ class ReportController extends Controller{
         return Response::make($htmlReport, 200, $headers);
     }
 
+    private function csvFile($start_date,$end_date,$time_type,$customer_id){
+
+        $incidents = $incidents = DB::table('incidents AS I')->select('I.id')
+                                ->join('time AS Tim',"I.id",'=','Tim.incidents_id')
+                                ->join('tickets as Tik','I.id','=','Tik.incidents_id')
+                                ->where('I.customers_id','=',$customer_id)
+                                ->where('Tim.time_types_id','=',$time_type)
+                                ->whereBetween('Tim.datetime',array(new DateTime($start_date), new DateTime($end_date)))
+                                ->get();
+
+        $report_info = $this->getIncidentsInfo($incidents);
+
+        // the csv file with the first row
+        $output = implode(",", array('Titulo', 'Categoria',
+                                     'Sensores','Ticket','Estatus',
+                                     'Indicador_de_compromiso_inicial','Flujo_de_ataque', 'Fecha_de_deteccion',
+                                     'Severidad','IP_de_origen','IP_de_destino',
+                                     'Blacklist','Descripcion','Recomendacion',
+                                     'Referencias','Anexos'));
+        $output .= "\n";
+        $tmp_str = "";
+
+        foreach ($incidents as  $i) {
+            $incident = Incident::find($i->id);
+            $tmp = 0;
+
+            $tmp_str = $incident->title;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $title = "\"" . $tmp_str . "\"";
+
+
+            //Puede haber varias categorias
+            $tmp_str = "[" . ($incident->category->id -1) . "|" . $incident->category->name . "|" . $incident->category->description . "]";
+            foreach ($incident->extraCategory as $ec)
+                $tmp_str .= "[" . ($ec->category->id -1) . "|" . $ec->category->name . "|" . $ec->category->description . "]";
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $categorias = "\"" . $tmp_str . "\"";
+
+
+            $tmp_str = $incident->sensor->name;
+            foreach ($incident->extraSensor as $es)
+                $tmp_str .= "|" . $es->sensor->name;
+            $tmp_str =  str_replace("\"","\\\"",$tmp_str);
+            $sensor = "\"" . $tmp_str . "\"";
+
+            $tmp_str = $incident->ticket->internal_number;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $ticket = "\"" . $tmp_str . "\"";
+
+
+            $tmp_str = $incident->status->name;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $status = "\"" . $tmp_str . "\"";
+
+            $tmp = 0;
+            $tmp_str = "";
+            foreach ($incident->incidentRule as $r) {
+                if ($tmp > 0)
+                    $tmp_str .= "|";
+                $tmp_str .= $r->rule->message;
+                $tmp++;
+            }
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $rules = "\"" . $tmp_str . "\"";
+
+            $tmp_str = $incident->stream;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $flujo_ataque = "\"" . $tmp_str . "\"";
+
+            $tmp_str = $report_info[$incident->id]['det_time']['datetime'] .",". $report_info[$incident->id]['det_time']['zone'];
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $occurrence_datetime = "\"" . $tmp_str . "\"";
+
+
+            $tmp_str = $incident->criticity;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $severidad = "\"" . $tmp_str . "\"";
+
+            $tmp = 0;
+            $tmp_str = "";
+            foreach ($incident->srcDst as $ip) {
+                if ($ip->src->ip != "" && $ip->src->show != false) {
+                    if ($tmp > 0)
+                        $tmp_str .= "|";
+                    $tmp_str .= $ip->src->ip;
+                    $tmp++;
+                }
+            }
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $ip_origen = "\"" . $tmp_str . "\"";
+
+            $tmp = 0;
+            $tmp_str = "";
+            foreach ($incident->srcDst as $ip) {
+                if ($ip->dst->ip!="" && $ip->dst->show != false) {
+                    if ($tmp > 0)
+                        $tmp_str .= "|";
+                    $tmp_str .= $ip->dst->ip;
+                    $tmp++;
+                }
+            }
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $ip_destino = "\"" . $tmp_str . "\"";
+
+            $tmp_str = "";
+            if (count($incident['listed']) > 0) {
+                for ($i = 0; $i < count($incident['listed']); $i++){
+                    $tmp_str .= "[".$incident['listed'][$i] . "|";
+                    $tmp_str .= isset($incident['location'][$i]) ? $incident['location'][$i] : "";
+                    $tmp_str .= "]";
+                }
+            }
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $blacklist = "\"" . $tmp_str . "\"";
+
+            $tmp_str = $incident->description ."\n" .  $incident->conclution;
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $descripcion = "\"" . $tmp_str . "\"";
+
+            $tmp_str = "\"" . $incident->recomendation . "\"";
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $recomendacion = "\"" . $tmp_str . "\"";
+
+            if (isset($incident->reference->link)) {
+                $tmp_str = $incident->reference->link;
+                $tmp_str = str_replace("\"","\\\"",$tmp_str);
+                $referencias = "\"" . $tmp_str . "\"";
+            }
+
+            $tmp_str = "";
+            foreach ($incident->annexes as $a )
+                $tmp_str .= "[" . $a->title . "|" . $a->field . "|" . $a->content . "]";
+            $tmp_str = str_replace("\"","\\\"",$tmp_str);
+            $anexos = "\"" . $tmp_str . "\"";
+
+            $output .= implode(",", array(
+                $title, $categorias,
+                $sensor, $ticket, $status,
+                $rules,$flujo_ataque,$occurrence_datetime,
+                $severidad, $ip_origen, $ip_destino,
+                $blacklist, $descripcion, $recomendacion,
+                $referencias,$anexos));
+            $output .= "\n";
+        }
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="tickets.csv"',
+        );
+
+        // our response, this will be equivalent to your download() but
+        // without using a local file
+        return Response::make(rtrim($output, "\n"), 200, $headers);
+    }
+
     private function renderDocReport($incidents, $introduction=null){
 
         $report_info = array();
