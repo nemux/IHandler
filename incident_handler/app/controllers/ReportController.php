@@ -63,31 +63,6 @@ class ReportController extends Controller{
             }
         }
 
-    public function create_csv(){
-        $input = Input::all();
-        $start_date = $input['start_date']. ' ' . '00:00:00';
-        $end_date = $input['end_date']. ' ' . '23:59:59';
-        $customer_id = $input['customer'];
-        $time_type = $input['time_type'];
-
-        $userData = array(
-            'start_date' => Input::get('start_date'),
-            'end_date' => Input::get('end_date')
-        );
-
-        $rules = array(
-            'start_date'=>'required|date_format:m/d/Y',
-            'end_date'=>'required|date_format:m/d/Y'
-        );
-
-        $validator = Validator::make($userData, $rules);
-
-        if ($validator->passes())
-                    return $this->csvFile($start_date,$end_date,$time_type,$customer_id);
-        else
-            return Redirect::to('/report/csv');
-    }
-
     private function defaultReport($start_date, $end_date, $time_type,$customer_id){
 
         $headers = array(
@@ -100,6 +75,7 @@ class ReportController extends Controller{
             ->join('time AS T',"I.id",'=','T.incidents_id')
             ->where('T.time_types_id','=',$time_type)
             ->whereBetween('T.datetime',array(new DateTime($start_date), new DateTime($end_date)))
+            ->orderBy('T.datetime','asc')
             ->get();
 
         $htmlReport = $this->renderDocReport($incidents);
@@ -138,6 +114,7 @@ class ReportController extends Controller{
             ->where('T.time_types_id', '=', $time_type)
             ->whereNull('I.deleted_at')
             ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+            ->orderBy('T.datetime','asc')
             ->get();
 
         $htmlReport = $this->renderDocReport($incidents);
@@ -161,6 +138,7 @@ class ReportController extends Controller{
                 ->whereNull('I.deleted_at')
                 ->where('T.time_types_id', '=', $time_type)
                 ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+                ->orderBy('T.datetime','asc')
                 ->get();
         } else {
             $ips = explode(',', $value);
@@ -173,6 +151,7 @@ class ReportController extends Controller{
                 ->where('T.time_types_id', '=', $time_type)
                 ->where('I.customers_id', '=', $customer_id)
                 ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+                ->orderBy('T.datetime','asc')
                 ->get();
         }
 
@@ -182,12 +161,14 @@ class ReportController extends Controller{
 
     private function csvFile($start_date,$end_date,$time_type,$customer_id){
 
-        $incidents = $incidents = DB::table('incidents AS I')->select('I.id')
+
+        $incidents = $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
                                 ->join('time AS Tim',"I.id",'=','Tim.incidents_id')
                                 ->join('tickets as Tik','I.id','=','Tik.incidents_id')
                                 ->where('I.customers_id','=',$customer_id)
                                 ->where('Tim.time_types_id','=',$time_type)
                                 ->whereBetween('Tim.datetime',array(new DateTime($start_date), new DateTime($end_date)))
+                                ->orderBy('Tim.datetime','asc')
                                 ->get();
 
         $report_info = $this->getIncidentsInfo($incidents);
@@ -205,6 +186,8 @@ class ReportController extends Controller{
         foreach ($incidents as  $i) {
             $incident = Incident::find($i->id);
             $tmp = 0;
+
+            Log:info("INCIDENT_ID-> " . $i->id);
 
             $tmp_str = $incident->title;
             $tmp_str = str_replace("\"","\\\"",$tmp_str);
@@ -324,6 +307,8 @@ class ReportController extends Controller{
                 $referencias,$anexos));
             $output .= "\n";
         }
+
+
 
         $headers = array(
             'Content-Type' => 'text/csv',
