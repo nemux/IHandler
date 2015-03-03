@@ -161,12 +161,13 @@ class ReportController extends Controller{
 
     private function csvFile($start_date,$end_date,$time_type,$customer_id){
 
-
+        //Incidentes que tienen un ticket en el sistema
         $incidents = $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'Tim.datetime')
                                 ->join('time AS Tim',"I.id",'=','Tim.incidents_id')
                                 ->join('tickets as Tik','I.id','=','Tik.incidents_id')
                                 ->where('I.customers_id','=',$customer_id)
                                 ->where('Tim.time_types_id','=',$time_type)
+                                ->whereNull('Tik.deleted_at')
                                 ->whereBetween('Tim.datetime',array(new DateTime($start_date), new DateTime($end_date)))
                                 ->orderBy('Tim.datetime','asc')
                                 ->get();
