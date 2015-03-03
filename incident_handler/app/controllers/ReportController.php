@@ -188,7 +188,7 @@ class ReportController extends Controller{
             $incident = Incident::find($i->id);
             $tmp = 0;
 
-            Log:info("INCIDENT_ID-> " . $i->id);
+            Log::info("INCIDENT_ID-> " . $i->id);
 
             $tmp_str = $incident->title;
             $tmp_str = str_replace("\"","\\\"",$tmp_str);
