@@ -133,4 +133,4 @@ Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
 });
 
 Route::get('otrs/{id}', 'OtrsController@test');
-Route::get('ro', 'OtrsController@sendTicket');
+Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');

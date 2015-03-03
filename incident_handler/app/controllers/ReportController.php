@@ -11,6 +11,9 @@ class ReportController extends Controller{
         if ($type == 'ip')
             return View::make('report.ip');
 
+        if ($type == 'csv')
+            return View::make('report.csv');
+
         return View::make('report.incident', array(
             'type' => $type
         ));
@@ -60,6 +63,31 @@ class ReportController extends Controller{
             }
         }
 
+    public function create_csv(){
+        $input = Input::all();
+        $start_date = $input['start_date']. ' ' . '00:00:00';
+        $end_date = $input['end_date']. ' ' . '23:59:59';
+        $customer_id = $input['customer'];
+        $time_type = $input['time_type'];
+
+        $userData = array(
+            'start_date' => Input::get('start_date'),
+            'end_date' => Input::get('end_date')
+        );
+
+        $rules = array(
+            'start_date'=>'required|date_format:m/d/Y',
+            'end_date'=>'required|date_format:m/d/Y'
+        );
+
+        $validator = Validator::make($userData, $rules);
+
+        if ($validator->passes())
+                    return $this->csvFile($start_date,$end_date,$time_type,$customer_id);
+        else
+            return Redirect::to('/report/csv');
+    }
+
     private function defaultReport($start_date, $end_date, $time_type,$customer_id){
 
         $headers = array(
@@ -78,7 +106,7 @@ class ReportController extends Controller{
         return Response::make($htmlReport,200,$headers);
     }
 
-    private function byType($start_date, $end_date, $time_or_ip_type,$customer_id,$type,$value){
+    private function byType($start_date, $end_date, $time_type,$customer_id,$type,$value){
         $headers = array(
             "Content-type" => "application/vnd.ms-word",
             "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
@@ -107,7 +135,7 @@ class ReportController extends Controller{
             ->where('I.customers_id', '=', $customer_id)
             ->where($field, '=', $value)
             ->join('time AS T', "I.id", '=', 'T.incidents_id')
-            ->where('T.time_types_id', '=', $time_or_ip_type)
+            ->where('T.time_types_id', '=', $time_type)
             ->whereNull('I.deleted_at')
             ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
             ->get();
@@ -116,7 +144,7 @@ class ReportController extends Controller{
         return Response::make($htmlReport,200,$headers);
     }
 
-    public function byTypeIP($start_date, $end_date, $time_type,$customer_id,$ip_type,$value)
+    private function byTypeIP($start_date, $end_date, $time_type,$customer_id,$ip_type,$value)
     {
         $headers = array(
             "Content-type" => "application/vnd.ms-word",
@@ -125,20 +153,7 @@ class ReportController extends Controller{
 
         if ($customer_id == 0) {
             $ips = explode(',', $value);
-            $incidents=DB::select(DB::raw(" select
-                                              i.id
-                                            from
-                                              incidents as i,
-                                              occurrences as o,
-                                              incidents_occurences as io
-                                            where
-                                              o.ip='"+$value+"'
-                                            and
-                                              io.incidents_id=i.id
-                                            and
-                                              io."+$ip_type+"=o.id
-                                            group by i.id"));
-            /*$incidents = DB::table('incidents AS I')->distinct()->select('I.id')
+            $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
                 ->join('incidents_occurences AS io', 'I.id', '=', 'io.incidents_id')
                 ->join('occurrences AS o', $ip_type == 1 ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
                 ->join('time AS T', "I.id", '=', 'T.incidents_id')
@@ -146,7 +161,7 @@ class ReportController extends Controller{
                 ->whereNull('I.deleted_at')
                 ->where('T.time_types_id', '=', $time_type)
                 ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
-                ->get();*/
+                ->get();
         } else {
             $ips = explode(',', $value);
             $incidents = DB::table('incidents AS I')->distinct()->select('I.id')
@@ -320,8 +335,7 @@ class ReportController extends Controller{
         return Response::make(rtrim($output, "\n"), 200, $headers);
     }
 
-    private function renderDocReport($incidents, $introduction=null){
-
+    private function getIncidentsInfo($incidents){
         $report_info = array();
 
         foreach ($incidents as $i){
@@ -347,8 +361,14 @@ class ReportController extends Controller{
             $incident['recomendations'] = Recomendation::where('incidents_id','=',$i->id)->get();
             $report_info[$i->id] = $incident;
         }
+        return $report_info;
+    }
 
-        return $htmlReport = $this->layout = View::make('report.doc', array(
+    private function renderDocReport($incidents, $introduction=null){
+
+        $report_info = $this->getIncidentsInfo($incidents);
+
+        return View::make('report.doc', array(
             'incidents' => $incidents,
             'report_info'=>$report_info,
             'body' => $introduction
