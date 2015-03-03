@@ -1,97 +1,138 @@
+
 @extends('layouts.master')
 @section('content')
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" />
-    <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
-    <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
-    <link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet" />
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
 
-    <div class="col-md-12">
-        <!-- begin panel -->
-        <div class="panel panel-inverse" data-sortable-id="form-plugins-1">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                </div>
-                <h4 class="panel-title">Reporte</h4>
-            </div>
-            <div class="panel-body panel-form">
-                <form class="form-horizontal form-bordered" action="/report/create" method="POST">
-                    <div class="form-group">
-                        <label class="col-md-2 control-label">Rango de fechas</label>
-                        <div class="col-md-2">
-                            <div class="input-group input-daterange">
-                                <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Fecha de Inicio" />
-                                <span class="input-group-addon">a</span>
-                                <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Fecha Final" />
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+  <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
+  <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+  <!-- ================== BEGIN BASE JS ================== -->
+  <script src="/assets/plugins/pace/pace.min.js"></script>
+  <!-- ================== END BASE JS ================== -->
+<script>
+    $(document).ready(function() {
+
+      TableManageDefault.init();
+    });
+  </script>
+<div class="col-md-12" style="min-width:800px;">
+                    <!-- begin panel -->
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Handlers Registrados</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="data-table" class="table table-striped table-bordered table-hover  ">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>
+                                              Ticket
+                                            </th>
+                                            <th>Título</th>
+                                            <th>
+                                              Indicadores
+                                            </th>
+                                            <th>
+                                              Fecha detección
+                                            </th>
+                                            <th>
+                                              Sensor
+                                            </th>
+                                            <th>
+                                              Status
+                                            </th>
+
+                                            <th>
+                                              Handler
+                                            </th>
+
+                                            <th>
+                                              Cliente
+                                            </th>
+
+                                            <th>
+                                              Última actualización
+                                            </th>
+                                            <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
+                                            <th>
+						                                        Enviar correo
+                                            </th>
+
+
+                                            <?php endif ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <?php $i=1; ?>
+                                      <?php foreach ($incident as $i): ?>
+                                        <?php $in=Incident::find($i->id); ?>
+                                        <tr >
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php echo $i ?>
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            @if (isset($in->ticket->internal_number))
+                                              {{ $in->ticket->internal_number }}
+                                            @else
+                                              {{ "Por asignar....."}}
+                                            @endif
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');"  style="cursor:pointer" width="15%">
+                                            <?php echo $in->title ?>
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php foreach ($in->incidentRule as $ir): ?>
+                                              <?php echo $ir->rule->message ?>
+                                            <?php endforeach ?>
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php
+                                              $det_time=Time::where('time_types_id','=','1')->where('incidents_id','=',$in->id)->first();
+
+                                              echo $det_time['datetime'];
+                                             ?>
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php echo $in->sensor->name ?>
+                                          </td>
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php echo $in->status->name ?>
+                                          </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
+                                          </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php echo $in->customer->company ?>
+                                          </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php echo $in->updated_at ?>
+                                          </td>
+                                          <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
+                                            <td>
+                                              <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
+                                            </td>
+                                          <?php endif ?>
+                                        </tr>
+                                        <?php $i++; ?>
+                                      <?php endforeach ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-lg-2">
-                            <div class="input-group">
-                                <select class="form-control" id="time_type" name="time_type">
-                                    {{--*/ $time_types = TimeType::all();  /*--}}
-                                    @foreach( $time_types as $t)
-                                        <option value="{{ $t->id }}">{{$t->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
-                                <input type="text" name="type_value" class="form-control" placeholder="IP1, IP2, IP3...">
-                                <input type="hidden" name="type" value="ip">
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="input-group">
-                                <select class="form-control" id="ip_type" name="ip_type">
-                                        <option value="1">Origen</option>
-                                        <option value="2">Destino</option>
-                                </select>
-                            </div>
-                        </div>
-                            <div class="col-lg-2">
-                                <div class="form-group">
-                                    <select id="customer" name="customer" class="form-control">
-                                        <option value="0">Todos los Clientes</option>
-                                        {{--*/ $customers = Customer::all(); /*--}}
-                                        @foreach ($customers as $c)
-                                            <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                        @endforeach
-                                    </select><br/>
-                                </div>
-                                <input type="submit" class="btn btn-default" id="generate" name="generate" value="Generar Reporte"/>
-                            </div>
                     </div>
-                </form>
-            </div>
-        </div>
-        <!-- end panel -->
-    </div>
-    <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
-    <script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-    <script src="/assets/plugins/masked-input/masked-input.min.js"></script>
-    <script src="/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script src="/assets/plugins/password-indicator/js/password-indicator.js"></script>
-    <script src="/assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
-    <script src="/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
-    <script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
-    <script src="/assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
-    <script src="/assets/js/form-plugins.demo.min.js"></script>
-    <script src="/assets/js/apps.min.js"></script>
+                    <!-- end panel -->
+                </div>
 
-    <script>
-        $(document).ready(function() {
-            FormPlugins.init();
-        });
-    </script>
+  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+  <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
+  <script src="/assets/js/table-manage-default.demo.min.js"></script>
+  <script src="/assets/js/apps.min.js"></script>
+  <!-- ================== END PAGE LEVEL JS ================== -->
+
+
 @stop

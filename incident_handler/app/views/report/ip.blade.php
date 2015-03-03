@@ -23,7 +23,7 @@
                 <h4 class="panel-title">Reporte</h4>
             </div>
             <div class="panel-body panel-form">
-                <form class="form-horizontal form-bordered" action="/report/create/doc" method="POST">
+                <form class="form-horizontal form-bordered" action="/report/create" method="POST">
                     <div class="form-group">
                         <label class="col-md-2 control-label">Rango de fechas</label>
                         <div class="col-md-2">
@@ -52,8 +52,8 @@
                         <div class="col-lg-2">
                             <div class="input-group">
                                 <select class="form-control" id="ip_type" name="ip_type">
-                                        <option value="1">Origen</option>
-                                        <option value="2">Destino</option>
+                                        <option value="source_id">Origen</option>
+                                        <option value="destiny_id">Destino</option>
                                 </select>
                             </div>
                         </div>
