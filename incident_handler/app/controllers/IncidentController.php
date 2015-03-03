@@ -432,7 +432,7 @@ protected $layout = 'layouts.master';
           $incident_rule->incidents_id=$incident->id;
           $incident_rule->save();
         }
-        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incidente con ID: '. $incident->id );
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
         return Redirect::to('incident/view/'.$incident->id);
       }
       else{
@@ -899,12 +899,12 @@ protected $layout = 'layouts.master';
 
 
   public function searchIp(){
-    return $this->layout = View::make("incident.by_ip", array(
+    return $this->layout = View::make("incident.front_by_ip", array(
     ));
   }
   public function renderIp(){
     $input = Input::all();
-    print_r($input);
+    return print_r($input);
   }
   public function index(){
 
