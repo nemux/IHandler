@@ -37,11 +37,13 @@ ${demo.css}
       function buscar(){
         $.ajax({
           type: "POST",
+          async:false,
           url: "/incident/search/render/ip/",
           data: { ip:$("#ip").val(),start:$("#start").val(),end:$("#end").val(),occurence:$("#occurence").val(),customer:$("#customer").val(),sensor:$("#sensor").val()},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
+            TableManageDefault.init();
             //console.log(result);
 
           }
@@ -84,7 +86,7 @@ ${demo.css}
 
 
                    <div class="form-group">
-   									<label class="control-label col-md-4 col-sm-4">Orien o Destino</label>
+   									<label class="control-label col-md-4 col-sm-4">Origen o Destino</label>
    									<div class="col-md-6 col-sm-6">
    										<select class="form-control" id="occurence" name="">
                          <option value="source_id">Origen</option>
@@ -99,6 +101,7 @@ ${demo.css}
    									<label class="control-label col-md-4 col-sm-4">Sensor</label>
    									<div class="col-md-6 col-sm-6">
    										<select class="form-control" id="sensor">
+                         <option value="0">Cualquier Sensor</option>
                          <?php foreach ($sensors as $s): ?>
                            <option value="<?php echo $s->id ?>"><?php echo $s->name ?></option>
                          <?php endforeach ?>

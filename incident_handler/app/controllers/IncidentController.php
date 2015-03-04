@@ -906,7 +906,12 @@ protected $layout = 'layouts.master';
     $input = Input::all();
     $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
     $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
-  
+    $sensor="";
+    if ($input['sensor']!=0) {
+      $sensor="and
+        i.sensors_id=".$input['sensor']."";
+    }
+    
     $incidents=DB::select(DB::raw(" select
       i.id
     from
@@ -916,8 +921,7 @@ protected $layout = 'layouts.master';
       time as t
     where
       i.customers_id=".$input['customer']."
-    and
-      i.sensors_id=".$input['sensor']."
+    ".$sensor."
     and
       o.ip='".$input['ip']."'
     and
