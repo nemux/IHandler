@@ -69,7 +69,7 @@ ${demo.css}
    								<div class="form-group">
    									<label class="control-label col-md-4 col-sm-4">Dirección IP :</label>
    									<div class="col-md-6 col-sm-6">
-   										<input class="form-control parsley-validated" id="ip" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="hexa color code" data-required="true" />
+   										<input class="form-control parsley-validated" id="ip" type="text" id="data-regexp" data-parsley-pattern="#[A-Fa-f0-9]{6}" placeholder="" data-required="true" />
    									</div>
    								</div>
 
@@ -89,8 +89,9 @@ ${demo.css}
    									<label class="control-label col-md-4 col-sm-4">Origen o Destino</label>
    									<div class="col-md-6 col-sm-6">
    										<select class="form-control" id="occurence" name="">
+                         <option value="0">Cualquiera</option>
                          <option value="source_id">Origen</option>
-                         <option value="destiny_id">Desinto</option>
+                         <option value="destiny_id">Destino</option>
    										</select>
    									</div>
 
