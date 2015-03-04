@@ -911,29 +911,56 @@ protected $layout = 'layouts.master';
       $sensor="and
         i.sensors_id=".$input['sensor']."";
     }
-    
-    $incidents=DB::select(DB::raw(" select
-      i.id
-    from
-      incidents as i,
-      occurrences as o,
-      incidents_occurences as io,
-      time as t
-    where
-      i.customers_id=".$input['customer']."
-    ".$sensor."
-    and
-      o.ip='".$input['ip']."'
-    and
-      io.incidents_id=i.id
-    and
-      t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
-    and
-      io.".$input['occurence']."=o.id
-    group by i.id"));
-    return $this->layout = View::make("incident.by_ip", array(
-      'incidents'=>$incidents
-    ));
+    $occurence="";
+    if ($input['occurence']!="0") {
+      $incidents=DB::select(DB::raw(" select
+        i.id
+      from
+        incidents as i,
+        occurrences as o,
+        incidents_occurences as io,
+        time as t
+      where
+        i.customers_id=".$input['customer']."
+      ".$sensor."
+      and
+        o.ip='".$input['ip']."'
+      and
+        io.incidents_id=i.id
+      and
+        t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
+      and
+        io.".$input['occurence']."=o.id
+      group by i.id"));
+      return $this->layout = View::make("incident.by_ip", array(
+        'incidents'=>$incidents
+      ));
+    }else{
+      $incidents=DB::select(DB::raw(" select
+        i.id
+      from
+        incidents as i,
+        occurrences as o,
+        incidents_occurences as io,
+        time as t
+      where
+        i.customers_id=".$input['customer']."
+      ".$sensor."
+      and
+        o.ip='".$input['ip']."'
+      and
+        io.incidents_id=i.id
+      and
+        t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
+      and
+        (io.source_id=o.id or io.destiny_id=o.id)
+      group by i.id"));
+      return $this->layout = View::make("incident.by_ip", array(
+        'incidents'=>$incidents
+      ));
+    }
+
+
   }
   public function index(){
 
