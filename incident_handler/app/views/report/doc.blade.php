@@ -1,3 +1,35 @@
+<?php
+function cutWords($word){
+
+  $aux=explode(" ",$word);
+  foreach($aux as $a){
+  	if(strlen($a)>75){
+  		$new_array=str_split($a,74);
+  		$new_word="";
+  		foreach($new_array as $na){
+  			$new_word=$new_word.$na."\n";
+  		}
+  		$word=str_replace($a,$new_word,$word);
+  	}
+  }
+  return $word;
+}
+function cleanWords($word){
+  /*$word=str_replace("<br>","\n",$word);
+  $word=str_replace("</br>","\n",$word);
+  $word=str_replace("</li>","</li>\n",$word);
+  $word=str_replace("</span>","</span>\n",$word);*/
+  return $word;
+}
+
+function cleanContent($content){
+  $content=cleanWords($content);
+  $content=cutWords($content);
+  return $content;
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +75,7 @@
         </div>
         <br>
     @endif
+
     <div style="width:100px">
       @foreach($incidents as $incident_tmp)
           {{--*/
@@ -56,21 +89,43 @@
                       </td>
                   </tr>
                   <tr style="">
-                        <td rowspan="<?php echo count($incident->extraCategory)+2; ?>">
+                        <td rowspan="<?php echo count($incident->extraCategory)+2; ?>" style="text-align:center;background:#d9d9d9">
                           <strong>Categoría:</strong>
                         </td>
-                        <td colspan="2">
-                          Descripci&oacute;n
+
+                        <td  style="text-align:center;background:#d9d9d9" colspan="2">
+                          <strong>Descripci&oacute;n</strong>
                         </td>
                   </tr>
                   <tr>
-                    <td>
+                    <td style="text-align:center;width:20%">
                       {{ ($incident->category->id)-1 }}
                     </td>
                     <td>
                       {{ $incident->category->name }}
                       {{ $incident->category->description }}
-                    </td>
+                    </td>@if (count($incident['listed']) > 0)
+
+              <tr>
+                    <td style="text-align:center">
+                      {{-- */$count = 0;/* --}}
+                          @foreach ($incident['listed'] as $l)
+                              {{-- */ $count++; /*--}}
+                              {{ $l->ip }}[{{ $count }}]<br>
+                          @endforeach
+                      </td>
+                      <td style="text-align:center">
+                          {{-- */ $count = 0; /*--}}
+                          @foreach ($incident['location'] as $l)
+                              {{-- */ $count++; /* --}}
+                              @if (isset($l->location))
+                                  {{$l->location }}
+                              @endif
+                              <br/>
+                          @endforeach
+                      </td>
+                </tr>
+              @endif
 
                   </tr>
                   @foreach ($incident->extraCategory as $ec)
@@ -79,25 +134,25 @@
                           {{ ($ec->category->id)-1 }}
                       </td>
                       <td >
-                          {{ $ec->category->name }}
-                          {{ $ec->category->description }}
+                          {{ cleanContent($ec->category->name) }}
+                          {{ cleanContent($ec->category->description) }}
                       </td>
                   </tr>
                   @endforeach
 
                   <tr>
-                      <td rowspan="<?php echo count($incident->extraSensor)+1; ?>">
+                      <td rowspan="<?php echo count($incident->extraSensor)+1; ?>" style="text-align:center;background:#d9d9d9">
                           <strong>Sensor:</strong>
                       </td>
-                      <td colspan="2">
-                            {{ $incident->sensor->name }}
+                      <td colspan="2" style="text-align:center;">
+                            {{ cleanContent($incident->sensor->name) }}
 
                       </td>
                   </tr>
                   @foreach ($incident->extraSensor as $es)
                   <tr style="margin:0px;padding:0px;border:none">
                       <td colspan="2">
-                          {{ $es->sensor->name }}
+                          {{ cleanContent($es->sensor->name) }}
                       </td>
                   </tr>
                   @endforeach
@@ -108,7 +163,7 @@
                       </td>
                       <td style="text-align:center;" colspan="2" width="100%">
                           @if(isset( $incident->ticket->internal_number))
-                              {{ $incident->ticket->internal_number }}
+                              {{ cleanContent($incident->ticket->internal_number) }}
                           @else
                               {{ "Por asignar.." }}
                           @endif
@@ -120,7 +175,7 @@
                           <strong>Estatus:</strong>
                       </td>
                       <td style="text-align:center;" colspan="2" width="100%">
-                          {{ $incident->status->name }}
+                          {{ cleanContent($incident->status->name) }}
                       </td>
                   </tr>
                   <tr>
@@ -129,7 +184,7 @@
                       </td>
                       <td colspan="2" style="text-align:center" width="100%">
                           @foreach ($incident->incidentRule as $r )
-                              {{ $r->rule->message }}<br>
+                              {{ cleanContent($r->rule->message) }}<br>
                           @endforeach
                       </td>
                   </tr>
@@ -138,16 +193,16 @@
                           <strong>Flujo del ataque:</strong>
                       </td>
                       <td colspan="2" style="text-align:center" width="100%">
-                          {{ $incident->stream }}
+                          {{ cleanContent($incident->stream) }}
                       </td>
                   </tr>
                   <tr>
-                    <td style="text-align:center;background:#d9d9d9" >
+                        <td style="text-align:center;background:#d9d9d9" >
                             <strong>Fecha de detecci&oacute;n:</strong>
                         </td>
-                        <td colspan="2" style="text-align:center" width="100%">
-                            {{ $report_info[$incident->id]['det_time']['datetime'] }}
-                            {{ $report_info[$incident->id]['det_time']['zone'] }}
+                        <td colspan="2" style="text-align:center">
+                            {{ cleanContent($report_info[$incident->id]['det_time']['datetime']) }}
+                            {{ cleanContent($report_info[$incident->id]['det_time']['zone']) }}
                         </td>
                   </tr>
                   <tr>
@@ -174,22 +229,24 @@
                            $font="#FFF";
                            /* --}}
                       @endif
-                  <td style="background-color:{{ $color }};color:{{ $font }};text-align:center" colspan="2" width="100%">
-                      <div >
-                          {{ $incident->criticity }}
-                      </div>
+                  <td style="background-color:{{ $color }};color:{{ $font }};text-align:center" colspan="2" >
+
+                          {{ cleanContent($incident->criticity) }}
+
                   </td>
               </tr>
               <tr>
                   <td style="text-align:center;background:#d9d9d9">
                       <strong>Direcci&oacute;n IP de Origen:</strong>
                   </td>
-                  <td colspan="2" style="text-align:center" width="100%">
+                  <td colspan="2" style="text-align:center" >
+                    <?php $ips="" ?>
                       @foreach ($incident->srcDst as $ip)
                           @if($ip->src->ip!="" && $ip->src->show != false)
-                              {{$ip->src->ip.'<br>' }}
+                              {{--*/ $ips=$ips.cleanContent($ip->src->ip).'<br>' /*--}}
                           @endif
                       @endforeach
+                      {{ $ips }}
                   </td>
               </tr>
 
@@ -197,18 +254,22 @@
                   <td style="text-align:center;background:#d9d9d9">
                       <strong>Direcci&oacute;n IP Destino:</strong>
                   </td>
-                  <td colspan="2" style="text-align:center" width="100%">
+                  <td colspan="2" style="text-align:center">
+                    <?php $ips="" ?>
                       @foreach ($incident->srcDst as $ip)
                           @if($ip->dst->ip!="" && $ip->dst->show != false)
-                              {{ $ip->dst->ip.'<br>'}}
+                              {{--*/ $ips=$ips.cleanContent($ip->dst->ip).'<br>' /*--}}
                           @endif
                       @endforeach
+                      {{ $ips }}
 
                   </td>
               </tr>
+
+              <!--
               @if (count($incident['listed']) > 0)
               <tr>
-                  <td rowspan="">
+                  <td rowspan="" >
                       <strong>Blacklist:</strong>
                   </td>
                   <td>
@@ -239,55 +300,76 @@
                       </td>
                 </tr>
               @endif
-                  <tr>
-                      <td style="text-align:center;background:#d9d9d9" colspan="1">
-                          <strong>Descripci&oacute;n:</strong>
-                      </td>
-                      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
-                          {{ $incident->description }}<br>
-                          {{ $incident->conclution }}
-                      </td>
-                  </tr>
-                  <tr>
-                      <td style="text-align:center;background:#d9d9d9">
-                          <strong>Recomendaci&oacute;n:</strong>
-                      </td>
-                      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
-                          {{ $incident->recomendation }} <br/>
-                          @if (count($incident['recomendations']) > 0 )
-                              @foreach($incident['recomendations'] as $r )
-                                  {{ "[".$r->created_at."]" }} <br/>
-                                  {{ $r->content }} <br/>
-                              @endforeach
-                          @endif
-                      </td>
-                  </tr>
-                  <tr>
-                      <td style="text-align:center;background:#d9d9d9">
-                          <strong>Referencia:</strong>
-                      </td>
-                      <td colspan="2" style="text-align: justify; padding:10px;" width="100%">
-                          @if (isset($incident->reference->link))
-                              {{ $incident->reference->link }}<br>
-                          @endif
-                      </td>
-                  </tr>
-              </table>
+            -->
+              <tr>
+                  <td style="text-align:center;background:#d9d9d9" >
+                      <strong>Blacklist:</strong>
+                  </td>
+                  <td style="text-align:center;background:#d9d9d9;" >
+                    <strong>Direcci&oacute;n Ip</strong>
+                  </td>
+                  <td style="text-align:center;background:#d9d9d9" >
+                    <strong>País de Origen </strong>
+                  </td>
+
+              </tr>
+
+
+              <tr>
+                  <td style="text-align:center;background:#d9d9d9" >
+                      <strong>Descripci&oacute;n:</strong>
+                  </td>
+                  <td colspan="2" >
+                      {{ cleanContent($incident->description) }}<br>
+                      {{ cleanContent($incident->conclution) }}
+                  </td>
+              </tr>
+
+              <tr>
+                  <td style="text-align:center;background:#d9d9d9">
+                      <strong>Recomendaci&oacute;n:</strong>
+                  </td>
+                  <td colspan="2"  >
+                      {{ cleanContent($incident->recomendation) }} <br/>
+                      @if (count($incident['recomendations']) > 0 )
+                          @foreach($incident['recomendations'] as $r )
+                              {{ cleanContent("[".$r->created_at."]") }} <br/>
+                              {{ cleanContent($r->content) }} <br/>
+                          @endforeach
+                      @endif
+                  </td>
+              </tr>
+
+              <tr>
+                  <td style="text-align:center;background:#d9d9d9">
+                      <strong>Referencia:</strong>
+                  </td>
+                  <td colspan="2"  >
+                    <div >
+                      @if (isset($incident->reference->link))
+                          {{ (cleanContent($incident->reference->link)); }}<br>
+                      @endif
+                    </div>
+                  </td>
+              </tr>
+
+
+            </table><br>
               @foreach ($incident->annexes as $a )
-              <div class="col-lg-12" style="margin-bottom:20px;padding-top:20px">
+              <div class="col-lg-12" >
                   <div class="form-group" >
-                      <table class="max-width" style="table-layout: fixed;">
+                      <table style="table-layout: fixed;">
                           <tr style="text-align:center;background:#CCC;">
                               <td colspan="2">
-                                  <strong> {{ $a->title }} </strong>
+                                  <strong> {{ cleanContent($a->title) }} </strong>
                               </td>
                           </tr>
                           <tr>
-                              <td style="text-align:center;background:#CCC;width:15%">
-                                  {{ $a->field }}
+                              <td style="text-align:center;background:#CCC;">
+                                  {{ cleanContent($a->field) }}
                               </td>
                               <td>
-                                  {{ $a->content }}
+                                  {{ cleanContent($a->content) }}
                               </td>
                           </tr>
                       </table>
