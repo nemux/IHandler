@@ -32,7 +32,7 @@ class OtrsController extends BaseController{
                   $customer = new Customer();
                   $sla = new CustomerSla();
 
-                  $customer->name = $cu->UserFirstname . " " . $cu['UserLastname'];
+                  $customer->name = $cu['UserFirstname'] . " " . $cu['UserLastname'];
                   $customer->company = $cu['UserTitle'];
                   $customer->mail = $cu['UserEmail'];
                   $customer->phone = $cu['UserPhone'];
