@@ -23,7 +23,7 @@ class LoginController extends Controller{
 
       $rules = array(
         'username'=>'required|alpha|min:5',
-        'password'=>'required|between:5,15'
+        'password'=>'required|min:5'
       );
 
       $validator = Validator::make($userData, $rules);

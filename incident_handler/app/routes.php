@@ -132,5 +132,9 @@ Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
   Route::get('result','OtrsController@result');
 });
 
-Route::get('otrs/{id}', 'OtrsController@test');
-Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+Route::group(array('prefix' => 'task'), function(){
+    Route::get('/reminder','TaskController@sendReminder');
+    Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+});
+
+

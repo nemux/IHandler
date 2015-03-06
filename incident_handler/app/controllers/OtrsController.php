@@ -26,12 +26,11 @@ class OtrsController extends BaseController{
               $cu = $oc->getInfo($v['UserName']);
               if(!isset($cu['error_code'])){
 
-                //Log::info("-------------------");
-                //Log::info($cu);
                 $exists = Customer::where('otrs_userID','=', $cu['UserID'])->count();
 
                 if ($exists == 0){
                   $customer = new Customer();
+                  $sla = new CustomerSla();
 
                   $customer->name = $cu->UserFirstname . " " . $cu['UserLastname'];
                   $customer->company = $cu['UserTitle'];
@@ -42,6 +41,8 @@ class OtrsController extends BaseController{
                   $customer->otrs_usercustomerID = $cu['UserCustomerID'];
                   $customer->otrs_validID = $cu['ValidID'];
                   $customer->save();
+                  $sla->customers_id = $customer->id;
+                  $sla->save();
                   $total_inserted++;
                 }
               }
