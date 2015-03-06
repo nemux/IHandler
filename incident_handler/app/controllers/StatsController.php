@@ -35,7 +35,7 @@ protected $layout = 'layouts.master';
                                               t.time_types_id=1
                                               and i.customers_id=".$input['customer']."
                                               ".$sensor."
-                                              and t.datetime between '".$start."' and '".$end."'
+                                              and t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                               group by month order by month asc"));
             }else if ($option==2) {
 
@@ -46,7 +46,7 @@ protected $layout = 'layouts.master';
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
                                                 ".$sensor."
-                                                and t.datetime between '".$start."' and '".$end."'
+                                                and t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                                 group by date order by date asc"));
               }else if ($input['overlap']==1) {
                 $months=DB::select(DB::raw(" select count(*), extract(month from t.datetime) as month,extract(year from t.datetime) as year
@@ -55,7 +55,7 @@ protected $layout = 'layouts.master';
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
                                                 ".$sensor."
-                                                and t.datetime between '".$start."' and '".$end."'
+                                                and t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                                 group by month,year order by month,year asc"));
 
                 $incidents=DB::select(DB::raw(" select count(*), date_trunc('day',t.datetime) as date
@@ -64,7 +64,7 @@ protected $layout = 'layouts.master';
                                                 t.time_types_id=1
                                                 and i.customers_id=".$input['customer']."
                                                 ".$sensor."
-                                                and t.datetime between '".$start."' and '".$end."'
+                                                and t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                                 group by date order by date asc"));
                 return $this->layout = View::make("stats._incident_overlap", array(
                   'incidents'=>$incidents,
@@ -200,7 +200,7 @@ protected $layout = 'layouts.master';
                                           and
                                             t.incidents_id=i.id
                                           and
-                                            t.datetime between '".$start."' and '".$end."'
+                                            t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                           and
                                             a.name!='Attack'
                                           group by
@@ -250,7 +250,7 @@ protected $layout = 'layouts.master';
                                           and
                                             t.incidents_id=i.id
                                           and
-                                            t.datetime between '".$start."' and '".$end."'
+                                            t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                           group by
                                             c.name
                                           order by
@@ -294,7 +294,7 @@ protected $layout = 'layouts.master';
                                                 and i.customers_id=".$input['customer']."
                                                 and i.incident_handler_id=".$h->id."
                                                 ".$sensor."
-                                                and t.datetime between '".$start."' and '".$end."'
+                                                and t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                                 group by date order by date asc"));
                 $incidents_by_handler[$h->id]['incidents']=$incidents;
               }

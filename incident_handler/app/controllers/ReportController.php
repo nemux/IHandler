@@ -338,12 +338,19 @@ class ReportController extends Controller{
                     array_push($location,$loc);
                 }
             }
+
             $incident['listed'] = $listed;
             $incident['location'] = $location;
             $incident['recomendations'] = Recomendation::where('incidents_id','=',$i->id)->get();
             $report_info[$i->id] = $incident;
+            Log::info("--------------------------------------------------");
+            Log::info('echo');
+            Log::info("--------------------------------------------------");
         }
+
+
         return $report_info;
+
     }
 
     private function renderDocReport($incidents, $introduction=null){
