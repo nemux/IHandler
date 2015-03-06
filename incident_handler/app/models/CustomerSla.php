@@ -8,7 +8,7 @@ class CustomerSla extends Eloquent{
     use SoftDeletingTrait;
 
     protected $dates = ['deleted_at'];
-    protected $table = 'customer_sla';
+    protected $table = 'customers_sla';
     protected $fillable = ['customers_id','reminder_low','close_low','reminder_medium','close_medium','reminder_high','close_high'];
 
     public function customer()
