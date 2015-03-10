@@ -4,50 +4,65 @@ class TaskController extends Controller
 {
 
     public function closeTickets() {
-        $log = new Log\Logger();
-        $cont = 0;
-        foreach (Customer::with('sla')->get() as $customer) {
-            //Send Email notifications according to the criticity time.
-            foreach (array('BAJA', 'MEDIA', 'ALTA') as $criticity) {
-                $incidents = $this->getFinishedTickets($criticity,$customer,'CLOSE');
-                foreach($incidents['incidents'] as $i){
-                    $incident = Incident::find($i->incidents_id);
-                    $body = 'Debido a la falta de una respuesta del incidente relacionado con este ticket, se ha cerrado automáticamente por el sistema.';
-                    $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
-                    $this->sendEmail($incident,$subject,$body);
-                    $incident->incidents_status_id = 6;
-                    $incident->save();
-                    $log->info('0','Automatic_task','Cierre de ticket automático referente al incidente: '. $incident->id);
-                    $cont++;
+
+        $system_key = Config::get('api.key');
+        $user_key = Input::get('key');
+
+        if ($system_key == $user_key) {
+            $log = new Log\Logger();
+            $cont = 0;
+            foreach (Customer::with('sla')->get() as $customer) {
+                //Send Email notifications according to the criticity time.
+                foreach (array('BAJA', 'MEDIA', 'ALTA') as $criticity) {
+                    $incidents = $this->getFinishedTickets($criticity, $customer, 'CLOSE');
+                    foreach ($incidents['incidents'] as $i) {
+                        $incident = Incident::find($i->incidents_id);
+                        $body = 'Debido a la falta de una respuesta del incidente relacionado con este ticket, se ha cerrado automáticamente por el sistema.';
+                        $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
+                        $this->sendEmail($incident, $subject, $body);
+                        $incident->incidents_status_id = 6;
+                        $incident->save();
+                        $log->info('0', 'Automatic_task', 'Cierre de ticket automático referente al incidente: ' . $incident->id);
+                        $cont++;
+                    }
                 }
             }
-        }
-        return array('total_closed' => $cont);
+            return array('total_closed' => $cont);
+        } else
+            return array('error' => "Error de autenticacion");
     }
 
     public function sendReminder() {
-        $log = new Log\Logger();
-        $cont = 0;
-        foreach (Customer::with('sla')->get() as $customer) {
-            //Send Email notifications according to the criticity time.
-            foreach (array('BAJA', 'MEDIA', 'ALTA') as $criticity) {
-                $incidents = $this->getFinishedTickets($criticity,$customer,'REMINDER');
-                foreach($incidents['incidents'] as $i){
-                    $incident = Incident::find($i->incidents_id);
-                    //$body = 'Le recordamos que si no recibimos respuesta sobre el incidente relacionado a este ticket, se cerrar&aacute;
-                    // autom&aacute;ticamente en ' . $incidents['hours'] . ' horas.';
-                    //$body = 'Le recordamos que si no recibimos respuesta sobre el incidente relacionado a este ticket, se cerrar&aacute;
-                    // autom&aacute;ticamente.';
-                    $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
-                    $this->sendEmail($incident,$subject,$body);
-                    $incident->ticket->reminder_sended = 1;
-                    $incident->push();
-                    $log->info('0','Automatic_task','Recordatorio de cierre de incidente: '. $incident->id);
-                    $cont++;
+
+        $system_key = Config::get('api.key');
+        $user_key = Input::get('key');
+
+        if ($system_key == $user_key) {
+            $log = new Log\Logger();
+            $cont = 0;
+            foreach (Customer::with('sla')->get() as $customer) {
+                //Send Email notifications according to the criticity time.
+                foreach (array('BAJA', 'MEDIA', 'ALTA') as $criticity) {
+                    $incidents = $this->getFinishedTickets($criticity, $customer, 'REMINDER');
+                    foreach ($incidents['incidents'] as $i) {
+                        $incident = Incident::find($i->incidents_id);
+                        $body = 'Le recordamos que si no recibimos respuesta sobre el incidente relacionado a este ticket, se cerrar&aacute;
+                         autom&aacute;ticamente en ' . $incidents['hours'] . ' horas.';
+                        //$body = 'Le recordamos que si no recibimos respuesta sobre el incidente relacionado a este ticket, se cerrar&aacute;
+                        // autom&aacute;ticamente.';
+                        $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
+                        $this->sendEmail($incident, $subject, $body);
+                        $incident->ticket->reminder_sended = 1;
+                        $incident->push();
+                        $log->info('0', 'Automatic_task', 'Recordatorio de cierre de incidente: ' . $incident->id);
+                        Log::info('Recordatorio de cierre de incidente-> ' . $incident->id);
+                        $cont++;
+                    }
                 }
             }
-        }
-        return array('total_sended' => $cont);
+            return array('total_sended' => $cont);
+        } else
+            return array('error' => "Error de autenticacion");
     }
 
     private function getFinishedTickets($criticity, $customer, $type) {
