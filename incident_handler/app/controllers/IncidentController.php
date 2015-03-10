@@ -746,7 +746,7 @@ protected $layout = 'layouts.master';
                     $image->delete();
                   }
                 }
-                $log->info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
+                //$log->info(Auth::user()->id,Auth::user()->username,'Se actualizó incidente con ID: '. $incident->id );
                 return Redirect::to('incident/view/'.$incident->id);
       }
     }
