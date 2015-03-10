@@ -132,9 +132,13 @@ Route::group(array('before'=>'admin', 'prefix' => 'otrs'), function(){
   Route::get('result','OtrsController@result');
 });
 
-Route::group(array('prefix' => 'task'), function(){
-    Route::get('/reminder','TaskController@sendReminder');
-    Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+Route::group(array('prefix' => 'api'), function(){
+    Route::group(array('prefix' => '1.1'), function() {
+        Route::group(array('prefix' => 'task'), function () {
+            Route::get('/ticket/reminder', 'TaskController@sendReminder');
+            Route::get('/ticket/close','TaskController@closeTickets');
+            Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+        });
+    });
 });
-
 

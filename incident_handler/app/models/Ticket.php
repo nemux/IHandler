@@ -9,7 +9,7 @@ class Ticket extends Eloquent {
 
     protected $dates = ['deleted_at'];
     protected $table = 'tickets';
-    protected $fillable = ['otrs_ticket_id','otrs_ticket_number','datetime','incident_handler_id','incidents_id','internal_number'];
+    protected $fillable = ['otrs_ticket_id','otrs_ticket_number','datetime','incident_handler_id','incidents_id','internal_number','reminder_sended'];
 
 
     public function incidentHandler(){
