@@ -3,18 +3,18 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterLogTable extends Migration {
+class AlterTicketsTable extends Migration {
 
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
-
-
 	public function up()
 	{
-        DB::connection('log')->statement('ALTER TABLE log ALTER COLUMN action TYPE TEXT');
+		Schema::table('tickets',function(Blueprint $table){
+            $table->integer('reminder_sended')->default(0);
+        });
 	}
 
 	/**
@@ -24,5 +24,7 @@ class AlterLogTable extends Migration {
 	 */
 	public function down()
 	{
+		//
 	}
+
 }

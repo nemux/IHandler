@@ -17,5 +17,7 @@ class Customer extends Eloquent {
 		return $this->hasMany('Incident','customers_id','id');
 	}
 
-
+    public function sla(){
+        return $this->hasOne('CustomerSla','customers_id','id');
+    }
 }
