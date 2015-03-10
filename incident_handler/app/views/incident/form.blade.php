@@ -718,7 +718,7 @@ function removeRule(tr,sid){
                                   <tr width="70%">
                                     <td>
                                       {{
-                                         Form::select('addsens_'.$i,$sensor,$es->sensor->id,[
+                                         Form::select('sensadd_'.$i,$sensor,$es->sensor->id,[
                                                 'class'=>'form-control parsley-validated']);
                                       }}
                                     </td>
