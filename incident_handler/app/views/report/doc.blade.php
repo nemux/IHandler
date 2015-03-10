@@ -283,14 +283,14 @@ function cleanContent($content){
               <tr>
                     <td style="text-align:center">
                       {{-- */$count = 0;/* --}}
-                          @foreach ($incident['listed'] as $l)
+                          @foreach ($report_info[$incident->id]['listed'] as $l)
                               {{-- */ $count++; /*--}}
                               {{ $l->ip }}[{{ $count }}]<br>
                           @endforeach
                       </td>
                       <td style="text-align:center">
                           {{-- */ $count = 0; /*--}}
-                          @foreach ($incident['location'] as $l)
+                          @foreach ($report_info[$incident->id]['location'] as $l)
                               {{-- */ $count++; /* --}}
                               @if (isset($l->location))
                                   {{$l->location }}
@@ -331,8 +331,8 @@ function cleanContent($content){
                   </td>
                   <td colspan="2"  >
                       {{ cleanContent($incident->recomendation) }} <br/>
-                      @if (count($incident['recomendations']) > 0 )
-                          @foreach($incident['recomendations'] as $r )
+                      @if (count($report_info[$incident->id]['recomendations']) > 0 )
+                          @foreach($report_info[$incident->id]['recomendations'] as $r )
                               {{ cleanContent("[".$r->created_at."]") }} <br/>
                               {{ cleanContent($r->content) }} <br/>
                           @endforeach
@@ -381,8 +381,6 @@ function cleanContent($content){
           <br/>
       @endforeach
     </div>
-
-
     <div style="margin: 0px 20px; font-size: 80%; text-align: center; font-family: Helvetica,Arial,sans-serif;
                 color: rgb(200, 0, 0);"><small style="font-family: Helvetica,Arial,sans-serif;">
             <big><strong>Informaci&oacute;n Confidencial</strong></big></small>
