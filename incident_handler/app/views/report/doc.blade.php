@@ -266,7 +266,6 @@ function cleanContent($content){
                   </td>
               </tr>
 
-              <!--
               @if (count($report_info[$incident->id]['listed']) > 0)
               <tr>
                   <td style="text-align:center;background:#d9d9d9" >
@@ -299,7 +298,7 @@ function cleanContent($content){
                       </td>
                 </tr>
               @endif
-            -->
+                  
               <tr>
                   <td style="text-align:center;background:#d9d9d9" >
                       <strong>Descripci&oacute;n:</strong>
