@@ -269,8 +269,8 @@ class ReportController extends Controller{
             $tmp_str = "";
             if (count($report_info[$incident->id]['listed']) > 0) {
                 for ($i = 0; $i < count($report_info[$incident->id]['listed']); $i++){
-                    $tmp_str .= "[".$report_info[$incident->id]['listed'][$i] . "|";
-                    $tmp_str .= isset($report_info[$incident->id]['location'][$i]) ? $report_info[$incident->id]['location'][$i] : "";
+                    $tmp_str .= "[".$report_info[$incident->id]['listed'][$i]['ip'] . "|";
+                    $tmp_str .= isset($report_info[$incident->id]['location'][$i]) != null ? $report_info[$incident->id]['location'][$i]->location : "";
                     $tmp_str .= "]";
                 }
             }
