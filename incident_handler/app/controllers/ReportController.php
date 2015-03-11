@@ -268,9 +268,9 @@ class ReportController extends Controller{
 
             $tmp_str = "";
             if (count($incident['listed']) > 0) {
-                for ($i = 0; $i < count($incident['listed']); $i++){
-                    $tmp_str .= "[".$incident['listed'][$i] . "|";
-                    $tmp_str .= isset($incident['location'][$i]) ? $incident['location'][$i] : "";
+                for ($i = 0; $i < count($report_info[$incident->id]['listed']); $i++){
+                    $tmp_str .= "[".$report_info[$incident->id]['listed'][$i] . "|";
+                    $tmp_str .= isset($report_info[$incident->id]['location'][$i]) ? $report_info[$incident->id]['location'][$i] : "";
                     $tmp_str .= "]";
                 }
             }
@@ -281,7 +281,12 @@ class ReportController extends Controller{
             $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $descripcion = "\"" . $tmp_str . "\"";
 
-            $tmp_str = $incident->recomendation;
+            $tmp_str = "[" . $incident->recomendation;
+            if (count($report_info[$incident->id]['recomendations']) > 0)
+                for ($i = 0; $i < count($report_info[$incident->id]['recomendations']); $i++)
+                    $tmp_str .= "," . $report_info[$incident->id]['recomendations'][$i];
+
+            $tmp_str .= "]";
             $tmp_str = str_replace("\"","\"\"",$tmp_str);
             $recomendacion = "\"" . $tmp_str . "\"";
 

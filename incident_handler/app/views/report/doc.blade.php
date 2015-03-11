@@ -267,18 +267,17 @@ function cleanContent($content){
               </tr>
 
               <!--
-              @if (count($incident['listed']) > 0)
+              @if (count($report_info[$incident->id]['listed']) > 0)
               <tr>
-                  <td rowspan="" >
+                  <td style="text-align:center;background:#d9d9d9" >
                       <strong>Blacklist:</strong>
                   </td>
-                  <td>
-                    Direcci&oacute;n Ip
+                  <td style="text-align:center;background:#d9d9d9;" >
+                    <strong>Direcci&oacute;n Ip</strong>
                   </td>
-                  <td>
-                    País de Origen
+                  <td style="text-align:center;background:#d9d9d9" >
+                    <strong>País de Origen </strong>
                   </td>
-
               </tr>
               <tr>
                     <td style="text-align:center">
@@ -301,20 +300,6 @@ function cleanContent($content){
                 </tr>
               @endif
             -->
-              <tr>
-                  <td style="text-align:center;background:#d9d9d9" >
-                      <strong>Blacklist:</strong>
-                  </td>
-                  <td style="text-align:center;background:#d9d9d9;" >
-                    <strong>Direcci&oacute;n Ip</strong>
-                  </td>
-                  <td style="text-align:center;background:#d9d9d9" >
-                    <strong>País de Origen </strong>
-                  </td>
-
-              </tr>
-
-
               <tr>
                   <td style="text-align:center;background:#d9d9d9" >
                       <strong>Descripci&oacute;n:</strong>
