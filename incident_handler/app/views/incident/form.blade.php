@@ -1217,8 +1217,8 @@ function removeRule(tr,sid){
                                           <label class="control-label col-md-2 col-sm-2">
                                           </label>
                                           <div class="col-md-10 col-sm-10">
-
-                                            {{Form::submit('Guardar Incidente',['class'=>'btn btn-lg btn-primary pull-right ']);}}
+                                            {{Form::submit('Guardar Incidente',['class'=>'btn btn-primary pull-right', 'style'=>'margin-left:2px']);}}
+                                            {{ link_to( isset($update) ? "/incident/view/" . $incident->id : "/incident/" , 'Cancelar', ['class' => 'btn btn-danger pull-right']) }}
                                           </div>
                                         </div>
 									</div>
