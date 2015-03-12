@@ -375,6 +375,7 @@ protected $layout = 'layouts.master';
             //return "Ip no puede ir vacía";
           $src->ip=$input['srcip_'.$e];
           $src->occurrences_types_id=$input['srcoccurencestype_'.$e];
+          $src->location =  $input['srclocation_'.$e];
           $src->save();
           //'port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'
           $src_history->port=$input['srcport_'.$e];
@@ -389,6 +390,7 @@ protected $layout = 'layouts.master';
 
           $dst->ip=$input['dstip_'.$e];
           $dst->occurrences_types_id=$input['dstoccurencestype_'.$e];
+          $dst->location = $input['dstlocation_'.$e];
 
 
           $dst->save();
@@ -639,13 +641,13 @@ protected $layout = 'layouts.master';
                 //proceso de borrado incident occurrence|
                 $register=$incident->incidentOccurence;
                 foreach ($register as $r) {
-                  $r->delete();
+                  $r->forceDelete();
                 }
                 ////////////////////////////////////////|
                 //proceso de borrado incident Rule      |
                 $register=$incident->incidentRule;
                 foreach ($register as $r) {
-                  $r->delete();
+                  $r->forceDelete();
                 }
                 ////////////////////////////////////////|
 
@@ -679,6 +681,7 @@ protected $layout = 'layouts.master';
                     //return "Ip no puede ir vacía";
                   $src->ip=$input['srcip_'.$e];
                   $src->occurrences_types_id=$input['srcoccurencestype_'.$e];
+                  $src->location = $input['srclocation_'.$e];
 
                   $src->save();
                   $src_history=new OccurenceHistory;
@@ -697,6 +700,7 @@ protected $layout = 'layouts.master';
 
                   $dst->ip=$input['dstip_'.$e];
                   $dst->occurrences_types_id=$input['dstoccurencestype_'.$e];
+                  $dst->location = $input['dstlocation_'.$e];
                   $dst->save();
                   $dst_history=new OccurenceHistory;
                   //'port','protocol','operative_system','function','datetime','occurences_id','incident_handler_id'
