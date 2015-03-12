@@ -119,7 +119,9 @@
 								<li><a href="/stats/ip">De direcciones IP</a></li>
 								<li><a href="/stats/handler">Incidentes por Handler</a></li>
 								<li><a href="/stats/category">Por Categorías</a></li>
+								<li><a href="/stats/severity">Por Severidad</a></li>
 								<li><a href="/stats/attack">Por Ataques</a></li>
+
 						</ul>
 					</li>
 

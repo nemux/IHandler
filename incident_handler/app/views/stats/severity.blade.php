@@ -36,7 +36,7 @@ ${demo.css}
       function graph(start,end,option,customer,overlap){
         $.ajax({
           type: "POST",
-          url: "/stats/category/graph",
+          url: "/stats/severity/graph",
           data: { start: start, end: end, customer: customer},
           success: function(result){
             $("#target").html("");
@@ -57,7 +57,7 @@ ${demo.css}
                             <div class="panel-heading-btn">
 
                             </div>
-                            <h4 class="panel-title">Incidentes por Categoría</h4>
+                            <h4 class="panel-title">Incidentes por Severidad</h4>
                         </div>
                         <div class="panel-body panel-form">
                             <form class="form-horizontal form-bordered">

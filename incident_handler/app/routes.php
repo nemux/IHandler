@@ -100,8 +100,11 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   Route::post('/category/graph', 'StatsController@categoryGraph');
   Route::get('/handler', 'StatsController@handler');
   Route::post('/handler/graph', 'StatsController@handlerGraph');
+  Route::get('/severity', 'StatsController@severity');
+  Route::post('/severity/graph', 'StatsController@severityGraph');
   Route::get('/blacklist', 'StatsController@blacklist');
   Route::get('/blacklist/doc', 'StatsController@doc');
+
   #Admin Routes
 });
 
@@ -141,4 +144,3 @@ Route::group(array('prefix' => 'api'), function(){
         });
     });
 });
-

@@ -262,6 +262,50 @@ protected $layout = 'layouts.master';
           ));
         }
     }
+    public function severity()
+    {
+
+        return $this->layout = View::make("stats.severity", array(
+
+        ));
+
+    }
+    public function severityGraph()
+    {
+        $input=Input::all();
+
+        //print_r($input);
+        if ($input['start']!='' && $input['end']!='') {
+          $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+          $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+          $customer=$input['customer'];
+          $incidents=DB::select(DB::raw(" select
+                                            count(*) as total,
+                                            i.criticity
+                                          from
+                                            incidents as i,
+                                            time as t
+                                          where
+                                            i.customers_id=".$customer."
+                                          and
+                                            i.incidents_status_id>1
+                                          and
+                                            t.time_types_id=1
+                                          and
+                                            t.incidents_id=i.id
+                                          and
+                                            t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
+                                          group by
+                                            i.criticity
+                                          order by
+                                            total desc
+                                          ;
+                                            "));
+          return $this->layout = View::make("stats._severity", array(
+            'incidents'=>$incidents,
+          ));
+        }
+    }
     public function handler(){
       return $this->layout = View::make("stats.handler", array(
 

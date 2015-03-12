@@ -18,11 +18,11 @@ $(function () {
             x: -20
         },
         xAxis: {
-            categories: [<?php
+            categories: ["",<?php
             for ($i=1; $i <$days_between+ 1 ; $i++) {
               echo "'".date("Y-m-d",strtotime(date("Y-m-d ",strtotime($start))." +".$i." days"))."',";
             }
-            ?>]
+            ?>,""]
         },
         yAxis: {
             title: {
@@ -35,7 +35,7 @@ $(function () {
             }]
         },
         tooltip: {
-            valueSuffix: '°C'
+            valueSuffix: ' Incidentes'
         },
         legend: {
             layout: 'vertical',
@@ -47,7 +47,7 @@ $(function () {
           <?php if ($h->id!=20 && $h->id!=1): ?>
             {
                 name: '<?php echo $h->name ?> <?php echo $h->lastname ?>',
-                data: [
+                data: [0,
                   <?php $anterior=date("Y-m-d",strtotime($start)); ?>
                   <?php foreach ($incidents_by_handler[$h->id]['incidents'] as $i): ?>
                     <?php $between_days=floor((strtotime($i->date)-strtotime($anterior))/(60*60*24)) ?>
@@ -61,7 +61,7 @@ $(function () {
                   <?php endforeach ?>
 
 
-                  ]
+                  0]
             },
           <?php endif ?>
         <?php endforeach ?>]
