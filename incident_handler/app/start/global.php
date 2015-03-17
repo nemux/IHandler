@@ -57,6 +57,7 @@ App::error(function(Exception $exception, $code)
     $log->error(Auth::user()->id,Auth::user()->username, $error_log);
     return Redirect::to($_SERVER['HTTP_REFERER']);
   }
+    //Errores de Correo
   if ($type =="Swift_TransportException"){
       $error_log = "[MAIL_DEBUG]: [URL]: " . Request::url()  . ".[Mensaje]:" . $exception->getMessage();
       $log->error(Auth::user()->id,Auth::user()->username, $error_log);
@@ -112,5 +113,4 @@ App::missing(function(Exception $exception)
 			  'error_msg' => 'No encontrado.'
 	 );
   return Response::view("error.error", $error, $error['code']);
-
 });

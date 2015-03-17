@@ -56,22 +56,30 @@ class OtrsController extends BaseController{
     }
 
 
- protected function sendTicket($incident_id){
-    $u = new Otrs\User();
-    $ticketOtrs = new Otrs\Ticket();
-    $incident=Incident::find($incident_id);
-    $ticketIM = Ticket::find($incident->ticket->id);
+ protected function sendTicket(){
 
-    if ($ticketIM->otrs_ticket_id == ""){
-      $htmlReport = $this->renderReport($incident);
-      $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer,$htmlReport);
-      $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-      $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-      $ticketIM->save();
-      return 'Incident ID->'.$ticketIM->incidents_id.'\nTicket IM->'.$ticketIM->internal_number.'\nTicket OTRS->'.$ticketIM->otrs_ticket_number;
-    } else {
-      return "Ya se ha generado el ticket en OTRS anteriormente, el numero es->".$ticketIM->otrs_ticket_number;
-    }
+    $system_key = Config::get('api.key');
+    $user_key = Input::get('key');
+
+    if ($system_key == $user_key) {
+        $incident_id = Input::get('id');
+        $u = new Otrs\User();
+        $ticketOtrs = new Otrs\Ticket();
+        $incident = Incident::find($incident_id);
+        $ticketIM = Ticket::find($incident->ticket->id);
+
+        if ($ticketIM->otrs_ticket_id == "") {
+            $htmlReport = $this->renderReport($incident);
+            $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer, $htmlReport);
+            $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+            $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+            $ticketIM->save();
+            return 'Incident ID->' . $ticketIM->incidents_id . '\nTicket IM->' . $ticketIM->internal_number . '\nTicket OTRS->' . $ticketIM->otrs_ticket_number;
+        } else {
+            return "Ya se ha generado el ticket en OTRS anteriormente, el numero es->" . $ticketIM->otrs_ticket_number;
+        }
+    } else
+        return array('error' => "Error de autenticacion");
   }
 
   public function test($id){

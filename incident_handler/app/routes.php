@@ -140,7 +140,7 @@ Route::group(array('prefix' => 'api'), function(){
         Route::group(array('prefix' => 'task'), function () {
             Route::post('/ticket/reminder', 'TaskController@sendReminder');
             Route::post('/ticket/close','TaskController@closeTickets');
-            Route::get('otrs/ticket/create/{id}', 'OtrsController@sendTicket');
+            Route::post('/otrs/ticket/create', 'OtrsController@sendTicket');
         });
     });
 });
