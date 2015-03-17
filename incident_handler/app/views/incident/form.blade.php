@@ -918,6 +918,7 @@ function removeRule(tr,sid){
                                   <td>
                                       <select id="src_location"  type="text" class="form-control" name="search_src_location">
                                           <option value=" ">No especificado </option>
+                                          <option value="Local">Local </option>
                                           <option value="Afganistán">Afganistán </option>
                                           <option value="Akrotiri">Akrotiri </option>
                                           <option value="Albania">Albania </option>
@@ -1176,6 +1177,7 @@ function removeRule(tr,sid){
                                     <br>
                                       <select id="dst_location"  type="text" class="form-control" name="search_dst_location">
                                           <option value=" ">No especificado </option>
+                                          <option value="Local">Local </option>
                                           <option value="Afganistán">Afganistán </option>
                                           <option value="Akrotiri">Akrotiri </option>
                                           <option value="Albania">Albania </option>
