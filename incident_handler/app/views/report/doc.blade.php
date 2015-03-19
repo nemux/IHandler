@@ -104,30 +104,7 @@ function cleanContent($content){
                     <td>
                       {{ $incident->category->name }}
                       {{ $incident->category->description }}
-                    </td>@if (count($incident['listed']) > 0)
-
-              <tr>
-                    <td style="text-align:center">
-                      {{-- */$count = 0;/* --}}
-                          @foreach ($incident['listed'] as $l)
-                              {{-- */ $count++; /*--}}
-                              {{ $l->ip }}[{{ $count }}]<br>
-                          @endforeach
-                      </td>
-                      <td style="text-align:center">
-                          {{-- */ $count = 0; /*--}}
-                          @foreach ($incident['location'] as $l)
-                              {{-- */ $count++; /* --}}
-                              @if (isset($l->location))
-                                  {{$l->location }}
-                              @endif
-                              <br/>
-                          @endforeach
-                      </td>
-                </tr>
-              @endif
-
-                  </tr>
+                    </td>
                   @foreach ($incident->extraCategory as $ec)
                   <tr >
                       <td >

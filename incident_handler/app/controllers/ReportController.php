@@ -63,6 +63,34 @@ class ReportController extends Controller{
             }
         }
 
+    public function ipDoc(){
+
+        $start_date = Input::get('s') . " 00:00:00";
+        $end_date = Input::get('e') . " 23:59:59";
+        $ip_type = Input::get('t');
+
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition"=>"attachment;Filename=Reporte_ip.doc"
+        );
+
+        $ips = DB::table('occurrences AS O')->select('O.ip')->distinct()
+            ->join('incidents_occurences AS IO',$ip_type == 'source_id' ? 'IO.source_id' : 'IO.destiny_id','=','O.id')
+            ->whereNull('IO.deleted_at')
+            ->whereBetween('IO.created_at',array(new DateTime($start_date), new DateTime($end_date)))
+            ->where('O.ip','!=','')
+            ->get();
+
+        $htmlReport = View::make('report.ip_table', array(
+            'iplist' => $ips,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'type' => $ip_type
+        ))->render();
+
+        return Response::make($htmlReport,200,$headers);
+    }
+
     private function defaultReport($start_date, $end_date, $time_type,$customer_id){
 
         $headers = array(
@@ -128,11 +156,13 @@ class ReportController extends Controller{
             "Content-Disposition" => "attachment;Filename=Reporte_incidentes.doc"
         );
 
+
+
         if ($customer_id == 0) {
             $ips = explode(',', $value);
             $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
                 ->join('incidents_occurences AS io', 'I.id', '=', 'io.incidents_id')
-                ->join('occurrences AS o', $ip_type == 1 ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
+                ->join('occurrences AS o', $ip_type == 'source_id' ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
                 ->join('time AS T', "I.id", '=', 'T.incidents_id')
                 ->whereIn('o.ip', $ips)
                 ->whereNull('I.deleted_at')
@@ -145,7 +175,7 @@ class ReportController extends Controller{
             $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
                 ->join('incidents_occurences AS io', 'I.id', '=', 'io.incidents_id')
                 ->join('time AS T', "I.id", '=', 'T.incidents_id')
-                ->join('occurrences AS o', $ip_type == 1 ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
+                ->join('occurrences AS o', $ip_type == 'source_id' ? 'io.source_id' : 'io.destiny_id', '=', 'o.id')
                 ->whereIn('o.ip', $ips)
                 ->whereNull('I.deleted_at')
                 ->where('T.time_types_id', '=', $time_type)

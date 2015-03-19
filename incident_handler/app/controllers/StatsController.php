@@ -354,9 +354,6 @@ protected $layout = 'layouts.master';
               'end'=>$end,
             ));
           }
-
-
-
     }
     public function blacklist(){
       $ips=DB::select(DB::raw("select o.ip, oh.location from occurrences as o, occurences_history oh where oh.occurences_id=o.id and blacklist=true and oh.id=(select id from occurences_history where occurences_id=o.id and location!='' order by id desc limit 1)"));
@@ -376,6 +373,34 @@ protected $layout = 'layouts.master';
           "Content-Disposition"=>"attachment;Filename=Blacklist.doc"
       );
       return Response::make($html,200, $headers);
+    }
+
+    public function get_IPListByOrigin(){
+        return View::make('stats.ip_ori');
+
+    }
+
+    public function post_IPListByOrigin(){
+        $start_date = Input::get('start_date'). ' ' . '00:00:00';
+        $end_date = Input::get('end_date'). ' ' . '23:59:59';
+        $ip_type = Input::get('ip_type');
+
+
+        $ips = DB::table('occurrences AS O')->select('O.ip')->distinct()
+               ->join('incidents_occurences AS IO',$ip_type == 'source_id' ? 'IO.source_id' : 'IO.destiny_id','=','O.id')
+               ->whereNull('IO.deleted_at')
+               ->whereBetween('IO.created_at',array(new DateTime($start_date), new DateTime($end_date)))
+               ->where('O.ip','!=','')
+               ->get();
+
+        return View::make('stats.ip_ori', array(
+            'fuente' => $ip_type == 'source_id' ? 'Origen.' : 'Destino.',
+            'update' => 'true',
+            'iplist' => $ips,
+            'start_date' => Input::get('start_date'),
+            'end_date' =>Input::get('end_date'),
+            'type' => $ip_type
+        ));
     }
 
 }

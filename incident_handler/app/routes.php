@@ -104,6 +104,9 @@ Route::group(array('before'=>'auth', 'prefix'=>'stats'),function(){
   Route::post('/severity/graph', 'StatsController@severityGraph');
   Route::get('/blacklist', 'StatsController@blacklist');
   Route::get('/blacklist/doc', 'StatsController@doc');
+  Route::post('/ip/origin', 'StatsController@post_IPListByOrigin');
+  Route::get('/ip/origin', 'StatsController@get_IPListByOrigin');
+
 
   #Admin Routes
 });
@@ -127,6 +130,7 @@ Route::group(array('before'=>'auth', 'prefix'=>'report'),function(){
   Route::get('/', 'ReportController@index');
   Route::get('/{type}', 'ReportController@view')->where(array('type' => '(date|handler|category|severity|status|ip|csv)'));
   Route::post('/create/{doc_type}', 'ReportController@create')->where(array('doc_type' => '(doc|csv)'));
+  Route::get('/ip/doc', 'ReportController@ipDoc');
 });
 
 
