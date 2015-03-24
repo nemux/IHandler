@@ -120,7 +120,8 @@ protected $layout = 'layouts.master';
           }
           $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
           $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
-          echo "select
+
+          $ips=DB::select(DB::raw("select
                                           o.ip as ip,
                                           count(o.id)
                                         from
@@ -134,48 +135,6 @@ protected $layout = 'layouts.master';
                                           o.blacklist=".$set_blacklist."
                                         and
                                           oh.updated_at between '".$start." 00:00:00' and '".$end." 23:59:59'
-                                        and
-                                          o.id=(
-                                            select ".$join_occurence." from
-                                              incidents_occurences as io,
-                                              incidents as i,
-                                              customers as c
-                                            where
-                                              ".$join_occurence."=o.id
-                                            and
-                                              io.incidents_id=i.id
-                                            and
-                                              c.id=".$customer."
-                                            and
-                                              i.customers_id=c.id limit 1)
-                                        group by
-                                          ip
-                                        order by
-                                          count desc
-                                        limit ".$top."
-                                        ";
-          return null;
-          $ips=DB::select(DB::raw("select
-                                          o.ip as ip,
-                                          count(o.id)
-                                        from
-                                          occurrences as o,
-                                          occurences_history as oh,
-                                          time as t
-                                        where
-                                          o.id=oh.occurences_id
-                                        and
-                                          t.incidents_id=oh.incidents_id
-                                        and
-                                          t.time_types_id=1
-                                        and
-                                          oh.incidents_id=i.id
-                                        and
-                                          o.ip not like ''
-                                        and
-                                          o.blacklist=".$set_blacklist."
-                                        and
-                                          t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                         and
                                           o.id=(
                                             select ".$join_occurence." from
