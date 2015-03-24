@@ -120,21 +120,17 @@ protected $layout = 'layouts.master';
           }
           $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
           $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
-
-          $ips=DB::select(DB::raw("select
+          $query="select
                                           o.ip as ip,
                                           count(o.id)
                                         from
-                                          occurrences as o,
-                                          occurences_history as oh
+                                          occurrences as o
                                         where
-                                          o.id=oh.occurences_id
-                                        and
                                           o.ip not like ''
                                         and
                                           o.blacklist=".$set_blacklist."
                                         and
-                                          oh.updated_at between '".$start." 00:00:00' and '".$end." 23:59:59'
+                                          o.created_at between '".$start." 00:00:00' and '".$end." 23:59:59'
                                         and
                                           o.id=(
                                             select ".$join_occurence." from
@@ -154,7 +150,10 @@ protected $layout = 'layouts.master';
                                         order by
                                           count desc
                                         limit ".$top."
-                                        "));
+                                        ";
+          //echo $query;
+          //return null;
+          $ips=DB::select(DB::raw($query));
 
           return $this->layout = View::make("stats._ip", array(
             'ips'=>$ips,
