@@ -120,7 +120,7 @@ protected $layout = 'layouts.master';
           }
           $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
           $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
-          $query="select
+          /*$query1="select
                                           o.ip as ip,
                                           count(o.id)
                                         from
@@ -150,7 +150,37 @@ protected $layout = 'layouts.master';
                                         order by
                                           count desc
                                         limit ".$top."
-                                        ";
+                                        ";*/
+          $query="select
+                    o.ip as ip,
+                    count(o.id)
+                  from
+                    incidents as i,
+                    time as t,
+                    incidents_occurences as io,
+                    occurrences as o
+                  where
+                    t.time_types_id=1
+                  and
+                    t.incidents_id=i.id
+                  and
+                    t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
+                  and
+                    io.incidents_id=i.id
+                  and
+                    ".$join_occurence."=o.id
+                  and
+                    o.ip not like ''
+                  and
+                    o.blacklist=".$set_blacklist."
+                  and
+                    i.customers_id=".$customer."
+                  group by
+                    ip
+                  order by
+                    count desc
+                  limit ".$top.";
+                  ";
           //echo $query;
           //return null;
           $ips=DB::select(DB::raw($query));
