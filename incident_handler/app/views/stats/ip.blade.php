@@ -32,16 +32,15 @@ ${demo.css}
     </script>
 
     <script charset="utf-8">
-      function graph(top,src_dst,customer,blacklist){
+      function graph(top,src_dst,customer,blacklist,start,end){
         $.ajax({
           type: "POST",
           url: "/stats/ip/graph",
-          data: { top:top,src_dst:src_dst,customer:customer,blacklist:blacklist},
+          data: { top:top,src_dst:src_dst,customer:customer,blacklist:blacklist,start:start,end:end},
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
             //console.log(result);
-
           }
         })
       }
@@ -63,6 +62,17 @@ ${demo.css}
                             <form class="form-horizontal form-bordered">
 
                                 <div class="form-group">
+                                    <div class="col-lg-3">
+                                      <label class="col-md-6 control-label">Rango de fechas</label>
+                                      <div class="col-md-6">
+                                          <div class="input-group input-daterange">
+                                              <input type="text" class="form-control" id="start" placeholder="Fecha de Inicio" />
+                                                <span class="input-group-addon">a</span>
+                                              <input type="text" class="form-control" id="end" placeholder="Fecha Final" />
+
+                                          </div>
+                                      </div>
+                                    </div>
                                     <div class="col-lg-2">
 
                                         <div class="col-lg-3">
@@ -119,7 +129,7 @@ ${demo.css}
 
                                     <div class="col-lg-2">
                                       <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#top").val(),$("#src_dst").val(),$("#customer").val(),$("#blacklist").val())'>Generar Gráfica</a>
+                                        <a class="btn btn-default" id="generate" onclick='graph($("#top").val(),$("#src_dst").val(),$("#customer").val(),$("#blacklist").val(),$("#start").val(),$("#end").val())'>Generar Gráfica</a>
                                       </div>
                                     </div>
                                 </div>
