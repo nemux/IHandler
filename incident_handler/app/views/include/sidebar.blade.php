@@ -127,7 +127,7 @@
 
 
 					<li><a href="/stats/blacklist"><i class="fa fa-list"></i> <span>Blacklist</span></a></li>
-                    <li><a href="/stats/ip/origin"><i class="fa fa-list"></i> <span>IP Origen/Destino</span></a></li>
+                    <li><a href="/stats/ip/origin"><i class="fa fa-cubes"></i> <span>IP Origen/Destino</span></a></li>
 
 			        <!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
