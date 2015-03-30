@@ -26,7 +26,8 @@
 						</a>
 						<ul class="sub-menu">
 								<li class=""><a href="/incident/create">Crear</a></li>
-								<li><a href="/incident/">Ver</a></li>
+								<li><a href="/incident/view/filter">Ver ...</a></li>
+								<li><a href="/incident/">Ver Todos</a></li>
 								<li><a href="/incident/search/ip">Buscar por Ip</a></li>
 						</ul>
 					</li>

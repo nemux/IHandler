@@ -73,6 +73,10 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('search/ip/', 'IncidentController@searchIp');
   Route::post('search/render/ip/', 'IncidentController@renderIp');
   Route::get('mail/{id}','IncidentController@mail');
+
+  Route::get('view/filter/', 'IncidentController@monthly');
+  Route::post('view/filter/','IncidentController@viewMonthly');
+
 });
 
 Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){

@@ -972,12 +972,30 @@ protected $layout = 'layouts.master';
 
     //Estatus 4 = Cerrado
     //Estatus 5 =  Falso Positivo
-    $incident = Incident::where('incidents_status_id','<','4')-> orderBy('id','asc')->get();
+    $incident = Incident::where('incidents_status_id','<','4')->orderBy('id','asc')->get();
 
     return $this->layout = View::make('incident.index', array(
     'incident'=>$incident,
 
     ));
+  }
+  public function viewMonthly(){
+    $input = Input::all();
+    $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+    $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+
+
+    $incident = Incident::where('incidents_status_id','<','4')
+                            //->join('time', 'incidents.id', '=', 'time.incidents_id')
+                            ->where('customers_id', '=', $input['customer'])
+                            ->where('created_at', '>=', $start)
+                            ->where('created_at', '<=', $end)
+                            ->orderBy('id','asc')->get();
+    return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
+  }
+  public function monthly(){
+
+    return $this->layout = View::make('incident.monthly', array());
   }
   public function openStatus(){
     $incident=Incident::where("incidents_status_id",'=','1')->where('incident_handler_id','=',Auth::user()->id)->get();

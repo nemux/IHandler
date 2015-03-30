@@ -88,7 +88,7 @@ function nobackbutton(){
   <!-- begin #page-container -->
 
 
-      <h1 class="page-header" style="color:#FFF">Reporte de incidente (<?php print_r( $incident->status->name) ?>)<small> </small></h1>
+      <h1 class="page-header" style="color:#FFF">Reporte de incidente (En <?php print_r( $incident->status->name) ?> - Actualizado: <?php echo $incident->updated_at ?>)<small> </small></h1>
       <!-- end page-header -->
 
       <div class="panel panel-inverse">

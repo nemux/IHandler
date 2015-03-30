@@ -1,20 +1,4 @@
 
-@extends('layouts.master')
-@section('content')
-
-<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-  <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
-  <!-- ================== END PAGE LEVEL STYLE ================== -->
-
-  <!-- ================== BEGIN BASE JS ================== -->
-  <script src="/assets/plugins/pace/pace.min.js"></script>
-  <!-- ================== END BASE JS ================== -->
-<script>
-    $(document).ready(function() {
-
-      TableManageDefault.init();
-    });
-  </script>
 <div class="col-md-12" style="min-width:800px;">
                     <!-- begin panel -->
                     <div class="panel panel-inverse">
@@ -97,7 +81,7 @@
                                             <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
                                           </td>
 
-                                          
+
                                           <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
                                             <td>
                                               <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
@@ -113,12 +97,9 @@
                     </div>
                     <!-- end panel -->
                 </div>
+                <script>
+                    $(document).ready(function() {
 
-  <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-  <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
-  <script src="/assets/js/table-manage-default.demo.min.js"></script>
-  <script src="/assets/js/apps.min.js"></script>
-  <!-- ================== END PAGE LEVEL JS ================== -->
-
-
-@stop
+                      TableManageDefault.init();
+                    });
+                  </script>

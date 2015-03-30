@@ -153,7 +153,7 @@ protected $layout = 'layouts.master';
                                         ";*/
           $query="select
                     o.ip as ip,
-                    count(o.id)
+                    count(o.ip)
                   from
                     incidents as i,
                     time as t,
@@ -181,8 +181,8 @@ protected $layout = 'layouts.master';
                     count desc
                   limit ".$top.";
                   ";
-          //echo $query;
-          //return null;
+          echo $query;
+          return null;
           $ips=DB::select(DB::raw($query));
 
           return $this->layout = View::make("stats._ip", array(
