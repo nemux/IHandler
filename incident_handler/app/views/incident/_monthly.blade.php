@@ -27,6 +27,16 @@
                                             <th>
                                               Status
                                             </th>
+                                            <th>
+                                              Categoría
+                                            </th>
+                                            <th>
+                                              Severidad
+                                            </th>
+
+                                            <th>
+                                              Flujo
+                                            </th>
 
                                             <th>
                                               Handler
@@ -76,6 +86,23 @@
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php echo $in->status->name ?>
                                           </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            CAT:<?php echo ($in->category->id)-1; ?>
+                                          </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            SEV:<?php
+                                                echo $in->criticity;
+                                            ?>
+                                          </td>
+
+                                          <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
+                                            <?php
+                                                echo $in->stream;
+                                            ?>
+                                          </td>
+
 
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>

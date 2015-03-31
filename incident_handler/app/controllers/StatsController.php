@@ -181,8 +181,7 @@ protected $layout = 'layouts.master';
                     count desc
                   limit ".$top.";
                   ";
-          echo $query;
-          return null;
+          
           $ips=DB::select(DB::raw($query));
 
           return $this->layout = View::make("stats._ip", array(

@@ -43,7 +43,7 @@
                                             <th>
                                               Status
                                             </th>
-
+                                            
                                             <th>
                                               Handler
                                             </th>
@@ -93,11 +93,13 @@
                                             <?php echo $in->status->name ?>
                                           </td>
 
+
+
                                           <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                             <?php if(isset($in->handler->access->username)){ echo $in->handler->access->username; }?>
                                           </td>
 
-                                          
+
                                           <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
                                             <td>
                                               <a href='/incident/mail/{{$in->id}}' class="btn btn-default">Correo</a>
