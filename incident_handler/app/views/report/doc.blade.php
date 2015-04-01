@@ -256,14 +256,14 @@ function cleanContent($content){
                   </td>
               </tr>
               <tr>
-                    <td style="text-align:center" width="50%">
+                    <td style="text-align:center">
                       {{-- */$count = 0;/* --}}
                           @foreach ($report_info[$incident->id]['listed'] as $l)
                               {{-- */ $count++; /*--}}
                               {{ $l->ip }}[{{ $count }}]<br>
                           @endforeach
                       </td>
-                      <td style="text-align:center" width="50%">
+                      <td style="text-align:center">
                           {{-- */ $count = 0; /*--}}
                           @foreach ($report_info[$incident->id]['location'] as $l)
                               {{-- */ $count++; /* --}}
