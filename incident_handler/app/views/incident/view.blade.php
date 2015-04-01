@@ -481,8 +481,9 @@ function nobackbutton(){
               <input type="hidden" name="status" id="next_status" value="3">
 
                 <input type="hidden" name="id" value="<?php echo $incident->id ?>" >
-
-              {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+              @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
+                {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send', 'style'=>'margin-left:2px']);}}
+              @endif
               {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
               <!--<a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>-->
             <?php endif ?>
@@ -504,7 +505,9 @@ function nobackbutton(){
 
                 <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right" onclick="$('#images').click()">Seleccionar evidencia</div>
                 <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
-                {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved', 'style'=>'margin-left:2px']);}}
+                @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
+                    {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved', 'style'=>'margin-left:2px']);}}
+                @endif
                 {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
               <div class="col-lg-1 pull-right">
                 <p id="file_message">
