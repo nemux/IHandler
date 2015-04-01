@@ -245,7 +245,7 @@ function cleanContent($content){
 
               @if (count($report_info[$incident->id]['listed']) > 0)
               <tr>
-                  <td style="text-align:center;background:#d9d9d9" >
+                  <td style="text-align:center;background:#d9d9d9"  rowspan="2">
                       <strong>Blacklist:</strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9;" >
@@ -256,14 +256,14 @@ function cleanContent($content){
                   </td>
               </tr>
               <tr>
-                    <td style="text-align:center">
+                    <td style="text-align:center" width="50%">
                       {{-- */$count = 0;/* --}}
                           @foreach ($report_info[$incident->id]['listed'] as $l)
                               {{-- */ $count++; /*--}}
                               {{ $l->ip }}[{{ $count }}]<br>
                           @endforeach
                       </td>
-                      <td style="text-align:center">
+                      <td style="text-align:center" width="50%">
                           {{-- */ $count = 0; /*--}}
                           @foreach ($report_info[$incident->id]['location'] as $l)
                               {{-- */ $count++; /* --}}
@@ -275,7 +275,6 @@ function cleanContent($content){
                       </td>
                 </tr>
               @endif
-
               <tr>
                   <td style="text-align:center;background:#d9d9d9" >
                       <strong>Descripci&oacute;n:</strong>
