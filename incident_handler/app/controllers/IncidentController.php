@@ -988,8 +988,8 @@ protected $layout = 'layouts.master';
     $incident = Incident::where('incidents_status_id','<','4')
                             //->join('time', 'incidents.id', '=', 'time.incidents_id')
                             ->where('customers_id', '=', $input['customer'])
-                            ->where('created_at', '>=', $start)
-                            ->where('created_at', '<=', $end)
+                            ->where('created_at', '>=', $start." 00:00:00")
+                            ->where('created_at', '<=', $end." 23:59:59")
                             ->orderBy('id','asc')->get();
     return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
   }
