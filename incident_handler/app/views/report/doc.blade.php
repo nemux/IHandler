@@ -321,7 +321,7 @@ function cleanContent($content){
                       <table style="table-layout: fixed;">
                           <tr style="text-align:center;background:#CCC;">
                               <td colspan="2">
-                                  <strong> {{ cleanContent($a->title) }} </strong>
+                                  <strong> Anexo: {{ cleanContent($a->title) }} Incidente: {{ isset($incident->ticket->internal_number) ? $incident->ticket->internal_number : "Por asignar..."  }}</strong>
                               </td>
                           </tr>
                           <tr>
