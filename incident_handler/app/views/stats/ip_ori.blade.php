@@ -25,8 +25,8 @@
             <div class="panel-body panel-form">
                 <form class="form-horizontal form-bordered" action="/stats/ip/origin" method="POST">
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Rango de fechas</label>
-                        <div class="col-md-3">
+                        <label class="col-md-2 control-label">Rango de fechas</label>
+                        <div class="col-md-2">
                             <div class="input-group input-daterange">
                                 <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Fecha de Inicio" />
                                 <span class="input-group-addon">a</span>
@@ -34,12 +34,23 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <div class="input-group">
                                 <select class="form-control" id="ip_type" name="ip_type">
                                     <option value="source_id">Origen</option>
                                     <option value="destiny_id">Destino</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <select id="customer" name="customer" class="form-control">
+                                    <option value="0">Todos los Clientes</option>
+                                    {{--*/ $customers = Customer::all(); /*--}}
+                                    @foreach ($customers as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                    @endforeach
+                                </select><br/>
                             </div>
                         </div>
                         <div class="col-lg-3">

@@ -108,6 +108,7 @@
 						</ul>
 					</li>
 					@endif
+                    @if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2')
 					<li class="has-sub ">
 							<a href="javascript:;">
 								<b class="caret pull-right"></b>
@@ -125,7 +126,7 @@
 
 						</ul>
 					</li>
-
+                    @endif
 
 					<li><a href="/stats/blacklist"><i class="fa fa-list"></i> <span>Blacklist</span></a></li>
                     <li><a href="/stats/ip/origin"><i class="fa fa-cubes"></i> <span>IP Origen/Destino</span></a></li>

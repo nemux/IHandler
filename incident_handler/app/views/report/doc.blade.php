@@ -245,7 +245,7 @@ function cleanContent($content){
 
               @if (count($report_info[$incident->id]['listed']) > 0)
               <tr>
-                  <td style="text-align:center;background:#d9d9d9" >
+                  <td style="text-align:center;background:#d9d9d9"  rowspan="2">
                       <strong>Blacklist:</strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9;" >
@@ -275,7 +275,6 @@ function cleanContent($content){
                       </td>
                 </tr>
               @endif
-
               <tr>
                   <td style="text-align:center;background:#d9d9d9" >
                       <strong>Descripci&oacute;n:</strong>
@@ -322,7 +321,7 @@ function cleanContent($content){
                       <table style="table-layout: fixed;">
                           <tr style="text-align:center;background:#CCC;">
                               <td colspan="2">
-                                  <strong> {{ cleanContent($a->title) }} </strong>
+                                  <strong> Anexo: {{ cleanContent($a->title) }} Incidente: {{ isset($incident->ticket->internal_number) ? $incident->ticket->internal_number : "Por asignar..."  }}</strong>
                               </td>
                           </tr>
                           <tr>
