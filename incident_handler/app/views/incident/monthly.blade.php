@@ -52,12 +52,12 @@ ${demo.css}
 		</script>
 
     <script charset="utf-8">
-      function graph(start,end,customer){
+      function graph(start,end,customer,type){
         $.ajax({
           type: "POST",
           url: "/incident/view/filter",
           ascync:false,
-          data: { start: start, end: end, customer: customer},
+          data: { start: start, end: end, customer: customer, type: type},
           beforeSend: function () {
             $("#target").html("");
             $("#target").html('<div class="col-lg-12"><div class="panel panel-inverse"><div class="panel-body panel-form"><h3 >Cargando...</h3></div></div></div>');
@@ -97,7 +97,7 @@ ${demo.css}
                                         </div>
                                     </div>
 
-																		<div class="col-lg-2">
+                                    <div class="col-lg-2">
                                       <div class="form-group">
                                         <select id="customer" class="form-control">
                                           <?php $customers=Customer::all(); ?>
@@ -109,8 +109,17 @@ ${demo.css}
                                     </div>
 
                                     <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <select id="type" class="form-control">
+                                                <option value="tickets">Tickets</option>
+                                                <option value="incidentes">Incidentes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-2">
                                       <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#customer").val())'>Realizar filtro</a>
+                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#customer").val(),$("#type").val())'>Realizar filtro</a>
                                       </div>
                                     </div>
                                 </div>

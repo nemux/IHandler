@@ -986,6 +986,7 @@ protected $layout = 'layouts.master';
     //$end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
     $start = $input['start']. ' ' . '00:00:00';
     $end = $input['end']. ' ' . '23:59:59';
+    $type = $input['type'];
 
    /*
     * Consulta del Chagui
@@ -996,13 +997,24 @@ protected $layout = 'layouts.master';
                             ->where('created_at', '<=', $end." 23:59:59")
                             ->orderBy('id','asc')->get();
    */
+      Log::info("Si entra");
+      if ($type == 'incidentes') {
+          Log::info("INCIDENTESSS");
+          $incident = Incident::where('incidents_status_id', '<', '4')
+              //->join('time', 'incidents.id', '=', 'time.incidents_id')
+              ->where('customers_id', '=', $input['customer'])
+              ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
+              ->orderBy('id', 'asc')->get();
+      } else {
+          Log::info("TICKETS");
+          $incident = Incident::where('incidents_status_id', '<', '4')
+              ->join('tickets', 'incidents.id', '=', 'tickets.incidents_id')
+              ->where('incidents.customers_id', '=', $input['customer'])
+              ->whereBetween('tickets.created_at', array(new DateTime($start), new DateTime($end)))
+              ->orderBy('tickets.id', 'asc')->get();
+      }
 
-      $incident = Incident::where('incidents_status_id','<','4')
-          //->join('time', 'incidents.id', '=', 'time.incidents_id')
-          ->where('customers_id', '=', $input['customer'])
-          ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
-          ->orderBy('id','asc')->get();
-
+      Log::info(DB::getQueryLog());
 
     return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
   }
