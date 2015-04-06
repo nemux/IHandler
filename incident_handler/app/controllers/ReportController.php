@@ -127,7 +127,7 @@ class ReportController extends Controller{
 
         $field = "";
         switch($type){
-            case '|':
+            case 'handler':
                 $field = "I.incident_handler_id";
                 break;
 
