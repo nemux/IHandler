@@ -11,7 +11,9 @@
 */
 
 Route::get('/','HomeController@index');
+
 Route::get('dashboard',array('before'=> 'auth', 'uses' => 'HomeController@dashboard'));
+
 Route::get('rule/query/{id}', 'RuleController@query')->where(array('id'=>'^[0-9]+$'));
 Route::get('occurence/query/{id}', 'OccurenceController@query')->where(array('id'=>'^[0-9]+$'));
 

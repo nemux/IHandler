@@ -1266,12 +1266,3 @@ protected $layout = 'layouts.master';
 }
 
 ?>
-
-select * from incidents
-inner join tickets on
-incidents.id = tickets.incidents_id
-where incidents.deleted_at is null and incidents_status_id < 4
-and incidents.customers_id = 1
-and tickets.created_at
-between '2015-03-01 00:00:00' and '2015-03-31 23:59:59'
-order by tickets.id asc

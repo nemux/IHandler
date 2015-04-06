@@ -132,7 +132,7 @@ class ReportController extends Controller{
                 break;
 
             case 'category':
-                $field = "I.category_id";
+                $field = "I.categories_id";
                 break;
 
             case 'severity':
