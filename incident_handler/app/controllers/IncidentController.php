@@ -997,25 +997,19 @@ protected $layout = 'layouts.master';
                             ->where('created_at', '<=', $end." 23:59:59")
                             ->orderBy('id','asc')->get();
    */
-      Log::info("Si entra");
       if ($type == 'incidentes') {
-          Log::info("INCIDENTESSS");
           $incident = Incident::where('incidents_status_id', '<', '4')
               //->join('time', 'incidents.id', '=', 'time.incidents_id')
               ->where('customers_id', '=', $input['customer'])
               ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
               ->orderBy('id', 'asc')->get();
       } else {
-          Log::info("TICKETS");
           $incident = Incident::where('incidents_status_id', '<', '4')
               ->join('tickets', 'incidents.id', '=', 'tickets.incidents_id')
               ->where('incidents.customers_id', '=', $input['customer'])
               ->whereBetween('tickets.created_at', array(new DateTime($start), new DateTime($end)))
               ->orderBy('tickets.id', 'asc')->get();
       }
-
-      Log::info(DB::getQueryLog());
-
     return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
   }
   public function monthly(){
@@ -1239,3 +1233,12 @@ protected $layout = 'layouts.master';
 }
 
 ?>
+
+select * from incidents
+inner join tickets on
+incidents.id = tickets.incidents_id
+where incidents.deleted_at is null and incidents_status_id < 4
+and incidents.customers_id = 1
+and tickets.created_at
+between '2015-03-01 00:00:00' and '2015-03-31 23:59:59'
+order by tickets.id asc

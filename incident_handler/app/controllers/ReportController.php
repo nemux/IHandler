@@ -115,10 +115,11 @@ class ReportController extends Controller{
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
             "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
         );
+        $sensors_id = array();
 
         $field = "";
         switch($type){
-            case 'handler':
+            case '|':
                 $field = "I.incident_handler_id";
                 break;
 
@@ -135,11 +136,19 @@ class ReportController extends Controller{
                 break;
         }
 
+        if (Input::get('sensor_id') == 'all') {
+            $sensors = Sensor::where('customers_id', '=', $customer_id)->get();
+            foreach($sensors as $s )
+                $sensors_id[] = $s->id;
+        } else
+            $sensors_id[] = Input::get('sensor_id');
+
         $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')
             ->where('I.customers_id', '=', $customer_id)
             ->where($field, '=', $value)
             ->join('time AS T', "I.id", '=', 'T.incidents_id')
             ->where('T.time_types_id', '=', $time_type)
+            ->whereIn('sensors_id',$sensors_id)
             ->whereNull('I.deleted_at')
             ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
             ->orderBy('T.datetime','asc')
@@ -155,9 +164,7 @@ class ReportController extends Controller{
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
             "Content-Disposition" => "attachment;Filename=Reporte_incidentes.doc"
         );
-
-
-
+        
         if ($customer_id == 0) {
             $ips = explode(',', $value);
             $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime')

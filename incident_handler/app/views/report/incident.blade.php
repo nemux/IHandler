@@ -41,10 +41,7 @@
                                         <option value="{{ $t->id }}">{{$t->name }}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="form-group">
+
                                 <select id="customer" name="customer" class="form-control">
                                     {{--*/ $customers = Customer::all(); /*--}}
                                     @foreach ($customers as $c)
@@ -115,6 +112,10 @@
                             @endif
                         @endif
                         <div class="col-lg-2">
+                        <div class="form-group">
+                            <select id="sensor_id" name="sensor_id" class="form-control"/>
+                        </div></div>
+                        <div class="col-lg-2">
                             <div class="input-group">
                                 <input type="submit" class="btn btn-default" id="generate" name="generate" value="Generar Reporte"/>
                             </div>
@@ -143,6 +144,34 @@
     <script>
         $(document).ready(function() {
             FormPlugins.init();
+
+            $('#customer').change(function(){
+                $.get('/incident/sensor/get/'+$('#customer').val(),
+                        function( data ){
+                            $('#sensor_id').empty();
+                            $('#sensor_id').append("<option value='all'> Todos los sensores</option>");
+                            $.each(data, function(key, element) {
+                                if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+                                    $('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
+                                }else{
+                                    $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+                                }
+                            });
+                        });
+            });
+
+            $.get('/incident/sensor/get/'+$('#customer').val(),
+                    function( data ){
+                        $('#sensor_id').empty();
+                        $('#sensor_id').append("<option value='all'> Todos los sensores</option>");
+                        $.each(data, function(key, element) {
+                            if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+                                $('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
+                            }else{
+                                $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+                            }
+                        });
+                    });
         });
     </script>
 @stop
