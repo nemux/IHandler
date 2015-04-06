@@ -77,6 +77,9 @@ Route::group(array('before'=>'auth', 'prefix'=>'incident'),function(){
   Route::get('view/filter/', 'IncidentController@monthly');
   Route::post('view/filter/','IncidentController@viewMonthly');
 
+  Route::get('view/sensor/', 'IncidentController@sensor');
+  Route::post('view/sensor/','IncidentController@viewSensor');
+
 });
 
 Route::group(array('before'=>'admin', 'prefix'=>'customer'),function(){

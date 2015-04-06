@@ -1016,6 +1016,38 @@ protected $layout = 'layouts.master';
 
     return $this->layout = View::make('incident.monthly', array());
   }
+
+
+  public function sensor(){
+
+    return $this->layout = View::make('incident.sensor', array());
+  }
+  public function viewSensor(){
+    $input = Input::all();
+    $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
+    $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
+    $start = $start. ' ' . '00:00:00';
+    $end = $end. ' ' . '23:59:59';
+
+    $incident = Incident::leftJoin('time',function($join) { $join->on('incidents.id', '=', 'time.incidents_id'); })
+        ->where('customers_id', '=', $input['customer'])
+        ->where('incidents_status_id', '>', '1')
+        ->where('criticity','=',$input['criticity'])
+        ->where('sensors_id','=',$input['sensor'])
+        ->where('time_types_id','=','1')
+        ->where('datetime', '>=', $start)
+        ->where('datetime', '<=', $end)
+        ->orderBy('datetime', 'asc')->get();
+
+    $htmlReport=View::make('incident._sensor', array('incident'=>$incident,'severity'=>$input['criticity']));
+
+    $headers = array(
+            "Content-type" => "application/vnd.ms-word",
+            "Content-Disposition"=>"attachment;Filename=".$input['sensor']."_".$input['criticity'].".doc"
+    );
+    return Response::make($htmlReport,200, $headers);
+
+  }
   public function openStatus(){
     $incident=Incident::where("incidents_status_id",'=','1')->where('incident_handler_id','=',Auth::user()->id)->get();
     return $this->layout = View::make('incident.index', array(
@@ -1054,6 +1086,7 @@ protected $layout = 'layouts.master';
 
      return Response::make($htmlReport,200, $headers);
  }
+
 
   private function sendTicket($incident, $status){
     $u = new Otrs\User();
