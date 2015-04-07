@@ -148,6 +148,34 @@ ${demo.css}
 		$(document).ready(function() {
 
 			FormPlugins.init();
+
+            $('#customer').change(function(){
+                $.get('/incident/sensor/get/'+$('#customer').val(),
+                        function( data ){
+                            $('#sensor').empty();
+                            $('#sensor').append("<option value=''> Sensor (Opcional)</option>");
+                            $.each(data, function(key, element) {
+                                if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+                                    $('#sensor').append("<option selected value='" + key + "'>" + element + "</option>");
+                                }else{
+                                    $('#sensor').append("<option value='" + key + "'>" + element + "</option>");
+                                }
+                            });
+                        });
+            });
+
+            $.get('/incident/sensor/get/'+$('#customer').val(),
+                    function( data ){
+                        $('#sensor').empty();
+                        $('#sensor').append("<option value=''> Sensor (Opcional)</option>");
+                        $.each(data, function(key, element) {
+                            if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+                                $('#sensor').append("<option selected value='" + key + "'>" + element + "</option>");
+                            }else{
+                                $('#sensor').append("<option value='" + key + "'>" + element + "</option>");
+                            }
+                        });
+                    });
 		});
 	</script>
 
