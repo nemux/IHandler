@@ -21,7 +21,7 @@ abstract class Otrs {
 
   public function __construct(){
 
-    $this->url      = "http://10.30.12.107/otrs/rpc.pl";
+    $this->url      = "http://localhost/otrs/rpc.pl";
     $this->username = "csirt_global";
     $this->password = ".0040C3c1rT0400.";
     $this->incidentHandler = "gcs_im";
