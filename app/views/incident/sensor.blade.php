@@ -52,6 +52,7 @@ ${demo.css}
 		</script>
 
     <script charset="utf-8">
+
       function graph(start,end,customer,criticity,sensor){
         $.ajax({
           type: "POST",
@@ -70,8 +71,45 @@ ${demo.css}
         })
       }
 
-    </script>
+			$(document).ready(function() {
 
+
+				$.get('/incident/sensor/get/'+$('#customers_id').val(),
+				function( data ){
+						$('#sensor_id').empty();
+						$.each(data, function(key, element) {
+								if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+
+										$('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
+								}else{
+										$('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+								}
+							});
+				});
+
+
+				$('#customers_id').change(function(){
+
+					$.get('/incident/sensor/get/'+$('#customers_id').val(),
+						function( data ){
+							$('#sensor_id').empty();
+							$.each(data, function(key, element) {
+									if (key==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
+											$('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
+									}else{
+											$('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+									}
+
+								});
+					});
+				});
+
+			});
+
+    </script>
+		<script charset="utf-8">
+
+		</script>
 	</head>
 	<body>
 <div class="col-md-12">
@@ -99,7 +137,7 @@ ${demo.css}
 
                                     <div class="col-lg-2">
                                       <div class="form-group">
-                                        <select id="customer" class="form-control" name="customer">
+                                        <select id="customers_id" class="form-control" name="customer">
                                           <?php $customers=Customer::all(); ?>
                                           <?php foreach ($customers as $c): ?>
                                             <option value="<?php echo $c->id ?>"><?php echo $c->name ?></option>
@@ -110,7 +148,7 @@ ${demo.css}
 
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                          <select id="sensor" name="sensor" class="form-control">
+                                          <select id="sensor_id" name="sensor" class="form-control">
                                             <?php $sensor=Sensor::all(); ?>
                                             <?php foreach ($sensor as $c): ?>
                                               <option value="<?php echo $c->id ?>"><?php echo $c->name ?></option>
