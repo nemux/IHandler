@@ -1029,7 +1029,7 @@ protected $layout = 'layouts.master';
     $start = $start. ' ' . '00:00:00';
     $end = $end. ' ' . '23:59:59';
 
-    $incident = Incident::leftJoin('time',function($join) { $join->on('incidents.id', '=', 'time.incidents_id'); })
+    $incident = Incident::join('time',function($join) { $join->on('incidents.id', '=', 'time.incidents_id'); })
         ->where('customers_id', '=', $input['customer'])
         ->where('incidents_status_id', '>', '1')
         ->where('criticity','=',$input['criticity'])
