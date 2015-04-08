@@ -62,7 +62,7 @@ class OtrsController extends BaseController{
     $user_key = $key;
 
     if ($system_key == $user_key) {
-        $incident_id = Input::get('id');
+        $incident_id = $id;
         $u = new Otrs\User();
         $ticketOtrs = new Otrs\Ticket();
         $incident = Incident::find($incident_id);
