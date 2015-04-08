@@ -1024,6 +1024,46 @@ protected $layout = 'layouts.master';
   }
   public function viewSensor(){
     $input = Input::all();
+    $start_date = $input['start_date']. ' ' . '00:00:00';
+    $end_date = $input['end_date']. ' ' . '23:59:59';
+    $customer_id = $input['customer'];
+    $time_type = $input['time_type'];
+
+    $headers = array(
+        "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+        "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
+    );
+
+    if (Input::get('sensor_id') == 'all') {
+        $sensors = Sensor::where('customers_id', '=', $customer_id)->get();
+        foreach($sensors as $s )
+            $sensors_id[] = $s->id;
+    } else
+        $sensors_id[] = Input::get('sensor_id');
+
+    $value=$input['type_value'];
+
+    $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'T.datetime','I.title')
+        ->where('I.customers_id', '=', $customer_id)
+        ->where('I.criticity', '=', $value)
+        ->join('time AS T', "I.id", '=', 'T.incidents_id')
+        ->where('T.time_types_id', '=', $time_type)
+        ->whereIn('I.sensors_id',$sensors_id)
+        ->whereNull('I.deleted_at')
+        ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+        ->orderBy('T.datetime','asc')
+        ->get();
+
+        $htmlReport=View::make('incident._sensor', array('incidents'=>$incidents,'severity'=>$value));
+        $sensor_name=Sensor::find($sensors_id);
+
+        $headers = array(
+                "Content-type" => "application/vnd.ms-word",
+                "Content-Disposition"=>"attachment;Filename=".$sensor_name[0]->name."_".$value.".doc"
+        );
+        return Response::make($htmlReport,200, $headers);
+
+    /*$input = Input::all();
     $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
     $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
     $start = $start. ' ' . '00:00:00';
@@ -1047,7 +1087,7 @@ protected $layout = 'layouts.master';
             "Content-Disposition"=>"attachment;Filename=".$input['sensor']."_".$input['criticity'].".doc"
     );
     return Response::make($htmlReport,200, $headers);
-
+    */
   }
   public function openStatus(){
     $incident=Incident::where("incidents_status_id",'=','1')->where('incident_handler_id','=',Auth::user()->id)->get();
