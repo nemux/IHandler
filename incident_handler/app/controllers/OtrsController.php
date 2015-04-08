@@ -56,10 +56,10 @@ class OtrsController extends BaseController{
     }
 
 
- protected function sendTicket(){
+ protected function sendTicket($key,$id){
 
     $system_key = Config::get('api.key');
-    $user_key = Input::get('key');
+    $user_key = $key;
 
     if ($system_key == $user_key) {
         $incident_id = Input::get('id');
@@ -79,7 +79,7 @@ class OtrsController extends BaseController{
             return "Ya se ha generado el ticket en OTRS anteriormente, el numero es->" . $ticketIM->otrs_ticket_number;
         }
     } else
-        return array('error' => "Error de autenticacion");
+        return array( 'error' => 'Error de autenticacion' );
   }
 
   public function test($id){

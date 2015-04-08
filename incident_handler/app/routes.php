@@ -153,7 +153,7 @@ Route::group(array('prefix' => 'api'), function(){
         Route::group(array('prefix' => 'task'), function () {
             Route::post('/ticket/reminder', 'TaskController@sendReminder');
             Route::post('/ticket/close','TaskController@closeTickets');
-            Route::post('/otrs/ticket/create', 'OtrsController@sendTicket');
+            Route::get('/otrs/ticket/create/{key}/{id}', 'OtrsController@sendTicket');
         });
     });
 });
