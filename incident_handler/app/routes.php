@@ -113,7 +113,10 @@ Route::group(array('before' => 'auth', 'prefix' => 'stats'), function () {
     Route::post('/severity/graph', 'StatsController@severityGraph');
 
     Route::get('/sensor', 'StatsController@sensor'); //Obtiene la vista de estadísticas por sensor
-    Route::post('/sensor/graph','StatsController@sensorGraph'); //Envía la información para generar las gráficas por sensor
+    Route::post('/sensor/graph', 'StatsController@sensorGraph'); //Envía la información para generar las gráficas por sensor
+
+    Route::get('/sensor/severity', 'StatsController@sensorSeverity'); //Obtiene la vista de estadísticas por sensor y severidad
+    Route::post('/sensor/severity/graph', 'StatsController@sensorSeverityGrahp'); //Envía la información para generar las gráficas por sensor y severidad
 
     Route::get('/blacklist', 'StatsController@blacklist');
     Route::get('/blacklist/doc', 'StatsController@doc');

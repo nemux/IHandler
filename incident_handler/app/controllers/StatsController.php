@@ -339,31 +339,30 @@ class StatsController extends Controller
 
     /**
      * Muestra el formulario para las estadísticas por sensor
+     *
+     * @return mixed Vista relacionada
      */
     public function sensor()
     {
-        LOG::info('Formulario de estadísticas por sensor');
         return $this->layout = View::make("stats.sensor", array());
     }
 
     /**
-     * Muestra las gráficas del sensor(es) seleccionado(s)
+     *  Muestra las gráficas del sensor(es) seleccionado(s)
+     *
+     * @return mixed Vista relacionada
      */
     public function sensorGraph()
     {
-        LOG::info('Gráficas por sensor');
 
-        try {
+        $input = Input::all();
 
-            $input = Input::all();
+        if ($input['start'] != '' && $input['end'] != '') {
+            $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
+            $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
+            $customer = $input['customer'];
 
-            //print_r($input);
-            if ($input['start'] != '' && $input['end'] != '') {
-                $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
-                $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
-                $customer = $input['customer'];
-
-                $incidents = DB::select(DB::raw(" select count(*) as total, i.sensors_id, (select name from sensors where id=i.sensors_id) as sensor
+            $incidents = DB::select(DB::raw(" select count(*) as total, i.criticity
                                           from incidents as i, time as t
                                             where i.customers_id=" . $customer . "
                                                 and i.incidents_status_id>1
@@ -374,12 +373,52 @@ class StatsController extends Controller
                                           order by total desc;
                                             "));
 
-                return $this->layout = View::make("stats._sensor", array(
-                    'incidents' => $incidents,
-                ));
-            }
-        }catch(Exception $e){
-            LOG::error($e->getMessage());
+            return $this->layout = View::make("stats._sensor", array(
+                'incidents' => $incidents,
+            ));
+        }
+    }
+
+    /**
+     * Muestra la vista con el formulario para generar las gráficas por sensor, agrupadas por severidad
+     *
+     * @return mixed Vista relacionada
+     */
+    public function sensorSeverity()
+    {
+        return $this->layout = View::make("stats.sensor_severity", array());
+    }
+
+    /**
+     * Muestra la vista con las gráficas por sensor, agrupadas por severidad
+     *
+     * @return mixed Vista relacionada
+     */
+    public function sensorSeverityGrahp()
+    {
+        $input = Input::all();
+        if ($input['start'] != '' && $input['end'] != '') {
+            $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
+            $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
+            $customer = $input['customer'];
+            $sensor = $input['sensor'];
+            $nombre_sensor = $input['nombre_sensor'];
+
+            $incidents = DB::select(DB::raw(" select count(*) as total,i.criticity
+                                            from incidents as i, time as t
+                                              where i.customers_id=" . $customer . "
+                                                and i.sensors_id=" . $sensor . "
+                                                and i.incidents_status_id>1
+                                                and t.time_types_id=1
+                                                and t.incidents_id=i.id
+                                                and t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
+                                            group by i.criticity
+                                            order by total desc;
+                                            "));
+            return $this->layout = View::make("stats._sensor_severity", array(
+                'incidents' => $incidents, 'nombre_sensor' => $nombre_sensor
+            ));
+
         }
     }
 
