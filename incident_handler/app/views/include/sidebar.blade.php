@@ -63,9 +63,10 @@
                 </li>
 
                 <li class="has-sub ">
-                    <b class="caret pull-right"></b>
-                    <i class="fa fa-circle-o-notch"></i>
-                    <span>OTRS</span>
+                    <a href="javascript:;">
+                        <b class="caret pull-right"></b>
+                        <i class="fa fa-circle-o-notch"></i>
+                        <span>OTRS</span>
                     </a>
                     <ul class="sub-menu">
                         <li><a href="/otrs/import">Importar Informaci&oacute;n</a></li>
