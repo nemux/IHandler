@@ -63,9 +63,10 @@
                 </li>
 
                 <li class="has-sub ">
-                    <b class="caret pull-right"></b>
-                    <i class="fa fa-circle-o-notch"></i>
-                    <span>OTRS</span>
+                    <a href="javascript:;">
+                        <b class="caret pull-right"></b>
+                        <i class="fa fa-circle-o-notch"></i>
+                        <span>OTRS</span>
                     </a>
                     <ul class="sub-menu">
                         <li><a href="/otrs/import">Importar Informaci&oacute;n</a></li>
@@ -124,8 +125,8 @@
                         <li><a href="/stats/category">Por Categorías</a></li>
                         <li><a href="/stats/severity">Por Severidad</a></li>
                         <li><a href="/stats/attack">Por Ataques</a></li>
-
                         <li><a href="/stats/sensor">Por Sensor</a></li>
+                        <li><a href="/stats/sensor/severity">Por Sensor y Severidad</a></li>
                     </ul>
                 </li>
             @endif
