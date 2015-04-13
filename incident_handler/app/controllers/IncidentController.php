@@ -1004,17 +1004,27 @@ protected $layout = 'layouts.master';
                             ->where('created_at', '<=', $end." 23:59:59")
                             ->orderBy('id','asc')->get();
    */
-  if ($type == 'incidentes') {
-
-      $incident = Incident::where('incidents.incidents_status_id', '<', '4')
-          //->join('time', 'incidents.id', '=', 'time.incidents_id')
-          ->where('incidents.customers_id', '=', $customer)
-          ->whereBetween('incidents.created_at', array(new DateTime($start), new DateTime($end)))
-          ->orderBy('incidents.id', 'asc')->get();
-  } else {
+      if ($type == 'incidentes') {
+          /*$incident = Incident::where('incidents_status_id', '<', '4')
+              //->join('time', 'incidents.id', '=', 'time.incidents_id')
+              ->where('customers_id', '=', $input['customer'])
+              ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
+              ->orderBy('id', 'asc')->get();*/
+              $incidents = Incident::where('incidents_status_id', '<', '4')
+                    //->join('time', 'incidents.id', '=', 'time.incidents_id')
+                    ->join('time', 'incidents.id', '=', 'time.incidents_id')
+                    ->where('incidents.customers_id', '=', $customer)
+                    ->where('time.time_types_id', '=', '1')
+                    ->whereBetween('time.datetime', array(new DateTime($start), new DateTime($end)))
+                    ->orderBy('incidents.id', 'asc')->get();
+              $incident=array();
+              foreach ($incidents as $i) {
+                array_push($incident,Incident::find($i->incidents_id));
+              }
+      } else {
+          //Para buscar los Tickets
           $incidents_tickets = Ticket::whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
-              ->orderBy('incidents_id', 'asc')->select('incidents_id')->get()->toArray();
-
+                                ->orderBy('incidents_id', 'asc')->select('incidents_id')->get()->toArray();
           $incident = Incident::where('incidents_status_id', '<', '4')
                                 ->where('customers_id', '=', $customer)
                                 ->whereIn('id',$incidents_tickets)->get();

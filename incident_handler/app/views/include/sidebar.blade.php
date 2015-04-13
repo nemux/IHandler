@@ -127,6 +127,7 @@
                         <li><a href="/stats/attack">Por Ataques</a></li>
                         <li><a href="/stats/sensor">Por Sensor</a></li>
                         <li><a href="/stats/sensor/severity">Por Sensor y Severidad</a></li>
+                        <li><a href="/stats/stream">Por Flujo</a></li>
                     </ul>
                 </li>
             @endif
