@@ -493,6 +493,11 @@ protected $layout = 'layouts.master';
       return Response::make($html,200, $headers);
     }
 
+
+
+
+
+
     public function get_IPListByOrigin(){
         return View::make('stats.ip_ori');
 
@@ -522,19 +527,35 @@ protected $layout = 'layouts.master';
     }
 
 
-    public function stream()
-    {
-
-        return $this->layout = View::make("stats.stream", array(
-
-        ));
-
+    public function stream(){
+      return View::make('stats.stream');
     }
-    public function streamGraph()
-    {
-        $input=Input::all();
+    public function streamGraph(){
+      $input = Input::all();
+      if ($input['start'] != '' && $input['end'] != '') {
+          $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
+          $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
+          $customer = $input['customer'];
+          $sensor = $input['sensor'];
+          $query=" select count(*) as total,i.stream
+                                          from incidents as i, time as t
+                                            where i.customers_id=" . $customer . "
+                                              and i.sensors_id=" . $sensor . "
+                                              and i.incidents_status_id>1
+                                              and t.time_types_id=1
+                                              and t.incidents_id=i.id
+                                              and t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
+                                          group by i.stream
+                                          order by total desc;
+                                          ";
 
+          $incidents = DB::select(DB::raw($query));
+          $nombre_sensor=Sensor::find($sensor)->name;
+          return $this->layout = View::make("stats._stream", array(
+              'incidents' => $incidents, 'nombre_sensor' => $nombre_sensor
+          ));
 
+      }
     }
 
 }

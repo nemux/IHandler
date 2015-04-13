@@ -125,7 +125,7 @@ Route::group(array('before' => 'auth', 'prefix' => 'stats'), function () {
     Route::get('/ip/origin', 'StatsController@get_IPListByOrigin');
 
     Route::get('/stream', 'StatsController@stream');
-    Route::get('/stream/graph', 'StatsController@streamGraph');
+    Route::post('/stream/graph', 'StatsController@streamGraph');
     #Admin Routes
 });
 
