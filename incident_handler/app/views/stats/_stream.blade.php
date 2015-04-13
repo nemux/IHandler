@@ -5,7 +5,7 @@ foreach ($incidents as $i) {
 }
 ?>
 <script charset="utf-8">
-    var titulo = 'de incidentes por Severidad<br>Sensor: ' + '<?php echo $nombre_sensor?>';
+    var titulo = 'de incidentes por Flujo<br>Sensor: ' + '<?php echo $nombre_sensor?>';
     $(function () {
         $('#container1').highcharts({
             chart: {
