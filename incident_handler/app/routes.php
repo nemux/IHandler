@@ -117,10 +117,12 @@ Route::group(array('before' => 'auth', 'prefix' => 'stats'), function () {
 
     Route::get('/blacklist', 'StatsController@blacklist');
     Route::get('/blacklist/doc', 'StatsController@doc');
+
     Route::post('/ip/origin', 'StatsController@post_IPListByOrigin');
     Route::get('/ip/origin', 'StatsController@get_IPListByOrigin');
 
-
+    Route::get('/stream', 'StatsController@stream');
+    Route::get('/stream/graph', 'StatsController@streamGraph');
     #Admin Routes
 });
 

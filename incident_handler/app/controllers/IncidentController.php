@@ -1000,9 +1000,11 @@ protected $layout = 'layouts.master';
       if ($type == 'incidentes') {
           $incident = Incident::where('incidents_status_id', '<', '4')
               //->join('time', 'incidents.id', '=', 'time.incidents_id')
-              ->where('customers_id', '=', $input['customer'])
-              ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
-              ->orderBy('id', 'asc')->get();
+              ->join('time', 'incidents.id', '=', 'time.incidents_id')
+              ->where('incidents.customers_id', '=', $input['customer'])
+              ->where('time.time_types_id', '=', '1')
+              ->whereBetween('time.datetime', array(new DateTime($start), new DateTime($end)))
+              ->orderBy('incidents.id', 'asc')->get();
       } else {
           $incident = Incident::where('incidents_status_id', '<', '4')
               ->join('tickets', 'incidents.id', '=', 'tickets.incidents_id')
