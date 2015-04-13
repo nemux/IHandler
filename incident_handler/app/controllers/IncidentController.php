@@ -124,11 +124,17 @@ protected $layout = 'layouts.master';
           $incident->save();
 
         }
-	if ($status=="2") {
-          $incident->incidents_status_id = $status;
-          $incident->save();
-          $this->sendTicket($incident,$status);
-          $this->sendEmail($incident,'[GCS-IM]-Informe sobre incidente de seguridad::'.$incident->title.'.','El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+	    if ($status=="2") {
+
+            //Validacion para evitar que un mismo incidente tenga varios tickets
+            $ticket = Ticket::where('incidents_id','=',$incident->id);
+
+            if ($ticket->count() == 0) {
+                $incident->incidents_status_id = $status;
+                $incident->save();
+                $this->sendTicket($incident, $status);
+                $this->sendEmail($incident, '[GCS-IM]-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+            }
         }
         if ($status=="3") {
           $incident->incidents_status_id = $status;
@@ -434,7 +440,7 @@ protected $layout = 'layouts.master';
           $incident_rule->incidents_id=$incident->id;
           $incident_rule->save();
         }
-        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incicente con ID: '. $incident->id );
+        $log->info(Auth::user()->id,Auth::user()->username,'Se creo incidente con ID: '. $incident->id );
         return Redirect::to('incident/view/'.$incident->id);
       }
       else{
@@ -986,7 +992,8 @@ protected $layout = 'layouts.master';
     //$end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
     $start = $input['start']. ' ' . '00:00:00';
     $end = $input['end']. ' ' . '23:59:59';
-    $type = $input['type'];
+    $type = $input['results_type'];
+    $customer = $input['customer'];
 
    /*
     * Consulta del Chagui
@@ -997,21 +1004,25 @@ protected $layout = 'layouts.master';
                             ->where('created_at', '<=', $end." 23:59:59")
                             ->orderBy('id','asc')->get();
    */
-      if ($type == 'incidentes') {
+  if ($type == 'incidentes') {
+
+      $incident = Incident::where('incidents.incidents_status_id', '<', '4')
+          //->join('time', 'incidents.id', '=', 'time.incidents_id')
+          ->where('incidents.customers_id', '=', $customer)
+          ->whereBetween('incidents.created_at', array(new DateTime($start), new DateTime($end)))
+          ->orderBy('incidents.id', 'asc')->get();
+  } else {
+          $incidents_tickets = Ticket::whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
+              ->orderBy('incidents_id', 'asc')->select('incidents_id')->get()->toArray();
+
           $incident = Incident::where('incidents_status_id', '<', '4')
-              //->join('time', 'incidents.id', '=', 'time.incidents_id')
-              ->where('customers_id', '=', $input['customer'])
-              ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
-              ->orderBy('id', 'asc')->get();
-      } else {
-          $incident = Incident::where('incidents_status_id', '<', '4')
-              ->join('tickets', 'incidents.id', '=', 'tickets.incidents_id')
-              ->where('incidents.customers_id', '=', $input['customer'])
-              ->whereBetween('tickets.created_at', array(new DateTime($start), new DateTime($end)))
-              ->orderBy('tickets.id', 'asc')->get();
-      }
+                                ->where('customers_id', '=', $customer)
+                                ->whereIn('id',$incidents_tickets)->get();
+  }
+
     return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
   }
+    
   public function monthly(){
 
     return $this->layout = View::make('incident.monthly', array());

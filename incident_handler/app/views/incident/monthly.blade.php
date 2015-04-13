@@ -52,12 +52,12 @@ ${demo.css}
 		</script>
 
     <script charset="utf-8">
-      function graph(start,end,customer,type){
+      function graph(start,end,customer,results_type){
         $.ajax({
           type: "POST",
           url: "/incident/view/filter",
           ascync:false,
-          data: { start: start, end: end, customer: customer, type: type},
+          data: { start: start, end: end, customer: customer, results_type: results_type},
           beforeSend: function () {
             $("#target").html("");
             $("#target").html('<div class="col-lg-12"><div class="panel panel-inverse"><div class="panel-body panel-form"><h3 >Cargando...</h3></div></div></div>');
@@ -65,7 +65,7 @@ ${demo.css}
           success: function(result){
             $("#target").html("");
             $("#target").html(result);
-						//console.log(result);
+            console.log(result);
           }
         })
       }
@@ -110,7 +110,7 @@ ${demo.css}
 
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                            <select id="type" class="form-control">
+                                            <select id="results_type" class="form-control">
                                                 <option value="tickets">Tickets</option>
                                                 <option value="incidentes">Incidentes</option>
                                             </select>
@@ -119,7 +119,7 @@ ${demo.css}
 
                                     <div class="col-lg-2">
                                       <div class="input-group">
-                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#customer").val(),$("#type").val())'>Realizar filtro</a>
+                                        <a class="btn btn-default" id="generate" onclick='graph($("#start").val(),$("#end").val(),$("#customer").val(),$("#results_type").val())'>Realizar filtro</a>
                                       </div>
                                     </div>
                                 </div>
