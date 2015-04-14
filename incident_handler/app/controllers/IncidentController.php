@@ -985,6 +985,13 @@ protected $layout = 'layouts.master';
 
     ));
   }
+  public function rules(){
+    $rules=Rule::all();
+    return $this->layout = View::make('incident.rules', array(
+    'rules'=>$rules,
+    ));
+    
+  }
   public function viewMonthly(){
     $input = Input::all();
 
@@ -1032,7 +1039,7 @@ protected $layout = 'layouts.master';
 
     return $this->layout = View::make('incident._monthly', array('incident'=>$incident,));
   }
-    
+
   public function monthly(){
 
     return $this->layout = View::make('incident.monthly', array());
@@ -1043,6 +1050,7 @@ protected $layout = 'layouts.master';
 
     return $this->layout = View::make('incident.sensor', array());
   }
+
   public function viewSensor(){
     $input = Input::all();
     $start_date = $input['start_date']. ' ' . '00:00:00';
