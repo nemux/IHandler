@@ -10,3 +10,5 @@ Thumbs.db
 /public/files 
 /files
 .idea
+#archivos modificados para pruebas, no deberá subirse el cambio a menos que sea de funcionalidad
+/app/config/mail.php
