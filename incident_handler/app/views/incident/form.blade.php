@@ -636,7 +636,7 @@ function removeRule(tr,sid){
 
                           </select>
 
-                        </td>
+                        </td>Los 10 países más peligrosos del mundo
 
 
                       </tr>
@@ -1609,7 +1609,7 @@ function removeRule(tr,sid){
 									<!-- begin wizard step-3 -->
 									<div>
 										<table class="table table-bordered">
-            <tr <?php echo $display_form ?>>
+            <tr <?php // echo $display_form ?>>
               <td colspan="5" >
                 {{Form::textarea('description',$incident->description,[
                       'class'=>'form-control parsley-validated',
