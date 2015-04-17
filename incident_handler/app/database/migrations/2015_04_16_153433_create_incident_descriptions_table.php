@@ -17,6 +17,7 @@ class CreateIncidentDescriptionsTable extends Migration
         Schema::create('incident_descriptions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('incidents_id')->unsigned();
+            $table->integer('incident_handler_id')->unsigned();
             $table->longText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -24,6 +25,7 @@ class CreateIncidentDescriptionsTable extends Migration
 
         Schema::table('incident_descriptions', function (Blueprint $table) {
             $table->foreign('incidents_id')->references('id')->on('incidents');
+            $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
         });
     }
 

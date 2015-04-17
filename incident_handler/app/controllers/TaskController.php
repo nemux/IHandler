@@ -120,8 +120,8 @@ class TaskController extends Controller
                 $log = new Log\Logger();
                 $temp_mails = str_replace(array(",",";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
-                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
-                //$message->to($mails)->subject($subject);
+                //$message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO reparar en produccion
+                $message->to($mails)->subject($subject);
                 $log->info("0","Automatic_task",'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
             });
     }
