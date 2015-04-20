@@ -62,7 +62,7 @@
                 <div class="panel-heading-btn">
 
                 </div>
-                <h4 class="panel-title">Incidentes por Sensor y Severidad</h4>
+                <h4 class="panel-title">Incidentes por Flujo</h4>
             </div>
             <div class="panel-body panel-form">
                 <form class="form-horizontal form-bordered">

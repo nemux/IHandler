@@ -24,7 +24,8 @@ class IncidentDescription extends Eloquent
     }
 
     /**
-     * Valida si la última descripción sufrió cambios, de lo contrario almacena el nuevo valor en la tabla
+     * Antes de agregar el elemento a la tabla, valida si la última descripción es igual o sufrió modificaciones.
+     * Si fue modificada, se agrega un nueva nueva tupla.
      * @return mixed
      */
     public function validateBeforeSave($incidentId, $description, $incidentHandlerId)
