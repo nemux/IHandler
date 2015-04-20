@@ -3,7 +3,8 @@
 class TaskController extends Controller
 {
 
-    public function closeTickets() {
+    public function closeTickets()
+    {
 
         $system_key = Config::get('api.key');
         $user_key = Input::get('key');
@@ -32,7 +33,8 @@ class TaskController extends Controller
             return array('error' => "Error de autenticacion");
     }
 
-    public function sendReminder() {
+    public function sendReminder()
+    {
 
         $system_key = Config::get('api.key');
         $user_key = Input::get('key');
@@ -65,7 +67,8 @@ class TaskController extends Controller
             return array('error' => "Error de autenticacion");
     }
 
-    private function getFinishedTickets($criticity, $customer, $type) {
+    private function getFinishedTickets($criticity, $customer, $type)
+    {
         $reminder_time = '';
         $close_time = '';
         switch ($criticity) {
@@ -103,26 +106,27 @@ class TaskController extends Controller
                    ORDER BY t.incidents_id ASC";
 
         $incidents = DB::select(DB::raw($query));
-        return array( 'incidents' => $incidents, 'hours' => ($close_time - $reminder_time) );
+        return array('incidents' => $incidents, 'hours' => ($close_time - $reminder_time));
     }
 
-    private function sendEmail($incident, $subject, $body=null) {
+    private function sendEmail($incident, $subject, $body = null)
+    {
 
         $title = 'Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
         $subtitle = $incident->customer->company;
 
-        Mail::send('task.reminder',array(
-            'title'=>$title,
-            'subtitle'=>$subtitle,
-            'body'=>$body,
+        Mail::send('task.reminder', array(
+            'title' => $title,
+            'subtitle' => $subtitle,
+            'body' => $body,
         ),
-        function ($message) use ($incident, $subject){
+            function ($message) use ($incident, $subject) {
                 $log = new Log\Logger();
-                $temp_mails = str_replace(array(",",";"), ",", $incident->customer->mail);
+                $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
-                //$message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO reparar en produccion
-                $message->to($mails)->subject($subject);
-                $log->info("0","Automatic_task",'Se envió Email a '. $incident->customer->mail . ' referente al incidente: '. $incident->id);
+                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
+//                $message->to($mails)->subject($subject);
+                $log->info("0", "Automatic_task", 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
             });
     }
 }

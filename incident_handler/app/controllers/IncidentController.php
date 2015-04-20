@@ -298,7 +298,7 @@ class IncidentController extends Controller
                 LOG::debug('Incident id ' . $incident->id);
 
                 $incident_description = new IncidentDescription();
-                $incident_description->validateBeforeSave($incident->id,$input['description'],Auth::user()->incident_handler_id);
+                $incident_description->validateBeforeSave($incident->id, $input['description'], Auth::user()->incident_handler_id);
             } catch (Exception $e) {
                 LOG::error($e->getMessage());
             }
@@ -599,7 +599,7 @@ class IncidentController extends Controller
                 $incident->save();
 
                 $incident_description = new IncidentDescription();
-                $incident_description->validateBeforeSave($incident->id,$input['description'],Auth::user()->incident_handler_id);
+                $incident_description->validateBeforeSave($incident->id, $input['description'], Auth::user()->incident_handler_id);
             } catch (Exception $e) {
                 LOG::error($e->getMessage());
             }
@@ -1342,8 +1342,8 @@ class IncidentController extends Controller
                 $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
 
-                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO reparar en produccion
-                $message->to($mails)->subject($subject);
+                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
+//                $message->to($mails)->subject($subject);
                 $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
             });
     }
