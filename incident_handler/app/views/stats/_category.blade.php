@@ -16,7 +16,7 @@ $(function () {
           }
       },
       title: {
-          text: 'Cantidad de incidentes por categoría'
+          text: '<?php echo $sensor_name ?>:: incidentes por categoría'
       },
       subtitle: {
           text: ''
@@ -51,7 +51,7 @@ $(function () {
           }
       },
       title: {
-          text: 'Porcentaje de incidentes por categoría'
+          text: '<?php echo $sensor_name ?>:: porcentaje de incidentes por categoría'
       },
       subtitle: {
           text: ''

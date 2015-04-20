@@ -90,7 +90,6 @@ protected $layout = 'layouts.master';
     {
 
         return $this->layout = View::make("stats.ip", array(
-
         ));
 
     }
@@ -231,6 +230,8 @@ protected $layout = 'layouts.master';
                                           and
                                             t.incidents_id=i.id
                                           and
+                                            i.sensors_id=".$input['sensor']."
+                                          and
                                             t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                           and
                                             a.name!='Attack'
@@ -281,6 +282,8 @@ protected $layout = 'layouts.master';
                                           and
                                             t.incidents_id=i.id
                                           and
+                                            i.sensors_id=".$input['sensor']."
+                                          and
                                             t.datetime between '".$start." 00:00:00' and '".$end." 23:59:59'
                                           group by
                                             c.name
@@ -290,6 +293,7 @@ protected $layout = 'layouts.master';
                                             "));
           return $this->layout = View::make("stats._category", array(
             'incidents'=>$incidents,
+            'sensor_name'=>$input['nombre_sensor']
           ));
         }
     }

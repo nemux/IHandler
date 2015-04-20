@@ -1342,7 +1342,7 @@ class IncidentController extends Controller
                 $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
 
-                //$message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO reparar en produccion
+                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO reparar en produccion
                 $message->to($mails)->subject($subject);
                 $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
             });
