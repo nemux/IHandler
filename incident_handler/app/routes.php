@@ -119,6 +119,10 @@ Route::group(array('before' => 'auth', 'prefix' => 'stats'), function () {
     Route::get('/sensor/severity', 'StatsController@sensorSeverity'); //Obtiene la vista de estadísticas por sensor y severidad
     Route::post('/sensor/severity/graph', 'StatsController@sensorSeverityGrahp'); //Envía la información para generar las gráficas por sensor y severidad
 
+    Route::get('/ip/ie', 'StatsController@ipIE'); //Obtiene la vista de estadísticas por IP Interna o Externa
+    Route::post('/ip/ie/graph', 'StatsController@ipIEGraph'); //Envía la información para generar las gráfticas por IP Interna o Externa
+    Route::get('/ip/ie/doc', 'StatsController@ipIEDoc'); //Genera el documento de la lista de IPs encontradas
+
     Route::get('/blacklist', 'StatsController@blacklist');
     Route::get('/blacklist/doc', 'StatsController@doc');
 
