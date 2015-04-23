@@ -20,7 +20,8 @@ class TaskController extends Controller
                         $incident = Incident::find($i->incidents_id);
                         $body = 'Debido a la falta de una respuesta del incidente relacionado con este ticket, se ha cerrado automáticamente por el sistema.';
                         $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
-                        $this->sendEmail($incident, $subject, $body);
+                        $images = Image::where('incidents_id', '=', $i->incidents_id)->get();
+                        $this->sendEmail($incident, $subject, $body, $images);
                         $incident->incidents_status_id = 6;
                         $incident->save();
                         $log->info('0', 'Automatic_task', 'Cierre de ticket automático referente al incidente: ' . $incident->id);
@@ -53,7 +54,8 @@ class TaskController extends Controller
                         //$body = 'Le recordamos que si no recibimos respuesta sobre el incidente relacionado a este ticket, se cerrar&aacute;
                         // autom&aacute;ticamente.';
                         $subject = '[GCS-IM]-Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
-                        $this->sendEmail($incident, $subject, $body);
+                        $images = Image::where('incidents_id', '=', $incident->incidents_id)->get();
+                        $this->sendEmail($incident, $subject, $body, $images);
                         $incident->ticket->reminder_sended = 1;
                         $incident->push();
                         $log->info('0', 'Automatic_task', 'Recordatorio de cierre de incidente: ' . $incident->id);
@@ -109,7 +111,7 @@ class TaskController extends Controller
         return array('incidents' => $incidents, 'hours' => ($close_time - $reminder_time));
     }
 
-    private function sendEmail($incident, $subject, $body = null)
+    private function sendEmail($incident, $subject, $body = null, $images)
     {
 
         $title = 'Recordatorio de cierre de Ticket ' . $incident->ticket->internal_number;
@@ -120,10 +122,13 @@ class TaskController extends Controller
             'subtitle' => $subtitle,
             'body' => $body,
         ),
-            function ($message) use ($incident, $subject) {
+            function ($message) use ($incident, $subject){//, $images) {
                 $log = new Log\Logger();
                 $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
+//                foreach ($images as $image) {
+//                    $message->embed('files/evidence/' . $image->name);
+//                }
                 $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
 //                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                 $log->info("0", "Automatic_task", 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
