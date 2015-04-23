@@ -932,7 +932,8 @@ class IncidentController extends Controller
 
         $incident = Incident::find($id);
         $this->sendRecomendation($incident, $recomendation);
-        $this->sendEmail($incident, '[GCS-IM]-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación del siguiente evento:');
+        $this->sendEmail($incident, '[GCS-IM]-Actualización sobre incidente de seguridad::' . $incident->title . '.',
+            'El Equipo de Respuesta a Incidentes de Global Cybersec ha añadido una recomendación del siguiente evento:');
         $url = '/incident/view/' . $id;
         return Redirect::to($url);
     }
@@ -1326,6 +1327,8 @@ class IncidentController extends Controller
             }
         }
         $recomendations = Recomendation::where('incidents_id', '=', $incident->id)->get();
+
+        $images = Image::where('incidents_id', '=', $incident->id)->get();
         //////////////////////////////////////////////////////////////////////////////////
 
         Mail::send('incident.show', array(
@@ -1335,15 +1338,20 @@ class IncidentController extends Controller
             'listed' => $listed,
             'location' => $location,
             'recomendations' => $recomendations,
-            'body' => $body
+            'body' => $body,
+            'images' => $images
         ),
-            function ($message) use ($incident, $subject) {
+            function ($message) use ($incident, $subject, $images) {
                 $log = new Log\Logger();
                 $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
 
+                foreach ($images as $image) {
+                    $message->embed('files/evidence/' . $image->name);
+                }
+
                 $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
-//                $message->to($mails)->subject($subject);
+//                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                 $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
             });
     }
