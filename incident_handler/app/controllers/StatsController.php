@@ -583,7 +583,8 @@ class StatsController extends Controller
 
             $query = "select count(*) as total, regexp_replace(o.ip,'[ \\t]*','') as ip_rgx
                 from occurrences as o
-                    left join incidents_occurences as io on io.source_id=o.id
+                    --left join incidents_occurences as io on io.source_id=o.id
+                    left join incidents_occurences as io on o.id in (io.source_id,io.destiny_id)
                     left join incidents as i on i.id=io.incidents_id
                     left join time as t on t.incidents_id=i.id
                 where t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
@@ -610,7 +611,8 @@ class StatsController extends Controller
 
         $query = "select count(*) as total, regexp_replace(o.ip,'[ \\t]*','') as ip_rgx
                 from occurrences as o
-                    left join incidents_occurences as io on io.source_id=o.id
+                    --left join incidents_occurences as io on io.source_id=o.id
+                    left join incidents_occurences as io on o.id in (io.source_id,io.destiny_id)
                     left join incidents as i on i.id=io.incidents_id
                     left join time as t on t.incidents_id=i.id
                 where t.datetime between '" . $start_date . " 00:00:00' and '" . $end_date . " 23:59:59'
