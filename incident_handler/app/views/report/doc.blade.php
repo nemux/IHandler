@@ -249,14 +249,7 @@ function cleanContent($content){
                       <strong>Blacklist:</strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9;" >
-                    <strong>Dirección IP
-
-
-
-
-
-
-                    </strong>
+                    <strong>Dirección IP</strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9" >
                     <strong>País de Origen </strong>
