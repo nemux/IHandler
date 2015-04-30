@@ -316,7 +316,7 @@
                             <table style="border-collapse:collapse;width:100%">
                                 <tr>
                                     <th style="text-align:center;background:#CCC;">
-                                        Dirección Ip
+                                        Dirección IP
                                     </th>
                                     <th style="text-align:center;background:#CCC">
                                         País de Origen

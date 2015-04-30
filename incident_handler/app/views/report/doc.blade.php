@@ -249,7 +249,14 @@ function cleanContent($content){
                       <strong>Blacklist:</strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9;" >
-                    <strong>Direcci&oacute;n Ip</strong>
+                    <strong>Dirección IP
+
+
+
+
+
+
+                    </strong>
                   </td>
                   <td style="text-align:center;background:#d9d9d9" >
                     <strong>País de Origen </strong>
@@ -343,7 +350,7 @@ function cleanContent($content){
     </div>
     <div style="margin: 0px 20px; font-size: 80%; text-align: center; font-family: Helvetica,Arial,sans-serif;
                 color: rgb(200, 0, 0);"><small style="font-family: Helvetica,Arial,sans-serif;">
-            <big><strong>Informaci&oacute;n Confidencial</strong></big></small>
+            <big><strong>Información Confidencial</strong></big></small>
     </div>
 
     <div style="margin: 0px 20px; font-size: 80%; text-align: center; font-family: Helvetica,Arial,sans-serif;

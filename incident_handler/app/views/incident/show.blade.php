@@ -250,7 +250,7 @@
                 <table style="border-collapse:collapse;width:100%">
                     <tr>
                         <th style="text-align:center;background:#d9d9d9">
-                            Dirección Ip
+                            Dirección IP
                         </th>
                         <th style="text-align:center;background:#d9d9d9">
                             País de Origen
