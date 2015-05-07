@@ -1013,11 +1013,28 @@ class IncidentController extends Controller
 
         //Estatus 4 = Cerrado
         //Estatus 5 =  Falso Positivo
-        $incident = Incident::where('incidents_status_id', '<', '4')->orderBy('id', 'asc')->remember(10)->get();
+
+        $query = 'select i.id
+	, i.title
+	, (select string_agg(internal_number,\'<br/>\') from tickets where incidents_id=i.id and deleted_at is null) as internal_number
+	, time.datetime
+	, (select name from sensors where id=i.sensors_id) as sensor_name
+	, (select name from incidents_status where id=i.incidents_status_id) as is_name
+	, (select username from access where i.incident_handler_id=access.incident_handler_id) as handler_name
+	, (select string_agg(r.message,\'<br/>\') from incidents_rules as ir
+		left join rules as r on r.id=ir.rules_id
+		where ir.incidents_id=i.id and ir.deleted_at is null) as rules
+from incidents as i
+	left join time on (time.incidents_id=i.id and time.time_types_id=1)
+where i.incidents_status_id<4
+order by i.id asc;';
+        //2 segundos
+        $incident = DB::select(DB::raw($query));
+        //4 segundos
+//        $incident = Incident::where('incidents_status_id', '<', '4')->orderBy('id', 'asc')->remember(10)->get();
 
         return $this->layout = View::make('incident.index', array(
             'incident' => $incident,
-
         ));
     }
 
