@@ -68,6 +68,7 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::get('open/', 'IncidentController@openStatus');
     Route::get('investigation/', 'IncidentController@investigationStatus');
     Route::get('solved/', 'IncidentController@solvedStatus');
+    Route::get('solved/all','IncidentController@allSolvedStatus');
     //Route::get('show/{id}', 'IncidentController@pdf');
     Route::get('sensor/get/{id}', 'SensorController@customerSensor');
     Route::post('add/Annex', 'IncidentController@addAnnex');

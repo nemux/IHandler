@@ -1008,34 +1008,74 @@ class IncidentController extends Controller
 
     public function index()
     {
-
-        //$incident=Incident::all();
-
-        //Estatus 4 = Cerrado
-        //Estatus 5 =  Falso Positivo
-
-        $query = 'select i.id
-	, i.title
-	, (select string_agg(internal_number,\'<br/>\') from tickets where incidents_id=i.id and deleted_at is null) as internal_number
-	, time.datetime
-	, (select name from sensors where id=i.sensors_id) as sensor_name
-	, (select name from incidents_status where id=i.incidents_status_id) as is_name
-	, (select username from access where i.incident_handler_id=access.incident_handler_id) as handler_name
-	, (select string_agg(r.message,\'<br/>\') from incidents_rules as ir
-		left join rules as r on r.id=ir.rules_id
-		where ir.incidents_id=i.id and ir.deleted_at is null) as rules
-from incidents as i
-	left join time on (time.incidents_id=i.id and time.time_types_id=1)
-where i.incidents_status_id<4
-order by i.id asc;';
-        //2 segundos
-        $incident = DB::select(DB::raw($query));
-        //4 segundos
-//        $incident = Incident::where('incidents_status_id', '<', '4')->orderBy('id', 'asc')->remember(10)->get();
-
+        $incident = $this->getIncidents();
         return $this->layout = View::make('incident.index', array(
             'incident' => $incident,
         ));
+    }
+
+    public function openStatus()
+    {
+        $incident = $this->getIncidents('=1', Auth::user()->id);
+        return $this->layout = View::make('incident.index', array(
+            'incident' => $incident,
+        ));
+    }
+
+    public function investigationStatus()
+    {
+        $incident = $this->getIncidents('=2', Auth::user()->id);
+        return $this->layout = View::make('incident.index', array(
+            'incident' => $incident,
+        ));
+    }
+
+    public function solvedStatus()
+    {
+        $incident = $this->getIncidents('=3', Auth::user()->id);
+        return $this->layout = View::make('incident.index', array(
+            'incident' => $incident,
+        ));
+    }
+
+    public function allSolvedStatus()
+    {
+        $incident = $this->getIncidents('=3');
+        return $this->layout = View::make('incident.index', array(
+            'incident' => $incident,
+        ));
+    }
+
+    /**
+     * @param string $incidents_status_id ID de estatus del incidente, por omisión que sea menor a 4
+     * @param string $from_incident_handler_id ID del Incident Handler que solicita la query, por omisión todos los casos
+     * @return mixed Array de incidentes
+     */
+    private function getIncidents($incidents_status_id = '<4', $from_incident_handler_id = '*')
+    {
+        $handler_condition = '';
+        if ($from_incident_handler_id != '*') {
+            $handler_condition = ' and i.incident_handler_id=' . $from_incident_handler_id;
+        }
+
+        $query = 'select i.id
+                    , i.title
+                    , (select string_agg(internal_number,\'<br/>\') from tickets where incidents_id=i.id and deleted_at is null) as internal_number
+                    , time.datetime
+                    , (select name from sensors where id=i.sensors_id) as sensor_name
+                    , (select name from incidents_status where id=i.incidents_status_id) as is_name
+                    , (select username from access where i.incident_handler_id=access.incident_handler_id) as handler_name
+                    , (select string_agg(r.message,\'<br/>\') from incidents_rules as ir
+                        left join rules as r on r.id=ir.rules_id
+                        where ir.incidents_id=i.id and ir.deleted_at is null) as rules
+                    from incidents as i
+                        left join time on (time.incidents_id=i.id and time.time_types_id=1)
+                    where i.incidents_status_id' . $incidents_status_id . $handler_condition . '
+                    order by i.id asc;';
+
+        $incident = DB::select(DB::raw($query));
+
+        return $incident;
     }
 
     public function rules()
@@ -1150,56 +1190,6 @@ order by i.id asc;';
             "Content-Disposition" => "attachment;Filename=" . $sensor_name[0]->name . "_" . $value . ".doc"
         );
         return Response::make($htmlReport, 200, $headers);
-
-        /*$input = Input::all();
-        $start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
-        $end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
-        $start = $start. ' ' . '00:00:00';
-        $end = $end. ' ' . '23:59:59';
-
-
-        $incident = Incident::join('time',function($join) { $join->on('incidents.id', '=', 'time.incidents_id'); })
-            ->where('customers_id', '=', $input['customer'])
-            ->where('incidents_status_id', '>', '1')
-            ->where('criticity','=',$input['criticity'])
-            ->where('sensors_id','=',$input['sensor'])
-            ->where('time_types_id','=','1')
-            ->where('datetime', '>=', $start)
-            ->where('datetime', '<=', $end)
-            ->orderBy('datetime', 'asc')->get();
-
-        $htmlReport=View::make('incident._sensor', array('incident'=>$incident,'severity'=>$input['criticity']));
-
-        $headers = array(
-                "Content-type" => "application/vnd.ms-word",
-                "Content-Disposition"=>"attachment;Filename=".$input['sensor']."_".$input['criticity'].".doc"
-        );
-        return Response::make($htmlReport,200, $headers);
-        */
-    }
-
-    public function openStatus()
-    {
-        $incident = Incident::where("incidents_status_id", '=', '1')->where('incident_handler_id', '=', Auth::user()->id)->get();
-        return $this->layout = View::make('incident.index', array(
-            'incident' => $incident,
-        ));
-    }
-
-    public function investigationStatus()
-    {
-        $incident = Incident::where("incidents_status_id", '=', '2')->where('incident_handler_id', '=', Auth::user()->id)->get();
-        return $this->layout = View::make('incident.index', array(
-            'incident' => $incident,
-        ));
-    }
-
-    public function solvedStatus()
-    {
-        $incident = Incident::where("incidents_status_id", '=', '3')->where('incident_handler_id', '=', Auth::user()->id)->get();
-        return $this->layout = View::make('incident.index', array(
-            'incident' => $incident,
-        ));
     }
 
     public function mail($id)

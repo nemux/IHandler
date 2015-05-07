@@ -27,8 +27,8 @@
                 <ul class="sub-menu">
                     <li class=""><a href="/incident/create">Crear</a></li>
                     <li><a href="/incident/view/filter">Ver ...</a></li>
-
                     <li><a href="/incident/">Ver Todos</a></li>
+                    <li><a href="/incident/solved/all">Ver todos los casos cerrados</a></li>
                     <li><a href="/incident/search/ip">Buscar por Ip</a></li>
                 </ul>
             </li>
@@ -135,7 +135,8 @@
 
             <li><a href="/stats/blacklist"><i class="fa fa-list"></i> <span>Blacklist</span></a></li>
             <li><a href="/stats/ip/origin"><i class="fa fa-cubes"></i> <span>IP Origen/Destino</span></a></li>
-            <li><a href="/incident/rules"><i class="fa fa-puzzle-piece"></i> <span>Indicadores Registrados</span></a></li>
+            <li><a href="/incident/rules"><i class="fa fa-puzzle-piece"></i> <span>Indicadores Registrados</span></a>
+            </li>
 
             <!-- begin sidebar minify button -->
             <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i
