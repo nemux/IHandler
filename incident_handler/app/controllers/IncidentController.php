@@ -631,18 +631,38 @@ class IncidentController extends Controller
                         $name = $i->getClientOriginalName();
                         $files = explode('.', $name);
                         $extension = end($files);
-                        if ($extension == 'JPG' || $extension == 'jpg' || $extension == 'png' || $extension == 'PNG') {
+                        if (strcasecmp($extension, 'jpg') == 0 || strcasecmp($extension, 'png') == 0) {
                             $new_name = date("Ymd_his") . "_" . $incident->id . "_" . $incident->title . "_" . $files[0] . "." . $extension;
-                            $i->move('files/evidence/', $new_name);
+
+                            try {
+                                Log::info('files/evidence/' . $new_name);
+                                $i->move('files/evidence/', $new_name);
+                            } catch (Exception $e) {
+                                Log::info($e->getMessage());
+                            }
+
                             //consideraremos esto una limitante en el documento de vison.
                             usleep(100000);
+
+                            $test_file_read = file_get_contents('files/evidence/' . $new_name);
+
+                            $sha1 = hash('sha1', $test_file_read);
+                            $sha256 = hash('sha256', $test_file_read);
+                            $md5 = hash('md5', $test_file_read);
+
                             $im = new Image;
                             $im->file = "files/evidence/" . $new_name;
                             $im->name = $new_name;
                             $im->incidents_id = $incident->id;
                             $im->evidence_types_id = "1";
+                            $im->md5 = $md5;
+                            $im->sha1 = $sha1;
+                            $im->sha256 = $sha256;
+
                             $im->save();
                             echo $new_name . "<br>";
+                        } else {
+                            Log::info('La extensión no es JPG o PNG: ' . $extension);
                         }
                     }
                 }
