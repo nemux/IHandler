@@ -633,12 +633,8 @@ function removeRule(tr,sid){
 
                               <option <?php echo $option ?> value="<?php echo $i ?>"><?php echo $i ?></option>
                             <?php }?>
-
                           </select>
-
-                        </td>Los 10 países más peligrosos del mundo
-
-
+                        </td>
                       </tr>
                       <tr>
                         <td width="15%">
