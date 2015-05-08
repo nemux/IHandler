@@ -154,25 +154,7 @@ class IncidentController extends Controller
 
                     $incident->incidents_status_id = $status;
                     foreach ($input['images'] as $i) {
-                        if ($i) {
-                            $name = $i->getClientOriginalName();
-                            print_r($i);
-                            $files = explode('.', $name);
-                            $extension = end($files);
-                            if ($extension == 'JPG' || $extension == 'jpg' || $extension == 'png' || $extension == 'PNG') {
-                                $new_name = date("Ymd_his") . "_" . $incident->id . "_" . $incident->title . "_" . $files[0] . "." . $extension;
-                                $i->move('files/evidence/', $new_name);
-                                //consideraremos esto una limitante en el documento de vison.
-                                usleep(100000);
-                                $im = new Image;
-                                $im->file = "files/evidence/" . $new_name;
-                                $im->name = $new_name;
-                                $im->incidents_id = $incident->id;
-                                $im->evidence_types_id = "2";
-                                $im->save();
-                                echo $new_name . "<br>";
-                            }
-                        }
+                        compareAndUpload($i, $incident);
                     }
                     $incident->save();
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
@@ -318,24 +300,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    if ($i) {
-                        $name = $i->getClientOriginalName();
-                        $files = explode('.', $name);
-                        $extension = end($files);
-                        if ($extension == 'JPG' || $extension == 'jpg' || $extension == 'png' || $extension == 'PNG') {
-                            $new_name = date("Ymd_his") . "_" . $incident->id . "_" . $incident->title . "_" . $files[0] . "." . $extension;
-                            $i->move('files/evidence/', $new_name);
-                            //consideraremos esto una limitante en el documento de vison.
-                            usleep(100000);
-                            $im = new Image;
-                            $im->file = "files/evidence/" . $new_name;
-                            $im->name = $new_name;
-                            $im->incidents_id = $incident->id;
-                            $im->evidence_types_id = "1";
-                            $im->save();
-                            echo $new_name . "<br>";
-                        }
-                    }
+                    compareAndUpload($i, $incident);
                 }
             }
 
@@ -627,44 +592,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    if ($i) {
-                        $name = $i->getClientOriginalName();
-                        $files = explode('.', $name);
-                        $extension = end($files);
-                        if (strcasecmp($extension, 'jpg') == 0 || strcasecmp($extension, 'png') == 0) {
-                            $new_name = date("Ymd_his") . "_" . $incident->id . "_" . $incident->title . "_" . $files[0] . "." . $extension;
-
-                            try {
-                                Log::info('files/evidence/' . $new_name);
-                                $i->move('files/evidence/', $new_name);
-                            } catch (Exception $e) {
-                                Log::info($e->getMessage());
-                            }
-
-                            //consideraremos esto una limitante en el documento de vison.
-                            usleep(100000);
-
-                            $test_file_read = file_get_contents('files/evidence/' . $new_name);
-
-                            $sha1 = hash('sha1', $test_file_read);
-                            $sha256 = hash('sha256', $test_file_read);
-                            $md5 = hash('md5', $test_file_read);
-
-                            $im = new Image;
-                            $im->file = "files/evidence/" . $new_name;
-                            $im->name = $new_name;
-                            $im->incidents_id = $incident->id;
-                            $im->evidence_types_id = "1";
-                            $im->md5 = $md5;
-                            $im->sha1 = $sha1;
-                            $im->sha256 = $sha256;
-
-                            $im->save();
-                            echo $new_name . "<br>";
-                        } else {
-                            Log::info('La extensión no es JPG o PNG: ' . $extension);
-                        }
-                    }
+                    compareAndUpload($i, $incident);
                 }
             }
             $history = new IncidentHistory;
@@ -800,6 +728,48 @@ class IncidentController extends Controller
             }
             $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizó incidente con ID: ' . $incident->id);
             return Redirect::to('incident/view/' . $incident->id);
+        }
+    }
+
+    private function compareAndUpload($i, $incident)
+    {
+        if ($i) {
+            $name = $i->getClientOriginalName();
+            $files = explode('.', $name);
+            $extension = end($files);
+            if (strcasecmp($extension, 'jpg') == 0 || strcasecmp($extension, 'png') == 0) {
+                $new_name = date("Ymd_his") . "_" . $incident->id . "_" . $incident->title . "_" . $files[0] . "." . $extension;
+
+                try {
+                    Log::info('files/evidence/' . $new_name);
+                    $i->move('files/evidence/', $new_name);
+                } catch (Exception $e) {
+                    Log::info($e->getMessage());
+                }
+
+                //consideraremos esto una limitante en el documento de vison.
+                usleep(100000);
+
+                $test_file_read = file_get_contents('files/evidence/' . $new_name);
+
+                $sha1 = hash('sha1', $test_file_read);
+                $sha256 = hash('sha256', $test_file_read);
+                $md5 = hash('md5', $test_file_read);
+
+                $im = new Image;
+                $im->file = "files/evidence/" . $new_name;
+                $im->name = $new_name;
+                $im->incidents_id = $incident->id;
+                $im->evidence_types_id = "1";
+                $im->md5 = $md5;
+                $im->sha1 = $sha1;
+                $im->sha256 = $sha256;
+
+                $im->save();
+                echo $new_name . "<br>";
+            } else {
+                Log::info('La extensión no es JPG o PNG: ' . $extension);
+            }
         }
     }
 
