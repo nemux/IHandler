@@ -1030,7 +1030,7 @@ class IncidentController extends Controller
 
     public function allSolvedStatus()
     {
-        $incident = $this->getIncidents('=3');
+        $incident = $this->getIncidents('=4');
         return $this->layout = View::make('incident.index', array(
             'incident' => $incident,
         ));
@@ -1062,6 +1062,8 @@ class IncidentController extends Controller
                         left join time on (time.incidents_id=i.id and time.time_types_id=1)
                     where i.incidents_status_id' . $incidents_status_id . $handler_condition . '
                     order by i.id asc;';
+
+        Log::info($query);
 
         $incident = DB::select(DB::raw($query));
 
