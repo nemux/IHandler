@@ -32,7 +32,7 @@
         </script>
 
         <script charset="utf-8">
-            function graph(start, end, option, customer, sensor, overlap, nombre_sensor) {
+            function graph(start, end, customer, sensor, nombre_sensor) {
                 $.ajax({
                     type: "POST",
                     url: "/stats/category/graph",
@@ -40,7 +40,6 @@
                     success: function (result) {
                         $("#target").html("");
                         $("#target").html(result);
-                        console.log(result);
                     },
                     error: function (request, status, error) {
                         alert(request.responseText);
@@ -106,10 +105,8 @@
                                 <a class="btn btn-default" id="generate"
                                    onclick='graph($("#start").val()
                                         ,$("#end").val()
-                                        ,$("#option").val()
                                         ,$("#customer").val()
                                         ,$("#sensor").val()
-                                        ,$("#overlap").val()
                                         ,$("#sensor option:selected").text())'>Generar Gráfica</a>
                             </div>
                         </div>

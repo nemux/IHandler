@@ -198,21 +198,20 @@ class StatsController extends Controller
 
     public function attack()
     {
-
         return $this->layout = View::make("stats.attack", array());
-
     }
 
     public function attackGraph()
     {
         $input = Input::all();
 
-        //print_r($input);
+        Log::info('lala');
+
         if ($input['start'] != '' && $input['end'] != '') {
             $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
             $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
             $customer = $input['customer'];
-            $incidents = DB::select(DB::raw(" select
+            $query = " select
                                             count(*) as total,
                                             a.name as attack
                                           from
@@ -240,9 +239,16 @@ class StatsController extends Controller
                                           order by
                                             total desc
                                           ;
-                                            "));
+                                            ";
+            try {
+                Log::info($query);
+                $incidents = DB::select(DB::raw($query));
+            } catch (Exception $e) {
+                Log::error($e);
+            }
             return $this->layout = View::make("stats._attack", array(
                 'incidents' => $incidents,
+                'sensor_name' => $input['nombre_sensor']
             ));
         }
     }
@@ -627,7 +633,6 @@ class StatsController extends Controller
         $htmlReport = View::make('stats.ip_ie_doc', array(
             'ips' => $ips
         ))->render();
-
 
 
         $headers = array(
