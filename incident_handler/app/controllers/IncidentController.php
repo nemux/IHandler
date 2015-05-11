@@ -154,7 +154,7 @@ class IncidentController extends Controller
 
                     $incident->incidents_status_id = $status;
                     foreach ($input['images'] as $i) {
-                        compareAndUpload($i, $incident);
+                        $this->compareAndUpload($i, $incident);
                     }
                     $incident->save();
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
@@ -300,7 +300,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    compareAndUpload($i, $incident);
+                    $this->compareAndUpload($i, $incident);
                 }
             }
 
@@ -592,7 +592,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    compareAndUpload($i, $incident);
+                    $this->compareAndUpload($i, $incident);
                 }
             }
             $history = new IncidentHistory;
