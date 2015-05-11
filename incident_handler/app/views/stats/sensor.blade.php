@@ -41,6 +41,9 @@
                         $("#target").html("");
                         $("#target").html(result);
                         console.log(result);
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
                     }
                 })
             }

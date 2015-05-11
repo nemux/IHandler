@@ -369,12 +369,15 @@ class StatsController extends Controller
 
         $input = Input::all();
 
+        Log::info('lala');
+
+
         if ($input['start'] != '' && $input['end'] != '') {
             $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
             $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
             $customer = $input['customer'];
 
-            $incidents = DB::select(DB::raw(" select count(*) as total, i.criticity
+            $query = " select count(*) as total, i.sensors_id, (select name from sensors where id = i.sensors_id) as sensor
                                           from incidents as i, time as t
                                             where i.customers_id=" . $customer . "
                                                 and i.incidents_status_id>1
@@ -383,10 +386,20 @@ class StatsController extends Controller
                                                 and t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
                                           group by i.sensors_id
                                           order by total desc;
-                                            "));
+                                            ";
+
+            Log::info($query);
+
+            try {
+                $incidents = DB::select(DB::raw($query));
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+
+            Log::info(sizeof($incidents));
 
             return $this->layout = View::make("stats._sensor", array(
-                'incidents' => $incidents,
+                'incidents' => $incidents
             ));
         }
     }
