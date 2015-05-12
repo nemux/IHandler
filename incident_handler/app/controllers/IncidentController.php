@@ -114,17 +114,17 @@ class IncidentController extends Controller
         if (isset($incident->ticket->internal_number)) {
                     $ticket=$incident->ticket->internal_number;
                 }
-        if ($id && $status) {
 
+        if ($id && $status) 
+        {
             if (isset($input['send_recomendation'])) {
                 return View::make('incident.recomendation', array(
                     'title' => 'Agregar recomendaci&oacute;n',
                     'action' => 'IncidentController@addRecomendation',
                     'incident' => $incident
                 ));
-            }
-
-            if ($status == "1") {
+            } 
+            else if ($status == "1") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
 
@@ -133,32 +133,28 @@ class IncidentController extends Controller
                 $notification->save();
 
             }
-            if ($status == "2") {
-
-                //Validacion para evitar que un mismo incidente tenga varios tickets
-                $ticket = Ticket::where('incidents_id', '=', $incident->id);
+           
+            else if ($status == "2") {
+                $ticket = Ticket::where('incidents_id', '=', $incident->id); //Validacion para evitar que un mismo incidente tenga varios tickets
 
                 if ($ticket->count() == 0) {
                     $incident->incidents_status_id = $status;
                     $incident->save();
                     
                     $this->sendTicket($incident, $status);
-                    $notification->content='<strong>['.Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$incident->ticket->internal_number.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
-                    $notification->save();
-                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+                    
+                    ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
                     
                 }
-                
-            }
-            if ($status == "3") {
-                $incident->incidents_status_id = $status;
-                $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
-                $incident->save();
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->content='<strong>['.Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
                 $notification->save();
-            }
-
-            if ($status == "4") {
+            } else if ($status == "3") {
+                $incident->incidents_status_id = $status;
+                ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
+                $incident->save();
+                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->save();
+            } else if ($status == "4") {
                 $count_images = 0;
                 foreach ($input['images'] as $i) {
                     if ($i) {
@@ -173,20 +169,19 @@ class IncidentController extends Controller
                     }
                     $incident->save();
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
-                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
+                    ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
                     
                 }
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
-                $notification->save();
-            }
+                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->save(); 
 
-            if ($status == "5") {
+            } else if ($status == "5") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
                 $notification->save();
             }
-            $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizo el incidente con ID: ' . $incident->id . ' a estatus ' . $incident->incidents_status_id);
+            $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizó el incidente con ID: ' . $incident->id . ' a estatus ' . $incident->incidents_status_id);
         }
         return Redirect::to('incident/view/' . $incident->id);
     }
@@ -1124,8 +1119,6 @@ class IncidentController extends Controller
                         left join time on (time.incidents_id=i.id and time.time_types_id=1)
                     where i.incidents_status_id' . $incidents_status_id . $handler_condition . '
                     order by i.id asc;';
-
-        Log::info($query);
 
         $incident = DB::select(DB::raw($query));
 
