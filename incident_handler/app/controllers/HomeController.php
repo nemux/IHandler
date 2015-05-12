@@ -41,8 +41,8 @@ class HomeController extends BaseController {
   }
   public function updateClosures(){
   		$closure=Incident::where('updated_at','<',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days')))
-							->where('incidents_status_id','>=','2')
-							->where('incidents_status_id','<=','3')
+							//->where('incidents_status_id','>=','2')
+							->where('incidents_status_id','=','3')
 							->where("customers_id","!=","2")
 							->get();
 		return View::make('usuarios.closures',array('closure'=>$closure));
