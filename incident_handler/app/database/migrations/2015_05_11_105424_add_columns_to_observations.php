@@ -18,7 +18,7 @@ class AddColumnsToObservations extends Migration {
 		    $table->integer('readed')->nullable();
 		    $table->integer('attend')->nullable();
 		    $table->foreign('created_by')->references('id')->on('incident_handler');
-		    $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
+		   // $table->foreign('incident_handler_id')->references('id')->on('incident_handler');
 		});
 	}
 
