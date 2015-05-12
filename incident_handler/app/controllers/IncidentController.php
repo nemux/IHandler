@@ -118,32 +118,22 @@ class IncidentController extends Controller
                     'action' => 'IncidentController@addRecomendation',
                     'incident' => $incident
                 ));
-            }
-
-            if ($status == "1") {
+            } else if ($status == "1") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
-
-            }
-            if ($status == "2") {
-
-                //Validacion para evitar que un mismo incidente tenga varios tickets
-                $ticket = Ticket::where('incidents_id', '=', $incident->id);
-
+            } else if ($status == "2") {
+                $ticket = Ticket::where('incidents_id', '=', $incident->id); //Validacion para evitar que un mismo incidente tenga varios tickets
                 if ($ticket->count() == 0) {
                     $incident->incidents_status_id = $status;
                     $incident->save();
                     $this->sendTicket($incident, $status);
                     $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
                 }
-            }
-            if ($status == "3") {
+            } else if ($status == "3") {
                 $incident->incidents_status_id = $status;
                 $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
                 $incident->save();
-            }
-
-            if ($status == "4") {
+            } else if ($status == "4") {
                 $count_images = 0;
                 foreach ($input['images'] as $i) {
                     if ($i) {
@@ -160,13 +150,11 @@ class IncidentController extends Controller
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
                     $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
                 }
-            }
-
-            if ($status == "5") {
+            } else if ($status == "5") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
             }
-            $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizo el incidente con ID: ' . $incident->id . ' a estatus ' . $incident->incidents_status_id);
+            $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizó el incidente con ID: ' . $incident->id . ' a estatus ' . $incident->incidents_status_id);
         }
         return Redirect::to('incident/view/' . $incident->id);
     }
@@ -1062,8 +1050,6 @@ class IncidentController extends Controller
                         left join time on (time.incidents_id=i.id and time.time_types_id=1)
                     where i.incidents_status_id' . $incidents_status_id . $handler_condition . '
                     order by i.id asc;';
-
-        Log::info($query);
 
         $incident = DB::select(DB::raw($query));
 
