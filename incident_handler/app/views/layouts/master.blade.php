@@ -45,15 +45,46 @@
 	<script>
 		$(document).ready(function() {
 			App.init();
-      startTime();
+      		startTime();
 			//Dashboard.init();
-      //Notification.init();
-
+      		//Notification.init();
+      		update_alerts();
 
 		});
 	</script>
-
+<div id="script_from_alerts"></div>
   <script>
+  	function update_alerts() {
+         
+          $.ajax({
+                    type: "POST",
+                    url: "/dashboard/get/alerts",
+                    async: false,
+                    success: function (result) {
+                        
+                        $("#script_from_alerts").append(result)
+                    },
+                    error: function (request, status, error) {
+                        console.log(request.responseText);
+                    }
+                })
+
+        }
+      function readed(id) {
+          
+          $.ajax({
+                    type: "POST",
+                    url: "/incident/observation/read",
+                    async: false,
+                    data: {id: id},
+                    success: function (result) {
+                        
+                    },
+                    error: function (request, status, error) {
+                        console.log(request.responseText);
+                    }
+                })
+        }
   </script>
 </body>
 </html>

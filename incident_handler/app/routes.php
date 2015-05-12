@@ -16,6 +16,7 @@ Route::get('dashboard', array('before' => 'auth', 'uses' => 'HomeController@dash
 Route::post('dashboard/update/observations', array('before' => 'auth', 'uses' => 'HomeController@updateObservations' ));
 Route::post('dashboard/update/closures',     array('before' => 'auth', 'uses' => 'HomeController@updateClosures'     ));
 Route::post('dashboard/update/notifications',     array('before' => 'auth', 'uses' => 'HomeController@updateNotifications'     ));
+Route::post('dashboard/get/alerts',     array('before' => 'auth', 'uses' => 'HomeController@getAlerts'     ));
 
 Route::get('rule/query/{id}', 'RuleController@query')->where(array('id' => '^[0-9]+$'));
 Route::get('occurence/query/{id}', 'OccurenceController@query')->where(array('id' => '^[0-9]+$'));

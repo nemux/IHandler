@@ -51,4 +51,8 @@ class HomeController extends BaseController {
   		$notifications=Notification::where("content","!=","")->orderBy('created_at', 'desc')->take(100)->get();
   		return View::make('usuarios.notifications',array('notifications'=>$notifications));
   }
+  public function getAlerts(){
+  		$alerts=Observation::where('incident_handler_id','=',Auth::user()->id)->where('readed','!=',1)->get();
+		return View::make('usuarios.alerts',array('alerts'=>$alerts));
+  }
 }

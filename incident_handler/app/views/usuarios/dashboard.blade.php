@@ -16,8 +16,6 @@
 
 			<!-- begin row -->
 
-
-
         <div class="row">
         <!-- begin col-4 -->
         <div class="col-md-4 col-sm-6">
@@ -89,9 +87,9 @@
         <!-- begin col-6 -->
           <div class="col-md-12 ">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#default-tab-1" data-toggle="tab">Eventos Recientes</a> </li>
-            <li class=""><a href="#default-tab-2" data-toggle="tab">Incidentes pendientes de Cierre <span class="badge badge-danger" id="count_closure"><?php //echo count($closure) ?></span></a></li>
-            <li class=""><a href="#default-tab-3" data-toggle="tab">Observaciones de incidentes <span class="badge badge-danger" id="count_observation"><?php //echo count($notification) ?></span></a></li>
+            <li class="active"><a href="#default-tab-1" data-toggle="tab" onclick="update()">Eventos Recientes</a> </li>
+            <li class=""><a href="#default-tab-2" data-toggle="tab" onclick="update()">Incidentes pendientes de Cierre <span class="badge badge-danger" id="count_closure"><?php //echo count($closure) ?></span></a></li>
+            <li class=""><a href="#default-tab-3" data-toggle="tab" onclick="update()">Observaciones de incidentes <span class="badge badge-danger" id="count_observation"><?php //echo count($notification) ?></span></a></li>
           </ul>
           <div class="tab-content ">
             <div class="tab-pane fade active in" id="default-tab-1">
@@ -139,16 +137,7 @@
 			<script charset="utf-8">
 				$(document).ready(function (){
           update()
-					<?php foreach ($notification as $n): ?>
-						$.gritter.add({
-							title:"<?php echo $n->created_at ?>",
-							text:"<a onmouseover='readed(<?php echo $n->id ?>)' href='/incident/view/<?php echo $n->incidents_id ?>'>Comentario sobre incidente<br><?php echo $n->incident->title ?></a>",
-							image:"/assets/img/handler.png",
-							sticky:true,
-							time:"",
-							class_name:"my-sticky-class"
-						});
-					<?php endforeach ?>
+					
 				});
         
 
@@ -167,23 +156,10 @@
                         console.log(request.responseText);
                     }
                 })
+          update();
         }
 
-        function readed(id) {
-          
-          $.ajax({
-                    type: "POST",
-                    url: "/incident/observation/read",
-                    async: false,
-                    data: {id: id},
-                    success: function (result) {
-                        
-                    },
-                    error: function (request, status, error) {
-                        console.log(request.responseText);
-                    }
-                })
-        }
+        
 
         function update() {
           $("#observations").fadeOut()
