@@ -26,12 +26,13 @@ class HomeController extends BaseController {
   public function dashboard()
   {
 		$date_minor= date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 3 hour'));
-		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('created_at','>=',$date_minor)->get();
+		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('readed','!=',1)->get();
+		$history_notification=Observation::where('incident_handler_id','=',Auth::user()->id)->orderBy('created_at', 'desc')->take(20)->get();
 
 		$closure=Incident::
 				where('updated_at','<',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days')))->
 				where('incidents_status_id','=','3')->get();
     //return date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days'));
-		return View::make('usuarios.dashboard',array('notification'=>$notification,'closure'=>$closure));
+		return View::make('usuarios.dashboard',array('notification'=>$notification,'closure'=>$closure,'history_notification'=>$history_notification));
   }
 }

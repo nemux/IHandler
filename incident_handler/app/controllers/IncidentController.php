@@ -841,6 +841,8 @@ class IncidentController extends Controller
         $incident_id = $input['incident_id'];
         $observation = new Observation;
         $observation->content = $input['observation'];
+        $observation->readed = 0;
+        $observation->created_by=Auth::user()->id;
         $observation->incident_handler_id = $input['handler_id'];
         $observation->incidents_id = $incident_id;
 
@@ -859,7 +861,23 @@ class IncidentController extends Controller
         return Redirect::to('/incident/view/' . $observation->incidents_id);
 
     }
+    public function attendObservation(){
+        $input=Input::all();
+        $id=$input['id'];
+        
+        $observation=Observation::find($id);
+        $observation->attend=1;
+        $observation->save();
+        
+    }
 
+    public function readObservation(){
+        $input=Input::all();
+        $id=$input['id'];
+        $observation=Observation::find($id);
+        $observation->readed=1;
+        $observation->save();
+    }
     public function addAnnex()
     {
         $input = Input::all();

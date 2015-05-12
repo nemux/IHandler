@@ -84,6 +84,9 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::post('view/sensor/', 'IncidentController@viewSensor');
 
     Route::get('rules/', 'IncidentController@rules');
+    
+    Route::post('observation/read', 'IncidentController@readObservation');
+    Route::post('observation/attend', 'IncidentController@attendObservation');
 });
 
 Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
