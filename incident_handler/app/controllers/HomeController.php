@@ -27,12 +27,28 @@ class HomeController extends BaseController {
   {
 		$date_minor= date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 3 hour'));
 		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('readed','!=',1)->get();
-		$history_notification=Observation::where('incident_handler_id','=',Auth::user()->id)->orderBy('created_at', 'desc')->take(20)->get();
-
-		$closure=Incident::
-				where('updated_at','<',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days')))->
-				where('incidents_status_id','=','3')->get();
-    //return date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days'));
-		return View::make('usuarios.dashboard',array('notification'=>$notification,'closure'=>$closure,'history_notification'=>$history_notification));
+		return View::make('usuarios.dashboard',array('notification'=>$notification));
+  }
+  public function updateObservations(){
+  		$history_notification=Observation::where('incident_handler_id','=',Auth::user()->id)
+  							->orderBy('created_at', 'desc')
+  							->take(20)
+  							->get();
+  		$notification=Observation::where('incident_handler_id','=',Auth::user()->id)->where('readed','!=',1)->get();
+  		return View::make('usuarios.observations',array('history_notification'=>$history_notification,'notification'=>$notification));
+	    //return date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days'));
+		//,'closure'=>$closure,'history_notification'=>$history_notification
+  }
+  public function updateClosures(){
+  		$closure=Incident::where('updated_at','<',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' - 5 days')))
+							->where('incidents_status_id','>=','2')
+							->where('incidents_status_id','<=','3')
+							->where("customers_id","!=","2")
+							->get();
+		return View::make('usuarios.closures',array('closure'=>$closure));
+  }
+  public function updateNotifications(){
+  		$notifications=Notification::where("content","!=","")->orderBy('created_at', 'desc')->take(100)->get();
+  		return View::make('usuarios.notifications',array('notifications'=>$notifications));
   }
 }
