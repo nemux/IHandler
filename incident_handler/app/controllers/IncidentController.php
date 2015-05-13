@@ -137,9 +137,11 @@ class IncidentController extends Controller
                     $incident->incidents_status_id = $status;
                     $incident->save();
 
-                    $this->sendTicket($incident, $status);
+                    $incident->ticket = $this->sendTicket($incident, $status);
 
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Antes de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
                     $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
 
                 }
                 $notification->content = '<strong>[' . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
@@ -1285,20 +1287,24 @@ class IncidentController extends Controller
         $ticketIM->incidents_id = $incident->id;
         $ticketIM->save();
 
+        $log->info(Auth::user()->id, Auth::user()->username, 'Internal Number: ' . $ticketIM->internal_number);
+
         $htmlReport = $this->renderView($incident);
 
         $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer, $htmlReport);
 
+//        $incident->ticket = $ticketIM;
+
         if ($ticket_info['response_status'] < 0) {
             $log->error(Auth::user()->id, Auth::user()->username, 'Error al crear OTRS Ticket para el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id .
                 " [OTRS_DEBUG]:" . $ticket_info['error_description']);
-            return;
         } else {
             $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
             $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
             $ticketIM->save();
             $log->info(Auth::user()->id, Auth::user()->username, 'Se creo el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id);
         }
+        return $ticketIM;
     }
 
     private function closeTicket($ticketID)
@@ -1358,6 +1364,8 @@ class IncidentController extends Controller
 
     private function sendEmail($incident, $subject, $body = null)
     {
+
+
         ////////////////////////variables para correo///////////////////////////////////////////////////////////
         $det_time = Time::where('time_types_id', '=', '1')->where('incidents_id', '=', $incident->id)->first();
         $occ_time = Time::where('time_types_id', '=', '2')->where('incidents_id', '=', $incident->id)->first();
