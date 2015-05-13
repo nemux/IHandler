@@ -106,53 +106,49 @@ class IncidentController extends Controller
         $id = $input['id'];
         $status = $input['status'];
         $log = new Log\Logger();
-        $notification=new Notification;
-        $ticket="Por asignar...";
-        $notification->incident_handler_id=Auth::user()->id;
+        $notification = new Notification;
+        $ticket = "Por asignar...";
+        $notification->incident_handler_id = Auth::user()->id;
 
         $incident = Incident::find($id);
         if (isset($incident->ticket->internal_number)) {
-                    $ticket=$incident->ticket->internal_number;
-                }
+            $ticket = $incident->ticket->internal_number;
+        }
 
-        if ($id && $status) 
-        {
+        if ($id && $status) {
             if (isset($input['send_recomendation'])) {
                 return View::make('incident.recomendation', array(
                     'title' => 'Agregar recomendaci&oacute;n',
                     'action' => 'IncidentController@addRecomendation',
                     'incident' => $incident
                 ));
-            } 
-            else if ($status == "1") {
+            } else if ($status == "1") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
 
-                
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+
+                $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>][' . $ticket . ']</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
 
-            }
-           
-            else if ($status == "2") {
+            } else if ($status == "2") {
                 $ticket = Ticket::where('incidents_id', '=', $incident->id); //Validacion para evitar que un mismo incidente tenga varios tickets
 
                 if ($ticket->count() == 0) {
                     $incident->incidents_status_id = $status;
                     $incident->save();
-                    
+
                     $this->sendTicket($incident, $status);
-                    
-                    ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
-                    
+
+                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+
                 }
-                $notification->content='<strong>['.Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->content = '<strong>[' . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
             } else if ($status == "3") {
                 $incident->incidents_status_id = $status;
-                ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
+                $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Actualización sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha actualizado el estatus del siguiente evento:');
                 $incident->save();
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
             } else if ($status == "4") {
                 $count_images = 0;
@@ -169,16 +165,16 @@ class IncidentController extends Controller
                     }
                     $incident->save();
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
-                    ////$this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
-                    
+                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
+
                 }
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
-                $notification->save(); 
+                $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
+                $notification->save();
 
             } else if ($status == "5") {
                 $incident->incidents_status_id = $status;
                 $incident->save();
-                $notification->content="<strong>[".Auth::user()->username.']</strong> Cambió estado del Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong> a <strong>[".$incident->status->name."]</strong>";
+                $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
             }
             $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizó el incidente con ID: ' . $incident->id . ' a estatus ' . $incident->incidents_status_id);
@@ -434,13 +430,13 @@ class IncidentController extends Controller
                 $incident_rule->save();
             }
             $log->info(Auth::user()->id, Auth::user()->username, 'Se creo incidente con ID: ' . $incident->id);
-            $notification=new Notification;
-            $ticket="Por asignar...";
+            $notification = new Notification;
+            $ticket = "Por asignar...";
             if (isset($incident->ticket->internal_number)) {
-                $ticket=$incident->ticket->internal_number;
+                $ticket = $incident->ticket->internal_number;
             }
-            $notification->content="<strong>[".Auth::user()->username.']</strong> Creó Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>';
-            $notification->incident_handler_id=Auth::user()->id;
+            $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Creó Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>][' . $ticket . ']</strong>';
+            $notification->incident_handler_id = Auth::user()->id;
             $notification->save();
             return Redirect::to('incident/view/' . $incident->id);
         } else {
@@ -750,13 +746,13 @@ class IncidentController extends Controller
                 }
             }
             $log->info(Auth::user()->id, Auth::user()->username, 'Se actualizó incidente con ID: ' . $incident->id);
-            $notification=new Notification;
-            $ticket="Por asignar...";
+            $notification = new Notification;
+            $ticket = "Por asignar...";
             if (isset($incident->ticket->internal_number)) {
-                $ticket=$incident->ticket->internal_number;
+                $ticket = $incident->ticket->internal_number;
             }
-            $notification->content="<strong>[".Auth::user()->username.']</strong> Actualizó Incidente <strong>[ID:'.$incident->id.'][<a href="/incident/view/'.$incident->id.'">'.$incident->title.'</a>]['.$ticket.']</strong>'. ' Elaborado por <strong>['.$incident->handler->access->username."]</strong>";
-            $notification->incident_handler_id=Auth::user()->id;
+            $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Actualizó Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>][' . $ticket . ']</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong>";
+            $notification->incident_handler_id = Auth::user()->id;
             $notification->save();
             return Redirect::to('incident/view/' . $incident->id);
         }
@@ -873,7 +869,7 @@ class IncidentController extends Controller
         $observation = new Observation;
         $observation->content = $input['observation'];
         $observation->readed = 0;
-        $observation->created_by=Auth::user()->id;
+        $observation->created_by = Auth::user()->id;
         $observation->incident_handler_id = $input['handler_id'];
         $observation->incidents_id = $incident_id;
 
@@ -892,31 +888,35 @@ class IncidentController extends Controller
         return Redirect::to('/incident/view/' . $observation->incidents_id);
 
     }
-    public function attendObservation(){
-        $input=Input::all();
-        $id=$input['id'];
-        
-        $observation=Observation::find($id);
-        $observation->attend=1;
+
+    public function attendObservation()
+    {
+        $input = Input::all();
+        $id = $input['id'];
+
+        $observation = Observation::find($id);
+        $observation->attend = 1;
         $observation->save();
-        $notification=new Notification;
-        $ticket="Por asignar...";
+        $notification = new Notification;
+        $ticket = "Por asignar...";
         if (isset($observation->incident->ticket->internal_number)) {
-            $ticket=$observation->incident->ticket->internal_number;
+            $ticket = $observation->incident->ticket->internal_number;
         }
-        $notification->incident_handler_id=Auth::user()->id;
-        $notification->content="<strong>[".Auth::user()->username.']</strong> Atendió observación sobre el incidente <strong>[ID:'.$observation->incident->id.'][<a href="/incident/view/'.$observation->incident->id.'">'.$observation->incident->title.'</a>]['.$ticket.']</strong>';
+        $notification->incident_handler_id = Auth::user()->id;
+        $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Atendió observación sobre el incidente <strong>[ID:' . $observation->incident->id . '][<a href="/incident/view/' . $observation->incident->id . '">' . $observation->incident->title . '</a>][' . $ticket . ']</strong>';
         $notification->save();
-        
+
     }
 
-    public function readObservation(){
-        $input=Input::all();
-        $id=$input['id'];
-        $observation=Observation::find($id);
-        $observation->readed=1;
+    public function readObservation()
+    {
+        $input = Input::all();
+        $id = $input['id'];
+        $observation = Observation::find($id);
+        $observation->readed = 1;
         $observation->save();
     }
+
     public function addAnnex()
     {
         $input = Input::all();
