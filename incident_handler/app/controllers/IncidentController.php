@@ -144,7 +144,7 @@ class IncidentController extends Controller
                         $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
                         $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
                     } catch (Exception $exception) {
-                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id);
                     }
                 }
                 $notification->content = '<strong>[' . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
@@ -166,7 +166,7 @@ class IncidentController extends Controller
 
                     $incident->incidents_status_id = $status;
                     foreach ($input['images'] as $i) {
-                        $this->compareAndUpload($i, $incident);
+                        $this->compareAndUpload($i, $incident, 2);
                     }
                     $incident->save();
                     $this->closeTicket($incident->ticket->otrs_ticket_id);
@@ -316,7 +316,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    $this->compareAndUpload($i, $incident);
+                    $this->compareAndUpload($i, $incident, 1);
                 }
             }
 
@@ -502,7 +502,6 @@ class IncidentController extends Controller
 
     public function postUpdate()
     {
-
         $input = Input::all();
 
         $log = new Log\Logger();
@@ -616,7 +615,7 @@ class IncidentController extends Controller
 
             if ($input['images']) {
                 foreach ($input['images'] as $i) {
-                    $this->compareAndUpload($i, $incident);
+                    $this->compareAndUpload($i, $incident, 1);
                 }
             }
             $history = new IncidentHistory;
@@ -635,6 +634,7 @@ class IncidentController extends Controller
             $occ_time->time_types_id = 2;
             $det_time->incidents_id = $incident->id;
             $occ_time->incidents_id = $incident->id;
+
             $det_time->save();
             $occ_time->save();
 
@@ -763,7 +763,7 @@ class IncidentController extends Controller
         }
     }
 
-    private function compareAndUpload($i, $incident)
+    private function compareAndUpload($i, $incident, $evidence_type)
     {
         if ($i) {
             $name = $i->getClientOriginalName();
@@ -792,7 +792,7 @@ class IncidentController extends Controller
                 $im->file = "files/evidence/" . $new_name;
                 $im->name = $new_name;
                 $im->incidents_id = $incident->id;
-                $im->evidence_types_id = "1";
+                $im->evidence_types_id = $evidence_type;//"1";
                 $im->md5 = $md5;
                 $im->sha1 = $sha1;
                 $im->sha256 = $sha256;
@@ -920,6 +920,34 @@ class IncidentController extends Controller
         $observation = Observation::find($id);
         $observation->readed = 1;
         $observation->save();
+    }
+
+    public function changeToFalsoPositivo()
+    {
+        $input = Input::all();
+
+        $incident_id = $input['incident_id'];
+        $incident_handler_id = $input['handler_id'];
+        $image_falso_positivo = $input['imagen_falso_positivo'];
+
+        if (!isset($incident_id) || !isset($image_falso_positivo)) {
+            return Redirect::to('/incident/view/' . $input['incident_id']);
+        }
+
+        Log::info("Incident ID: " . $incident_id);
+        Log::info("Image " . print_r($image_falso_positivo, true));
+
+        $incident = Incident::find($incident_id);
+
+        $incident->incidents_status_id = 5;
+
+        foreach ($input['images'] as $i) {
+            $this->compareAndUpload($i, $incident, 3);
+        }
+        $incident->save();
+
+
+        return Redirect::to('/incident/view/' . $incident_id);
     }
 
     public function addAnnex()
@@ -1323,7 +1351,7 @@ class IncidentController extends Controller
         $res = $ticketOtrs->close($ticketID, $htmlReport);
 
         if ($res["response_status"] < 0)
-            $log->error(Auth::user()->id, Auth::user()->username, 'Error al cerrar OTRS Ticket con ID ' . $ticketIM->id . ' referente al incidente: ' . $incident->id .
+            $log->error(Auth::user()->id, Auth::user()->username, 'Error al cerrar OTRS Ticket con ID ' . $ticketIM->id . ' referente al incidente: ' . $ticketIM->incidents_id .
                 " [OTRS_DEBUG]:" . $res['error_description']);
         else
             $log->info(Auth::user()->id, Auth::user()->username, 'Se cerro el Ticket con ID: ' . $ticketIM->id);
