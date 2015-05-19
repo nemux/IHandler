@@ -56,7 +56,7 @@
             });
 
             $('#falso_positivo').click(function () {
-                alert()
+                //alert()
                 $('#next_status').val('5');
                 $('#send').click();
 
