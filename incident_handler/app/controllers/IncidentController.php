@@ -1364,8 +1364,6 @@ class IncidentController extends Controller
 
     private function sendEmail($incident, $subject, $body = null)
     {
-
-
         ////////////////////////variables para correo///////////////////////////////////////////////////////////
         $det_time = Time::where('time_types_id', '=', '1')->where('incidents_id', '=', $incident->id)->first();
         $occ_time = Time::where('time_types_id', '=', '2')->where('incidents_id', '=', $incident->id)->first();
@@ -1411,10 +1409,13 @@ class IncidentController extends Controller
                 foreach ($images as $image) {
                     $message->embed('files/evidence/' . $image->name);
                 }
-
-                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
+                try {
+                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
 //                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
-                $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
+                } catch (Exception $e) {
+                    $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción ' . $e->getMessage());
+                }
             });
     }
 
