@@ -132,17 +132,20 @@ class IncidentController extends Controller
 
             } else if ($status == "2") {
                 $ticket = Ticket::where('incidents_id', '=', $incident->id); //Validacion para evitar que un mismo incidente tenga varios tickets
-
+                Log::info('Tickets count ' + $ticket->count());
                 if ($ticket->count() == 0) {
-                    $incident->incidents_status_id = $status;
-                    $incident->save();
+                    try {
+                        $incident->incidents_status_id = $status;
+                        $incident->save();
 
-                    $incident->ticket = $this->sendTicket($incident, $status);
+                        $incident->ticket = $this->sendTicket($incident, $status);
 
-                    $log->info(Auth::user()->id, Auth::user()->username, 'Antes de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
-                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
-                    $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
-
+                        $log->info(Auth::user()->id, Auth::user()->username, 'Antes de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+                        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+                        $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+                    } catch (Exception $exception) {
+                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+                    }
                 }
                 $notification->content = '<strong>[' . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
