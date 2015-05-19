@@ -1391,6 +1391,7 @@ class IncidentController extends Controller
         $images = Image::where('incidents_id', '=', $incident->id)->get();
         //////////////////////////////////////////////////////////////////////////////////
 
+        $log = new Log\Logger();
 
         try {
             Mail::send('incident.show', array(
