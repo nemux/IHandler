@@ -56,6 +56,7 @@
             });
 
             $('#falso_positivo').click(function () {
+                alert()
                 $('#next_status').val('5');
                 $('#send').click();
 
@@ -453,26 +454,28 @@
 
 
         {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
-        <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i
-                    class="fa fa-file-pdf-o"></i> Generar pdf</a>
-        <a class="btn btn-inverse" href="/incident/doc/<?php echo $incident->id ?>" target="blank"><i
-                    class="fa fa-file-word-o"></i> Generar doc</a>
-        <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-        <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
-        <?php endif ?>
-        <?php if ($incident->incidents_status_id<3): ?>
-        <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
-        <?php endif ?>
-        <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-        <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+            <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i
+                        class="fa fa-file-pdf-o"></i> Generar pdf</a>
+            <a class="btn btn-inverse" href="/incident/doc/<?php echo $incident->id ?>" target="blank"><i
+                        class="fa fa-file-word-o"></i> Generar doc</a>
+        
+            <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
+            <?php endif ?>
+        
+            <?php if ($incident->incidents_status_id<3): ?>
+                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
+            <?php endif ?>
+            
+            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
+                <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
 
-
-        <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-        <?php if ($incident->incidents_status_id==1 && $message==""): ?>
-        <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-        <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
-        <input type="hidden" name="status" value="2" id="next_status">
-        <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
+                    <input type="hidden" name="id" value="<?php echo $incident->id ?>">
+                        <?php if ($incident->incidents_status_id==1 && $message==""): ?>
+                            <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
+                            <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
+                            <input type="hidden" name="status" value="2" id="next_status">
+                <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
         {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
         <?php endif ?>
 
@@ -490,7 +493,7 @@
         <?php if ($incident->incidents_status_id==2): ?>
         <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
         <input type="hidden" name="status" id="next_status" value="3">
-
+        <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
         <input type="hidden" name="id" value="<?php echo $incident->id ?>">
         @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
             {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send', 'style'=>'margin-left:2px']);}}
