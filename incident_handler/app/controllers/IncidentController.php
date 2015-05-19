@@ -1391,32 +1391,33 @@ class IncidentController extends Controller
         $images = Image::where('incidents_id', '=', $incident->id)->get();
         //////////////////////////////////////////////////////////////////////////////////
 
-        Mail::send('incident.show', array(
-            'det_time' => $det_time,
-            'occ_time' => $occ_time,
-            'incident' => $incident,
-            'listed' => $listed,
-            'location' => $location,
-            'recomendations' => $recomendations,
-            'body' => $body,
-            'images' => $images
-        ),
-            function ($message) use ($incident, $subject, $images) {
-                $log = new Log\Logger();
-                $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
-                $mails = explode(",", $temp_mails);
 
-                foreach ($images as $image) {
-                    $message->embed('files/evidence/' . $image->name);
-                }
-                try {
+        try {
+            Mail::send('incident.show', array(
+                'det_time' => $det_time,
+                'occ_time' => $occ_time,
+                'incident' => $incident,
+                'listed' => $listed,
+                'location' => $location,
+                'recomendations' => $recomendations,
+                'body' => $body,
+                'images' => $images
+            ),
+                function ($message) use ($incident, $subject, $images) {
+                    $log = new Log\Logger();
+                    $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
+                    $mails = explode(",", $temp_mails);
+
+                    foreach ($images as $image) {
+                        $message->embed('files/evidence/' . $image->name);
+                    }
                     $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
 //                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                     $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
-                } catch (Exception $e) {
-                    $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción ' . $e->getMessage());
-                }
-            });
+                });
+        } catch (Exception $e) {
+            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción ' . $e->getMessage());
+        }
     }
 
 
