@@ -91,8 +91,8 @@
     <!-- begin #page-container -->
 
 
-    <h1 class="page-header" style="color:#FFF">Reporte de incidente (En <?php print_r($incident->status->name) ?> -
-        Actualizado: <?php echo $incident->updated_at ?>)
+    <h1 class="page-header" style="color:#FFF">Reporte de incidente (En {{$incident->status->name}} -
+        Actualizado: {{$incident->updated_at}})
         <small></small>
     </h1>
     <!-- end page-header -->
@@ -105,24 +105,24 @@
             <h4 class="panel-title">Título: {{ $incident->title }}  </h4>
         </div>
         <div class="panel-body">
-            <?php if ($incident->incident_handler_id == Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-            <?php foreach ($incident->observations as $o): ?>
-            <div class="form-group">
+            @if($incident->incident_handler_id == Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2')
+                @foreach($incident->observations as $o)
+                    <div class="form-group">
 
-                <div class="alert alert-info">
-                    <span class="close" data-dismiss="alert">×</span>
-                    <strong><?php echo $o->created_at ?></strong>
-                    <br><?php echo $o->content ?>
+                        <div class="alert alert-info">
+                            <span class="close" data-dismiss="alert">×</span>
+                            <strong>{{$o->created_at}}</strong>
+                            <br>{{$o->content}}
 
-                </div>
-            </div>
-            <?php endforeach ?>
-            <?php endif ?>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
             <div class="form-group">
                 <table class="table table-bordered">
                     <tr>
                         <td style="text-align:center;background:#CCC" colspan="3">
-                            <strong>Incidente: <?php echo $incident->title ?></strong>
+                            <strong>Incidente: {{$incident->title}}</strong>
                         </td>
 
                     </tr>
@@ -139,26 +139,24 @@
                                 </tr>
                                 <tr style="width:100%">
                                     <td style="text-align:center;width:25%">
-                                        <?php echo ($incident->category->id) - 1; ?>
+                                        {{($incident->category->id-1)}}
                                     </td>
                                     <td style="text-align: justify;">
-                                        <?php echo $incident->category->name ?>.
-                                        <?php echo $incident->category->description ?>
+                                        {{$incident->category->name}}
+                                        {{$incident->category->description}}
                                     </td>
                                 </tr>
-                                <?php foreach ($incident->extraCategory as $ec): ?>
-                                <tr style="width:100%">
-                                    <td style="text-align:center;width:25%">
-                                        <?php echo ($ec->category->id) - 1; ?>
-                                    </td>
-                                    <td style="text-align: justify;">
-                                        <?php echo $ec->category->name ?>.
-                                        <?php echo $ec->category->description ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach ?>
-
-
+                                @foreach($incident->extraCategory as $ec)
+                                    <tr style="width:100%">
+                                        <td style="text-align:center;width:25%">
+                                            {{$ec->category->id-1}}
+                                        </td>
+                                        <td style="text-align: justify;">
+                                            {{$ec->category->name}}
+                                            {{$ec->category->description}}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </table>
                         </td>
                     </tr>
@@ -168,15 +166,15 @@
                             <strong>Sensor:</strong>
                         </td>
                         <td style="text-align:center;padding:0px">
-                            <?php echo $incident->sensor->name ?>
+                            {{$incident->sensor->name}}
                             <table class="table" style="margin:0px;padding:0px;">
-                                <?php foreach ($incident->extraSensor as $es): ?>
-                                <tr style="margin:0px;padding:0px;">
-                                    <td style="margin:0px;padding:0px;">
-                                        <?php echo $es->sensor->name ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach ?>
+                                @foreach($incident->extraSensor as $es)
+                                    <tr style="margin:0px;padding:0px;">
+                                        <td style="margin:0px;padding:0px;">
+                                            {{$es->sensor->name}}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </table>
                         </td>
                     </tr>
@@ -200,7 +198,7 @@
                             <strong>Status:</strong>
                         </td>
                         <td style="text-align:center;">
-                            <?php echo $incident->status->name ?>
+                            {{$incident->status->name}}
                         </td>
                     </tr>
 
@@ -209,11 +207,9 @@
                             <strong>Indicador de Compromiso Inicial:</strong>
                         </td>
                         <td style="text-align:center;">
-                            <?php foreach ($incident->incidentRule as $r ): ?>
-                            <?php echo $r->rule->message ?><br>
-                            <?php //print_r($r) ?>
-                            <?php endforeach ?>
-                            <?php //print_r($incident->incidentRule); ?>
+                            @foreach($incident->incidentRule as $r)
+                                {{$r->rule->message}}
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
@@ -221,10 +217,7 @@
                             <strong>Flujo del ataque:</strong>
                         </td>
                         <td style="text-align:center;">
-                            <?php
-                            echo $incident->stream;
-
-                            ?>
+                            {{$incident->stream}}
                         </td>
                     </tr>
                     <tr>
@@ -232,13 +225,7 @@
                             <strong>Fecha de detección:</strong>
                         </td>
                         <td style="text-align:center;">
-                            <?php
-                            echo $det_time->datetime;
-
-                            ?>,<?php
-                            echo $det_time->zone;
-
-                            ?>
+                            {{$det_time->datetime}}, {{$det_time->zone}}
                         </td>
                     </tr>
                     <tr style="padding:0">
@@ -248,25 +235,23 @@
                         </td>
 
                         <?php
-                        $font="";
-                        $color="";
-                        if ($incident->criticity=="BAJA") {
-                        $color="#01DF3A";
-                        $font="#000";
-                        }else if($incident->criticity=="MEDIA"){
-                        $color="#F7FE2E";
-                        $font="#000";
-                        }else if($incident->criticity=="ALTA"){
-                        $color="#FE2E2E";
-                        $font="#FFF";
+                        $font = "";
+                        $color = "";
+                        if ($incident->criticity == "BAJA") {
+                            $color = "#01DF3A";
+                            $font = "#000";
+                        } else if ($incident->criticity == "MEDIA") {
+                            $color = "#F7FE2E";
+                            $font = "#000";
+                        } else if ($incident->criticity == "ALTA") {
+                            $color = "#FE2E2E";
+                            $font = "#FFF";
                         }
-
                         ?>
-                        <td style="text-align:center;background-color:<?php echo $color ?>;color:<?php echo $font ?>">
+
+                        <td style="text-align:center;background-color:{{ $color }};color:{{ $font }}">
                             <div style="width:100%;height:100%;">
-                                <?php
-                                echo $incident->criticity;
-                                ?>
+                                {{ $incident->criticity;}}
                             </div>
 
                         </td>
@@ -278,15 +263,11 @@
                         </td>
                         <td style="text-align:center;">
                             <table>
-
-                                <?php foreach ($incident->srcDst as $ip): ?>
-                                <?php
-                                if($ip->src->ip!="" && $ip->src->show != false){
-                                echo $ip->src->ip.'<br>';
-                                }
-                                ?>
-                                <?php endforeach ?>
-
+                                @foreach($incident->srcDst as $ip)
+                                    @if($ip->src->ip != "" && $ip->src->show != false)
+                                        {{ $ip->src->ip}}<br/>
+                                    @endif
+                                @endforeach
                             </table>
                         </td>
                     </tr>
@@ -297,55 +278,51 @@
                         </td>
                         <td style="text-align:center;">
                             <table>
-                                <?php foreach ($incident->srcDst as $ip): ?>
-                                <?php
-                                if($ip->dst->ip!="" && $ip->dst->show != false ){
-                                echo $ip->dst->ip.'<br>';
-                                }
-                                ?>
-                                <?php endforeach ?>
+                                @foreach($incident->srcDst as $ip)
+                                    @if($ip->dst->ip != "" && $ip->dst->show != false)
+                                        {{ $ip->dst->ip }}<br/>
+                                    @endif
+                                @endforeach
                             </table>
                         </td>
                     </tr>
 
-                    <?php if (count($listed)>0): ?>
-                    <tr>
-                        <td style="text-align:center;background:#CCC">
-                            <strong>Blacklist:</strong>
-                        </td>
-                        <td colspan="2" style="padding:0">
-                            <table style="border-collapse:collapse;width:100%">
-                                <tr>
-                                    <th style="text-align:center;background:#CCC;">
-                                        Dirección IP
-                                    </th>
-                                    <th style="text-align:center;background:#CCC">
-                                        País de Origen
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <?php $count=0 ?>
-                                        <?php foreach ($listed as $l): ?>
-                                        <?php $count++; ?>
-                                        <?php echo $l->ip ?>[<?php echo $count ?>]<br>
-                                        <?php endforeach ?>
-                                    </td>
-                                    <td style="text-align:center">
-                                        <?php $count=0 ?>
-                                        <?php foreach ($location as $l): ?>
-                                        <?php $count++; ?>
-                                        <?php if (isset($l->location)) { ?>
-                                        <?php print_r($l->location)  ?>
-                                        <?php  } ?>
-                                        <br>
-                                        <?php endforeach ?>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <?php endif ?>
+                    @if(count($listed)>0)
+                        <tr>
+                            <td style="text-align:center;background:#CCC">
+                                <strong>Blacklist:</strong>
+                            </td>
+                            <td colspan="2" style="padding:0">
+                                <table style="border-collapse:collapse;width:100%">
+                                    <tr>
+                                        <th style="text-align:center;background:#CCC;">
+                                            Dirección IP
+                                        </th>
+                                        <th style="text-align:center;background:#CCC">
+                                            País de Origen
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center">
+                                            <?php $count = 0 ?>
+                                            @foreach($listed as $l)
+                                                {{ $l->ip }} [{{ ++$count }}]<br>
+                                            @endforeach
+                                            <br/>
+                                        </td>
+                                        <td style="text-align:center">
+                                            @foreach($location as $l)
+                                                @if(isset($l->location))
+                                                    {{$l->location}}<br>
+                                                @endif
+                                            @endforeach
+                                            <br>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    @endif
 
 
                     <tr>
@@ -353,8 +330,8 @@
                             <strong>Descripción:</strong>
                         </td>
                         <td style="text-align:justify;text-justify: inter-word;">
-                            <?php echo $incident->description ?><br>
-                            <?php echo $incident->conclution ?>
+                            {{ $incident->description }}<br>
+                            {{ $incident->conclution }}
                         </td>
                     </tr>
 
@@ -364,14 +341,12 @@
                         </td>
                         <td style="text-align:justify;text-justify: inter-word;">
                             {{ $incident->recomendation }} <br/>
-
                             @if (count($recomendations) > 0 )
                                 @foreach($recomendations as $r )
-                                    {{ "[".$r->created_at."]" }} <br/>
+                                    [{{ $r->created_at }} ]<br/>
                                     {{ $r->content }} <br/>
                                 @endforeach
                             @endif
-
                         </td>
                     </tr>
 
@@ -380,245 +355,291 @@
                             <strong>Referencia:</strong>
                         </td>
                         <td style="text-align:justify;text-justify: inter-word;">
-                            <?php echo $incident->reference->link ?><br>
-
+                            {{ $incident->reference->link }}<br>
                         </td>
                     </tr>
 
                 </table>
             </div>
 
-            <?php foreach ($incident->annexes as $a ): ?>
 
-
-            <div class="form-group">
-
-                <table class="table table-bordered" width="100%">
-                    <tr style="text-align:center;background:#CCC;">
-                        <td colspan="2">
-                            <strong> <?php echo $a->title ?></strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;background:#CCC;width:15%">
-                            <?php echo $a->field ?>
-                        </td>
-                        <td>
-                            <?php echo $a->content ?>
-                        </td>
-                    </tr>
-
-                </table>
-                <div class="col-lg-12">
-                    <a class="btn btn-default pull-right" href="/incident/del/Annex/<?php echo $a->id ?>">Borrar
-                        anexo</a>
-                </div>
-            </div>
-            <?php endforeach ?>
-        </div>
-    </div>
-    <?php if (count($incident->images)>0): ?>
-    <div class="col-lg-12" style="padding-bottom:50px">.
-        <h4 style="color:#FFF">Evidencia del incidente:</h4><br>
-        <?php foreach ($incident->images as $i): ?>
-        <?php if ($i->evidence_types_id=='1'): ?>
-        <div class="col-lg-3">
-            <a href="/files/evidence/<?php echo $i->name ?>" target="blank" style="color:#FFF"><i
-                        class="fa fa-cube fa-2x"></i>
-                <?php echo $i->name ?>
-            </a>
-
-        </div>
-        <?php endif ?>
-        <?php endforeach ?>
-    </div>
-
-    <div class="col-lg-12" style="padding-bottom:50px">.
-        <h4 style="color:#FFF">Evidencia de Cierre:</h4><br>
-        <?php foreach ($incident->images as $i): ?>
-        <?php if ($i->evidence_types_id=='2'): ?>
-        <div class="col-lg-3">
-            <a href="/files/evidence/<?php echo $i->name ?>" target="blank" style="color:#FFF"><i
-                        class="fa fa-cube fa-2x"></i>
-                <?php echo $i->name ?>
-            </a>
-
-        </div>
-        <?php endif ?>
-        <?php endforeach ?>
-    </div>
-    <?php endif ?>
-
-    <!-- botones de camnbio-->
-    <div class="col-lg-12" style="margin-bottom:50px">
-
-
-        {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
-            <a class="btn btn-inverse" href="/incident/pdf/<?php echo $incident->id ?>" target="blank"><i
-                        class="fa fa-file-pdf-o"></i> Generar pdf</a>
-            <a class="btn btn-inverse" href="/incident/doc/<?php echo $incident->id ?>" target="blank"><i
-                        class="fa fa-file-word-o"></i> Generar doc</a>
-        
-            <?php if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
-            <?php endif ?>
-        
-            <?php if ($incident->incidents_status_id<3): ?>
-                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
-            <?php endif ?>
-            
-            <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-                <?php if ($incident->incident_handler_id==Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2'): ?>
-
-                    <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-                        <?php if ($incident->incidents_status_id==1 && $message==""): ?>
-                            <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-                            <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
-                            <input type="hidden" name="status" value="2" id="next_status">
-                <?php if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin'): ?>
-        {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
-        <?php endif ?>
-
-        <?php endif ?>
-        <?php endif ?>
-
-        <?php if ($message!=""): ?>
-        <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-
-        <div class="col-lg-2 pull-right">
-            <?php echo $message ?>
-        </div>
-        <?php endif ?>
-
-        <?php if ($incident->incidents_status_id==2): ?>
-        <a class="btn btn-primary" href="/incident/update/<?php echo $incident->id ?>"><i class="fa fa-edit"></i> editar</a>
-        <input type="hidden" name="status" id="next_status" value="3">
-        <a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>
-        <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-        @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
-            {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send', 'style'=>'margin-left:2px']);}}
-        @endif
-        {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
-        <!--<a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>-->
-        <?php endif ?>
-
-
-        <?php if ($incident->incidents_status_id==5): ?>
-
-        <input type="hidden" name="status" id="next_status" value="1">
-        <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-
-        {{--Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);--}}
-
-        <?php endif ?>
-
-        <!-- bloque de status 2 -->
-        <?php if ($incident->incidents_status_id==3): ?>
-        <input type="hidden" name="status" value="4" id="next_status">
-        <input type="hidden" name="id" value="<?php echo $incident->id ?>">
-
-        <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right"
-             onclick="$('#images').click()">Seleccionar evidencia
-        </div>
-        <input class="btn btn-default " type="file" id="images" name="images[]" multiple style="display:none">
-        @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
-            {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved', 'style'=>'margin-left:2px']);}}
-        @endif
-        {{Form::submit('Enviar nueva recomendaci&oacute;n',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
-        <div class="col-lg-1 pull-right">
-            <p id="file_message">
-
-            </p>
-        </div>
-        <?php endif ?>
-        <?php endif ?>
-        {{ Form::close() }}
-
-    </div>
-
-
-
-
-    <!-- begin scroll to top btn -->
-    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i
-                class="fa fa-angle-up"></i></a>
-    <!-- end scroll to top btn -->
-    </div>
-    <!-- end page container -->
-
-
-    <div class="modal fade" id="modal-dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Añadir Observaciones</h4>
-                </div>
-                <div class="modal-body">
+            @foreach ($incident->annexes as $a )
+                <div class="form-group">
+                    <table class="table table-bordered" width="100%">
+                        <tr style="text-align:center;background:#CCC;">
+                            <td colspan="2">
+                                <strong> {{ $a->title }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;background:#CCC;width:15%">
+                                {{ $a->field }}
+                            </td>
+                            <td>
+                                {{ $a->content }}
+                            </td>
+                        </tr>
+                    </table>
                     <div class="col-lg-12">
-                        {{Form::open(array('method'=>'POST','action' => 'IncidentController@addObservation','enctype'=>'multipart/form-data'))}}
-                        {{Form::textarea('observation',null,[
-                              'class'=>'form-control parsley-validated',
-                              "data-parsley-pattern"=>"",
-                              "data-parsley-required"=>"true",
-                              "placeholder"=>"Observaciones del incidente",
-                              "id"=>"description",
-                              ]);
-                        }}
-                        <input type="hidden" name="incident_id" value="<?php echo $incident->id ?>">
-                        <input type="hidden" name="handler_id" value="<?php echo $incident->handler->id ?>">
-                        {{Form::submit('Guardar comentario',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
-                        {{ Form::close() }}
+                        <a class="btn btn-default pull-right" href="/incident/del/Annex/{{ $a->id }}">Borrar anexo</a>
                     </div>
                 </div>
-                <div class="modal-footer">
-
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
-    <div class="modal fade" id="modal-dialog2">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Añadir anexo</h4>
+    @if(count($incident->images)>0)
+        <div class="panel panel-inverse">
+            <div class="panel-heading">Evidencias del caso</div>
+            <div class="panel-body">
+                <table>
+                    <thead>
+                    <tr>
+                        <th width="30%">Evidencia del Incidente</th>
+                        <th width="30%">Evidencia de Falso Positivo</th>
+                        <th width="30%">Evidencia de Cierre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="col-lg-3">
+                                @foreach ($incident->images as $i)
+                                    @if ($i->evidence_types_id == '1')
+                                        <a href="/files/evidence/{{ $i->name }}" target="blank" style="color:black;">
+                                            <i class="fa fa-cube fa-2x"></i>
+                                            {{ $i->name }}
+                                        </a><br/>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-lg-3">
+                                @foreach ($incident->images as $i)
+                                    @if ($i->evidence_types_id == '3')
+                                        <a href="/files/evidence/{{ $i->name }}" target="blank" style="color:black;">
+                                            <i class="fa fa-cube fa-2x"></i>
+                                            {{ $i->name }}
+                                        </a><br/>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-lg-3">
+                                @foreach ($incident->images as $i)
+                                    @if ($i->evidence_types_id == '2')
+                                        <a href="/files/evidence/{{ $i->name }}" target="blank" style="color: black;">
+                                            <i class="fa fa-cube fa-2x"></i>
+                                            {{ $i->name }}
+                                        </a><br/>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        @endif
+
+                <!-- botones de camnbio-->
+        <div class="col-lg-12" style="margin-bottom:50px">
+            {{Form::open(array('method'=>'POST','action' => 'IncidentController@updateStatus','enctype'=>'multipart/form-data'))}}
+            <a class="btn btn-inverse" href="/incident/pdf/{{ $incident->id }}" target="blank"><i
+                        class="fa fa-file-pdf-o"></i> Generar pdf</a>
+            <a class="btn btn-inverse" href="/incident/doc/{{ $incident->id }}" target="blank"><i
+                        class="fa fa-file-word-o"></i> Generar doc</a>
+
+            @if (Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2')
+                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog">Añadir observaciones</a>
+            @endif
+
+            @if ($incident->incidents_status_id < 3)
+                <a class="btn btn-inverse data-toogle" data-toggle="modal" href="#modal-dialog2">Añadir anexo</a>
+            @endif
+
+            @if ($incident->incident_handler_id == Auth::user()->incident_handler_id || Auth::user()->type->name == 'admin' || Auth::user()->type->name == 'user_2')
+
+                <input type="hidden" name="id" value="{{ $incident->id }}">
+                @if ($incident->incidents_status_id == 1 && $message == "")
+                    <a class="btn btn-primary" href="/incident/update/{{ $incident->id }}"><i
+                                class="fa fa-edit"></i>
+                        editar</a>
+                    {{--<a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>--}}
+
+                    <a class="btn btn-danger data-toogle" data-toggle="modal" href="#modal-dialog3">Marcar como falso
+                        positivo</a>
+                    <input type="hidden" name="status" value="2" id="next_status">
+                    @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
+                        {{Form::submit('Mover a Investigación',['class'=>'btn btn-primary pull-right ','id'=>'send']);}}
+                    @endif
+
+                @endif
+            @endif
+
+            @if ($message != "")
+                <a class="btn btn-primary" href="/incident/update/{{ $incident->id }}"><i
+                            class="fa fa-edit"></i>
+                    editar</a>
+
+                <div class="col-lg-2 pull-right">
+                    {{ $message }}
                 </div>
-                <div class="modal-body">
-                    <div class="col-lg-12">
-                        <div class="form-group" style="padding:20px">
-                            {{Form::open(array('method'=>'POST','action' => 'IncidentController@addAnnex','enctype'=>'multipart/form-data'))}}
-                            {{Form::text('title',null,[
-                                  'class'=>'form-control parsley-validated',
-                                  "data-parsley-pattern"=>"",
-                                  "data-parsley-required"=>"true",
-                                  "placeholder"=>"Título"]);
-                            }}<br>
-                            {{Form::text('field',null,[
-                                  'class'=>'form-control parsley-validated',
-                                  "data-parsley-pattern"=>"",
-                                  "data-parsley-required"=>"true",
-                                  "placeholder"=>"Nombre del campo"]);
-                            }}<br>
+            @endif
+
+            @if ($incident->incidents_status_id == 2)
+                <a class="btn btn-primary" href="/incident/update/{{ $incident->id }}"><i
+                            class="fa fa-edit"></i>
+                    editar</a>
+                <input type="hidden" name="status" id="next_status" value="3">
+                {{--<a class="btn btn-danger" id="falso_positivo">Marcar como falso positivo</a>--}}
+                <a class="btn btn-danger data-toogle" data-toggle="modal" href="#modal-dialog3">Marcar como falso
+                    positivo</a>
+                <input type="hidden" name="id" value="{{ $incident->id }}">
+                @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
+                    {{Form::submit('Mover a Resuelto',['class'=>'btn btn-primary pull-right ','id'=>'send', 'style'=>'margin-left:2px']);}}
+                @endif
+                {{Form::submit('Enviar nueva recomendación',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
+                <!--<a style="margin-right:3px" class="btn btn-info pull-right" id="return_abierto">Regresar a Abierto</a>-->
+            @endif
+
+
+            @if ($incident->incidents_status_id == 5)
+
+                <input type="hidden" name="status" id="next_status" value="1">
+                <input type="hidden" name="id" value="{{ $incident->id }}">
+                {{--Form::submit('Mover a Abierto',['class'=>'btn btn-primary pull-right ','id'=>'send']);--}}
+                @endif
+
+                        <!-- bloque de status 2 -->
+                @if ($incident->incidents_status_id == 3)
+                    <input type="hidden" name="status" value="4" id="next_status">
+                    <input type="hidden" name="id" value="{{ $incident->id }}">
+
+                    <div style="margin-left:2px" name="button" id="evidence" class="btn btn-primary pull-right"
+                         onclick="$('#images').click()">Seleccionar evidencia
+                    </div>
+                    <input class="btn btn-default " type="file" id="images" name="images[]" multiple
+                           style="display:none">
+                    @if (Auth::user()->type->name == 'user_2' || Auth::user()->type->name == 'admin')
+                        {{Form::submit('Mover a Cerrado',['class'=>'disabled btn btn-primary pull-right ','id'=>'solved', 'style'=>'margin-left:2px']);}}
+                    @endif
+                    {{Form::submit('Enviar nueva recomendación',['name'=>'send_recomendation', 'class'=>'btn btn-primary pull-right']);}}
+                    <div class="col-lg-1 pull-right">
+                        <p id="file_message">
+
+                        </p>
+                    </div>
+                @endif
+                {{ Form::close() }}
+        </div>
+
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+           data-click="scroll-top"><i
+                    class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+        </div>
+        <!-- end page container -->
+
+
+        <div class="modal fade" id="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Añadir Observaciones</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            {{Form::open(array('method'=>'POST','action' => 'IncidentController@addObservation','enctype'=>'multipart/form-data'))}}
                             {{Form::textarea('observation',null,[
                                   'class'=>'form-control parsley-validated',
                                   "data-parsley-pattern"=>"",
                                   "data-parsley-required"=>"true",
                                   "placeholder"=>"Observaciones del incidente",
-                                  "id"=>"conclutions",
+                                  "id"=>"description",
                                   ]);
                             }}
-                            <input type="hidden" name="incident_id" value="<?php echo $incident->id ?>">
-                            <input type="hidden" name="handler_id" value="<?php echo $incident->handler->id ?>">
+                            <input type="hidden" name="incident_id" value="{{ $incident->id }}">
+                            <input type="hidden" name="handler_id" value="{{ $incident->handler->id }}">
                             {{Form::submit('Guardar comentario',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
                             {{ Form::close() }}
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="modal-footer">
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="modal-dialog3">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Añadir evidencia de Falso Positivo</h4></div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="form-group" style="padding:20px">
+                                {{Form::open(array('method'=>'POST','action' => 'IncidentController@changeToFalsoPositivo','enctype'=>'multipart/form-data'))}}
+                                <input type="hidden" name="incident_id" value="{{ $incident->id }}">
+                                <input type="hidden" name="handler_id" value="{{ $incident->handler->id }}">
+                                {{ Form::file('img_fp') }}
+                                {{Form::submit('Cambiar a Falso Positivo',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-dialog2">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Añadir anexo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="form-group" style="padding:20px">
+                                {{Form::open(array('method'=>'POST','action' => 'IncidentController@addAnnex','enctype'=>'multipart/form-data'))}}
+                                {{Form::text('title',null,[
+                                      'class'=>'form-control parsley-validated',
+                                      "data-parsley-pattern"=>"",
+                                      "data-parsley-required"=>"true",
+                                      "placeholder"=>"Título"]);
+                                }}<br>
+                                {{Form::text('field',null,[
+                                      'class'=>'form-control parsley-validated',
+                                      "data-parsley-pattern"=>"",
+                                      "data-parsley-required"=>"true",
+                                      "placeholder"=>"Nombre del campo"]);
+                                }}<br>
+                                {{Form::textarea('observation',null,[
+                                      'class'=>'form-control parsley-validated',
+                                      "data-parsley-pattern"=>"",
+                                      "data-parsley-required"=>"true",
+                                      "placeholder"=>"Observaciones del incidente",
+                                      "id"=>"conclutions",
+                                      ]);
+                                }}
+                                <input type="hidden" name="incident_id" value="{{ $incident->id }}">
+                                <input type="hidden" name="handler_id" value="{{ $incident->handler->id }}">
+                                {{Form::submit('Guardar comentario',['class'=>'btn btn-primary pull-right ', 'style'=>'margin-left:2px']);}}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
 @stop

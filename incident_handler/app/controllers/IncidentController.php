@@ -929,11 +929,7 @@ class IncidentController extends Controller
 
         $incident_id = $input['incident_id'];
         $incident_handler_id = $input['handler_id'];
-        $image_falso_positivo = $input['imagen_falso_positivo'];
-
-        if (!isset($incident_id) || !isset($image_falso_positivo)) {
-            return Redirect::to('/incident/view/' . $input['incident_id']);
-        }
+        $image_falso_positivo = $input['img_fp'];
 
         Log::info("Incident ID: " . $incident_id);
         Log::info("Image " . print_r($image_falso_positivo, true));
@@ -942,8 +938,11 @@ class IncidentController extends Controller
 
         $incident->incidents_status_id = 5;
 
-        foreach ($input['images'] as $i) {
-            $this->compareAndUpload($i, $incident, 3);
+        if ($input['img_fp']) {
+            Log::info("img_fp: " . $input['img_fp']);
+            $this->compareAndUpload($input['img_fp'], $incident,3);
+        } else {
+            Log::info('No image selected');
         }
         $incident->save();
 

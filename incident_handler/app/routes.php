@@ -13,10 +13,10 @@
 Route::get('/', 'HomeController@index');
 
 Route::get('dashboard', array('before' => 'auth', 'uses' => 'HomeController@dashboard'));
-Route::post('dashboard/update/observations', array('before' => 'auth', 'uses' => 'HomeController@updateObservations' ));
-Route::post('dashboard/update/closures',     array('before' => 'auth', 'uses' => 'HomeController@updateClosures'     ));
-Route::post('dashboard/update/notifications',     array('before' => 'auth', 'uses' => 'HomeController@updateNotifications'     ));
-Route::post('dashboard/get/alerts',     array('before' => 'auth', 'uses' => 'HomeController@getAlerts'     ));
+Route::post('dashboard/update/observations', array('before' => 'auth', 'uses' => 'HomeController@updateObservations'));
+Route::post('dashboard/update/closures', array('before' => 'auth', 'uses' => 'HomeController@updateClosures'));
+Route::post('dashboard/update/notifications', array('before' => 'auth', 'uses' => 'HomeController@updateNotifications'));
+Route::post('dashboard/get/alerts', array('before' => 'auth', 'uses' => 'HomeController@getAlerts'));
 
 Route::get('rule/query/{id}', 'RuleController@query')->where(array('id' => '^[0-9]+$'));
 Route::get('occurence/query/{id}', 'OccurenceController@query')->where(array('id' => '^[0-9]+$'));
@@ -72,10 +72,11 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::get('open/', 'IncidentController@openStatus');
     Route::get('investigation/', 'IncidentController@investigationStatus');
     Route::get('solved/', 'IncidentController@solvedStatus');
-    Route::get('solved/all','IncidentController@allSolvedStatus');
+    Route::get('solved/all', 'IncidentController@allSolvedStatus');
     //Route::get('show/{id}', 'IncidentController@pdf');
     Route::get('sensor/get/{id}', 'SensorController@customerSensor');
     Route::post('add/Annex', 'IncidentController@addAnnex');
+    Route::post('change/toFalsoPositivo', 'IncidentController@changeToFalsoPositivo'); //Cambia un incidente a Falso Positivo adjuntando una imagen
     Route::get('del/Annex/{id}', 'IncidentController@delAnnex');
     Route::get('search/ip/', 'IncidentController@searchIp');
     Route::post('search/render/ip/', 'IncidentController@renderIp');
@@ -88,7 +89,7 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::post('view/sensor/', 'IncidentController@viewSensor');
 
     Route::get('rules/', 'IncidentController@rules');
-    
+
     Route::post('observation/read', 'IncidentController@readObservation');
     Route::post('observation/attend', 'IncidentController@attendObservation');
 });

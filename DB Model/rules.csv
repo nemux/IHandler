@@ -1,0 +1,606 @@
+1;5255;5544545;54455454;45545454;54545454;4554455454;02/09/15 04:00 PM;02/09/15 04:00 PM
+2;1;tcp any;Torrent;Torrent;Gestor de descargas;Por que descargan cosas;02/09/15 04:14 PM;02/09/15 04:14 PM
+3;0;UDP;Et malware;código malicioso;código;por que si;02/09/15 05:07 PM;02/09/15 05:07 PM
+5;1;;RDP connection confirm;;;;02/10/15 01:08 PM;02/10/15 01:08 PM
+6;2;;RDP disconnect request;;;;02/10/15 01:08 PM;02/10/15 01:08 PM
+7;m1;;RDP connection request;;;;02/10/15 01:11 PM;02/10/15 01:11 PM
+8;m2;;RDP connection request;;;;02/10/15 01:11 PM;02/10/15 01:11 PM
+9;m3;;RDP disconnect request;;;;02/10/15 01:11 PM;02/10/15 01:11 PM
+10;E1;;Sality Fake Opera User Agent;;;;02/10/15 01:14 PM;02/10/15 01:14 PM
+11;m4;;Zeus GameOver Possible DGA NXDOMAIN Responses;;;;02/10/15 01:15 PM;02/10/15 01:15 PM
+12;av1;;SCAN Nessus User Agent;;;;02/10/15 01:45 PM;02/10/15 01:45 PM
+13;E2;;Downadup/Conficker A or B Worm reporting;;;;02/10/15 01:51 PM;02/10/15 01:51 PM
+14;m5;;Win32/BrowseFox.H Checkin 2;;;;02/10/15 01:53 PM;02/10/15 01:53 PM
+15;av2;;SCAN Multiple MySQL Login Failures, Possible Brute Force Attempt;;;;02/10/15 02:04 PM;02/10/15 02:04 PM
+16;E3;;PUP Win32/ELEX Checkin;;;;02/10/15 03:02 PM;02/10/15 03:02 PM
+17;m6;;Worm.VBS.ayr Checkin 1;;;;02/10/15 03:03 PM;02/10/15 03:03 PM
+18;m7;;VBSAutorun_VBS_Jenxcus Check-in UA;;;;02/10/15 03:03 PM;02/10/15 03:03 PM
+19;r01;;LibSSH Based Frequent SSH Connections Likely BruteForce Attack!;;;;02/10/15 03:18 PM;02/10/15 03:18 PM
+20;E4;;Query to Known CnC Domain msnsolution.nicaze.net;;;;02/10/15 03:18 PM;02/10/15 03:18 PM
+21;m8;;Muieblackcat scanner;;;;02/10/15 03:28 PM;02/10/15 03:28 PM
+22;E5;;Win32.Sality-GR Checkin;;;;02/10/15 03:38 PM;02/10/15 03:38 PM
+23;r02;;Sipvicious Scan;;;;02/10/15 03:46 PM;02/10/15 03:46 PM
+24;r03;;Andromeda Checkin;;;;02/10/15 03:55 PM;02/10/15 03:55 PM
+25;av3;;Exploit Suspected PHP Injection Attack (cmd=);;;;02/10/15 03:56 PM;02/10/15 03:56 PM
+26;E6;;Vulnerable Java Version 1.7.x Detected;;;;02/10/15 03:57 PM;02/10/15 03:57 PM
+27;av4;;Facebook Chat using XMPP;;;;02/10/15 04:04 PM;02/10/15 04:04 PM
+28;r04;;Hiloti Style GET to PHP with invalid terse MSIE headers;;;;02/10/15 04:04 PM;02/10/15 04:04 PM
+29;r05;;Backdoor.Win32.Pushdo.s Checkin;;;;02/10/15 04:04 PM;02/10/15 04:04 PM
+31;r06;;Smilebox Software/Adware Checkin;;;;02/10/15 04:11 PM;02/10/15 04:11 PM
+32;nmx1;;TROJAN Downadup/Conficker A or B Worm reporting;;;;02/10/15 04:21 PM;02/10/15 04:21 PM
+33;m9;;CHAT IRC JOIN command;;;;02/10/15 04:25 PM;02/10/15 04:25 PM
+34;m10;;CHAT IRC USER command;;;;02/10/15 04:25 PM;02/10/15 04:25 PM
+35;m11;;CHAT IRC NICK command;;;;02/10/15 04:25 PM;02/10/15 04:25 PM
+37;E7;;Microsoft Remote Desktop (RDP) Syn then Reset 30 Second DoS Attempt;;;;02/10/15 04:29 PM;02/10/15 04:29 PM
+38;m12;;IRC - Nick change on non-std port;;;;02/10/15 04:30 PM;02/10/15 04:30 PM
+39;m13;;IRC - Channel JOIN on non-std port;;;;02/10/15 04:30 PM;02/10/15 04:30 PM
+40;r07;;Suspicious User Agent (Autoupdate);;;;02/10/15 04:35 PM;02/10/15 04:35 PM
+42;av5;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Reserved Bit Set - Likely Kazy;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+43;av6;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Opcode 8 through 15 set - Likely Kazy;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+44;av7;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Opcode 6 or 7 set - Likely Kazy;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+45;r08;;Tool.InstallToolbar.24 Reporting;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+46;m14;;P2P Edonkey Search Request (any type file);;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+47;m15;;P2P Edonkey Search Results;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+48;m16;;P2P Edonkey Connect Reply and Server List;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+49;m17;;P2P Edonkey Search Reply;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+50;m18;;P2P Edonkey Search Request (search by name);;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+51;m19;;P2P Edonkey Connect Request;;;;02/10/15 04:39 PM;02/10/15 04:39 PM
+52;f1;;DNS Query For XXX Adult Site Top Level Domain;;;;02/10/15 04:41 PM;02/10/15 04:41 PM
+53;E8;;Autoit Windows Automation tool User-Agent in HTTP Request;;;;02/10/15 04:44 PM;02/10/15 04:44 PM
+54;r09;;IRC PING command;;;;02/10/15 04:44 PM;02/10/15 04:44 PM
+55;r10;;IRC PONG response;;;;02/10/15 04:44 PM;02/10/15 04:44 PM
+56;r11;;IRC - PRIVMSG *.(exe|tar|tgz|zip) download command;;;;02/10/15 04:44 PM;02/10/15 04:44 PM
+58;m20;;Suspicious inbound to mySQL port 3306;;;;02/10/15 04:47 PM;02/10/15 04:47 PM
+59;f2;;request to .xxx TLD;;;;02/10/15 04:48 PM;02/10/15 04:48 PM
+60;av8;;NTP DDoS Inbound Frequent Un-Authed MON_LIST Requests IMPL 0x02;;;;02/10/15 04:49 PM;02/10/15 04:49 PM
+61;E9;;Worm.VBS.ayr Checkin 1;;;;02/10/15 04:52 PM;02/10/15 04:52 PM
+62;r12;;MarketScore.com Spyware User Configuration and Setup Access;;;;02/10/15 04:53 PM;02/10/15 04:53 PM
+63;m21;;Alexa Search Toolbar User-Agent 2;;;;02/10/15 04:56 PM;02/10/15 04:56 PM
+30;L1;;IRC PING command;;;;02/10/15 04:04 PM;02/13/15 12:34 PM
+65;E10;;Win32/Ramnit Checkin;;;;02/10/15 04:59 PM;02/10/15 04:59 PM
+66;av9;;P2P BitTorrent announce request;;;;02/10/15 05:01 PM;02/10/15 05:01 PM
+67;f4;;TeamViewier Keep-alive inbound;;;;02/10/15 05:07 PM;02/10/15 05:07 PM
+69;nmx2;;Possible WP CuckooTap Arbitrary File Download;;;;02/10/15 05:14 PM;02/10/15 05:14 PM
+70;av10;;Simbar Spyware User-Agent Detected;;;;02/10/15 05:15 PM;02/10/15 05:15 PM
+72;av11;;TLS possible TOR SSL traffic;;;;02/10/15 05:21 PM;02/10/15 05:21 PM
+73;r14;;Multiple MySQL Login Failures, Possible Brute Force Attempt;;;;02/10/15 05:23 PM;02/10/15 05:23 PM
+75;nmx3;;TOR Known Tor Relay/Router (Not Exit) Node TCP Traffic group 80 Known TOR Exit Node TCP Traffic group 80;;;;02/10/15 05:26 PM;02/10/15 05:26 PM
+76;av12;;SCAN Potential VNC Scan 5900-5920;;;;02/10/15 05:26 PM;02/10/15 05:26 PM
+77;E11;;SCAN Multiple MySQL Login Failures, Possible Brute Force Attempt;;;;02/10/15 05:28 PM;02/10/15 05:28 PM
+78;m22;;MALWARE Adware.iBryte.B Install;;;;02/10/15 05:28 PM;02/10/15 05:28 PM
+79;nmx4;;SSH BruteForce Tool with fake PUTTY version;;;;02/10/15 05:35 PM;02/10/15 05:35 PM
+80;av13;;DNS Query for .su TLD (Soviet Union) Often Malware Related;;;;02/10/15 05:37 PM;02/10/15 05:37 PM
+36;L2;;IRC PONG response;;;;02/10/15 04:29 PM;02/13/15 12:34 PM
+41;L3;;IRC - PRIVMSG *.(exe|tar|tgz|zip) download command;;;;02/10/15 04:37 PM;02/13/15 12:34 PM
+57;L4;;Hiloti Style GET to PHP with invalid terse MSIE headers;;;;02/10/15 04:47 PM;02/13/15 12:46 PM
+64;L5;;Backdoor.Win32.Pushdo.s Checkin;;;;02/10/15 04:57 PM;02/13/15 12:46 PM
+68;L6;;MarketScore.com Spyware User Configuration and Setup Access;;;;02/10/15 05:08 PM;02/13/15 01:10 PM
+71;L7;;Worm.VBS.ayr Checkin 1;;;;02/10/15 05:18 PM;02/13/15 01:24 PM
+74;L8;;VBSAutorun_VBS_Jenxcus Check-in UA;;;;02/10/15 05:25 PM;02/13/15 01:24 PM
+81;L9;;LibSSH2 Based SSH Connection - Often used as a BruteForce Tool;;;;02/10/15 05:37 PM;02/13/15 01:31 PM
+82;E13;;USER_AGENTS Potential Avzhan DDOS Bot or abnormal User-Agent;;;;02/10/15 05:41 PM;02/10/15 05:41 PM
+83;nmx5;;Suspicious inbound to Oracle SQL port 1521;;;;02/10/15 05:43 PM;02/10/15 05:43 PM
+84;av14;;MALWARE Adware-Win32/EoRezo Reporting;;;;02/10/15 05:47 PM;02/10/15 05:47 PM
+87;L12;;RDP disconnect request;;;;02/10/15 05:53 PM;02/10/15 05:53 PM
+88;av15;;TROJAN Brontok User-Agent Detected (Brontok.A3 Browser);;;;02/10/15 06:03 PM;02/10/15 06:03 PM
+89;sid0053;;TLS possible TOR SSL traffic;;;;02/10/15 08:13 PM;02/10/15 08:13 PM
+90;m23;;UnsupportedFake Internet Explorer Version MSIE 5;;;;02/13/15 12:10 PM;02/13/15 12:10 PM
+91;m24;;Unsupported/Fake Windows NT Version 5.0;;;;02/13/15 12:10 PM;02/13/15 12:10 PM
+92;m25;;Suspicious inbound to Oracle SQL port 1521;;;;02/13/15 12:17 PM;02/13/15 12:17 PM
+93;m26;;Possible SSDP Amplification Scan in Progress;;;;02/13/15 12:21 PM;02/13/15 12:21 PM
+94;r15;;W32/AdLoad.Downloader Download;;;;02/13/15 12:27 PM;02/13/15 12:27 PM
+95;m27;;Andromeda Checkin;;;;02/13/15 12:30 PM;02/13/15 12:30 PM
+96;r16;;Likely Malicious Request for /proc/self/environ;;;;02/13/15 01:02 PM;02/13/15 01:02 PM
+97;r17;;LibSSH Based Frequent SSH Connections Likely BruteForce Attack!;;;;02/13/15 01:05 PM;02/13/15 01:05 PM
+98;r18;;Multiple MySQL Login Failures, Possible Brute Force Attempt;;;;02/13/15 01:12 PM;02/13/15 01:12 PM
+99;r19;;Sipvicious Scan;;;;02/13/15 01:16 PM;02/13/15 01:16 PM
+100;r20;;Tool.InstallToolbar.24 Reporting;;;;02/13/15 01:21 PM;02/13/15 01:21 PM
+101;r22;;Suspicious User Agent (Autoupdate);;;;02/13/15 01:26 PM;02/13/15 01:26 PM
+85;L10;;Non-Allowed Host Tried to Connect to MySQL Server;;;;02/10/15 05:53 PM;02/13/15 01:35 PM
+102;r23;;Rebate Informer User-Agent (REBATEINF);;;;02/13/15 01:37 PM;02/13/15 01:37 PM
+103;r24;;CyberKit 2.2 Windows;;;;02/13/15 01:41 PM;02/13/15 01:41 PM
+104;r25;;Downadup/Conficker A or B Worm reporting;;;;02/13/15 01:47 PM;02/13/15 01:47 PM
+105;r26;;Potential SSH Scan;;;;02/13/15 01:50 PM;02/13/15 01:50 PM
+86;L11;;Win32/SoftPulse.H Checkin;;;;02/10/15 05:53 PM;02/18/15 04:41 PM
+107;L14;;Suspicious inbound to PostgreSQL port 5432;;;;02/18/15 05:28 PM;02/18/15 05:28 PM
+108;L15;;EXE File Uploaded - Hex Encoded;;;;02/18/15 05:38 PM;02/18/15 05:38 PM
+109;H1;;MS Terminal Server User A Login, possible Morto inbound;;;;02/18/15 05:59 PM;02/18/15 05:59 PM
+110;H2;;Malware Downloader.NSIS.Outbrowse.b;;;;02/18/15 06:18 PM;02/18/15 06:18 PM
+111;H3;;MALWARE Win32/DealPly checkin;;;;02/18/15 06:22 PM;02/18/15 06:22 PM
+112;L17;;Vulnerable Java Version 1.6.x Detected;;;;02/18/15 06:25 PM;02/18/15 06:25 PM
+113;H4;;Dorkbot GeoIP Lookup to wipmania;;;;02/18/15 06:29 PM;02/18/15 06:29 PM
+114;H5;;NgrBot IRC CnC Channel Join;;;;02/18/15 06:29 PM;02/18/15 06:29 PM
+115;L18;;MYSQL 4.1 brute force root login attempt;;;;02/18/15 06:30 PM;02/18/15 06:30 PM
+116;L19;;Multiple MySQL Login Failures, Possible Brute Force Attempt;;;;02/18/15 06:30 PM;02/18/15 06:30 PM
+117;L20;;ThunderNetwork UDP Traffic;;;;02/18/15 06:33 PM;02/18/15 06:33 PM
+118;H6;;allow_url_include PHP config option in uri;;;;02/18/15 06:35 PM;02/18/15 06:35 PM
+119;L21;;DNS Query for TOR Hidden Domain .onion Accessible Via TOR;;;;02/18/15 06:41 PM;02/18/15 06:41 PM
+120;H7;;General MSN Chat Activity;;;;02/18/15 06:43 PM;02/18/15 06:43 PM
+121;L22;;Adware.Win32/SProtector.A Client Checkin;;;;02/18/15 06:45 PM;02/18/15 06:45 PM
+122;H8;;IE Toolbar User-Agent (IEToolbar);;;;02/18/15 06:46 PM;02/18/15 06:46 PM
+123;H9;;Detección de consultas a dominios dentro de blacklist .tk;;;;02/18/15 06:49 PM;02/18/15 06:49 PM
+124;L23;;DNS lookup for bridges.torproject.org IP lookup/Tor Usage check;;;;02/18/15 06:53 PM;02/18/15 06:53 PM
+125;H10;;Behavioral Unusually fast Terminal Server Traffic, Potential Scan or Infection;;;;02/18/15 06:55 PM;02/18/15 06:55 PM
+126;L24;;Possible ASPROX Download URI Struct June 19 2014;;;;02/18/15 06:58 PM;02/18/15 06:58 PM
+127;H11;;GAMES Battle.net connection reset (possible IP-Ban);;;;02/18/15 07:03 PM;02/18/15 07:03 PM
+128;L25;;Suspicious User-Agent (NSIS_Inetc (Mozilla));;;;02/18/15 07:04 PM;02/18/15 07:04 PM
+106;r27;;PHP tags in HTTP POST;;;;02/17/15 03:51 AM;02/18/15 10:48 PM
+129;r28;;Windows 98 User-Agent Detected - Possible Malware or Non-Updated System;;;;02/18/15 10:59 PM;02/18/15 10:59 PM
+130;r29;;Autoit Windows Automation tool User-Agent in HTTP Request - Possibly Hostile;;;;02/18/15 11:04 PM;02/18/15 11:04 PM
+131;r30;;Exploit Suspected PHP Injection Attack (cmd=);;;;02/18/15 11:08 PM;02/18/15 11:08 PM
+132;r31;;Possible CVE-2014-6271 Attempt in Header;;;;02/18/15 11:13 PM;02/18/15 11:13 PM
+133;r32;;BitTorrent announce request;;;;02/18/15 11:17 PM;02/18/15 11:17 PM
+134;r33;;Vuze BT UDP Connection (5);;;;02/18/15 11:17 PM;02/18/15 11:17 PM
+135;r34;;Kaaza Media desktop p2pnetworking.exe Activity;;;;02/18/15 11:32 PM;02/18/15 11:32 PM
+136;r35;;BingBar ToolBar User-Agent (BingBar);;;;02/18/15 11:40 PM;02/18/15 11:40 PM
+137;r36;;Incoming Masscan detected;;;;02/18/15 11:49 PM;02/18/15 11:49 PM
+138;r37;;CURRENT_EVENTS TDS Sutra - request in.cgi;;;;02/18/15 11:53 PM;02/18/15 11:53 PM
+139;r38;;DNS named version attempt;;;;02/18/15 11:57 PM;02/18/15 11:57 PM
+140;r39;;WGET Command Specifying Output in HTTP Headers;;;;02/19/15 12:03 AM;02/19/15 12:03 AM
+141;r40;;Request to a Suspicious *.tk domain;;;;02/19/15 12:21 AM;02/19/15 12:21 AM
+142;Isaac1;;HTTP POST Generic eval of base64_decode;;;;02/19/15 01:22 PM;02/19/15 01:22 PM
+143;r41;;Adware.Win32/SProtector.A Client Checkin;;;;02/19/15 11:55 PM;02/19/15 11:55 PM
+144;r42;;TeamViewer Dyngate User-Agent;;;;02/19/15 11:59 PM;02/19/15 11:59 PM
+145;r43;;Http Client Body contains passwd= in cleartext;;;;02/20/15 12:04 AM;02/20/15 12:04 AM
+146;r44;;Suspicious User Agent (Launcher);;;;02/20/15 12:07 AM;02/20/15 12:07 AM
+147;r45;;W32/BitCoinMiner.MultiThreat Subscribe/Authorize Stratum Protocol Message;;;;02/20/15 12:12 AM;02/20/15 12:12 AM
+148;r46;;Possible SQL Injection Attempt UNION SELECT;;;;02/20/15 12:19 AM;02/20/15 12:19 AM
+149;r47;;Exploit Suspected PHP Injection Attack (cmd=);;;;02/20/15 12:19 AM;02/20/15 12:19 AM
+150;r48;;Havij SQL Injection Tool User-Agent Inbound;;;;02/20/15 12:19 AM;02/20/15 12:19 AM
+151;r49;;ET MALWARE MarketScore.com Spyware Proxied Traffic;;;;02/20/15 12:24 AM;02/20/15 12:24 AM
+152;r50;;ET USER_AGENTS MarketScore.com Spyware User Configuration and Setup Access;;;;02/20/15 12:24 AM;02/20/15 12:24 AM
+153;r51;;Possible Apache Struts OGNL Command Execution CVE-2013-2251 redirect;;;;02/20/15 12:31 AM;02/20/15 12:31 AM
+154;r52;;Suspicious Mozilla User-Agent Inbound - Likely Fake (Mozilla/5.0);;;;02/20/15 12:31 AM;02/20/15 12:31 AM
+155;r53;;ICQ Login;;;;02/20/15 12:38 AM;02/20/15 12:38 AM
+156;r54;;COMMUNITY MISC Google Talk Logon;;;;02/20/15 12:42 AM;02/20/15 12:42 AM
+157;r55;;Google IM traffic Jabber client sign-on;;;;02/20/15 12:42 AM;02/20/15 12:42 AM
+158;r56;;Google Talk (Jabber) Client Login;;;;02/20/15 12:42 AM;02/20/15 12:42 AM
+159;r57;;Behavioral Unusual Port 445 traffic, Potential Scan or Infection;;;;02/20/15 12:47 AM;02/20/15 12:47 AM
+160;r58;;Cleartext WordPress Login;;;;02/20/15 12:53 AM;02/20/15 12:53 AM
+161;r59;;Incoming Masscan detected;;;;02/20/15 12:58 AM;02/20/15 12:58 AM
+162;r60;;SUSPICIOUS IRC - PRIVMSG *.(exe|tar|tgz|zip) download command;;;;02/20/15 01:08 AM;02/20/15 01:08 AM
+163;r61;;.htpasswd access;;;;02/20/15 01:13 AM;02/20/15 01:13 AM
+164;r62;;Common Adware Library ISX User Agent Detected;;;;02/20/15 01:46 AM;02/20/15 01:46 AM
+165;r63;;Alexa Search Toolbar User-Agent 2 (Alexa Toolbar);;;;02/20/15 02:01 AM;02/20/15 02:01 AM
+166;L26;;Behavioral Unusual Port 135 traffic, Potential Scan or Infection;;;;02/20/15 10:35 AM;02/20/15 10:35 AM
+167;L27;;CWS Related Installer;;;;02/20/15 10:44 AM;02/20/15 10:44 AM
+169;L28;;Sipvicious User-Agent Detected (friendly-scanner);;;;02/20/15 10:56 AM;02/20/15 10:56 AM
+170;L29;;GPL WEB_SERVER 403 Forbidden;;;;02/20/15 11:03 AM;02/20/15 11:03 AM
+171;L30;;Generic Remote File Include Attempt (FTP);;;;02/20/15 01:21 PM;02/20/15 01:21 PM
+172;dtejada1;;PHP System Command in HTTP POST;;;;02/20/15 03:51 PM;02/20/15 03:51 PM
+173;u01;;Cleartext WordPress Login;;;;02/21/15 12:20 AM;02/21/15 12:20 AM
+174;A01;;Cleartext WordPress Login;;;;02/21/15 12:24 AM;02/21/15 12:24 AM
+175;r64;;Behavioral Unusual Port 445 traffic, Potential Scan or Infection;;;;02/21/15 01:30 AM;02/21/15 01:30 AM
+176;u02;;TeamViewier Keep-alive inbound;;;;02/21/15 04:01 AM;02/21/15 04:01 AM
+177;A02;;TeamViewier Keep-alive inbound;;;;02/21/15 04:01 AM;02/21/15 04:01 AM
+178;r65;;Skype User-Agent detected;;;;02/21/15 06:09 AM;02/21/15 06:09 AM
+180;m28;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;02/21/15 11:40 AM;02/21/15 11:40 AM
+181;dt1;;Bittorrent P2P Client User-Agent (Blizzard Downloader 2.x);;;;02/21/15 12:48 PM;02/21/15 12:48 PM
+182;A03;;SNMP public access udp;;;;02/21/15 08:28 PM;02/21/15 08:28 PM
+183;u03;;SSH BruteForce Tool with fake PUTTY version;;;;02/21/15 08:37 PM;02/21/15 08:37 PM
+185;A04;;PHP System Command in HTTP POST;;;;02/22/15 12:24 AM;02/22/15 12:24 AM
+186;A05;;BingBar ToolBar User-Agent (BingBar);;;;02/22/15 10:42 AM;02/22/15 10:42 AM
+187;u04;;Possible SSDP Amplification Scan in Progress;;;;02/22/15 10:57 AM;02/22/15 10:57 AM
+188;A06;;Dropbox Client Broadcasting;;;;02/22/15 12:03 PM;02/22/15 12:03 PM
+190;r66;;Downadup/Conficker A or B Worm reporting;;;;02/22/15 03:14 PM;02/22/15 03:14 PM
+192;I;;Potential SSH Scan;;;;02/22/15 03:30 PM;02/22/15 03:30 PM
+193;sgarcia1;alert tcp $EXTERNAL_NET any -> $HOME_NET any;NMAP -sS window 2048;alerta TCP de red extera por cualquier puerto a red interna por cualquier puerto;escaneo de puertos;cuando se intenat realizar un escaneo de la red;02/22/15 08:59 PM;02/22/15 08:59 PM
+194;sgarcia2;alert tcp $EXTERNAL_NET any -> $HOME_NET any;NMAP -f -sS;;;;02/22/15 09:20 PM;02/22/15 09:20 PM
+195;sgarcia3;alert tcp $EXTERNAL_NET any -> $HOME_NET any;NMAP -sS window 4096;;;;02/22/15 09:20 PM;02/22/15 09:20 PM
+196;sgarcia4;alert tcp $EXTERNAL_NET any -> $HOME_NET any;NMAP -sS window 3072;;;;02/22/15 09:20 PM;02/22/15 09:20 PM
+197;dt2;;iWare Professional SQL Injection Attempt;;;;02/22/15 09:51 PM;02/22/15 09:51 PM
+198;dt3;;WBBlog SQL Injection Attempt -- index.php e_id SELECT;;;;02/22/15 10:16 PM;02/22/15 10:16 PM
+199;dt4;;MYSQL SELECT CONCAT SQL Injection Attempt;;;;02/22/15 10:16 PM;02/22/15 10:16 PM
+200;dt5;;SELECT USER SQL Injection Attempt in URI;;;;02/22/15 10:16 PM;02/22/15 10:16 PM
+201;dt6;;Possible SQL Injection Attempt SELECT FROM;;;;02/22/15 10:16 PM;02/22/15 10:16 PM
+202;dt7;;Suspicious inbound to MSSQL port 1433;;;;02/23/15 09:53 AM;02/23/15 09:53 AM
+203;Sip;; SCAN Sipvicious Scan;;;;02/23/15 11:22 AM;02/23/15 11:22 AM
+204;sg1;alert udp $EXTERNAL_NET 53 -> $HOME_NET any;DNS Reply Sinkhole - Anubis - 195.22.26.192/26;;;;02/23/15 12:00 PM;02/23/15 12:00 PM
+205;sg2;alert udp $EXTERNAL_NET 53 -> $HOME_NET any;DNS Reply Sinkhole Microsoft NO-IP Domain;;;;02/23/15 12:00 PM;02/23/15 12:00 PM
+206;2019779;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;PUP Win32/ELEX Checkin;;Troyano;;02/23/15 12:21 PM;02/23/15 12:21 PM
+189;u05;;Http Client Body contains pw= in cleartext;;;;02/22/15 12:19 PM;02/23/15 11:41 PM
+207;A07;;ThunderNetwork UDP Traffic;;;;02/24/15 12:10 AM;02/24/15 12:10 AM
+208;A08;;WebHack Control Center User-Agent Inbound (WHCC/);;;;02/24/15 02:19 AM;02/24/15 02:19 AM
+210;A09;;Incoming Masscan detected;;;;02/24/15 05:36 AM;02/24/15 05:36 AM
+179;Isa;;HTTP Request to a Suspicious *.tk domain;;;;02/21/15 10:25 AM;02/25/15 05:29 PM
+184;2019416;alert tcp $EXTERNAL_NET [443,465,993,995,25] -> $HOME_NET any;SSLv3 outbound connection from client vulnerable to POODLE attack;alerta tcp $RED_EXTERNA [443,465,993,995,25] -> $RED_LOCAL cualquiera;Conexión mediante SSLv3;Peticiones con el protocolo tcp desde una red externa por alguno de los puertos 443, 465, 993, 995 o 25 hacia cualquier puerto de la red local.;02/21/15 09:16 PM;05/14/15 02:30 PM
+212;sg3;;eMule Kademlia Hello Request;;;;02/24/15 11:03 AM;02/24/15 11:03 AM
+213;A10;;Suspicious inbound to Oracle SQL port 1521;;;;02/25/15 12:11 AM;02/25/15 12:11 AM
+215;A11;;GPL WEB_SERVER 403 Forbidden;;;;02/25/15 04:21 AM;02/25/15 04:21 AM
+217;u10;;RDP connection request;;;;02/25/15 05:09 AM;02/25/15 05:09 AM
+218;u11;;RDP disconnect request;;;;02/25/15 05:09 AM;02/25/15 05:09 AM
+219;u12;;RDP connection request;;;;02/25/15 05:09 AM;02/25/15 05:09 AM
+220;A12;;Worm.VBS.ayr Checkin 1;;;;02/25/15 06:02 AM;02/25/15 06:02 AM
+224;u16;;CHAT Google Talk Logon;;;;02/25/15 06:09 AM;02/25/15 06:09 AM
+168;am;;TROJAN Possible TorLocker Ransomware Downloading Tor;;;;02/20/15 10:54 AM;02/25/15 09:37 AM
+225;am2;;EXE or DLL Windows file download;;;;02/25/15 09:37 AM;02/25/15 09:37 AM
+221;u13;;Stacheldraht client check gag;;;;02/25/15 06:09 AM;02/26/15 12:47 AM
+226;A13;;TeamViewer Dyngate User-Agent;;;;02/26/15 01:14 AM;02/26/15 01:14 AM
+227;A14;;SNMP public access udp;;;;02/26/15 04:59 AM;02/26/15 05:35 AM
+222;u14;;SCAN Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;02/25/15 06:09 AM;02/26/15 05:37 AM
+229;2002945;;Java Url Lib User Agent Web Crawl;;libreria de Java para navegación web;Por que ;02/26/15 10:48 AM;02/26/15 10:48 AM
+223;u15;;Http Client Body contains passwd= in cleartext;;;;02/25/15 06:09 AM;02/26/15 10:45 PM
+209;u06;;Microsoft Remote Desktop (RDP) Syn then Reset 30 Second DoS Attempt;;;;02/24/15 03:53 AM;02/28/15 08:07 PM
+214;u08;;SCAN Sipvicious Scan;;;;02/25/15 01:52 AM;03/01/15 08:09 AM
+216;u09;;Suspicious inbound to mySQL port 3306;;;;02/25/15 05:09 AM;03/01/15 10:33 AM
+191;r67;;Outbound Multiple Non-SMTP Server Emails;;;;02/22/15 03:14 PM;03/04/15 12:03 PM
+230;2003958;;APPS Jetbox CMS SQL Injection Attempt -- index.php view UNION SELECT;;;Por que en la variable viwe contiene las palabras UNION y SELECT;02/26/15 10:48 AM;02/26/15 10:48 AM
+231;2004117;;APPS ScriptMagix Jokes SQL Injection Attempt -- index.php catid UNION SELECT;;;Por que en la variable catid contiene las palabras UNION y SELECT;02/26/15 10:48 AM;02/26/15 10:48 AM
+232;2005112;;APPS Eclectic Designs CascadianFAQ SQL Injection Attempt -- index.php catid UNION SELECT;;;Por que en la variable catid contiene las palabras UNION y SELECT;02/26/15 10:48 AM;02/26/15 10:48 AM
+233;2006610;;APPS iWare Professional SQL Injection Attempt -- index.php D UNION SELECT;;;Por que en la pagina index.php contiene las palabras UNION y SELECT;02/26/15 10:48 AM;02/26/15 10:48 AM
+234;2006446;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;Java Url Lib User Agent Web Crawl;;Web Crawler en el User Agent;Peticiones de una red externa por cualquier puerto, hacia un servidor HTTP por un puerto HTTP;02/26/15 11:16 AM;02/26/15 11:16 AM
+238;a14;;Http Client Body contains passwd= in cleartext;;;;02/26/15 10:42 PM;02/26/15 10:42 PM
+239;u17;;Http Client Body contains passwd= in cleartext;;;;02/26/15 11:00 PM;02/26/15 11:00 PM
+240;A15;;Http Client Body contains passwd= in cleartext;;;;02/26/15 11:01 PM;02/26/15 11:01 PM
+241;A16;;Dropbox Client Broadcasting;;;;02/27/15 12:59 AM;02/27/15 12:59 AM
+242;A17;;Incoming Masscan detected;;;;02/27/15 04:42 AM;02/27/15 04:42 AM
+243;u18;;Suspicious inbound to mySQL port 3306;;;;02/27/15 05:26 AM;02/27/15 05:26 AM
+244;u19;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;02/27/15 05:34 AM;02/27/15 05:34 AM
+245;A18;;NTP DDoS Inbound Frequent Un-Authed MON_LIST Requests IMPL 0x03 ;;;;02/27/15 05:49 AM;02/27/15 05:49 AM
+247;2017259;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Generic - POST To .php w/Extended ASCII Characters;;;;02/27/15 09:56 AM;02/27/15 09:56 AM
+249;2002842;EXTERNAL_NET any -> $SQL_SERVERS 3306;MYSQL 4.1 brute force root login attempt;Ataque de fuerza bruta mediante el intento de login por root;Intento de acceso por fuerza bruta ;Cualquier dirección IP  interna hacia el puero 3306;02/27/15 12:54 PM;02/27/15 12:54 PM
+250;2010494;HOME_NET 3306 -> $EXTERNAL_NET any;Multiple MySQL Login Failures, Possible Brute Force Attempt;Múltiples intentos de acceso de sesión fallidas ;Sesiones fallidas, posible acceso por fuerza bruta;;02/27/15 12:54 PM;02/27/15 12:54 PM
+251;2019876;alert tcp $EXTERNAL_NET any -> $HOME_NET 22;SSH BruteForce Tool with fake PUTTY version;;;;02/27/15 01:30 PM;02/27/15 01:30 PM
+252;A19;;Suspicious inbound to MSSQL port 1433;;;;02/27/15 11:36 PM;02/27/15 11:36 PM
+253;u20;;Gamehouse.com Related Spyware User-Agent (Sprout Game);;;;02/28/15 12:11 AM;02/28/15 12:11 AM
+254;u21;;Non-Allowed Host Tried to Connect to MySQL Server;;;;02/28/15 01:08 AM;02/28/15 02:49 AM
+255;A20;;Suspicious inbound to mySQL port 3306;;;;02/28/15 04:26 AM;02/28/15 04:26 AM
+256;A21;;PUP Win32/ELEX Checkin;;;;02/28/15 05:10 AM;02/28/15 05:10 AM
+257;A22;;Google Talk Version Check;;;;02/28/15 05:36 AM;02/28/15 05:36 AM
+258;2011716;EXTERNAL_NET any -> $HOME_NET 5060;Sipvicious User-Agent Detected (friendly-scanner);Sipvicious User-Agent;Escaneo hacia el puerto 5060;Detección de herramienta Sipvicious hacia el puerto 5060 ;02/28/15 09:12 AM;02/28/15 09:12 AM
+259;2008578;EXTERNAL_NET any -> $HOME_NET 5060;SCAN Sipvicious Scan;Escaneo Sipcicious;Escaneo hacia el puerto 5060;Detección de herramienta Sipvicious hacia el puerto 5060 ;02/28/15 09:12 AM;02/28/15 09:12 AM
+261;2013497;EXTERNAL_NET any -> $HOME_NET 3389;Terminal Server User A Login, possible Morto inbound;Inicio de sesión de usuario A, posible intrusión Morto;Intento de acceso ;Intento de acceso de dirección IP Externa hacia la dirección IP interna a través del puerto 3389;02/28/15 02:00 PM;02/28/15 02:00 PM
+262;2001330;HOME_NET 3389 -> $EXTERNAL_NET any;RDP connection confirm;Conexión confirmada de RPD;Confirmación de acceso por el protocolo RPD;;02/28/15 02:00 PM;02/28/15 02:00 PM
+264;A25;;Dropbox Client Broadcasting;;;;02/28/15 06:39 PM;02/28/15 06:39 PM
+265;A26;;SERVER 403 Forbidden;;;;02/28/15 07:35 PM;02/28/15 07:35 PM
+211;u07;;Behavioral Unusual Port 445 traffic, Potential Scan or Infection;;;;02/24/15 05:55 AM;02/28/15 10:43 PM
+266;A27;;Suspicious inbound to MSSQL port 1433;;;;03/01/15 08:53 AM;03/01/15 08:53 AM
+246;2006435;EXTERNAL_NET any -> $HOME_NET 22;LibSSH Based SSH Connection - Often used as a BruteForce Tool;Libssh Based SSH Herramienta de fuerza bruta;Escaneo mediante fuerza bruta;Intento de acceso de cualquier dirección externa hacia direcciones internas por el puerto 22;02/27/15 09:24 AM;03/01/15 01:52 PM
+269;2002911;EXTERNAL_NET any -> $HOME_NET 5900:5920;Potential VNC Scan 5900-5920;Potencial escaneo VNC;Escaneo al puerto VNC 5900-592;Intento de acceso de cualquier dirección externa hacia direcciones internas por el puerto VNC 5900-592;03/01/15 05:44 PM;03/01/15 05:44 PM
+270;2012801;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Spoofed MSIE 7 User-Agent Likely Ponmocup;;Posible troyano;Un user -agent en especifico ;03/02/15 10:05 AM;03/02/15 10:05 AM
+271;2014122;;OpenCandy Adware Checkin ;;Adware Open Candy ;Peticiones a los dominios del adware;03/02/15 12:05 PM;03/02/15 12:05 PM
+272;2014384;any any -> $HOME_NET 3389;Microsoft Remote Desktop (RDP) Syn then Reset 30 Second DoS Attempt;Escritorio remoto (RDP ) de Microsoft ;Escaneo al puerto 3389;Intento de conexión hacia direcciones IP internas por el puerto 3389;03/02/15 12:32 PM;03/02/15 12:32 PM
+273;u22;;Suspicious inbound to MSSQL port 1433;;;;08/22/14 03:50 AM;08/22/14 03:50 AM
+274;u23;;Suspicious inbound to Oracle SQL port 1521;;;;08/22/14 06:11 AM;08/22/14 06:11 AM
+267;A28;;NTP DDoS Inbound Frequent Un-Authed MON_LIST Requests IMPL 0x03 ;;;;03/01/15 11:45 AM;08/22/14 06:59 AM
+275;A29;;Skype User-Agent detected;;;;08/22/14 07:30 AM;08/22/14 07:30 AM
+276;u24;;Exploit Suspected PHP Injection Attack (cmd=);;;;08/22/14 09:50 AM;08/22/14 09:50 AM
+277;A30;;DNS named version attempt;;;;08/22/14 10:08 AM;08/22/14 10:08 AM
+278;A31;;SNMP public access udp;;;;08/22/14 10:37 AM;08/22/14 10:37 AM
+237;2018899;;Win32/BrowseFox.H Checkin 2;;;;02/26/15 06:48 PM;03/24/15 05:55 AM
+260;2009153;;PHP Generic Remote File Include Attempt (FTP);;;;02/28/15 01:59 PM;03/18/15 05:08 AM
+248;2013715;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;BingBar ToolBar User-Agent (BingBar);;;;02/27/15 10:17 AM;05/13/15 03:24 PM
+263;2008795;;TeamViewer Keep-alive inbound;;;;02/28/15 03:52 PM;04/29/15 05:15 AM
+268;2001219;alert tcp $EXTERNAL_NET any -> $HOME_NET 22; Potential SSH Scan;;;;03/01/15 01:52 PM;05/12/15 03:20 PM
+281;2010019;alert tcp $EXTERNAL_NET any -> $HOME_NET any;ET SCAN Tomcat Web Application Manager scanning;;;;03/03/15 01:16 PM;03/03/15 01:16 PM
+282;2008453;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 8080;ET SCAN Tomcat Auth Brute Force attempt (admin);;;;03/03/15 01:16 PM;03/03/15 01:16 PM
+283;2008454;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 8080;ET SCAN Tomcat Auth Brute Force attempt (tomcat);;;;03/03/15 01:16 PM;03/03/15 01:16 PM
+284;2008455;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 8080;ET SCAN Tomcat Auth Brute Force attempt (manager);;;;03/03/15 01:16 PM;03/03/15 01:16 PM
+287;A32;;Potential SSH Scan;;;;03/03/15 10:35 PM;03/03/15 10:35 PM
+288;u25;;MarketScore.com Spyware Proxied Traffic;;;;03/03/15 10:53 PM;03/03/15 10:53 PM
+289;u26;;TeamViewier Keep-alive inbound;;;;03/04/15 12:46 AM;03/04/15 12:46 AM
+290;u27;;Inbound PHP User-Agent;;;;03/04/15 01:54 AM;03/04/15 01:54 AM
+291;A33;;Exploit Suspected PHP Injection Attack (cmd=) ;;;;03/04/15 03:12 AM;03/04/15 03:12 AM
+292;A34;;DDoS Inbound Frequent Un-Authed MON_LIST Requests IMPL 0x03 ;;;;03/04/15 03:42 AM;03/04/15 03:42 AM
+293;u28;;SERVER 403 Forbidden;;;;03/04/15 04:31 AM;03/04/15 04:31 AM
+294;A35;;RDP connection request;;;;03/04/15 06:09 AM;03/04/15 06:09 AM
+295;A36;;RDP connection confirm;;;;03/04/15 06:09 AM;03/04/15 06:09 AM
+296;2012887;;Http Client Body contains pass= in cleartext;;;Contraseña en texto plano en variable pass=;03/04/15 10:41 AM;03/04/15 10:41 AM
+298;2009358;;Nmap Scripting Engine User-Agent Detected (Nmap Scripting Engine);;Escaneos con los script de NMAP;User-Agent==Nmap Scripting Engine;03/04/15 01:12 PM;03/04/15 01:12 PM
+299;2012888;alert tcp $HOME_NET any -> any $HTTP_PORTS;Http Client Body contains pwd= in cleartext;La petición contiene pwd en texto plano.;alerta tcp $RED_LOCAL cualquiera -> cualquiera $PUERTOS_HTTP;Por peticiones hechas utilizando el protocolo TCP desde la red local a través de cualquier puerto, a cualquier red a través de alguno de los puertos utilizados por HTTP;03/04/15 01:41 PM;03/04/15 01:41 PM
+300;2012843;alert tcp any any -> any $HTTP_PORTS;Cleartext WordPress Login;La petición contiene datos de inicio de sesion de WordPress en texto plano;alerta tcp de cualquier red cualquier puerto -> cualquier red $PUERTOS_HTTP;Por peticiones hechas utilizando el protocolo TCP desde cualquier red a través de cualquier puerto, a cualquier red a través de alguno de los puertos utilizados por HTTP;03/04/15 01:41 PM;03/04/15 01:41 PM
+302;2012887-1;alert tcp $HOME_NET any -> any $HTTP_PORTS;Http Client Body contains pass= in cleartext;;;;03/04/15 06:24 PM;03/04/15 06:24 PM
+303;u29;;Behavioral Unusual Port 445 traffic, Potential Scan or Infection;;;;03/04/15 11:03 PM;03/04/15 11:03 PM
+304;A37;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;03/04/15 11:22 PM;03/04/15 11:22 PM
+305;u30;;GPL WEB_SERVER 403 Forbidden;;;;03/05/15 01:01 AM;03/05/15 01:01 AM
+306;A38;;TeamViewier Keep-alive inbound;;;;03/05/15 02:08 AM;03/05/15 02:08 AM
+307;u31;;Skype User-Agent detected;;;;03/05/15 03:05 AM;03/05/15 03:05 AM
+308;A39;;Dropbox Client Broadcasting;;;;03/05/15 03:24 AM;03/05/15 03:24 AM
+309;u32;;Possible CVE-2014-6271 Attempt in Headers;;;;03/05/15 04:34 AM;03/05/15 04:34 AM
+310;A40;;Suspicious User Agent (Autoupdate);;;;03/05/15 05:17 AM;03/05/15 05:17 AM
+314;u33;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;03/05/15 10:58 PM;03/05/15 10:58 PM
+315;A41;;Adware-Win32/EoRezo Reporting;;;;03/05/15 11:24 PM;03/05/15 11:24 PM
+316;A42;; GPL WEB_SERVER 403 Forbidden;;;;03/05/15 11:54 PM;03/05/15 11:54 PM
+317;u34;;Outbound Multiple Non-SMTP Server Emails;;;;03/06/15 12:13 AM;03/06/15 12:13 AM
+318;u35;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Opcode 8 through 15 set - Likely Kazy;;;;03/06/15 03:44 AM;03/06/15 03:44 AM
+319;u36;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Reserved Bit Set - Likely Kazy;;;;03/06/15 03:44 AM;03/06/15 03:44 AM
+320;A43;;MarketScore.com Spyware Proxied Traffic;;;;03/06/15 04:00 AM;03/06/15 04:00 AM
+321;A44;;MarketScore.com Spyware User Configuration and Setup Access;;;;03/06/15 04:00 AM;03/06/15 04:00 AM
+322;A45;; Behavioral Unusual Port 135 traffic, Potential Scan or Infection;;;;03/06/15 05:49 AM;03/06/15 05:49 AM
+323;2017516;;Worm.VBS.ayr Checkin;;;;03/06/15 10:11 AM;03/06/15 10:11 AM
+325;2013075;;Large DNS Query possible covert channel;;;;03/06/15 11:31 AM;03/06/15 11:31 AM
+326;2012982;alert tcp $EXTERNAL_NET 25 -> $HOME_NET any;Abuseat.org Block Message;;;;03/06/15 12:40 PM;03/06/15 12:40 PM
+327;2017911;;W32/InstallRex.Adware Initial CnC Beacon;;;;03/06/15 02:37 PM;03/06/15 02:37 PM
+329;A46;;Alexa Search Toolbar User-Agent 2 (Alexa Toolbar);;;;03/07/15 12:28 AM;03/07/15 12:28 AM
+330;A47;;GPL WEB_SERVER 403 Forbidden;;;;03/07/15 01:21 AM;03/07/15 01:21 AM
+333;A48;;Exploit Suspected PHP Injection Attack (cmd=) ;;;;03/07/15 04:57 AM;03/07/15 04:57 AM
+313;20081872;;Paros Proxy Scanner Detected;;;;03/05/15 11:06 AM;05/12/15 05:28 AM
+324;2018789;alert tcp any ![21,25,110,143,443,465,587,636,989:995,5061,5222,8443] -> any any;TLS possible TOR SSL traffic;;;;03/06/15 10:21 AM;04/10/15 03:37 PM
+279;2002997;;PHP Remote File Inclusion (monster list http);;;;08/22/14 03:11 PM;04/07/15 01:18 PM
+235;2010935;;Suspicious inbound to MSSQL port 1433;;;;02/26/15 03:05 PM;04/16/15 05:52 AM
+301;2012694;;request to .xxx TLD;;;;03/04/15 04:56 PM;05/02/15 07:36 PM
+311;2014726;;Outdated Windows Flash Version IE;;;;03/05/15 10:06 AM;05/05/15 12:14 AM
+285;2012887;;Http Client Body contains pass= in cleartext;;;;03/03/15 01:46 PM;05/05/15 02:10 AM
+335;A49;;Kaaza Media desktop p2pnetworking.exe Activity;;;;03/07/15 05:27 AM;03/07/15 05:27 AM
+336;58770;lert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;Possible SQL Injection Attempt UNION SELECT;;;;03/07/15 01:49 PM;03/07/15 01:49 PM
+337;1062;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;WEB_SERVER Exploit Suspected PHP Injection Attack (cmd=);;;;03/07/15 04:44 PM;03/07/15 04:44 PM
+338;2002823;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;POSSIBLE Web Crawl using Wget;;;;03/08/15 08:24 PM;03/08/15 08:24 PM
+371;2001583;;Behavioral Unusual Port 1433 traffic, Potential Scan or Infection;;;;03/11/15 01:21 PM;03/17/15 12:11 AM
+342;L31;busqueda de sitio;All Numerical .cn Domain Likely Malware Related;;;;03/09/15 10:25 AM;03/09/15 10:25 AM
+346;2003466;;SERVER PHP Attack Tool Morfeus F Scanner;;;;03/09/15 06:34 PM;03/09/15 06:34 PM
+347;2007854;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Suspicious User Agent - Possible Spyware Related (Mozilla);;;;03/09/15 06:44 PM;03/09/15 06:44 PM
+348;A50;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;03/09/15 10:52 PM;03/09/15 10:52 PM
+349;A51;;Exploit Suspected PHP Injection Attack (cmd=) ;;;;03/10/15 01:15 AM;03/10/15 01:15 AM
+350;A52;;GPL WEB_SERVER 403 Forbidden;;;;03/10/15 05:01 AM;03/10/15 05:01 AM
+351;A53;;DNS Reply Sinkhole Microsoft NO-IP Domain;;;;03/10/15 05:30 AM;03/10/15 05:30 AM
+352;2000345;alert tcp $HOME_NET any -> $EXTERNAL_NET !6666:7000;IRC - Nick change on non-std port;;;;03/10/15 10:58 AM;03/10/15 10:58 AM
+343;2012886;;Http Client Body contains passwd= in cleartext;;;;03/09/15 10:29 AM;03/19/15 01:33 AM
+355;	2013410;;Outbound MSSQL Connection to Standard port (1433);;;;03/10/15 03:59 PM;03/10/15 03:59 PM
+356;2012694;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;request to .xxx TLD;;;;03/10/15 04:49 PM;03/10/15 04:49 PM
+328;u1;;GPL WEB_SERVER 403 Forbidden;;;;03/06/15 11:52 PM;03/10/15 11:16 PM
+358;A54;;COMMUNITY MISC Google Talk Logon;;;;03/10/15 11:46 PM;03/11/15 12:04 AM
+359;A55;;Google IM traffic Jabber client sign-on;;;;03/11/15 12:04 AM;03/11/15 12:04 AM
+360;A56;;Google Talk (Jabber) Client Login;;;;03/11/15 12:04 AM;03/11/15 12:04 AM
+331;u2;;Dropbox Client Broadcasting;;;;03/07/15 03:47 AM;03/11/15 12:34 AM
+332;u3;;Outdated Windows Flash Version IE;;;;03/07/15 04:26 AM;03/11/15 01:40 AM
+334;u4;;Skype VOIP Checking Version (Startup);;;;03/07/15 05:25 AM;03/11/15 02:14 AM
+362;A57;;TeamViewer Dyngate User-Agent;;;;03/11/15 02:50 AM;03/11/15 02:50 AM
+363;A58;;PHP System Command in HTTP POST ;;;;03/11/15 03:49 AM;03/11/15 03:49 AM
+364;A59;; Outbound Multiple Non-SMTP Server Emails;;;;03/11/15 04:57 AM;03/11/15 04:57 AM
+361;u5;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Opcode 8 through 15 set - Likely Kazy;;;;03/11/15 02:14 AM;03/11/15 05:42 AM
+365;u6;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Reserved Bit Set - Likely Kazy;;;;03/11/15 05:42 AM;03/11/15 05:42 AM
+367;2013381;alert tcp $EXTERNAL_NET any -> $HOME_NET any;W32/Sality Executable Pack Digital Signature ASCII Marker;;;;03/11/15 11:17 AM;03/11/15 11:17 AM
+369;2013451;alert tcp $HOME_NET any -> $EXTERNAL_NET any;NgrBot IRC CnC Channel Join;Comunicación de NgrBot por canales IRC;;;03/11/15 12:26 PM;03/11/15 12:26 PM
+372;2018048;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;W32/AdLoad.Downloader Download;;;;03/11/15 03:58 PM;03/11/15 03:58 PM
+312;2003317;;P2P Edonkey Search Request (any type file);;;;03/05/15 10:23 AM;05/08/15 02:18 AM
+373;2014139;alert udp $HOME_NET any -> any 53;Query to Known CnC Domain msnsolution.nicaze.net;;;;03/11/15 05:04 PM;03/11/15 05:04 PM
+374;2016104;alert udp $EXTERNAL_NET 53 -> $HOME_NET any;DNS Reply for unallocated address space - Potentially Malicious 1.1.1.0/24;;;;03/11/15 05:30 PM;03/11/15 05:30 PM
+375;2014635;;Variant.Kazy.53640 Malformed Client Hello SSL 3.0 (Cipher_Suite length greater than Client_Hello Length);;;;03/11/15 06:14 PM;03/11/15 06:14 PM
+357;2015686;;Signed TLS Certificate with md5WithRSAEncryption;;;;03/10/15 06:34 PM;03/12/15 12:35 AM
+378;2009005;;Simbar Spyware User-Agent Detected;;;;03/12/15 01:59 AM;03/12/15 01:59 AM
+380;46307;;GPL WEB_SERVER 403 Forbidden;;;;03/12/15 03:45 AM;03/12/15 03:45 AM
+370;2006380;;Outgoing Basic Auth Base64 HTTP Password detected unencrypted;;;;03/11/15 01:09 PM;03/12/15 04:14 AM
+345;2018301;;Win32/Toolbar.CrossRider.A Checkin;;;;03/09/15 01:15 PM;03/20/15 11:42 PM
+344;2012247;; P2P BTWebClient UA uTorrent in use;;;;03/09/15 10:30 AM;03/22/15 02:07 PM
+368;2020221;;Possible WP CuckooTap Arbitrary File Download;;;;03/11/15 11:35 AM;04/30/15 04:22 AM
+366;2018326;;JCE Joomla Extension;;;;03/11/15 09:22 AM;05/06/15 02:05 AM
+379;2017919;;Vulnerable Java Version 1.7.x Detected;;;;03/12/15 02:36 AM;05/07/15 05:08 AM
+4;;;P2P Edonkey Search Request (any type file);;;;02/10/15 12:45 PM;05/12/15 02:52 PM
+377;2009475;;TeamViewer Dyngate User-Agent;;;;03/11/15 11:05 PM;05/12/15 10:49 PM
+353;2019401;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Vulnerable Java Version 1.8.x Detected;alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;Versión vulnerable de Java; Peticiones con el protocolo tcp desde cualquier puerto en la red local hacia un puerto HTTP en una red externa.;03/10/15 11:03 AM;05/14/15 02:08 PM
+376;2012648;alert udp $HOME_NET 17500 -> any 17500;Dropbox Client Broadcasting;;;;03/11/15 10:54 PM;05/14/15 04:23 PM
+354;2100230;;Jabber/Google Talk Outgoing Traffic ;;;;03/10/15 03:20 PM;04/17/15 05:33 AM
+339;2009024;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;ET TROJAN Downadup/Conficker A or B Worm reporting;;;;03/08/15 09:35 PM;05/07/15 06:13 PM
+340;2006402;;Incoming Basic Auth Base64 HTTP Password detected unencrypted;;;;03/09/15 08:55 AM;05/07/15 11:17 PM
+381;2018149;;W32/InstallMonetizer.Adware Beacon 2;;;;03/12/15 10:58 AM;03/12/15 10:58 AM
+383;2018174;;RelevantKnowledge Adware CnC Beacon;;;;03/12/15 04:18 PM;03/12/15 04:18 PM
+384;2011227;; Suspicious User-Agent (NSIS_Inetc (Mozilla));;;;03/12/15 04:59 PM;03/12/15 04:59 PM
+387;60640;;GPL WEB_SERVER 403 Forbidden;;;;03/12/15 11:15 PM;03/12/15 11:15 PM
+389;2019232;;Possible CVE-2014-6271 Attempt in Headers;;;;03/13/15 04:12 AM;03/13/15 04:12 AM
+391;100000876;;Google Talk Version Check;;;;03/13/15 04:35 AM;03/13/15 04:35 AM
+280;2018642;;DNS Reply Sinkhole Microsoft NO-IP Domain;;;;03/03/15 11:23 AM;03/13/15 05:05 AM
+392;2014297;;Vulnerable Java Version 1.7.x Detected;;;;03/13/15 05:39 AM;03/13/15 05:39 AM
+393;2012328;alert udp $HOME_NET any -> any 53;All Numerical .ru Domain Likely Malware Related;;;;03/13/15 12:17 PM;03/13/15 12:17 PM
+394;2013273;alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any;Hex Obfuscated JavaScript Heap Spray 41414141;;;;03/13/15 01:17 PM;03/13/15 01:17 PM
+341;2010144;;Vuze BT UDP Connection (5);;;;03/09/15 09:21 AM;05/14/15 11:33 PM
+395;2101411;;SNMP public access udp;;;;03/14/15 01:24 AM;03/14/15 01:24 AM
+396;2017616;;Incoming Masscan detected;;;;03/14/15 02:23 AM;03/14/15 02:23 AM
+286;2001581;;Behavioral Unusual Port 135 traffic, Potential Scan or Infection;;;;03/03/15 04:56 PM;03/14/15 03:21 AM
+228;2012810;;HTTP Request to a Suspicious *.tk domain;;;;02/26/15 10:30 AM;03/14/15 02:26 PM
+399;2017949;tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;FOCA User-Agent;;;;03/14/15 11:08 PM;03/14/15 11:08 PM
+400;2014704;tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;PHP-CGI query string parameter vulnerability;;;;03/14/15 11:08 PM;03/14/15 11:08 PM
+401;2015023;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;IIS 8.3 Filename With Wildcard (Possible File/Dir Bruteforce);;;;03/14/15 11:08 PM;03/14/15 11:08 PM
+404;2008187;tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;Paros Proxy Scanner Detected;;;;03/16/15 08:11 PM;03/16/15 08:11 PM
+405;14082;;SNMP public access udp;;;;03/16/15 11:39 PM;03/16/15 11:39 PM
+406;2011582;;Vulnerable Java Version 1.6.x Detected;;;;03/17/15 12:28 PM;03/17/15 12:28 PM
+407;2017552;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;CURRENT_EVENTS Cushion Redirection;alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;;Petición con el protocolo tcp desde la red local por cualquier puerto, hacia una red externa a un puerto HTTP.;03/17/15 12:49 PM;03/17/15 12:49 PM
+411;2016272;;EVENTS TDS - in.php;;;;03/17/15 03:32 PM;03/17/15 03:32 PM
+412;2012230;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;Likely Malicious Request for /proc/self/environ;alerta tcp $RED_EXTERNA cualquiera -> $RED_LOCAL $PUERTOS_HTTP;;Petición mediante el protocolo tcp a una red externa por cualquier puerto hacia la red local por un puerto HTTP.;03/17/15 04:06 PM;03/17/15 04:09 PM
+413;2100235;alert tcp $EXTERNAL_NET 5222 -> $HOME_NET any;Jabber/Google Talk Logon Succes;alerta tcp $RED_EXTERNA 5222 -> $RED_LOCAL cualquiera;;Petición tcp desde una red externa por el puerto 5222 a la red local por cualquier puerto.;03/17/15 05:12 PM;03/17/15 05:12 PM
+414;2008581;; BitTorrent DHT ping request;;;;03/17/15 05:35 PM;03/17/15 05:35 PM
+415;2014122;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;OpenCandy Adware Checkin;;;;03/17/15 06:44 PM;03/17/15 06:44 PM
+420;2014137;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Common Adware Library ISX User Agent Detected;alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;;Cuando hay una petición del protocolo tcp a la red local por cualquier puerto, hacia una red externa a un puerto del servicio HTTP.;03/18/15 10:02 AM;03/18/15 10:02 AM
+421;2002932;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;CWS Related Installer;;;;03/18/15 11:37 AM;03/18/15 11:37 AM
+422;2018867;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Win32.Sality.3 checkin;;;;03/18/15 12:20 PM;03/18/15 12:20 PM
+423;2000340;alert udp $EXTERNAL_NET any -> $HOME_NET any;  Kaaza Media desktop p2pnetworking.exe Activity;;;;03/18/15 12:45 PM;03/18/15 12:45 PM
+424;2014071;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Adware.Gen5 Reporting;;;;03/18/15 01:33 PM;03/18/15 01:33 PM
+425;2006999;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Brontok User-Agent Detected (Brontok.A3 Browser);alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;;Petición con el protocolo tcp desde la red local por cualquier puerto, hacia una red externa a un puerto del servicio HTTP.;03/18/15 03:25 PM;03/18/15 03:25 PM
+427;2017994;;EVENTS VBSAutorun_VBS_Jenxcus Check-in UA;;;;03/18/15 05:03 PM;03/18/15 05:03 PM
+428;2002196;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Casalemedia Spyware Reporting URL Visited 2;;;;03/18/15 06:21 PM;03/18/15 06:21 PM
+429;2012522;;DNS Query For XXX Adult Site Top Level Domain;;;;03/18/15 11:53 PM;03/18/15 11:53 PM
+419;2101411;;SNMP public access udp;;;;03/18/15 04:25 AM;04/13/15 11:07 PM
+382;2018232;;Possible ZyXELs ZynOS Configuration Download Attempt (Contains Passwords);;;;03/12/15 11:09 AM;03/25/15 03:16 AM
+297;2101201;;GPL WEB_SERVER 403 Forbidden;;;;03/04/15 12:38 PM;05/07/15 05:54 AM
+397;2012889;;Http Client Body contains pass= in cleartext;;;;03/14/15 03:38 AM;03/26/15 03:26 AM
+403;2020102;;PHP System Command in HTTP POST;;;;03/15/15 09:20 PM;03/27/15 02:35 AM
+385;2016780;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Adware.Win32/SProtector.A Client Checkin;;;;03/12/15 06:12 PM;03/31/15 02:33 PM
+386;2012249;alert tcp $HOME_NET 1024: -> $EXTERNAL_NET $HTTP_PORTS;USER_AGENTS Suspicious Win32 User Agent;;;;03/12/15 06:12 PM;03/31/15 02:36 PM
+410;2003313;;P2P Edonkey Connect Reply and Server List;;;;03/17/15 03:11 PM;04/01/15 12:02 AM
+418;2001569;;Behavioral Unusual Port 445 traffic, Potential Scan or Infection;;;;03/18/15 04:08 AM;04/25/15 03:18 AM
+417;2013115;;Muieblackcat scanner;;;;03/18/15 01:03 AM;04/10/15 11:28 PM
+398;2009218;;Tomcat admin-blank login credentials;;;;03/14/15 11:24 AM;05/07/15 11:17 PM
+430;2013983;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;MALWARE Adware-Win32/EoRezo Reporting;;;;03/19/15 12:23 AM;04/14/15 07:07 PM
+409;2003315;;P2P Edonkey Search Reply;;;;03/17/15 03:11 PM;04/16/15 05:12 AM
+236;2001579;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;02/26/15 05:04 PM;04/21/15 12:46 AM
+402;2011768;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;PHP tags in HTTP POST;alerta tcp $RED_EXTERNA cualquiera -> $RED_LOCAL $PUERTOS_HTTP;Código PHP en una petición realizada mediante POST.;;03/15/15 09:20 PM;05/13/15 10:45 AM
+408;2012647;alert tcp [108.160.162.0/24,108.160.165.0/24,108.160.166.0/24] 443 -> $HOME_NET any;Dropbox.com Offsite File Backup in Use;alerta tcp [108.160.162.0/24,108.160.165.0/24,108.160.166.0/24] 443 -> $RED_LOCAL cualquiera;;;03/17/15 01:49 PM;05/14/15 12:00 PM
+388;2002157;;Skype User-Agent detected;;;;03/12/15 11:32 PM;05/13/15 02:21 AM
+390;2000328;alert tcp !$SMTP_SERVERS any -> !$HOME_NET 25;Outbound Multiple Non-SMTP Server Emails;alerta tcp !$SERVIDORES_SMTP cualquiera -> !$RED_LOCAL 25;;;03/13/15 04:26 AM;05/14/15 01:05 PM
+431;2014030;tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Rebate Informer User-Agent (REBATEINF);;;;03/19/15 09:43 AM;03/19/15 09:43 AM
+432;2010794;;DFind w00tw00t GET-Requests;;;;03/19/15 01:22 PM;03/19/15 01:22 PM
+433; 	2009153;;PHP Generic Remote File Include Attempt (FTP);;;;03/20/15 03:26 AM;03/20/15 03:26 AM
+434;100000230;;Jabber/Google Talk Outgoing Traffic;;;;03/20/15 03:56 AM;03/20/15 03:56 AM
+437;2005511;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;OpenSource Guestbook SQL Injection Attempt -- email.php id SELECT;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+438;2006445;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;Possible SQL Injection Attempt SELECT FROM;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+439;2006560;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;AnnonceScriptHP SQL Injection Attempt -- email.php id SELECT;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+440;2011042;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;SELECT CONCAT SQL Injection Attempt;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+441;2017808;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;Possible MySQL SQLi Attempt Information Schema Access;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+442;2005512;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;OpenSource Guestbook SQL Injection Attempt -- email.php id UNION SELECT;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+443;2006561;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;AnnonceScriptHP SQL Injection Attempt -- email.php id UNION SELECT;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+444;2011037;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;Possible Attempt to Get SQL Server Version in URI using SELECT VERSION;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+445;2012708;tcp $HOME_NET $HTTP_PORTS -> $EXTERNAL_NET ;414 Request URI Too Large;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+446;2011041;tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;MYSQL Benchmark Command in URI to Consume Server Resources;;;;03/20/15 09:01 AM;03/20/15 09:01 AM
+447;2014939;; DNS Query for TOR Hidden Domain .onion Accessible Via TOR;;;;03/20/15 10:31 AM;03/20/15 10:31 AM
+449;2012327;;Numerical .cn Domain Likely Malware Related;;;;03/20/15 11:52 AM;03/20/15 11:52 AM
+450;30008;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;Possible Web Crawl - libwww-perl User Agent;;;;03/21/15 07:57 AM;03/21/15 07:57 AM
+451;2008433; alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Pandex checkin detected;;;;03/23/15 11:41 AM;03/23/15 11:41 AM
+452;2000357;alert tcp $HOME_NET any -> $EXTERNAL_NET any;BitTorrent Traffic;;;;03/23/15 06:45 PM;03/23/15 06:45 PM
+453;2003437;;P2P Ares over UDP;;;;03/23/15 11:38 PM;03/23/15 11:38 PM
+454;2019622;;Win32/DealPly Checkin;;;;03/24/15 10:30 AM;03/24/15 10:30 AM
+455;2009217;;Tomcat admin-admin login credentials;;;;03/24/15 12:12 PM;03/24/15 12:12 PM
+456;c-1;;Conexiones;;;;03/24/15 02:13 PM;03/24/15 02:13 PM
+461;2001855;; Fun Web Products Spyware User-Agent (FunWebProducts);;;;03/25/15 01:42 PM;03/25/15 01:42 PM
+462;2001595;;Skype VOIP Checking Version (Startup);;;;03/26/15 01:47 AM;03/26/15 01:47 AM
+460;2000340;;Kaaza Media desktop p2pnetworking.exe Activity;;;;03/24/15 04:40 PM;03/26/15 05:14 AM
+466;2011706;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;P2P Bittorrent P2P Client User-Agent (uTorrent);alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;;Petición mediante el protocolo tcp desde cualquier puerto en la red local hacia un puerto HTTP en una red externa;03/27/15 04:31 PM;03/27/15 04:31 PM
+457;2000538;;SCAN NMAP -sA (1);;;;03/24/15 04:11 PM;03/28/15 02:55 AM
+474;2013031;;Python-urllib/ Suspicious User Agent;;;;04/01/15 04:11 PM;04/01/15 04:11 PM
+464;2100876;;Google Talk Version Check;;;;03/27/15 12:13 AM;03/28/15 03:41 AM
+467;2009714;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;Script tag in URI, Possible Cross Site Scripting Attempt;alerta tcp $RED_EXTERNA cualquiera -> $SERVIDORES_HTTP $PUERTOS_HTTP;;Petición a través del protocolo tcp desde una red externa por cualquier puerto hacía un servidor HTTP por un puerto HTTP.;03/30/15 10:51 AM;03/30/15 10:51 AM
+603;100000233;;Jabber/Google Talk Outgoing Traffic;;;;05/12/15 04:29 AM;05/12/15 04:29 AM
+468;2010100;alert udp $HOME_NET 1024: -> $EXTERNAL_NET any;Palevo/BFBot/Mariposa client join attempt;;;;03/31/15 02:56 PM;03/31/15 02:56 PM
+469;2009525; alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;TROJAN Sality - Fake Opera User-Agent;;;;03/31/15 06:14 PM;03/31/15 06:14 PM
+473;2100628;alert tcp $EXTERNAL_NET any -> $HOME_NET any;SCAN nmap TCP;alerta tcp $RED_EXTERNA cualquiera -> $RED_LOCAL cualquiera;;Alerta cuando se produce una petición mediante el protocolo tcp desde cualquier puerto de una red externa hacia cualquier puerto de la red local.;04/01/15 01:31 PM;04/01/15 01:31 PM
+475;43682;;Suspicious inbound to Oracle SQL port 1521;;;;04/02/15 01:06 AM;04/02/15 01:06 AM
+476;2019416 	;;SCAN Tomcat Web Application Manager scanning;;;;04/02/15 02:37 AM;04/02/15 02:37 AM
+416;2009099;;P2P ThunderNetwork UDP Traffic;;;;03/17/15 11:57 PM;04/02/15 03:15 AM
+477;2003068;;SCAN Potential SSH Scan OUTBOUND;;;;04/02/15 03:18 AM;04/02/15 03:18 AM
+478;2002192;;CHAT MSN status change;;;;04/02/15 08:12 AM;04/02/15 08:12 AM
+479;2102923;;GPL NETBIOS SMB repeated logon failure;;;;04/02/15 09:32 AM;04/02/15 09:32 AM
+481;2500006;;Known Compromised or Hostile Host Traffic TCP group 4;;;;04/03/15 03:22 PM;04/03/15 03:22 PM
+482;2008113; tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS ;Tor Get Server Request;;;;04/03/15 07:53 PM;04/03/15 07:53 PM
+483;2003479; tcp $EXTERNAL_NET any -> $HOME_NET 1024:65535;Radmin Remote Control Session Setup Initiate;;;;04/04/15 09:01 AM;04/04/15 09:01 AM
+484;2000575;icmp $EXTERNAL_NET any -> $HOME_NET any;PING IPTools;;;;04/04/15 10:02 AM;04/04/15 10:02 AM
+485;2003337;;Suspicious User Agent (Autoupdate);;;;04/06/15 09:12 AM;04/06/15 09:12 AM
+486;2018215;;HTTP Connection To DDNS Domain Zapto.org;;;;04/06/15 10:30 AM;04/06/15 10:30 AM
+487;2017037;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS; Javadoc API Redirect CVE-2013-1571;;;;04/06/15 11:25 AM;04/06/15 11:25 AM
+458;2010819;;Facebook Chat using XMPP;;;;03/24/15 04:16 PM;04/29/15 12:38 AM
+463;100000232;;Google Talk (Jabber) Client Login;;;;03/26/15 03:42 AM;04/07/15 04:58 AM
+459;2020422;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;MultiPlug.J Checkin;;;;03/24/15 04:40 PM;04/08/15 11:13 AM
+435;2002327;alert tcp $HOME_NET any -> $EXTERNAL_NET 5222 ; Google Talk (Jabber) Client Login;;;;03/20/15 03:56 AM;04/10/15 01:02 PM
+436;2002334;alert tcp $HOME_NET any -> $EXTERNAL_NET 5222 ; Google IM traffic Jabber client sign-on;;;;03/20/15 03:56 AM;04/10/15 01:02 PM
+480;2020565;;Dropbox DNS Lookup - Possible Offsite File Backup in Use;;;;04/03/15 12:56 PM;04/21/15 01:30 AM
+448;2012735;;Browser Search Bar User-Agent String (Babylon);;;;03/20/15 10:50 AM;04/24/15 08:20 AM
+465;2102181;;NETBIOS SMB-DS IPC$ unicode share access;;;;03/27/15 04:00 PM;05/12/15 12:08 AM
+471;2003320;;Http Client Body contains pass= in cleartext;;;;04/01/15 12:02 AM;05/11/15 11:28 PM
+470;2010936;;Suspicious inbound to Oracle SQL port 1521;;;;03/31/15 07:04 PM;05/15/15 05:47 AM
+488;2017872;;W32/BitCoinMiner.MultiThreat Stratum Protocol Mining.Notify Initial Connection Server Response;;;;04/06/15 12:52 PM;04/06/15 12:52 PM
+489;2017871;; W32/BitCoinMiner.MultiThreat Subscribe/Authorize Stratum Protocol Message;;;;04/06/15 12:52 PM;04/06/15 12:52 PM
+490;2003286;alert udp $EXTERNAL_NET 1024:5000 -> $HOME_NET 1024:65535;SOCKSv5 UDP Proxy Inbound Connect Request (Windows Source);;;;04/06/15 05:23 PM;04/06/15 05:23 PM
+491;2003313;alert udp $EXTERNAL_NET 1024:65535 -> $HOME_NET 1024:65535;Edonkey Connect Reply and Server List;;;;04/06/15 05:23 PM;04/06/15 05:23 PM
+472;2008085;;Alexa Search Toolbar User-Agent 2 (Alexa Toolbar);;;;04/01/15 10:15 AM;04/07/15 12:20 AM
+494;2015984;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;Joomla Component SQLi Attempt;;;;04/07/15 02:53 PM;04/07/15 02:53 PM
+495;2014304;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;External IP Lookup Attempt To Wipmania;;;;04/07/15 04:31 PM;04/07/15 04:31 PM
+496;2015800;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Dorkbot GeoIP Lookup to wipmania;;;;04/07/15 04:31 PM;04/07/15 04:31 PM
+497;2013715;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;BingBar ToolBar User-Agent (BingBar);;;;04/07/15 05:19 PM;04/07/15 05:19 PM
+498;:2019622;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS ;Win32/DealPly Checkin;;;;04/07/15 06:43 PM;04/07/15 06:43 PM
+499;2014703;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Reserved Bit Set - Likely Kazy;;;;04/08/15 02:23 AM;04/08/15 02:23 AM
+500;2014702;;DNS Non-DNS or Non-Compliant DNS traffic on DNS port Opcode 8 through 15 set - Likely Kazy;;;;04/08/15 02:23 AM;04/08/15 02:23 AM
+501;2011225;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Suspicious User Agent (AskInstallChecker);;;;04/08/15 11:02 AM;04/08/15 11:02 AM
+502;2000334;;P2P BitTorrent peer sync;;;;04/08/15 02:02 PM;04/08/15 02:02 PM
+503;2015744;alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any;EXE IsDebuggerPresent (Used in Malware Anti-Debugging);;;;04/08/15 06:30 PM;04/08/15 06:30 PM
+504;2014297; alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Vulnerable Java Version 1.7.x Detected;;;;04/08/15 07:02 PM;04/08/15 07:02 PM
+505;3391883;;TeamViewier Keep-alive inbound;;;;04/09/15 02:10 AM;04/09/15 02:10 AM
+506;2102180;;P2P BitTorrent announce request;;;;04/09/15 05:15 AM;04/09/15 05:15 AM
+507;2007727;; P2P possible torrent download;;;;04/09/15 02:03 PM;04/09/15 02:03 PM
+508;:2101201;alert tcp $HTTP_SERVERS $HTTP_PORTS -> $EXTERNAL_NET any; GPL WEB_SERVER 403 Forbidden;;;;04/10/15 12:14 PM;04/10/15 12:14 PM
+509;2100232;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;Google Talk Logon;;;;04/10/15 01:02 PM;04/10/15 01:02 PM
+510;2002910;alert tcp $EXTERNAL_NET any -> $HOME_NET 5800:5820;Potential VNC Scan 5800-5820;;;;04/10/15 01:54 PM;04/10/15 01:54 PM
+511;2019236;;Possible CVE-2014-6271 Attempt in Headers;;;;04/11/15 05:00 AM;04/11/15 05:00 AM
+512;2018316;alert udp any 53 -> $HOME_NET any;Zeus GameOver Possible DGA NXDOMAIN Responses;;;;04/11/15 11:52 AM;04/11/15 11:52 AM
+513;2009832;alert tcp $EXTERNAL_NET any -> $HOME_NET [135,139,445,1024:2048];ET SCAN DCERPC rpcmgmt ifids Unauthenticated BIND;;;;04/11/15 02:25 PM;04/11/15 02:25 PM
+515;2014919;alert tcp $EXTERNAL_NET 443 -> $HOME_NET any (msg:;ET POLICY Microsoft Online Storage Client Hello TLSv1 Possible SkyDrive ;;;;04/12/15 07:02 PM;04/12/15 07:02 PM
+517;2010140;alert udp $HOME_NET 1024:65535 -> $EXTERNAL_NET any;P2P Vuze BT UDP Connection;alerta udp $RED_LOCAL 1024:65535 -> $RED_EXTERNA cualquiera;;;04/13/15 12:41 PM;04/13/15 12:41 PM
+518;2008259;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Suspicious User-Agent (AutoHotkey);alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;;;04/14/15 09:48 AM;04/14/15 09:48 AM
+519;2012811;;DNS Query to a .tk domain - Likely Hostile;;;;04/14/15 10:30 AM;04/14/15 10:30 AM
+520;35961;;TeamViewer Dyngate User-Agent;;;;04/15/15 01:39 AM;04/15/15 01:39 AM
+521;2020238;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;PUP.Win32.BoBrowser User-Agent (LogEvents);;;;04/15/15 11:20 AM;04/15/15 11:20 AM
+522;2001891;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;Suspicious User Agent (agent);alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTO_HTTP;;Petición utilizando el protocolo tcp desde cualquier puerto de la red local, hacia un puerto HTTP en una red externa.;04/15/15 01:03 PM;04/15/15 01:03 PM
+523;454;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;WEB_SPECIFIC_APPS WBBlog SQL Injection Attempt -- index.php e_id SELECT;;;;04/15/15 06:35 PM;04/15/15 06:35 PM
+524;2102465;;GPL NETBIOS SMB-DS IPC$ unicode share access;;;;04/16/15 12:28 AM;04/16/15 12:28 AM
+525;2017516;alert tcp $HOME_NET any -> $EXTERNAL_NET any;Worm.VBS.ayr Checkin 1;;;;04/16/15 02:07 PM;04/16/15 02:07 PM
+526;50105;alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any;P2P BitTorrent - Torrent File Downloaded;;;;04/16/15 07:33 PM;04/16/15 07:33 PM
+531;52676;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS ;TROJAN MultiPlug.J Checkin;;;;04/17/15 03:44 PM;04/17/15 03:44 PM
+527;2000488;;SQL Injection closing string plus line comment;;;;04/16/15 10:42 PM;04/16/15 11:02 PM
+538;2020358;alert udp $HOME_NET any -> any 53 ;Critroni Variant .onion Proxy Domain;;;;04/21/15 03:45 PM;04/21/15 03:45 PM
+528;2001059;;P2P Ares traffic;;;;04/17/15 05:07 AM;04/17/15 05:07 AM
+529;2020239;cp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;PUP.Win32.BoBrowser User-Agent (VersionDwl);alerta tcp $RED_LOCAL cualquiera -> $RED_EXTERNA $PUERTOS_HTTP;La cabecera User-Agent contiene el texto ;Alerta por petición tcp por cualquier puerto desde la red local hacia un puerto HTTP en una red externa.;04/17/15 08:24 AM;04/17/15 08:24 AM
+530;2003310;alert udp $HOME_NET 1024:65535 -> $EXTERNAL_NET 1024:65535;Edonkey Publicize File;;;;04/17/15 01:12 PM;04/17/15 01:12 PM
+532;2018904;;Session Traversal Utilities for NAT (STUN Binding Request obsolete rfc 3489 CHANGE-REQUEST attribute change IP flag false change port flag false);;;;04/17/15 04:42 PM;04/17/15 04:42 PM
+533;2001329;;RDP connection request;;;;04/18/15 01:26 AM;04/18/15 01:26 AM
+514;2009201;;Conficker.b Shellcode;;;;04/11/15 03:36 PM;04/18/15 03:01 AM
+534; 	2012647;;Dropbox.com Offsite File Backup in Use;;;;04/18/15 10:01 PM;04/18/15 10:01 PM
+535;2019498;;W32/24x7Help.ScareWare CnC Beacon;;;;04/20/15 08:28 AM;04/20/15 08:28 AM
+536;2014169;alert udp $HOME_NET any -> $EXTERNAL_NET 53;DNS Query for .su TLD (Soviet Union) Often Malware Related;;;;04/20/15 11:53 AM;04/20/15 11:53 AM
+492;2100538;;NETBIOS SMB-DS IPC$ unicode share access;;;;04/07/15 09:00 AM;05/09/15 09:26 PM
+537;2008433;;Pandex checkin detected;;;;04/21/15 12:57 AM;04/21/15 12:57 AM
+539;2015576;alert udp $HOME_NET any -> $EXTERNAL_NET 53;DNS Query to .onion proxy Domain (tor2web);;;;04/21/15 03:45 PM;04/21/15 03:45 PM
+540;2018876;alert udp any any -> any 53 ;onion.cab .onion Proxy DNS lookup;;;;04/21/15 03:45 PM;04/21/15 03:45 PM
+541;"2020211;";alert udp any any -> any 53 ; DNS Query to .onion proxy Domain (onion.gq);;;;04/21/15 03:45 PM;04/21/15 03:45 PM
+542;2020211;;DNS Query to .onion proxy Domain (onion.gq);;;;04/21/15 04:16 PM;04/21/15 04:16 PM
+544;2009362;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ; /system32/ in Uri - Possible Protected Directory Access Attempt;;;;04/21/15 05:21 PM;04/21/15 05:21 PM
+545;2009361;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ;cmd.exe In URI - Possible Command Execution Attempt;;;;04/21/15 05:21 PM;04/21/15 05:21 PM
+546;2011465;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS ; /bin/sh In URI Possible Shell Command Execution Attempt;;;;04/21/15 05:21 PM;04/21/15 05:21 PM
+547;2008115;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;ET P2P Tor Get Status Request;;;;04/21/15 06:07 PM;04/21/15 06:07 PM
+548;2000419;alert tcp $EXTERNAL_NET any -> $HOME_NET any ; EXE or DLL Windows file download;;;;04/21/15 06:07 PM;04/21/15 06:07 PM
+549;59983;;Suspicious inbound to MSSQL port 1433;;;;04/23/15 12:01 AM;04/23/15 12:01 AM
+550;	59312;;Vuze BT UDP Connection (5);;;;04/23/15 05:05 AM;04/23/15 05:05 AM
+551;2019239;alert tcp any any -> $HTTP_SERVERS $HTTP_PORTS;Possible CVE-2014-6271 Attempt in HTTP Cookie;alerta tcp cualquiera cualqueira -> $SERVIDORES_HTTP $PUERTOS_HTTP;;;04/23/15 11:08 AM;04/23/15 11:08 AM
+552;2101918;alert icmp $EXTERNAL_NET any -> $HOME_NET any;SCAN SolarWinds IP scan attempt;;;;04/23/15 11:49 AM;04/23/15 11:49 AM
+553;2101413;alert udp $EXTERNAL_NET any -> $HOME_NET 161;SNMP private access udp;;;;04/23/15 11:49 AM;04/23/15 11:49 AM
+554;2013263;alert tcp any any -> $HOME_NET 21;ET SCAN Nessus FTP Scan detected (ftp_anonymous.nasl);;;;04/23/15 03:30 PM;04/23/15 03:30 PM
+555;2002677;alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS;SCAN Nikto Web App Scan in Progress;;;;04/23/15 03:54 PM;04/23/15 03:54 PM
+556;2101129;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;WEB_SERVER .htaccess access;;;;04/23/15 03:54 PM;04/23/15 03:54 PM
+557;2012734;;Suspicious User-Agent String (AskPartnerCobranding);;;;04/23/15 04:52 PM;04/23/15 04:52 PM
+558;2016670;alert tcp $HTTP_SERVERS $HTTP_PORTS -> $EXTERNAL_NET any;WEB_SERVER SQL Errors in HTTP 200 Response (SqlException);;;;04/23/15 04:54 PM;04/23/15 04:54 PM
+559;2006609;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;iWare Professional SQL Injection Attempt -- index.php D SELECT;Peticoines de una red externa por cualquier puerto hacia un servidor HTTP por cualquier puerto;;;04/23/15 05:57 PM;04/23/15 05:57 PM
+560;2100977;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;GPL EXPLOIT .cnf access;;;;04/23/15 05:59 PM;04/23/15 05:59 PM
+561;2101443;;GPL TFTP GET passwd;;;;04/23/15 10:54 PM;04/23/15 10:54 PM
+562;1685766;;GPL NETBIOS SMB-DS IPC$ share access ;;;;04/24/15 02:07 AM;04/24/15 02:07 AM
+563;2014372;alert udp any 53 -> $HOME_NET any;Possible Kelihos .eu CnC Domain Generation Algorithm (DGA) Lookup NXDOMAIN Response;;;;04/24/15 02:46 PM;04/24/15 02:46 PM
+564;b1;;Possible MySQL SQLi Attempt Information Schema Access;;;;04/24/15 04:53 PM;04/24/15 04:53 PM
+565;b2;;MYSQL SELECT CONCAT SQL Injection Attemp;;;;04/24/15 04:53 PM;04/24/15 04:53 PM
+566;b3;;WEB-PHP phpinfo access;;;;04/24/15 04:53 PM;04/24/15 04:53 PM
+567; 	2101411;;SNMP public access udp;;;;04/24/15 11:44 PM;04/24/15 11:44 PM
+568;2379615;;NETBIOS SMB-DS IPC$ unicode share access;;;;04/28/15 01:41 AM;04/28/15 01:41 AM
+569;2012059;alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any ;ET WEB_CLIENT Hex Obfuscation of document.write % Encoding;;;;04/28/15 05:37 PM;04/28/15 05:37 PM
+570;2019526;;ET WEB_SERVER WEB-PHP phpinfo access;;;;04/28/15 06:32 PM;04/28/15 06:32 PM
+571;2009955;;ET WEB_SERVER Tilde in URI, potential .php~ source disclosure vulnerability;;;;04/28/15 06:32 PM;04/28/15 06:32 PM
+572;3152960;;GPL NETBIOS SMB-DS IPC$ unicode share access;;;;04/29/15 04:50 AM;04/29/15 04:50 AM
+573;2009475;;TeamViewer Dyngate User-Agent;;;;04/29/15 12:15 PM;04/29/15 12:15 PM
+574;2019880;;Double Encoded Characters in URI (../);;;;04/29/15 05:24 PM;04/29/15 05:31 PM
+575;2009715;;Onmouseover= in URI - Likely Cross Site Scripting Attempt;;;;04/29/15 05:24 PM;04/29/15 05:31 PM
+576;3123699;;TeamViewer Keep-alive inbound;;;;04/30/15 02:41 AM;04/30/15 02:41 AM
+543;2019137;;WP Generic revslider Arbitrary File Download;;;;04/21/15 04:26 PM;04/30/15 04:22 AM
+579;2014920;alert tcp $EXTERNAL_NET 443 -> $HOME_NET any;Microsoft Online Storage Client Hello TLSv1 Possible SkyDrive (2);;;;05/01/15 08:46 AM;05/01/15 08:46 AM
+580;2020240;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;PUP.Win32.BoBrowser User-Agent (BoBrowser);Alerta TCP desde la red interna hacia la red externa por los puertos HTTP;;;05/01/15 09:20 AM;05/01/15 09:20 AM
+581;2002801;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS (msg:; Google Desktop User-Agent Detected;;;;05/01/15 06:43 PM;05/01/15 06:43 PM
+582;210300;alert tcp $EXTERNAL_NET any -> $HOME_NET 139;GPL NETBIOS SMB Session Setup NTMLSSP unicode asn1 overflow attempt;;;;05/02/15 02:49 PM;05/02/15 02:49 PM
+583;2009986;alert udp $HOME_NET 8247 -> $EXTERNAL_NET 8247 ; P2P Octoshape UDP Session;;;;05/04/15 04:19 PM;05/04/15 04:19 PM
+584;2102924;alert tcp $HOME_NET 445 -> $EXTERNAL_NET any;GPL NETBIOS SMB-DS repeated logon failure;alerta tcp $RED_LOCAL 445 -> $RED_EXTERNA cualquiera;;;05/05/15 09:28 AM;05/05/15 09:28 AM
+586;1026695;;GPL NETBIOS SMB IPC$ unicode share access;;;;05/05/15 11:18 PM;05/05/15 11:18 PM
+587;1035083;;NETBIOS SMB-DS IPC$ unicode share access;;;;05/06/15 02:39 AM;05/06/15 02:39 AM
+588;2101390;;GPL SHELLCODE x86 inc ebx NOOP ;;;;05/06/15 05:10 AM;05/06/15 05:11 AM
+589;2102314;;GPL SHELLCODE x86 0x90 NOOP unicode ;;;;05/06/15 05:29 AM;05/06/15 05:29 AM
+590;2100480;;GPL ICMP_INFO PING speedera;;;;05/06/15 06:10 AM;05/06/15 06:10 AM
+591;2100366;;GPL ICMP_INFO PING *NIX;;;;05/06/15 06:10 AM;05/06/15 06:10 AM
+593;2016184;alert tcp any any -> $HTTP_SERVERS $HTTP_PORTS;WEB_SERVER ColdFusion administrator access;alerta tcp cualquiera cualqueira -> $SERVIDORES_HTTP $PUERTOS_HTTP;;;05/06/15 09:52 AM;05/06/15 09:52 AM
+594;2020702;;DOS Bittorrent User-Agent inbound - possible DDOS;;;;05/06/15 04:00 PM;05/06/15 04:00 PM
+595;	2102466;;GPL NETBIOS SMB-DS IPC$ unicode share access;;;;05/07/15 01:27 AM;05/07/15 01:27 AM
+577;4242845;;Radmin Remote Control Session Setup Initiate;;;;05/01/15 03:08 AM;05/11/15 11:24 PM
+596;2002878;alert tcp $HOME_NET any -> $EXTERNAL_NET $HTTP_PORTS;ET POLICY iTunes User Agent;;;;05/07/15 05:55 PM;05/07/15 05:55 PM
+597;	2001579;;Behavioral Unusual Port 139 traffic, Potential Scan or Infection;;;;05/09/15 07:54 PM;05/09/15 07:54 PM
+598;2017174;;Possible Apache Struts OGNL Command Execution CVE-2013-2251 redirect;;;;05/10/15 02:06 PM;05/10/15 02:06 PM
+599;20144473;; - Java Archive Download By Vulnerable Client;;;;05/10/15 07:34 PM;05/10/15 07:34 PM
+600;2000540;;SCAN NMAP -sA;;;;05/10/15 10:01 PM;05/10/15 10:01 PM
+601;2014139;;Query to Known CnC Domain msnsolution.nicaze.net;;;;05/11/15 12:36 PM;05/11/15 12:36 PM
+592;2100368;;SNMP public access udp;;;;05/06/15 06:10 AM;05/11/15 11:15 PM
+578;3601879;;Http Client Body contains pass= in cleartext;;;;05/01/15 04:44 AM;05/11/15 11:19 PM
+602;100000231;;Google IM traffic Jabber client sign-on;;;;05/12/15 04:29 AM;05/12/15 04:29 AM
+604;2014573;;Query for a known malware domain (sektori.org);;;;05/12/15 01:41 PM;05/12/15 01:41 PM
+605;2101242;alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS;EXPLOIT ISAPI .ida access;;;;05/13/15 12:56 PM;05/13/15 12:56 PM
+585;2013410;;Suspicious inbound to MSSQL port 1433;;;;05/05/15 11:23 AM;05/14/15 12:57 AM
+426;2019415;alert tcp $HOME_NET [443,465,993,995,25] -> any any;SSLv3 inbound connection to server vulnerable to POODLE attack;alerta tcp $RED_LOCAL [443,465,993,995,25] -> cualquiera cualquiera;;;03/18/15 04:42 PM;05/14/15 01:22 PM
+516;2010517;alert tcp $HTTP_SERVERS $HTTP_PORTS -> $EXTERNAL_NET 1024;Possible HTTP 404 XSS Attempt (Local Source);alerta tcp $SERVIDORES_HTTP $PUERTOS_HTTP -> $RED_EXTERNA 1024;Posible intento de Cross Site-Scripting;Peticiones con el protocolo tcp desde un puerto HTTP en un servidor web hacia el puerto 1024 en una red externa.;04/12/15 09:02 PM;05/14/15 01:40 PM
+493;2102466;alert tcp $EXTERNAL_NET any -> $HOME_NET 445;NETBIOS SMB-DS IPC$ unicode share access;alerta tcp $RED_EXTERNA cualquiera -> $RED_LOCAL 445;Intento de acceso con NETBIOS;;04/07/15 10:24 AM;05/14/15 04:45 PM
+606;2100538;;NETBIOS SMB-DS IPC$ unicode share access;;;;05/13/15 11:21 PM;05/13/15 11:21 PM
