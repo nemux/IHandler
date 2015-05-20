@@ -132,20 +132,21 @@ class IncidentController extends Controller
 
             } else if ($status == "2") {
                 $ticket = Ticket::where('incidents_id', '=', $incident->id); //Validacion para evitar que un mismo incidente tenga varios tickets
-                Log::info('Tickets count ' + $ticket->count());
+                Log::debug('Tickets count ' + $ticket->count());
                 if ($ticket->count() == 0) {
-                    try {
-                        $incident->incidents_status_id = $status;
-                        $incident->save();
+                    $incident->incidents_status_id = $status;
+                    $incident->save();
 
-                        $incident->ticket = $this->sendTicket($incident, $status);
+//                    try {
+                    $incident->ticket = $this->sendTicket($incident, $status);
+//                    } catch (Exception $exception) {
+//                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id . ' Mensage: ' . $exception->getMessage());
+//                    } finally {
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Antes de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
+//                    }
 
-                        $log->info(Auth::user()->id, Auth::user()->username, 'Antes de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
-                        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec ha detectado mediante las actividades de monitoreo el siguiente evento:');
-                        $log->info(Auth::user()->id, Auth::user()->username, 'Después de enviar el email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' con el ticket ' . $incident->ticket->internal_number);
-                    } catch (Exception $exception) {
-                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id);
-                    }
                 }
                 $notification->content = '<strong>[' . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
                 $notification->save();
@@ -1322,18 +1323,21 @@ class IncidentController extends Controller
 
         $htmlReport = $this->renderView($incident);
 
-        $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer, $htmlReport);
-
+        try {
+            $ticket_info = $ticketOtrs->create($incident->title, $incident->risk, $incident->customer, $htmlReport);
 //        $incident->ticket = $ticketIM;
 
-        if ($ticket_info['response_status'] < 0) {
-            $log->error(Auth::user()->id, Auth::user()->username, 'Error al crear OTRS Ticket para el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id .
-                " [OTRS_DEBUG]:" . $ticket_info['error_description']);
-        } else {
-            $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
-            $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
-            $ticketIM->save();
-            $log->info(Auth::user()->id, Auth::user()->username, 'Se creo el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id);
+            if ($ticket_info['response_status'] < 0) {
+                $log->error(Auth::user()->id, Auth::user()->username, 'Error al crear OTRS Ticket para el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id .
+                    " [OTRS_DEBUG]:" . $ticket_info['error_description']);
+            } else {
+                $ticketIM->otrs_ticket_id = $ticket_info['TicketID'];
+                $ticketIM->otrs_ticket_number = $ticket_info['TicketNumber'];
+                $ticketIM->save();
+                $log->info(Auth::user()->id, Auth::user()->username, 'Se creo el Ticket con ID: ' . $ticketIM->id . ' referente al incidente: ' . $incident->id);
+            }
+        } catch (Exception $e) {
+            $log->error(Auth::user()->id, Auth::user()->username, 'Error en el OTRS: Incidente: ' . $incident->id . ' Message: ' . $e->getMessage());
         }
         return $ticketIM;
     }
