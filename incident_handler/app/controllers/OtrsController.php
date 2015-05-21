@@ -167,14 +167,14 @@ class OtrsController extends BaseController{
     foreach ($black_preview as $b) {
       if ($b->src->blacklist) {
         array_push($listed,$b->src);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->orderBy('hist','desc')->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
       }
       if ($b->dst->blacklist) {
         array_push($listed,$b->dst);
-        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->first();
+        $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->orderBy('hist','desc')->first();
         array_push($location,$loc);
         //print_r($loc);
         //echo "<br>";
