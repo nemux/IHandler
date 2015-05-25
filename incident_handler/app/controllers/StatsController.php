@@ -89,9 +89,7 @@ class StatsController extends Controller
 
     public function ip()
     {
-
         return $this->layout = View::make("stats.ip", array());
-
     }
 
     public function ipGraph()
@@ -120,37 +118,6 @@ class StatsController extends Controller
             }
             $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
             $end = explode("/", $input['end'])[2] . "-" . explode("/", $input['end'])[0] . "-" . explode("/", $input['end'])[1];
-            /*$query1="select
-                                            o.ip as ip,
-                                            count(o.id)
-                                          from
-                                            occurrences as o
-                                          where
-                                            o.ip not like ''
-                                          and
-                                            o.blacklist=".$set_blacklist."
-                                          and
-                                            o.created_at between '".$start." 00:00:00' and '".$end." 23:59:59'
-                                          and
-                                            o.id=(
-                                              select ".$join_occurence." from
-                                                incidents_occurences as io,
-                                                incidents as i,
-                                                customers as c
-                                              where
-                                                ".$join_occurence."=o.id
-                                              and
-                                                io.incidents_id=i.id
-                                              and
-                                                c.id=".$customer."
-                                              and
-                                                i.customers_id=c.id limit 1)
-                                          group by
-                                            ip
-                                          order by
-                                            count desc
-                                          limit ".$top."
-                                          ";*/
             $query = "select
                     o.ip as ip,
                     count(o.ip)
@@ -164,23 +131,24 @@ class StatsController extends Controller
                   and
                     t.incidents_id=i.id
                   and
-                    t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
+                    t.datetime between '$start 00:00:00' and '$end 23:59:59'
                   and
                     io.incidents_id=i.id
                   and
-                    " . $join_occurence . "=o.id
+                     $join_occurence =o.id
                   and
                     o.ip not like ''
                   and
-                    o.blacklist=" . $set_blacklist . "
+                    o.blacklist= $set_blacklist
                   and
-                    i.customers_id=" . $customer . "
+                    i.customers_id= $customer
                   group by
                     ip
                   order by
                     count desc
-                  limit " . $top . ";
-                  ";
+                  limit  $top ; ";
+
+            echo $query;
 
             $ips = DB::select(DB::raw($query));
 
@@ -205,7 +173,7 @@ class StatsController extends Controller
     {
         $input = Input::all();
 
-        Log::info('lala');
+//        Log::info('lala');
 
         if ($input['start'] != '' && $input['end'] != '') {
             $start = explode("/", $input['start'])[2] . "-" . explode("/", $input['start'])[0] . "-" . explode("/", $input['start'])[1];
@@ -232,8 +200,8 @@ class StatsController extends Controller
                                             i.sensors_id=" . $input['sensor'] . "
                                           and
                                             t.datetime between '" . $start . " 00:00:00' and '" . $end . " 23:59:59'
-                                          and
-                                            a.name!='Attack'
+                                         -- and
+                                         --   a.name!='Attack' //TODO validar si este tipo de Ataque en verdad no debe de ir en la query
                                           group by
                                             a.name
                                           order by
