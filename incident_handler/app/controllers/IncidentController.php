@@ -1172,30 +1172,13 @@ class IncidentController extends Controller
     {
         $input = Input::all();
 
-        //$start=explode("/",$input['start'])[2]."-".explode("/",$input['start'])[0]."-".explode("/",$input['start'])[1];
-        //$end=explode("/",$input['end'])[2]."-".explode("/",$input['end'])[0]."-".explode("/",$input['end'])[1];
         $start = $input['start'] . ' ' . '00:00:00';
         $end = $input['end'] . ' ' . '23:59:59';
         $type = $input['results_type'];
         $customer = $input['customer'];
 
-        /*
-         * Consulta del Chagui
-         $incident = Incident::where('ssh ','<','4')
-                                 //->join('time', 'incidents.id', '=', 'time.incidents_id')
-                                 ->where('customers_id', '=', $input['customer'])
-                                 ->where('created_at', '>=', $start." 00:00:00")
-                                 ->where('created_at', '<=', $end." 23:59:59")
-                                 ->orderBy('id','asc')->get();
-        */
         if ($type == 'incidentes') {
-            /*$incident = Incident::where('incidents_status_id', '<', '4')
-                //->join('time', 'incidents.id', '=', 'time.incidents_id')
-                ->where('customers_id', '=', $input['customer'])
-                ->whereBetween('created_at', array(new DateTime($start), new DateTime($end)))
-                ->orderBy('id', 'asc')->get();*/
             $incidents = Incident::where('incidents_status_id', '<', '4')
-                //->join('time', 'incidents.id', '=', 'time.incidents_id')
                 ->join('time', 'incidents.id', '=', 'time.incidents_id')
                 ->where('incidents.customers_id', '=', $customer)
                 ->where('time.time_types_id', '=', '1')

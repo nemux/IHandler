@@ -33,9 +33,8 @@
                             Severidad
                         </th>
 
-                        <th>
-                            Flujo
-                        </th>
+                        <th>Flujo</th>
+                        <th>Ataque</th>
 
                         <th>
                             Handler
@@ -110,6 +109,12 @@
                             <?php
                             echo $in->stream;
                             ?>
+                        </td>
+
+                        <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');"
+                            style="cursor:pointer">
+                           <?php echo $in->attack->name; ?>
+
                         </td>
 
 
