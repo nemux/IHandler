@@ -16,7 +16,7 @@ class CreateNotificationsTable extends Migration {
 		{
 
 			$table->increments('id');
-			$table->string('content');
+			$table->longtext('content');
 	    	$table->integer('incident_handler_id')->unsigned();
 			$table->integer('relevance')->default("0");
       		$table->timestamps();
