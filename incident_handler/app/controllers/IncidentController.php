@@ -1266,7 +1266,7 @@ class IncidentController extends Controller
 
         $incident = Incident::find($id);
 
-        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
+        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
         return Redirect::to('/incident/');
     }
 
