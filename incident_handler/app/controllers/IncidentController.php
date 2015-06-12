@@ -170,8 +170,13 @@ class IncidentController extends Controller
                         $this->compareAndUpload($i, $incident, 2);
                     }
                     $incident->save();
-                    $this->closeTicket($incident->ticket->otrs_ticket_id);
-                    $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
+                    try {
+                        $this->closeTicket($incident->ticket->otrs_ticket_id);
+                    } catch (Exception $exception) {
+                        $log->error(Auth::user()->id, Auth::user()->username, 'Error al actualizar el incidente: ' . $incident->id . ' Mensage: ' . $exception->getMessage());
+                    } finally {
+                        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.');
+                    }
 
                 }
                 $notification->content = "<strong>[" . Auth::user()->username . ']</strong> Cambió estado del Incidente <strong>[ID:' . $incident->id . '][<a href="/incident/view/' . $incident->id . '">' . $incident->title . '</a>]</strong>' . ' Elaborado por <strong>[' . $incident->handler->access->username . "]</strong> a <strong>[" . $incident->status->name . "]</strong>";
@@ -823,14 +828,14 @@ class IncidentController extends Controller
         foreach ($black_preview as $b) {
             if ($b->src->blacklist) {
                 array_push($listed, $b->src);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
             }
             if ($b->dst->blacklist) {
                 array_push($listed, $b->dst);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "''")->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "''")->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
@@ -941,7 +946,7 @@ class IncidentController extends Controller
 
         if ($input['img_fp']) {
             Log::info("img_fp: " . $input['img_fp']);
-            $this->compareAndUpload($input['img_fp'], $incident,3);
+            $this->compareAndUpload($input['img_fp'], $incident, 3);
         } else {
             Log::info('No image selected');
         }
@@ -1261,7 +1266,7 @@ class IncidentController extends Controller
 
         $incident = Incident::find($id);
 
-        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Informe sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
+        $this->sendEmail($incident, '[GCS-IM][' . $incident->customer->otrs_userID . ']-Cierre de reporte sobre incidente de seguridad::' . $incident->title . '.', 'El Equipo de Respuesta a Incidentes de Global Cybersec envía información referente al siguiente incidente:');
         return Redirect::to('/incident/');
     }
 
@@ -1325,7 +1330,7 @@ class IncidentController extends Controller
         return $ticketIM;
     }
 
-    private function closeTicket($ticketID)
+    private function closeTicket($ticketID) //$incident->ticket->otrs_ticket_id
     {
 
         $ticketOtrs = new Otrs\Ticket();
@@ -1391,14 +1396,14 @@ class IncidentController extends Controller
         foreach ($black_preview as $b) {
             if ($b->src->blacklist) {
                 array_push($listed, $b->src);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
             }
             if ($b->dst->blacklist) {
                 array_push($listed, $b->dst);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
@@ -1450,14 +1455,14 @@ class IncidentController extends Controller
         foreach ($black_preview as $b) {
             if ($b->src->blacklist) {
                 array_push($listed, $b->src);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
             }
             if ($b->dst->blacklist) {
                 array_push($listed, $b->dst);
-                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist','desc')->first();
+                $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('location', "!=", "")->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist', 'desc')->first();
                 array_push($location, $loc);
                 //print_r($loc);
                 //echo "<br>";
