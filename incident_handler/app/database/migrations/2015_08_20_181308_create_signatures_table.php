@@ -22,8 +22,8 @@ class CreateSignaturesTable extends Migration {
 			$table->text('reference')->nullable();
 			$table->text('risk')->nullable();
 
-			$table->timestamps();
-			$table->softDeletes();
+//			$table->timestamps();
+//			$table->softDeletes();
 		});
 	}
 
