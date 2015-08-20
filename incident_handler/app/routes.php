@@ -21,6 +21,16 @@ Route::post('dashboard/get/alerts', array('before' => 'auth', 'uses' => 'HomeCon
 Route::get('rule/query/{id}', 'RuleController@query')->where(array('id' => '^[0-9]+$'));
 Route::get('occurence/query/{id}', 'OccurenceController@query')->where(array('id' => '^[0-9]+$'));
 
+/**
+ * Rutas para el Mapa
+ */
+Route::get('dashboard/map', ['before' => 'auth', 'uses' => 'MapController@index']);
+Route::get('dashboard/map/locate/{ip}', ['before' => 'auth', 'uses' => 'MapController@locate']);
+Route::get('dashboard/map/location', ['before' => 'auth', 'uses' => 'MapController@myLocation']);
+Route::get('dashboard/map/location/{ip}', ['before' => 'auth', 'uses' => 'MapController@location']);
+Route::get('dashboard/map/broadcastLocations', ['before' => 'auth', 'uses' => 'MapController@broadcastLocations']);
+Route::post('dashboard/map/incidents', ['before' => 'auth', 'uses' => 'MapController@getIncidents']);
+
 Route::get('login', 'LoginController@login');
 Route::post('login', 'LoginController@doLogin');
 Route::get('logout', 'LoginController@logout');
