@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateIncidentsRulesTable extends Migration
+class CreateIncidentHasSignatures extends Migration
 {
 
     /**
@@ -13,12 +13,14 @@ class CreateIncidentsRulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('incidents_rules', function (Blueprint $table) {
+        Schema::create('incidents_signatures', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('rules_id')->unsigned();
             $table->integer('incidents_id')->unsigned();
+            $table->integer('signatures_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('incidents_id')->references('id')->on('incidents');
+            $table->foreign('signatures_id')->references('id')->on('signatures');
         });
     }
 
@@ -29,7 +31,7 @@ class CreateIncidentsRulesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('incidents_rules');
+        Schema::drop('incidents_signatures');
     }
 
 }
