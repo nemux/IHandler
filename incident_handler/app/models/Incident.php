@@ -108,6 +108,11 @@ class Incident extends Eloquent
         return $this->belongsToMany('Rule', 'incidents_rules', 'incidents_id', 'rules_id');
     }
 
+    public function signatures()
+    {
+        return $this->belongsToMany('Signature', 'incidents_signatures', 'incidents_id', 'signatures_id');
+    }
+
     /*BELONGS TO*/
 
     public function category()
