@@ -205,24 +205,25 @@ class IncidentController extends Controller
 
     public function ready($incident)
     {
+        $text = "";
         if ($this->validateRequired($incident) != "0") {
-            return $this->validateRequired($incident);
+            $text .= $this->validateRequired($incident);
         }
         if (count($incident->reference) == 0) {
-            return "Este incidente no tiene referencias";
+            $text .= "Este incidente no tiene referencias";
         }
         if (count($incident->srcDst) == 0) {
-            return "No se han añadido ips a este incidente";
+            $text .= "No se han añadido ips a este incidente";
         }
-        if (count($incident->incidentRule) == 0) {
-            return "Este incidente no contiene ninguna regla";
+
+        if (count($incident->incidentRule) == 0 && count($incident->incidentSignatures) == 0) {
+            $text .= "Este incidente no contiene ninguna regla o firma";
         }
-        return "";
+        return $text;
     }
 
     public function create()
     {
-
         $sensor_object = new Sensor;
         $input = Input::all();
         $log = new Log\Logger();
@@ -233,6 +234,7 @@ class IncidentController extends Controller
         $customer = Customer::lists('company', 'id');
         $sensor = Sensor::lists('name', 'id');
         $rule = Rule::all();
+        $signatures = Signature::all();
         $references = new References;
         $occurences_types = OccurenceType::lists('name', 'id');
         $det_time = new Time;
@@ -242,16 +244,21 @@ class IncidentController extends Controller
             if ($this->validateEntry(array($input['title'],)) == "1") {
                 return Redirect::to('/incident');
             }
+
+            //Carga la lista de elementos que se pasaron por medio del formulario
             $keys = array_keys($input);
             //print_r($keys);
+
+
+            //Define cuáles de ellos son events
             $events = array();
-
-
             foreach ($keys as $k) {
                 if (strpos($k, 'srcip') !== false) {
                     array_push($events, explode('_', $k)[1]);
                 }
             }
+
+            //define cuáles de ellos son reglas
             $rules = array();
             foreach ($keys as $k) {
                 if (strpos($k, 'sid_') !== false) {
@@ -259,14 +266,23 @@ class IncidentController extends Controller
                 }
             }
 
-            $extra_sensors = array();
-            $extra_categories = array();
 
+            //define cuáles de ellos son firmas
+            $signatures = array();
+            foreach ($keys as $k) {
+                if (strpos($k, 'signature_id_') !== false) {
+                    array_push($signatures, explode('_', $k)[2]);
+                }
+            }
+
+            $extra_sensors = array();
             foreach ($keys as $k) {
                 if (strpos($k, 'sensadd_') !== false) {
                     array_push($extra_sensors, explode('_', $k)[1]);
                 }
             }
+
+            $extra_categories = array();
             foreach ($keys as $k) {
                 if (strpos($k, 'catadd_') !== false) {
                     array_push($extra_categories, explode('_', $k)[1]);
@@ -440,6 +456,22 @@ class IncidentController extends Controller
                 $incident_rule->incidents_id = $incident->id;
                 $incident_rule->save();
             }
+
+            foreach ($signatures as $s) {
+                $signature = new Signature();
+//                Log::info("Signature " . $s);
+                if (Signature::where('id', '=', $input['signature_id_' . $s])->first()) {
+                    $signature = Signature::where('id', '=', $input['signature_id_' . $s])->first();
+                } else {
+                    $signature = new Signature();
+                }
+
+                $incident_signature = new IncidentSignature;
+                $incident_signature->signatures_id = $signature->id;
+                $incident_signature->incidents_id = $incident->id;
+                $incident_signature->save();
+            }
+
             $log->info(Auth::user()->id, Auth::user()->username, 'Se creo incidente con ID: ' . $incident->id);
             $notification = new Notification;
             $ticket = "Por asignar...";
@@ -460,6 +492,7 @@ class IncidentController extends Controller
                 'attack' => $attack,
                 'customer' => $customer,
                 'rule' => $rule,
+                'signatures' => $signatures,
                 'references' => $references,
                 'categories' => $categories,
                 'occurences_types' => $occurences_types,
@@ -478,7 +511,9 @@ class IncidentController extends Controller
         $customer = Customer::lists('company', 'id');
         $sensor = Sensor::lists('name', 'id');
         $rule = Rule::all();
+        $signatures = Signature::all();
         $incident_rule = $incident->incidentRule;
+        $incident_signatures = $incident->incidentSignatures;
         $references = $incident->reference;
         $occurences_types = OccurenceType::lists('name', 'id');
         $incident_occurence = $incident->incidentOccurence;
@@ -490,12 +525,14 @@ class IncidentController extends Controller
         return $this->layout = View::make("incident.form", array(
             'incident' => $incident,
             'incident_rule' => $incident_rule,
+            'incident_signatures' => $incident_signatures,
             'incident_occurence' => $incident_occurence,
             'title' => "Edición de Incidente",
             'action' => "IncidentController@postUpdate",
             'attack' => $attack,
             'customer' => $customer,
             'rule' => $rule,
+            'signatures' => $signatures,
             'references' => $references,
             'categories' => $categories,
             'occurences_types' => $occurences_types,
@@ -527,7 +564,6 @@ class IncidentController extends Controller
         $occ_time = Time::where('time_types_id', '=', '2')->where('incidents_id', '=', $incident->id)->first();
 
         if ($input) {
-
             $keys = array_keys($input);
             //print_r($keys);
             $events = array();
@@ -542,6 +578,13 @@ class IncidentController extends Controller
             foreach ($keys as $k) {
                 if (strpos($k, 'sid_') !== false) {
                     array_push($rules, explode('_', $k)[1]);
+                }
+            }
+
+            $signatures = array();
+            foreach ($keys as $k) {
+                if (strpos($k, 'signature_id_') !== false) {
+                    array_push($signatures, explode('_', $k)[2]);
                 }
             }
 
@@ -650,6 +693,7 @@ class IncidentController extends Controller
                 $r->forceDelete();
             }
             ////////////////////////////////////////|
+
             //proceso de borrado incident Rule      |
             $register = $incident->incidentRule;
             foreach ($register as $r) {
@@ -657,8 +701,14 @@ class IncidentController extends Controller
             }
             ////////////////////////////////////////|
 
-            foreach ($events as $e) {
+            //proceso de borrado incident signatures|
+            $register = $incident->incidentSignatures;
+            foreach ($register as $r) {
+                $r->forceDelete();
+            }
+            ////////////////////////////////////////|
 
+            foreach ($events as $e) {
                 $dst = new Occurence;
                 $src = new Occurence;
 
@@ -749,6 +799,20 @@ class IncidentController extends Controller
                 $incident_rule->incidents_id = $incident->id;
                 $incident_rule->save();
             }
+
+            foreach ($signatures as $s) {
+                $signature = new Rule;
+                if (Rule::where('id', '=', $input['signature_id_' . $s])->first()) {
+                    $signature = Rule::where('id', '=', $input['signature_id_' . $s])->first();
+                } else {
+                    $signature = new Rule;
+                }
+
+                $incident_rule = new IncidentSignature();
+                $incident_rule->signatures_id = $signature->id;
+                $incident_rule->incidents_id = $incident->id;
+                $incident_rule->save();
+            }
             foreach ($delete as $del) {
                 if (File::exists($input[$del])) {
                     File::delete($input[$del]);
@@ -814,7 +878,6 @@ class IncidentController extends Controller
 
     public function view($id)
     {
-
         //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $incident = Incident::find($id);
 
@@ -1390,9 +1453,11 @@ class IncidentController extends Controller
         ////////////////////////variables para correo///////////////////////////////////////////////////////////
         $det_time = Time::where('time_types_id', '=', '1')->where('incidents_id', '=', $incident->id)->first();
         $occ_time = Time::where('time_types_id', '=', '2')->where('incidents_id', '=', $incident->id)->first();
+
         $listed = array();
         $black_preview = IncidentOccurence::where("incidents_id", "=", $incident->id)->get();
         $location = array();
+
         foreach ($black_preview as $b) {
             if ($b->src->blacklist) {
                 array_push($listed, $b->src);
@@ -1435,12 +1500,12 @@ class IncidentController extends Controller
                     foreach ($images as $image) {
                         $message->embed('files/evidence/' . $image->name);
                     }
-                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
-//                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
+                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO cambiar en producción
+//                    $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                     $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
                 });
         } catch (Exception $e) {
-            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción ' . $e->getMessage());
+            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción: ' . $e->getMessage());
         }
     }
 

@@ -36,6 +36,12 @@ class Incident extends Eloquent
         return $this->hasMany('IncidentRule', 'incidents_id', 'id');
     }
 
+    //Obtiene todas las firmas que están relacionadas a este incidente
+    public function incidentSignatures()
+    {
+        return $this->hasMany('IncidentSignature', 'incidents_id', 'id');
+    }
+
     public function incidentOccurence()
     {
         return $this->hasMany('IncidentOccurence', 'incidents_id', 'id');

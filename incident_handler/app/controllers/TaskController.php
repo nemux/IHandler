@@ -129,7 +129,7 @@ class TaskController extends Controller
 //                foreach ($images as $image) {
 //                    $message->embed('files/evidence/' . $image->name);
 //                }
-                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject);
+                $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO cambiar en producción
 //                $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                 $log->info("0", "Automatic_task", 'Se envió Email a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id);
             });

@@ -1,485 +1,390 @@
 @extends('layouts.master')
 @section('head')
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet"/>
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
+        <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/assets/plugins/DataTables/css/data-table.css" rel="stylesheet"/>
+<!-- ================== END PAGE LEVEL STYLE ================== -->
 
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet"/>
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet"/>
+<!-- ================== END PAGE LEVEL STYLE ================== -->
 
-    <!-- ================== BEGIN BASE JS ================== -->
-    <script src="/assets/plugins/pace/pace.min.js"></script>
-    <!-- ================== END BASE JS ================== -->
-    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-    <script src="/assets/plugins/ckeditor/ckeditor.js"></script>
-    <script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
-    <script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
-    <script src="/assets/js/form-wysiwyg.demo.min.js"></script>
-    <script src="/assets/js/apps.min.js"></script>
-    <!-- ================== END PAGE LEVEL JS ================== -->
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="/assets/plugins/pace/pace.min.js"></script>
+<!-- ================== END BASE JS ================== -->
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="/assets/plugins/ckeditor/ckeditor.js"></script>
+<script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
+<script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
+<script src="/assets/js/form-wysiwyg.demo.min.js"></script>
+<script src="/assets/js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
 
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"/>
-    <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet"/>
-    <link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet"/>
-    <link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
-    <link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet"/>
-    <link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet"/>
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
-    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
-    <link href="/assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet"/>
-    <!-- ================== END PAGE LEVEL STYLE ================== -->
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"/>
+<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet"/>
+<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-picker/css/bootstrap-colorpicker.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet"/>
+<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet"/>
+<!-- ================== END PAGE LEVEL STYLE ================== -->
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet"/>
+<!-- ================== END PAGE LEVEL STYLE ================== -->
 
-    <script charset="utf-8">
+<script charset="utf-8">
 
-    </script>
-    <script>
+</script>
+<script>
 
-        var ip_added = new Array();
-        var sid_added = new Array();
-        var count_rule = 0;
-        var count_event = 0;
-        var count_todel = 0;
-        var count_sensor = 0;
-        var count_category = 0;
+    var ip_added = new Array();
+    var count_event = 0;
+    var count_todel = 0;
+    var count_sensor = 0;
+    var count_category = 0;
 
-        function validateSid(sid) {
-            for (var i = 0; i < sid_added.length; i++) {
-                if (sid_added[i] == sid) {
-                    return "1";
-                }
-            }
-            return "0";
-        }
-        function validateEntry(validate) {
+    function validateEntry(validate) {
 
-            for (var i = 0; i < validate.length; i++) {
-                var re = /^[A-Za-záéíóú0\"\;\'\(\)\-\,\.\s\n\t\>\/\&]*$/;
-                if (0 == 1) {
-                    //!re.test(validate[i])
-                    console.log(validate[i]);
-                    console.log(re.test(validate[i]));
-                    return "1";
-                }
+        for (var i = 0; i < validate.length; i++) {
+            var re = /^[A-Za-záéíóú0\"\;\'\(\)\-\,\.\s\n\t\>\/\&]*$/;
+            if (0 == 1) {
+                //!re.test(validate[i])
+                console.log(validate[i]);
+                console.log(re.test(validate[i]));
+                return "1";
             }
         }
-        function delFile(name, div) {
-            count_todel = count_todel + 1;
-            $("#todel").append('<input type="hidden" name="del_' + count_todel + '" value="files/evidence/' + name + '">');
-            div.parent().parent().css('display', 'none');
-        }
-        function addRuleOnClick() {
-            //sid,rule,message,translate,rule_is,why
-            var sid = $("#search_sid").val();
-            var rule = $("#search_rule").val();
-            var message = $("#search_message").val();
-            var translate = $("#search_translate").val();
-            var rule_is = $("#search_rule_is").val();
-            var why = $("#search_why").val();
+    }
+    function delFile(name, div) {
+        count_todel = count_todel + 1;
+        $("#todel").append('<input type="hidden" name="del_' + count_todel + '" value="files/evidence/' + name + '">');
+        div.parent().parent().css('display', 'none');
+    }
 
-            if (!sid || !message) {
-                $('#modal-dialog3').modal('show');
-            } else {
-                addRule(sid, rule, message, translate, rule_is, why);
+    function addSensor() {
+        count_sensor++;
+        //alert();
+        var str = "<tr width='100%'>"
+                + "<td width='70%'>"
+                + '{{Form::select('sensadd',$sensor,null,['class'=>'form-control parsley-validated']);}}'
+                + "</td>"
+                + "<td width='30%'>"
+                + '<a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>'
+                + "</td>"
+                + "</tr>";
+        str = str.replace('sensadd', 'sensadd_' + count_sensor);
+        //alert(str);
+        $("#sensors_table").append(str);
+    }
+    function addCategory() {
+        count_category++;
+        //alert();
+        var str = "<tr width='100%'>"
+                + "<td width='70%'>"
+                + '{{ Form::select('catadd', $categories, null,['class'=>'form-control parsley-validated',]);}}'
+                + "</td>"
+                + "<td width='30%'>"
+                + '<a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>'
+                + "</td>"
+                + "</tr>";
+        str = str.replace('catadd', 'catadd_' + count_category);
+        //alert(str);
+        $("#category_table").append(str);
+    }
+
+    function genericRemove(rem) {
+        rem.parent().parent().remove();
+    }
+
+    $(document).ready(function () {
+        $("#stream").val("<?php echo $incident->stream ?>");
+        FormPlugins.init();
+        TableManageDefault.init();
+
+        Form1.init();
+        Form2.init();
+        Form3.init();
+        Form4.init();
+        $("#attack").val("<?php echo $incident->attacks_id ?>");
+        $("#images").change(function () {
+            //get the input and UL list
+            var input = document.getElementById('images');
+            ;
+            var list = $("#files_list");
+
+            //empty list for now...
+            list.empty();
+
+            //for every file...
+            for (var x = 0; x < input.files.length; x++) {
+                //add to list
+                var li = document.createElement('li');
+                li.innerHTML = 'File ' + (x + 1) + ':  ' + input.files[x].name;
+                list.append(li);
             }
-        }
-        function addSensor() {
-            count_sensor++;
-            //alert();
-            var str = "<tr width='100%'>"
-                    + "<td width='70%'>"
-                    + '{{Form::select('sensadd',$sensor,null,['class'=>'form-control parsley-validated']);}}'
-                    + "</td>"
-                    + "<td width='30%'>"
-                    + '<a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>'
-                    + "</td>"
-                    + "</tr>";
-            str = str.replace('sensadd', 'sensadd_' + count_sensor);
-            //alert(str);
-            $("#sensors_table").append(str);
-        }
-        function addCategory() {
-            count_category++;
-            //alert();
-            var str = "<tr width='100%'>"
-                    + "<td width='70%'>"
-                    + '{{ Form::select('catadd', $categories, null,['class'=>'form-control parsley-validated',]);}}'
-                    + "</td>"
-                    + "<td width='30%'>"
-                    + '<a class="btn btn-default" onclick="genericRemove($(this))" style="width:100%">Quitar</a>'
-                    + "</td>"
-                    + "</tr>";
-            str = str.replace('catadd', 'catadd_' + count_category);
-            //alert(str);
-            $("#category_table").append(str);
-        }
-        function genericRemove(rem) {
-            rem.parent().parent().remove();
-        }
-        ;
+        });
+        $("#det_date").keyup(function (e) {
+            $("#occ_date").val($("#det_date").val());
+        });
 
-        $(document).ready(function () {
-            $("#stream").val("<?php echo $incident->stream ?>");
-            FormPlugins.init();
-            TableManageDefault.init();
 
-            Form1.init();
-            Form2.init();
-            Form3.init();
-            Form4.init();
-            $("#attack").val("<?php echo $incident->attacks_id ?>");
-            $("#images").change(function () {
-                //get the input and UL list
-                var input = document.getElementById('images');
-                ;
-                var list = $("#files_list");
-
-                //empty list for now...
-                list.empty();
-
-                //for every file...
-                for (var x = 0; x < input.files.length; x++) {
-                    //add to list
-                    var li = document.createElement('li');
-                    li.innerHTML = 'File ' + (x + 1) + ':  ' + input.files[x].name;
-                    list.append(li);
-                }
-            });
-            $("#det_date").keyup(function (e) {
-                $("#occ_date").val($("#det_date").val());
-            });
-            $("#search_sid").keyup(function (e) {
-
-                if (e.which == 13 && validateSid($("#search_sid").val())) {
-
-                } else {
-                    $.ajax({
-                        type: "GET",
-                        url: "/rule/query/" + $("#search_sid").val(),
-                        async: true,
-                        cache: false,
-                        success: function (ret) {
-                            if (ret != "") {
-                                response = ret.split("\`");
-                                if (validateSid(response[0]) == "0") {
-                                    addRule(response[0], response[1], response[2], response[3], response[4], response[5]);
-
-                                }
-
-                            }
-                        },
-                        error: function (x, e) {
-                            console.log("error occur");
-                        }
-                    });
-                }
-            });
-
-            $('#customers_id').change(function () {
-                $.get('/incident/sensor/get/' + $('#customers_id').val(),
-                        function (data) {
-                            $('#sensor_id').empty();
-                            $.each(data, function (key, element) {
-                                if (key ==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
-                                    $('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
-                                } else {
-                                    $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
-                                }
-
-                            });
-                        });
-            });
-
+        $('#customers_id').change(function () {
             $.get('/incident/sensor/get/' + $('#customers_id').val(),
                     function (data) {
                         $('#sensor_id').empty();
                         $.each(data, function (key, element) {
                             if (key ==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
-
                                 $('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
                             } else {
                                 $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
                             }
 
-
                         });
                     });
-
-
         });
 
-        function parse() {
+        $.get('/incident/sensor/get/' + $('#customers_id').val(),
+                function (data) {
+                    $('#sensor_id').empty();
+                    $.each(data, function (key, element) {
+                        if (key ==<?php if (isset($incident->sensor->id)) {echo $incident->sensor->id;}else{ echo "-1"; } ?>) {
 
-            var ips = $("#to_parse").val().split("\n");
-            for (var i = 0; i < ips.length; i++) {
-                count_event++;
-                var src_ip = "";
-                var dst_ip = "";
-
-                var src_type = "1";
-                var dst_type = "1";
-                if ($("#to_parse_option").val() == 1) {
-                    src_ip = ips[i];
-                } else {
-                    dst_ip = ips[i];
-                }
-                if ($("#to_parse_type").val() == 1) {
-                    src_type = $("#to_parse_type").val();
-                } else {
-                    dst_type = $("#to_parse_type").val();
-                }
-                var str = '<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
-
-                        + '<td style="display:none">'
-                        + '<input type="text" class="form-control" name="srcip_' + count_event + '" placeholder="origen" value="' + src_ip + '"><br>'
-                        + '<input type="text" class="form-control" name="dstip_' + count_event + '" placeholder="destino" value="' + dst_ip + '">'
-
-                        + '<input type="text" class="form-control" name="srcport_' + count_event + '" placeholder="origen" value=""><br>'
-                        + '<input type="text" class="form-control" name="dstport_' + count_event + '" placeholder="destino" value="">'
-
-                        + '<input type="text" class="form-control" name="srcprotocol_' + count_event + '" placeholder="origen" value=""><br>'
-                        + '<input type="text" class="form-control" name="dstprotocol_' + count_event + '" placeholder="destino" value="">'
-
-                        + '<input type="text" class="form-control" name="srcoperativesystem_' + count_event + '" placeholder="origen" value=""><br>'
-                        + '<input type="text" class="form-control" name="dstoperativesystem_' + count_event + '" placeholder="destino" value="">'
-
-                        + '<input type="text" class="form-control" name="srcfunction_' + count_event + '" placeholder="origen" value=""><br>'
-                        + '<input type="text" class="form-control" name="dstfunction_' + count_event + '" placeholder="destino" value="">'
-
-                        + '<input type="text" class="form-control" name="srclocation_' + count_event + '" placeholder="origen" value=""><br>'
-                        + '<input type="text" class="form-control" name="dstlocation_' + count_event + '" placeholder="destino" value="">'
-
-                        + '<input type="text" class="form-control" name="srcoccurencestype_' + count_event + '" placeholder="origen" value="' + src_type + '">'
-                        + '<input type="text" class="form-control" name="dstoccurencestype_' + count_event + '" placeholder="destino" value="' + dst_type + '">'
-
-                        + '<input type="text" class="form-control" name="srcblacklist_' + count_event + '" placeholder="origen" value="0">'
-                        + '<input type="text" class="form-control" name="dstblacklist_' + count_event + '" placeholder="destino" value="0">'
-
-                        + '<input type="text" class="form-control" name="src_no_show_' + count_event + '" placeholder="origen"  value="0">'
-                        + '<input type="text" class="form-control" name="dst_no_show_' + count_event + '" placeholder="destino" value="0">'
-                        + '</td>'
-
-                        + '<td colspan="2">'
-
-                        + src_ip
-                        + ','
-
-                        + ','
-
-                        + ','
-
-                        + ','
-
-                        + ','
-
-                        + ','
-                        + src_type
-                        + ',0'
-                        + ',0'
+                            $('#sensor_id').append("<option selected value='" + key + "'>" + element + "</option>");
+                        } else {
+                            $('#sensor_id').append("<option value='" + key + "'>" + element + "</option>");
+                        }
 
 
-                        + '</td>'
-                        + '<td colspan="2">'
-                        + dst_ip
-                        + ','
+                    });
+                });
 
-                        + ','
 
-                        + ','
+    });
 
-                        + ','
+    function parse() {
 
-                        + ','
+        var ips = $("#to_parse").val().split("\n");
+        for (var i = 0; i < ips.length; i++) {
+            count_event++;
+            var src_ip = "";
+            var dst_ip = "";
 
-                        + ','
-                        + dst_type
-                        + ',0'
-                        + ',0'
-                        + '</td>'
-                        + '</tr>';
-
-                $("#events").append(str);
+            var src_type = "1";
+            var dst_type = "1";
+            if ($("#to_parse_option").val() == 1) {
+                src_ip = ips[i];
+            } else {
+                dst_ip = ips[i];
             }
-        }
-        function removeRule(tr, sid) {
-            $(tr).remove();
-            var index = sid_added.indexOf(sid);
-            sid_added.splice(index, 1);
-        }
-
-    </script>
-    <script charset="utf-8">
-        function addRule(sid, rule, message, translate, rule_is, why) {
-            validate = [sid, rule, message, translate, rule_is, why];
-            if (validateEntry(validate) == "1") {
-                return 0;
+            if ($("#to_parse_type").val() == 1) {
+                src_type = $("#to_parse_type").val();
+            } else {
+                dst_type = $("#to_parse_type").val();
             }
-            count_rule = count_rule + 1;
-            //'sid','rule','message','translate','rule_is','why'
-            var str = '<tr onclick="removeRule(this,\'' + sid + '\')" style="cursor:pointer">'
-                    + '<td>'
-                    + sid
-                    + '<input style="display:none" value="' + sid + '" onkeyup="queryRule(this.value)" class="form-control" placeholder="sid" type="text" name="sid_' + count_rule + '" >'
-                    + '</td>'
-                    + '<td>'
-                    + rule
-                    + '<input style="display:none" value="' + rule + '"  class="form-control" placeholder="regla" type="text" name="rule_' + count_rule + '" >'
-                    + '</td>'
-                    + '<td>'
-                    + message
-                    + '<input style="display:none" value="' + message + '"  class="form-control" placeholder="mensaje" type="text" name="message_' + count_rule + '" >'
-                    + '</td>'
-                    + '<td>'
-                    + translate
-                    + '<input style="display:none" value="' + translate + '"  class="form-control" placeholder="traducción" type="text" name="translate_' + count_rule + '">'
-                    + '</td>'
-                    + '<td>'
-                    + rule_is
-                    + '<input style="display:none" value="' + rule_is + '"  class="form-control" placeholder="qué es" type="text" name="ruleis_' + count_rule + '" >'
-                    + '</td>'
-                    + '<td>'
-                    + why
-                    + '<input style="display:none" value="' + why + '"  class="form-control" placeholder="por qué ocurre" type="text" name="why_' + count_rule + '" >'
-                    + '</td>'
-
-                    + '</tr>';
-
-            if (validateSid(sid) == "0") {
-                sid_added.push(sid);
-                $("#rules").append(str);
-            }
-        }
-
-
-        function addEvent() {
-            count_event = count_event + 1;
-            var src_ip = $("#src_ip").val();
-            var dst_ip = $("#dst_ip").val();
-            var src_port = $("#src_port").val();
-            var dst_port = $("#dst_port").val();
-            var src_protocol = $("#src_protocol").val();
-            var dst_protocol = $("#dst_protocol").val();
-            var src_operative_system = $("#src_operative_system").val();
-            var dst_operative_system = $("#dst_operative_system").val();
-            var src_function = $("#src_function").val();
-            var dst_function = $("#dst_function").val();
-            var src_location = $("#src_location").val();
-            var dst_location = $("#dst_location").val();
-            var src_occurences = $("#src_occurences").val();
-            var dst_occurences = $("#dst_occurences").val();
-            var src_blacklist = 0;
-            var dst_blacklist = 0;
-            var src_no_show = 0;
-            var dst_no_show = 0;
-
-            validate = [src_ip, dst_ip, src_port, dst_port, src_protocol, dst_protocol, dst_occurences, src_occurences, dst_location, src_location, dst_function, src_function, dst_operative_system, src_operative_system];
-            if (validateEntry(validate) == "1") {
-                return 0;
-            }
-            if ($("#src_blacklist").attr('checked')) {
-                src_blacklist = 1;
-            }
-            if ($("#dst_blacklist").attr('checked')) {
-                dst_blacklist = 1;
-            }
-
-            if ($("#src_no_show").attr('checked')) {
-                src_no_show = 1;
-            }
-            if ($("#dst_no_show").attr('checked')) {
-                dst_no_show = 1;
-            }
-
-
             var str = '<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
 
                     + '<td style="display:none">'
                     + '<input type="text" class="form-control" name="srcip_' + count_event + '" placeholder="origen" value="' + src_ip + '"><br>'
                     + '<input type="text" class="form-control" name="dstip_' + count_event + '" placeholder="destino" value="' + dst_ip + '">'
-                    + '<input type="text" class="form-control" name="srcport_' + count_event + '" placeholder="origen" value="' + src_port + '"><br>'
-                    + '<input type="text" class="form-control" name="dstport_' + count_event + '" placeholder="destino" value="' + dst_port + '">'
-                    + '<input type="text" class="form-control" name="srcprotocol_' + count_event + '" placeholder="origen" value="' + src_protocol + '"><br>'
-                    + '<input type="text" class="form-control" name="dstprotocol_' + count_event + '" placeholder="destino" value="' + dst_protocol + '">'
-                    + '<input type="text" class="form-control" name="srcoperativesystem_' + count_event + '" placeholder="origen" value="' + src_operative_system + '"><br>'
-                    + '<input type="text" class="form-control" name="dstoperativesystem_' + count_event + '" placeholder="destino" value="' + dst_operative_system + '">'
-                    + '<input type="text" class="form-control" name="srcfunction_' + count_event + '" placeholder="origen" value="' + src_function + '"><br>'
-                    + '<input type="text" class="form-control" name="dstfunction_' + count_event + '" placeholder="destino" value="' + dst_function + '">'
-                    + '<input type="text" class="form-control" name="srclocation_' + count_event + '" placeholder="origen" value="' + src_location + '"><br>'
-                    + '<input type="text" class="form-control" name="dstlocation_' + count_event + '" placeholder="destino" value="' + dst_location + '">'
-                    + '<input type="text" class="form-control" name="srcoccurencestype_' + count_event + '" placeholder="origen" value="' + src_occurences + '">'
-                    + '<input type="text" class="form-control" name="dstoccurencestype_' + count_event + '" placeholder="destino" value="' + dst_occurences + '">'
-                    + '<input type="text" class="form-control" name="srcblacklist_' + count_event + '" placeholder="origen" value="' + src_blacklist + '">'
-                    + '<input type="text" class="form-control" name="dstblacklist_' + count_event + '" placeholder="destino" value="' + dst_blacklist + '">'
-                    + '<input type="text" class="form-control" name="src_no_show_' + count_event + '" placeholder="origen" value="' + src_no_show + '">'
-                    + '<input type="text" class="form-control" name="dst_no_show_' + count_event + '" placeholder="destino" value="' + dst_no_show + '">'
+
+                    + '<input type="text" class="form-control" name="srcport_' + count_event + '" placeholder="origen" value=""><br>'
+                    + '<input type="text" class="form-control" name="dstport_' + count_event + '" placeholder="destino" value="">'
+
+                    + '<input type="text" class="form-control" name="srcprotocol_' + count_event + '" placeholder="origen" value=""><br>'
+                    + '<input type="text" class="form-control" name="dstprotocol_' + count_event + '" placeholder="destino" value="">'
+
+                    + '<input type="text" class="form-control" name="srcoperativesystem_' + count_event + '" placeholder="origen" value=""><br>'
+                    + '<input type="text" class="form-control" name="dstoperativesystem_' + count_event + '" placeholder="destino" value="">'
+
+                    + '<input type="text" class="form-control" name="srcfunction_' + count_event + '" placeholder="origen" value=""><br>'
+                    + '<input type="text" class="form-control" name="dstfunction_' + count_event + '" placeholder="destino" value="">'
+
+                    + '<input type="text" class="form-control" name="srclocation_' + count_event + '" placeholder="origen" value=""><br>'
+                    + '<input type="text" class="form-control" name="dstlocation_' + count_event + '" placeholder="destino" value="">'
+
+                    + '<input type="text" class="form-control" name="srcoccurencestype_' + count_event + '" placeholder="origen" value="' + src_type + '">'
+                    + '<input type="text" class="form-control" name="dstoccurencestype_' + count_event + '" placeholder="destino" value="' + dst_type + '">'
+
+                    + '<input type="text" class="form-control" name="srcblacklist_' + count_event + '" placeholder="origen" value="0">'
+                    + '<input type="text" class="form-control" name="dstblacklist_' + count_event + '" placeholder="destino" value="0">'
+
+                    + '<input type="text" class="form-control" name="src_no_show_' + count_event + '" placeholder="origen"  value="0">'
+                    + '<input type="text" class="form-control" name="dst_no_show_' + count_event + '" placeholder="destino" value="0">'
                     + '</td>'
 
                     + '<td colspan="2">'
 
                     + src_ip
                     + ','
-                    + src_port
+
                     + ','
-                    + src_protocol
+
                     + ','
-                    + src_operative_system
+
                     + ','
-                    + src_function
+
                     + ','
-                    + src_location
+
                     + ','
-                    + src_occurences
-                    + ','
-                    + src_blacklist
-                    + ','
-                    + src_no_show
+                    + src_type
+                    + ',0'
+                    + ',0'
+
+
                     + '</td>'
                     + '<td colspan="2">'
                     + dst_ip
                     + ','
-                    + dst_port
+
                     + ','
-                    + dst_protocol
+
                     + ','
-                    + dst_operative_system
+
                     + ','
-                    + dst_function
+
                     + ','
-                    + dst_location
+
                     + ','
-                    + dst_occurences
-                    + ','
-                    + dst_blacklist
-                    + ','
-                    + dst_no_show
+                    + dst_type
+                    + ',0'
+                    + ',0'
                     + '</td>'
                     + '</tr>';
 
             $("#events").append(str);
+        }
+    }
 
+
+</script>
+<script charset="utf-8">
+    function addEvent() {
+        count_event = count_event + 1;
+        var src_ip = $("#src_ip").val();
+        var dst_ip = $("#dst_ip").val();
+        var src_port = $("#src_port").val();
+        var dst_port = $("#dst_port").val();
+        var src_protocol = $("#src_protocol").val();
+        var dst_protocol = $("#dst_protocol").val();
+        var src_operative_system = $("#src_operative_system").val();
+        var dst_operative_system = $("#dst_operative_system").val();
+        var src_function = $("#src_function").val();
+        var dst_function = $("#dst_function").val();
+        var src_location = $("#src_location").val();
+        var dst_location = $("#dst_location").val();
+        var src_occurences = $("#src_occurences").val();
+        var dst_occurences = $("#dst_occurences").val();
+        var src_blacklist = 0;
+        var dst_blacklist = 0;
+        var src_no_show = 0;
+        var dst_no_show = 0;
+
+        validate = [src_ip, dst_ip, src_port, dst_port, src_protocol, dst_protocol, dst_occurences, src_occurences, dst_location, src_location, dst_function, src_function, dst_operative_system, src_operative_system];
+        if (validateEntry(validate) == "1") {
+            return 0;
+        }
+        if ($("#src_blacklist").attr('checked')) {
+            src_blacklist = 1;
+        }
+        if ($("#dst_blacklist").attr('checked')) {
+            dst_blacklist = 1;
         }
 
-        function validateIp(ip) {
-            for (var i = 0; i < ip_added.length; i++) {
-                if (ip_added[i] == ip) {
-                    return "1";
-                }
+        if ($("#src_no_show").attr('checked')) {
+            src_no_show = 1;
+        }
+        if ($("#dst_no_show").attr('checked')) {
+            dst_no_show = 1;
+        }
+
+
+        var str = '<tr onclick="removeEvent(this)" style="cursor:pointer"  >'
+
+                + '<td style="display:none">'
+                + '<input type="text" class="form-control" name="srcip_' + count_event + '" placeholder="origen" value="' + src_ip + '"><br>'
+                + '<input type="text" class="form-control" name="dstip_' + count_event + '" placeholder="destino" value="' + dst_ip + '">'
+                + '<input type="text" class="form-control" name="srcport_' + count_event + '" placeholder="origen" value="' + src_port + '"><br>'
+                + '<input type="text" class="form-control" name="dstport_' + count_event + '" placeholder="destino" value="' + dst_port + '">'
+                + '<input type="text" class="form-control" name="srcprotocol_' + count_event + '" placeholder="origen" value="' + src_protocol + '"><br>'
+                + '<input type="text" class="form-control" name="dstprotocol_' + count_event + '" placeholder="destino" value="' + dst_protocol + '">'
+                + '<input type="text" class="form-control" name="srcoperativesystem_' + count_event + '" placeholder="origen" value="' + src_operative_system + '"><br>'
+                + '<input type="text" class="form-control" name="dstoperativesystem_' + count_event + '" placeholder="destino" value="' + dst_operative_system + '">'
+                + '<input type="text" class="form-control" name="srcfunction_' + count_event + '" placeholder="origen" value="' + src_function + '"><br>'
+                + '<input type="text" class="form-control" name="dstfunction_' + count_event + '" placeholder="destino" value="' + dst_function + '">'
+                + '<input type="text" class="form-control" name="srclocation_' + count_event + '" placeholder="origen" value="' + src_location + '"><br>'
+                + '<input type="text" class="form-control" name="dstlocation_' + count_event + '" placeholder="destino" value="' + dst_location + '">'
+                + '<input type="text" class="form-control" name="srcoccurencestype_' + count_event + '" placeholder="origen" value="' + src_occurences + '">'
+                + '<input type="text" class="form-control" name="dstoccurencestype_' + count_event + '" placeholder="destino" value="' + dst_occurences + '">'
+                + '<input type="text" class="form-control" name="srcblacklist_' + count_event + '" placeholder="origen" value="' + src_blacklist + '">'
+                + '<input type="text" class="form-control" name="dstblacklist_' + count_event + '" placeholder="destino" value="' + dst_blacklist + '">'
+                + '<input type="text" class="form-control" name="src_no_show_' + count_event + '" placeholder="origen" value="' + src_no_show + '">'
+                + '<input type="text" class="form-control" name="dst_no_show_' + count_event + '" placeholder="destino" value="' + dst_no_show + '">'
+                + '</td>'
+
+                + '<td colspan="2">'
+
+                + src_ip
+                + ','
+                + src_port
+                + ','
+                + src_protocol
+                + ','
+                + src_operative_system
+                + ','
+                + src_function
+                + ','
+                + src_location
+                + ','
+                + src_occurences
+                + ','
+                + src_blacklist
+                + ','
+                + src_no_show
+                + '</td>'
+                + '<td colspan="2">'
+                + dst_ip
+                + ','
+                + dst_port
+                + ','
+                + dst_protocol
+                + ','
+                + dst_operative_system
+                + ','
+                + dst_function
+                + ','
+                + dst_location
+                + ','
+                + dst_occurences
+                + ','
+                + dst_blacklist
+                + ','
+                + dst_no_show
+                + '</td>'
+                + '</tr>';
+
+        $("#events").append(str);
+
+    }
+
+    function validateIp(ip) {
+        for (var i = 0; i < ip_added.length; i++) {
+            if (ip_added[i] == ip) {
+                return "1";
             }
-            return "0";
         }
+        return "0";
+    }
 
-        function removeEvent(tr) {
-            $(tr).remove();
-            var index = ip_added.indexOf(ip);
-            ip_added.splice(index, 1);
-        }
-    </script>
+    function removeEvent(tr) {
+        $(tr).remove();
+        var index = ip_added.indexOf(ip);
+        ip_added.splice(index, 1);
+    }
+</script>
 
 @stop
 @section('content')
@@ -489,7 +394,6 @@
     <?php endif ?>
 
     <div class="row">
-
         <div class="panel panel-inverse">
             <div class="panel-heading">
 
@@ -597,8 +501,8 @@
 
                                 <td width="20%">
                                     {{ Form::select('attack_id', $attack, $incident->attacks_id,[
-                                    'class'=>'form-control parsley-validated',]);
-                          }}
+                                        'class'=>'form-control parsley-validated',]);
+                                    }}
                                 </td>
                                 <td>
                                     <select name="impact" class="form-control">
@@ -781,120 +685,13 @@
                         </div>
                         <?php endif ?>
                         <table class="table table-bordered">
-                            <tr <?php //echo $display_form ?>>
-                                <td colspan="5">
-                                    <h4>Añadir Reglas de Detección</h4>
-                                </td>
-                            </tr>
 
-                            <tr <?php //echo $display_form ?>>
-                                <td style="width:10%"><br>
-                                    <a style="width:100%" href="#modal-dialog" class="btn btn-sm btn-success"
-                                       data-toggle="modal"><i class="fa fa-check"></i> Seleccionar</a> <br><br>
-                                    <a style="width:100%" class="btn btn-sm btn-success"
-                                       onclick="addRuleOnClick()"><i class="fa fa-plus"></i> Añadir</a>
+                            @if(isset($incident_rule) && count($incident_rule)>0)
+                                @include('incident.partials._rules_form')
+                            @else
+                                @include('incident.partials._signatures_form')
+                            @endif
 
-                                </td>
-
-                                <td colspan="4">
-                                    <table class="table">
-
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <input id="search_message" class="form-control" placeholder="indicador"
-                                                       type="text">
-                                            </td>
-                                            <td>
-                                                <input id="search_sid" class="form-control" placeholder="sid"
-                                                       type="text">
-                                            </td>
-                                            <td>
-                                                <input id="search_rule" class="form-control" placeholder="regla"
-                                                       type="text">
-                                            </td>
-
-                                            <td>
-                                                <input id="search_translate" class="form-control"
-                                                       placeholder="traducción" type="text">
-                                            </td>
-                                            <td>
-                                                <input id="search_rule_is" class="form-control" placeholder="qué es"
-                                                       type="text">
-                                            </td>
-                                            <td>
-                                                <input id="search_why" class="form-control" placeholder="por qué ocurre"
-                                                       type="text">
-                                            </td>
-                                        </tr>
-
-                                        </tbody>
-
-
-                                    </table>
-
-                                </td>
-                            </tr>
-                            <tr <?php //echo $display_form ?>>
-
-                                <td colspan="5">
-
-                                    <table class="table table-bordered table-striped table-hover">
-                                        <tbody id="rules">
-
-                                        <?php if (isset($update)): ?>
-                                        <?php $i = 0; ?>
-                                        <?php foreach ($incident_rule as $ir): ?>
-                                        <?php $i++; ?>
-                                        <tr onclick="removeRule(this,'<?php echo $ir->rule->sid ?>')"
-                                            style="cursor:pointer">
-                                            <td>
-                                                <?php echo $ir->rule->sid ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->sid ?>"
-                                                       class="form-control" type="text" name="sid_<?php echo $i ?>">
-                                            </td>
-                                            <td>
-                                                <?php echo $ir->rule->rule ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->rule ?>"
-                                                       class="form-control" type="text" name="rule_<?php echo $i ?>">
-                                            </td>
-                                            <td>
-                                                <?php echo $ir->rule->message ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->message ?>"
-                                                       class="form-control" type="text" name="message_<?php echo $i ?>">
-                                            </td>
-                                            <td>
-                                                <?php echo $ir->rule->translate ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->translate ?>"
-                                                       class="form-control" type="text"
-                                                       name="translate_<?php echo $i ?>">
-                                            </td>
-                                            <td>
-                                                <?php echo $ir->rule->rule_is ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->rule_is ?>"
-                                                       class="form-control" type="text" name="ruleis_<?php echo $i ?>">
-                                            </td>
-                                            <td>
-                                                <?php echo $ir->rule->why ?>
-                                                <input style="display:none" value="<?php echo $ir->rule->why ?>"
-                                                       class="form-control" type="text" name="why_<?php echo $i ?>">
-                                            </td>
-                                        </tr>
-                                        <script>
-                                            if (validateSid(<?php echo $ir->rule->sid ?>) == "0") {
-                                                sid_added.push(<?php echo $ir->rule->sid ?>);
-
-                                            }
-                                            count_rule =<?php echo $i ?>;
-                                        </script>
-                                        <?php endforeach ?>
-
-                                        <?php endif ?>
-                                        </tbody>
-                                    </table>
-                                </td>
-
-                            </tr>
                             <tr <?php echo $display_form ?>>
                                 <td colspan="5">
                                     <h4>Añadir Eventos</h4>
@@ -1650,30 +1447,30 @@
                                                 <input style="display:none" type="text" class="form-control"
                                                        name="srcblacklist_<?php echo $i ?>" placeholder="origen"
                                                        value="<?php if ($io->src->blacklist) {
-                                                       echo "1";
+                                                           echo "1";
                                                        } else {
-                                                       echo "0";
+                                                           echo "0";
                                                        } ?>">
                                                 <input style="display:none" type="text" class="form-control"
                                                        name="dstblacklist_<?php echo $i ?>" placeholder="destino"
                                                        value="<?php if ($io->dst->blacklist) {
-                                                       echo "1";
+                                                           echo "1";
                                                        } else {
-                                                       echo "0";
+                                                           echo "0";
                                                        } ?>">
                                                 <input style="display:none" type="text" class="form-control"
                                                        name="src_no_show_<?php echo $i ?>" placeholder="origen"
                                                        value="<?php if ($io->src->show) {
-                                                       echo "0";
+                                                           echo "0";
                                                        } else {
-                                                       echo "1";
+                                                           echo "1";
                                                        } ?>">
                                                 <input style="display:none" type="text" class="form-control"
                                                        name="dst_no_show_<?php echo $i ?>" placeholder="destino"
                                                        value="<?php if ($io->dst->show) {
-                                                       echo "0";
+                                                           echo "0";
                                                        } else {
-                                                       echo "1";
+                                                           echo "1";
                                                        } ?>">
                                             </td>
                                             <td colspan="2">
@@ -1689,15 +1486,15 @@
                                                 ,
                                                 <?php $hist = DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id=' . $io->src->id . " and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
                                                 <?php if ($hist) {
-                                                echo $hist->location;
+                                                    echo $hist->location;
                                                 }?>
                                                 ,
                                                 <?php echo $io->src->type->name ?>
                                                 ,
                                                 <?php if ($io->src->blacklist) {
-                                                echo "1";
+                                                    echo "1";
                                                 } else {
-                                                echo "0";
+                                                    echo "0";
                                                 } ?>
 
 
@@ -1716,15 +1513,15 @@
                                                 ,
                                                 <?php $hist = DB::table('occurences_history')->select(DB::raw('*'))->whereRaw('occurences_id=' . $io->dst->id . " and datetime=(select max(updated_at) from occurences_history)")->first(); ?>
                                                 <?php if ($hist) {
-                                                echo $hist->location;
+                                                    echo $hist->location;
                                                 }?>
                                                 ,
                                                 <?php echo $io->dst->type->name ?>
                                                 ,
                                                 <?php if ($io->dst->blacklist) {
-                                                echo "1";
+                                                    echo "1";
                                                 } else {
-                                                echo "0";
+                                                    echo "0";
                                                 } ?>
 
                                             </td>
@@ -1775,9 +1572,9 @@
                        "placeholder"=>"Conclusiones",
                        "id"=>"conclutions"]);
                  }}
-               </div>
-              </td>
-            </tr>-->
+                                    </div>
+                                   </td>
+                                 </tr>-->
                             <tr>
                                 <td colspan="5">
                                     <div class="form-group">
@@ -1896,63 +1693,11 @@
     </div>
     <!-- end #content -->
 
-    <div class="modal fade" id="modal-dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" width="">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Modal Dialog</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table id="data-table" class="table table-striped table-bordered table-hover  ">
-                            <thead>
-                            <tr>
-                                <th>SID</th>
-                                <th>Regla</th>
-                                <th>Mensaje</th>
-                                <th>Traducción</th>
-                                <th>Qué es</th>
-                                <th>Por qué ocurre</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <?php foreach ($rule as $r): ?>
-                            <tr style="cursor:pointer"
-                                onclick="addRule('<?php echo $r->sid ?>','<?php echo $r->rule ?>','<?php echo $r->message ?>','<?php echo $r->translate ?>','<?php echo $r->rule_is ?>','<?php echo $r->why ?>')">
-
-                                <td>
-                                    <?php echo $r->sid ?>
-                                </td>
-                                <td>
-                                    <?php echo $r->rule ?>
-                                </td>
-                                <td>
-                                    <?php echo $r->message ?>
-                                </td>
-                                <td>
-                                    <?php echo $r->translate ?>
-                                </td>
-                                <td>
-                                    <?php echo $r->rule_is ?>
-                                </td>
-                                <td>
-                                    <?php echo $r->why ?>
-                                </td>
-                            </tr>
-                            <?php endforeach ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
-
-                </div>
-            </div>
-        </div>
-    </div>
+    @if(isset($incident_rule) && count($incident_rule)>0)
+        @include('incident.partials._modal_rules')
+    @else
+        @include('incident.partials._modal_signatures')
+    @endif
 
     <div class="modal fade" id="modal-dialog2">
         <div class="modal-dialog">

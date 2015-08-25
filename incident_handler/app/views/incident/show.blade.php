@@ -149,11 +149,12 @@
                 <strong>Indicador de Compromiso Inicial:</strong>
             </td>
             <td colspan="2" style="text-align:center" width="100%">
-                <?php foreach ($incident->incidentRule as $r ): ?>
-                <?php echo $r->rule->message ?><br>
-                <?php //print_r($r) ?>
-                <?php endforeach ?>
-                <?php //print_r($incident->incidentRule); ?>
+                @foreach($incident->incidentRule as $r)
+                    {{$r->rule->message}}<br>
+                @endforeach
+                @foreach($incident->incidentSignatures as $s)
+                    {{$s->signature->signature}}<br>
+                @endforeach
             </td>
         </tr>
         <tr>
