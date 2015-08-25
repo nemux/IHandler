@@ -122,8 +122,8 @@ return array(
         'Illuminate\View\ViewServiceProvider',
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\DomPDF\ServiceProvider',
-        'Torann\GeoIP\GeoIPServiceProvider',
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+//        'Torann\GeoIP\GeoIPServiceProvider',
+//        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 
     ),
 
@@ -192,6 +192,6 @@ return array(
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View' => 'Illuminate\Support\Facades\View',
         'PDF' => 'Barryvdh\DomPDF\Facade',
-        'GeoIP' => 'Torann\GeoIP\GeoIPFacade',
+//        'GeoIP' => 'Torann\GeoIP\GeoIPFacade',
     ),
 );
