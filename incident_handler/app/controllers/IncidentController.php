@@ -1217,6 +1217,9 @@ class IncidentController extends Controller
                     , (select string_agg(r.message,\'<br/>\') from incidents_rules as ir
                         left join rules as r on r.id=ir.rules_id
                         where ir.incidents_id=i.id and ir.deleted_at is null) as rules
+                    , (select string_agg(s.signature,\'<br/>\') from incidents_signatures as ins
+                        left join signatures as s on s.id=ins.signatures_id
+                        where ins.incidents_id=i.id and ins.deleted_at is null) as signatures
                     from incidents as i
                         left join time on (time.incidents_id=i.id and time.time_types_id=1)
                     where i.incidents_status_id' . $incidents_status_id . $handler_condition . '

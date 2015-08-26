@@ -21,8 +21,9 @@ class Incident extends Eloquent
     }
 
     //Obtiene la lista de descripciones del incidente
-    public function incidentDescriptions(){
-        return $this->hasMany('IncidentDescription','incidents_id','id');
+    public function incidentDescriptions()
+    {
+        return $this->hasMany('IncidentDescription', 'incidents_id', 'id');
     }
 
 
@@ -36,7 +37,11 @@ class Incident extends Eloquent
         return $this->hasMany('IncidentRule', 'incidents_id', 'id');
     }
 
-    //Obtiene todas las firmas que están relacionadas a este incidente
+    /**
+     * Obtiene todas las Firmas relacionadas con un Incidente
+     *
+     * @return IncidentSignature
+     */
     public function incidentSignatures()
     {
         return $this->hasMany('IncidentSignature', 'incidents_id', 'id');

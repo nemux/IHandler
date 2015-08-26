@@ -4,12 +4,11 @@
 class Signature extends Eloquent
 {
     protected $table = 'signatures';
-    protected $fillable = ['id','signature','description','recommendation','reference','risk'];
-
+    protected $fillable = ['signature', 'description', 'recommendation', 'reference', 'risk'];
 
 
     public function incidents()
     {
-        return $this->belongsToMany('Incident','incidents_signatures','signatures_id','incidents_id');
+        return $this->belongsToMany('Incident', 'incidents_signatures', 'signatures_id', 'incidents_id');
     }
 }
