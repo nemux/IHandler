@@ -33,7 +33,9 @@ class SignatureController extends Controller
      */
     public function store()
     {
-        $input = Input::except('_token');
+        $input = Input::except(['_token', 'query_string']);
+
+        Log::info("QueryString: " . Input::get('query_string'));
 
         $validator = Validator::make($input, [
             'signature' => 'required|max:255',
