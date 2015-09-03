@@ -120,7 +120,12 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
     Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
     Route::post('importCustomers', 'OtrsController@importCustomers');
 
+    #Store data of Customer
+    Route::post('store/asset', 'CustomerController@storeAsset');
+
     #Admin Routes
+
+
 });
 
 

@@ -9,6 +9,8 @@ class CustomerAsset extends Eloquent
      */
     use SoftDeletingTrait;
 
+    public $timestamps = true;
+
     protected $dates = ['deleted_at'];
     protected $table = 'customer_assets';
     protected $fillable = ['customer_id', 'domain_name', 'ip', 'comments'];

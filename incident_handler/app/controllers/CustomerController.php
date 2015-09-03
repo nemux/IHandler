@@ -61,4 +61,35 @@ class CustomerController extends BaseController
             'customer' => $customer
         ));
     }
+
+    public function storeAsset()
+    {
+        $input = Input::except(['_token']);
+
+        $validator = Validator::make($input, [
+            'customer_id' => 'required',
+            'domain_name' => 'required|max:255',
+            'ip' => 'required|max:36',
+            'comments' => 'required'
+        ]);
+
+        $customer_id = $input['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $asset = new CustomerAsset();
+        $asset->customer_id = $input['customer_id'];
+        $asset->domain_name = $input['domain_name'];
+        $asset->ip = $input['ip'];
+        $asset->comments = $input['comments'];
+
+        $asset->save();
+
+        $message = 'Se agregó el nuevo activo: ' . $input['domain_name'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'asset' => $asset));
+
+    }
 }
