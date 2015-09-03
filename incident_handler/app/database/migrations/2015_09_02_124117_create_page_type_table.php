@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAgainstPagesTable extends Migration
+class CreatePageTypeTable extends Migration
 {
 
     /**
@@ -13,14 +13,12 @@ class CreateAgainstPagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('against_page', function (Blueprint $table) {
+        Schema::create('page_type', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id')->unsigned();
-            $table->string('url');
-            $table->text('comments');
+            $table->string('type');
+            $table->string('description');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -31,7 +29,7 @@ class CreateAgainstPagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('against_page');
+        Schema::drop('page_type');
     }
 
 }
