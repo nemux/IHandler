@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateAssetsTable extends Migration
+class CreateEmployeesTable extends Migration
 {
 
     /**
@@ -13,19 +13,21 @@ class CreateAssetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('customer_employees', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id')->unsigned();
 
-            $table->string('domain_name', 255);
-            $table->string('ip', 36);
+            $table->string('name');
+            $table->string('lastname');
+            $table->string('corp_email');
+            $table->string('personal_email');
+            $table->text('socialmedia');
+
             $table->text('comments');
 
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('customer_id')->references('id')->on('customers');
-
         });
     }
 
@@ -36,7 +38,7 @@ class CreateAssetsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('assets');
+        Schema::drop('customer_employees');
     }
 
 }

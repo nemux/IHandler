@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateSocialmediaTable extends Migration
+class CreateCustomerSocialmediaTable extends Migration
 {
 
     /**
@@ -13,7 +13,7 @@ class CreateSocialmediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('socialmedia', function (Blueprint $table) {
+        Schema::create('customer_socialmedia', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id')->unsigned();
             $table->string('reference');
@@ -33,7 +33,7 @@ class CreateSocialmediaTable extends Migration
      */
     public function down()
     {
-        Schema::drop('socialmedia');
+        Schema::drop('customer_socialmedia');
     }
 
 }

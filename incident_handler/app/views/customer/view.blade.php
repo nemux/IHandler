@@ -22,8 +22,7 @@
         TableManageDefault.init2('data-table-assets');
         TableManageDefault.init2('data-table-clerks');
         TableManageDefault.init2('data-table-socialmedia');
-        TableManageDefault.init2('data-table-fake-pages');
-        TableManageDefault.init2('data-table-against-pages');
+        TableManageDefault.init2('data-table-pages');
     });
 </script>
 
@@ -52,10 +51,7 @@
                         <a data-toggle="tab" href="#socialmedia">Social Media</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#fake-pages">Portales falsos</a>
-                    </li>
-                    <li class="">
-                        <a data-toggle="tab" href="#against-pages">Portales en contra</a>
+                        <a data-toggle="tab" href="#pages">Portales</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -95,17 +91,10 @@
 
 
                     </div>
-                    <div id="against-pages" class="tab-pane fade">
-                        <h1>Portales en contra</h1>
-
-                        @include('customer/pages/_table_against')
-
-
-                    </div>
-                    <div id="fake-pages" class="tab-pane fade">
+                    <div id="pages" class="tab-pane fade">
                         <h1>Portales falsos</h1>
 
-                        @include('customer/pages/_table_fake')
+                        @include('customer/pages/_table')
 
                     </div>
                 </div>

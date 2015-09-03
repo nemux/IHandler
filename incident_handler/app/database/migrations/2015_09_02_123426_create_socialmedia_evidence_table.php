@@ -27,7 +27,7 @@ class CreateSocialmediaEvidenceTable extends Migration
             $table->softDeletes();
 
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->foreign('socialmedia_id')->references('id')->on('socialmedia');
+            $table->foreign('socialmedia_id')->references('id')->on('customer_socialmedia');
         });
     }
 

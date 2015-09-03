@@ -10,13 +10,13 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($customer->clerks as $clerk)
-            <tr title="{{$clerk->comments}}">
-                <td>{{$clerk->id}}</td>
-                <td>{{$clerk->name}} {{$clerk->lastname}}</td>
-                <td>{{$clerk->corp_email}}</td>
-                <td>{{$clerk->personal_email}}</td>
-                <td>{{$clerk->socialmedia}}</td>
+        @foreach($customer->employees as $employee)
+            <tr title="{{$employee->comments}}">
+                <td>{{$employee->id}}</td>
+                <td>{{$employee->name}} {{$employee->lastname}}</td>
+                <td>{{$employee->corp_email}}</td>
+                <td>{{$employee->personal_email}}</td>
+                <td>{{$employee->socialmedia}}</td>
             </tr>
         @endforeach
         </tbody>
