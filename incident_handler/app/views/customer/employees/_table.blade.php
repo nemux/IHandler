@@ -1,38 +1,41 @@
 <div class="btn-group btn-toolbar" style="margin-bottom: 10px;">
-    <a href="#modal-asset-form" class="btn btn-sm btn-default" data-toggle="modal"><i class="fa fa-plus"></i>
+    <a href="#modal-employee-form" class="btn btn-sm btn-default" data-toggle="modal"><i class="fa fa-plus"></i>
         Agregar</a>
 </div>
 <div class="table-responsive">
-    <table id="data-table-assets" class="table table-striped table-bordered table-hover">
+    <table id="data-table-employees" class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
             <th>#</th>
-            <th>Nombre de dominio</th>
-            <th>IP</th>
+            <th>Nombre</th>
+            <th>Correo corporativo</th>
+            <th>Correo personal</th>
+            <th>Redes sociales</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($customer->assets as $asset)
-            <tr title="{{$asset->comments}}">
-                <td>{{$asset->id}}</td>
-                <td>{{$asset->domain_name}}</td>
-                <td>{{$asset->ip}}</td>
+        @foreach($customer->employees as $employee)
+            <tr title="{{$employee->comments}}">
+                <td>{{$employee->id}}</td>
+                <td>{{$employee->name}} {{$employee->lastname}}</td>
+                <td>{{$employee->corp_email}}</td>
+                <td>{{$employee->personal_email}}</td>
+                <td>{{$employee->socialmedia}}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
 </div>
 
-
-<div class="modal fade" id="modal-asset-form">
+<div class="modal fade" id="modal-employee-form">
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
             <div class="modal-header">
-                <h4 class="modal-title">Agregar nuevo activo</h4>
+                <h4 class="modal-title">Agregar nuevo personal</h4>
             </div>
-            {{Form::model(new CustomerAsset(),['id'=>'asset-form','role'=>'form','class'=>'form-horizontal form-bordered','data-parsley-validate'=>'true','name'=>'asset-form','enctype'=>'multipart/form-data'])}}
+            {{Form::model(new CustomerEmployee(),['id'=>'employee-form','role'=>'form','class'=>'form-horizontal form-bordered','data-parsley-validate'=>'true','name'=>'employee-form','enctype'=>'multipart/form-data'])}}
             <div class="modal-body">
-                @include('customer.assets._form')
+                @include('customer.employees._form')
 
                 <div class="form-group">
                     {{Form::submit('Guardar',['class'=>'btn btn-sm btn-success'])}}
@@ -48,12 +51,12 @@
 </div>
 
 <script>
-    $(document).on('submit', '#asset-form', function (event) {
+    $(document).on('submit', '#employee-form', function (event) {
         event.preventDefault();
 
         var postData = $(this).serialize();
         $.ajax({
-            url: '/customer/store/asset',
+            url: '/customer/store/employee',
             type: 'POST',
             data: postData,
             success: function (data) {
@@ -74,11 +77,23 @@
                     time: ""
                 });
 
-                if (data.asset != null) {
-                    $("#asset-form")[0].reset(); //Resetea el formulario
-                    $('#modal-asset-form').modal('hide'); //Ocultamos el modal
+                if (data.employee != null) {
+                    $("#employee-form")[0].reset(); //Resetea el formulario
+                    $('#modal-employee-form').modal('hide'); //Ocultamos el modal
                     // Agrega la fila recibida a la tabla
-                    $('#data-table-assets tr:last').after('<tr><td>' + data.asset.id + '</td><td>' + data.asset.domain_name + '</td><td>' + data.asset.ip + '</td></tr>');
+
+                    var row = '<tr title="' + data.employee.comments + '">' +
+                            '<td>' + data.employee.id + '</td>' +
+                            '<td>' + data.employee.name + ' ' + data.employee.lastname + '</td>' +
+                            '<td>' + data.employee.corp_email + '</td>' +
+                            '<td>' + data.employee.personal_email + '</td>' +
+                            '<td>' + data.employee.socialmedia + '</td>' +
+                            '</tr>';
+
+                    console.log(data.employee);
+                    console.log(row);
+
+                    $('#data-table-employees tr:last').after(row);
                 }
             },
             error: function (xhr) {

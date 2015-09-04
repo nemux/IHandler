@@ -122,6 +122,7 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
 
     #Store data of Customer
     Route::post('store/asset', 'CustomerController@storeAsset');
+    Route::post('store/employee', 'CustomerController@storeEmployee');
 
     #Admin Routes
 

@@ -20,7 +20,7 @@
 <script>
     $(document).ready(function () {
         TableManageDefault.init2('data-table-assets');
-        TableManageDefault.init2('data-table-clerks');
+        TableManageDefault.init2('data-table-employees');
         TableManageDefault.init2('data-table-socialmedia');
         TableManageDefault.init2('data-table-pages');
     });
@@ -81,7 +81,7 @@
                     <div id="employees" class="tab-pane fade">
                         <h1>Personal</h1>
 
-                        @include('customer/clerks/_table')
+                        @include('customer/employees/_table')
 
                     </div>
                     <div id="socialmedia" class="tab-pane fade">

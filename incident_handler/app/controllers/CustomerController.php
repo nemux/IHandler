@@ -92,4 +92,40 @@ class CustomerController extends BaseController
         return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'asset' => $asset));
 
     }
+
+    public function storeEmployee()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'name' => 'required|max:255',
+            'lastname' => 'required|max:255',
+            'corp_email' => 'required|email',
+            'personal_email' => 'required|email',
+            'socialmedia' => 'required',
+            'comments' => 'required'
+        ]);
+
+        $customer_id = $i['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $employee = new CustomerEmployee();
+        $employee->customer_id = $i['customer_id'];
+        $employee->name = $i['name'];
+        $employee->lastname = $i['lastname'];
+        $employee->corp_email = $i['corp_email'];
+        $employee->personal_email = $i['personal_email'];
+        $employee->comments = $i['comments'];
+        $employee->socialmedia = $i['socialmedia'];
+
+        $employee->save();
+
+        $message = 'Se agregó el nuevo empleado: ' . $i['name'] . ' ' . $i['lastname'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'employee' => $employee));
+    }
 }
