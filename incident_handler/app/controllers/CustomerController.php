@@ -171,4 +171,34 @@ class CustomerController extends BaseController
 
         return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $page));
     }
+
+    public function storeSocialmedia()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'reference' => 'required|max:255|url',
+            'description' => 'required',
+            'recommendation' => 'required'
+        ]);
+
+        $customer_id = $i['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $page = new CustomerSocialmedia();
+        $page->customer_id = $i['customer_id'];
+        $page->reference = $i['reference'];
+        $page->description = $i['description'];
+        $page->recommendation = $i['recommendation'];
+
+        $page->save();
+
+        $message = 'Se agregó la nueva red social: ' . $i['reference'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $page));
+    }
 }

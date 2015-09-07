@@ -124,6 +124,7 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
     Route::post('store/asset', 'CustomerController@storeAsset');
     Route::post('store/employee', 'CustomerController@storeEmployee');
     Route::post('store/page', 'CustomerController@storePage');
+    Route::post('store/socialmedia', 'CustomerController@storeSocialmedia');
 
     #Catalogs
 //    Route::get('catalog/page_type', 'CustomerController@pageTypes');
