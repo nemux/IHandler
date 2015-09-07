@@ -23,5 +23,4 @@ class SocialMediaEvidence extends Eloquent
     {
         return $this->belongsTo('CustomerSocialmedia', 'socialmedia_id', 'id');
     }
-
 }

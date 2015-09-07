@@ -26,13 +26,17 @@
     });
 
     function submitForm(url, formData, formId, modalId) {
-        var postData = formData;
+//        var postData = formData;
+        var postData = new FormData($(formId)[0]);
         var inserted = '';
         $.ajax({
             url: url,
             type: 'POST',
             data: postData,
             async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (data) {
                 mensaje = data.message;
                 if (data.errores != null) {

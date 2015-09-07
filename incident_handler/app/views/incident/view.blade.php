@@ -40,6 +40,7 @@
         Form1.init();
         Form2.init();
         nobackbutton();
+
         $("#images").change(function () {
             //get the input and UL list
             var input = document.getElementById('images');

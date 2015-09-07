@@ -1,6 +1,6 @@
 <?php
 
-class CustomerController extends BaseController
+class CustomerController extends Controller
 {
 
     protected $layout = 'layouts.master';
@@ -174,7 +174,7 @@ class CustomerController extends BaseController
 
     public function storeSocialmedia()
     {
-        $i = Input::except(['_token']);
+        $i = Input::all();
 
         $validator = Validator::make($i, [
             'customer_id' => 'required',
@@ -189,16 +189,68 @@ class CustomerController extends BaseController
             return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
         }
 
-        $page = new CustomerSocialmedia();
-        $page->customer_id = $i['customer_id'];
-        $page->reference = $i['reference'];
-        $page->description = $i['description'];
-        $page->recommendation = $i['recommendation'];
+        $socialmedia = new CustomerSocialmedia();
+        $socialmedia->customer_id = $i['customer_id'];
+        $socialmedia->reference = $i['reference'];
+        $socialmedia->description = $i['description'];
+        $socialmedia->recommendation = $i['recommendation'];
 
-        $page->save();
+        $socialmedia->save();
+
+        if ($i['images-evidence']) {
+            foreach ($i['images-evidence'] as $img) {
+                $this->compareAndUpload($img, $customer_id, $socialmedia->id);
+            }
+        }
 
         $message = 'Se agregó la nueva red social: ' . $i['reference'];
 
-        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $page));
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $socialmedia));
+    }
+
+    private function compareAndUpload($i, $customer_id, $socialmedia_id)
+    {
+        if ($i) {
+            $name = $i->getClientOriginalName();
+            $files = explode('.', $name);
+            $extension = end($files);
+            if (strcasecmp($extension, 'jpg') == 0 || strcasecmp($extension, 'png') == 0) {
+                $new_name = date("Ymd_his") . "_" . $customer_id . "_" . $socialmedia_id . "_" . $files[0] . "." . $extension;
+
+                try {
+//                    Log::info('files/socialmedia-evidence/' . $new_name);
+                    $i->move('files/socialmedia-evidence/', $new_name);
+                } catch (Exception $e) {
+                    Log::error($e->getMessage());
+                }
+
+                //consideraremos esto una limitante en el documento de vison.
+                usleep(100000);
+
+                $test_file_read = file_get_contents('files/socialmedia-evidence/' . $new_name);
+
+                $sha1 = hash('sha1', $test_file_read);
+                $sha256 = hash('sha256', $test_file_read);
+                $md5 = hash('md5', $test_file_read);
+
+                $im = new SocialMediaEvidence();
+                $im->customer_id = $customer_id;
+                $im->socialmedia_id = $socialmedia_id;
+
+                $im->file = "files/socialmedia-evidence/" . $new_name;
+                $im->name = $new_name;
+                $im->footnote = 'footnote-test';
+
+                $im->md5 = $md5;
+                $im->sha1 = $sha1;
+                $im->sha256 = $sha256;
+
+                $im->save();
+
+                return true;
+            } else {
+                return 'La extensión no es JPG o PNG: ' . $extension;
+            }
+        }
     }
 }

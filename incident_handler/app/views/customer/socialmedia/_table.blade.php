@@ -29,7 +29,9 @@
             <div class="modal-header">
                 <h4 class="modal-title">Agregar nuevo activo</h4>
             </div>
-            {{Form::model(new CustomerSocialmedia(),['id'=>'socialmedia-form','role'=>'form','class'=>'form-horizontal form-bordered','data-parsley-validate'=>'true','name'=>'socialmedia-form','enctype'=>'multipart/form-data'])}}
+
+            {{Form::model(new CustomerSocialmedia(),array('id'=>'socialmedia-form','role'=>'form','class'=>'form-horizontal form-bordered','name'=>'socialmedia-form', 'enctype'=>'multipart/form-data'))}}
+
             <div class="modal-body">
 
                 @include('customer.socialmedia._form')
@@ -55,13 +57,11 @@
 
         if (inserted != null) {
             var table = $('#data-table-socialmedia').DataTable();
-
-            console.log(inserted);
-
             var dataInsert = [inserted.id, '<a target="_blank" href="' + inserted.reference + '">' + inserted.reference + "</a>", inserted.description];
-
-            console.log(dataInsert);
             table.row.add(dataInsert).draw();
+
+            var list = $("#files_list");
+            list.empty();
         }
 
         return false;
