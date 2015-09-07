@@ -51,46 +51,14 @@
     $(document).on('submit', '#asset-form', function (event) {
         event.preventDefault();
 
-        var postData = $(this).serialize();
-        $.ajax({
-            url: '/customer/store/asset',
-            type: 'POST',
-            data: postData,
-            success: function (data) {
-                mensaje = data.message;
-                if (data.errores != null) {
-                    mensaje += "<ul>";
-                    $.each(data.errores, function (key, value) {
-                        mensaje += '<li>' + value + '</li>';
-                    });
-                    mensaje += "</ul>";
-                }
+        var inserted = submitForm('/customer/store/asset', $(this).serialize(), '#asset-form', '#modal-asset-form');
 
+        if (inserted != null) {
+            var table = $('#data-table-assets').DataTable();
+            var dataInsert = [inserted.id, inserted.domain_name, inserted.ip];
+            table.row.add(dataInsert).draw();
+        }
 
-                $.gritter.add({
-                    title: "Mensaje del servidor",
-                    text: mensaje,
-                    sticky: false,
-                    time: ""
-                });
-
-                if (data.asset != null) {
-                    $("#asset-form")[0].reset(); //Resetea el formulario
-                    $('#modal-asset-form').modal('hide'); //Ocultamos el modal
-                    // Agrega la fila recibida a la tabla
-                    $('#data-table-assets tr:last').after('<tr><td>' + data.asset.id + '</td><td>' + data.asset.domain_name + '</td><td>' + data.asset.ip + '</td></tr>');
-                }
-            },
-            error: function (xhr) {
-                var rText = $.parseJSON(xhr.responseText);
-                $.gritter.add({
-                    title: "Mensaje del servidor",
-                    text: "Ocurrió un error con la petición: " + rText.error.message,
-                    sticky: false,
-                    time: ""
-                });
-            }
-        });
         return false;
     });
 </script>

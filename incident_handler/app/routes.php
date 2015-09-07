@@ -123,6 +123,10 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
     #Store data of Customer
     Route::post('store/asset', 'CustomerController@storeAsset');
     Route::post('store/employee', 'CustomerController@storeEmployee');
+    Route::post('store/page', 'CustomerController@storePage');
+
+    #Catalogs
+//    Route::get('catalog/page_type', 'CustomerController@pageTypes');
 
     #Admin Routes
 

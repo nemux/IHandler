@@ -48,8 +48,13 @@ class CustomerController extends BaseController
         //$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $customer = Customer::find($id);
 
+//        $page_types = array();
+//        array_push($page_types, ['0' => 'Selecciona una opción']);
+        $page_types = PageType::lists('type', 'id');
+
         return $this->layout = View::make('customer.view', array(
             'customer' => $customer,
+            'page_types' => $page_types,
             'action' => 'CustomerController@getUpdate',
         ));
     }
@@ -61,6 +66,12 @@ class CustomerController extends BaseController
             'customer' => $customer
         ));
     }
+
+//    public function pageTypes()
+//    {
+//        $pages_types = PageType::all(['id', 'type']);
+//        return Response::json(['page_types' => $pages_types]);
+//    }
 
     public function storeAsset()
     {
@@ -89,7 +100,7 @@ class CustomerController extends BaseController
 
         $message = 'Se agregó el nuevo activo: ' . $input['domain_name'];
 
-        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'asset' => $asset));
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $asset));
 
     }
 
@@ -126,6 +137,38 @@ class CustomerController extends BaseController
 
         $message = 'Se agregó el nuevo empleado: ' . $i['name'] . ' ' . $i['lastname'];
 
-        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'employee' => $employee));
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $employee));
+    }
+
+    public function storePage()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'page_type_id' => 'required|not_in:0',
+            'url' => 'required|max:255|active_url',
+            'comments' => 'required'
+        ]);
+
+        $customer_id = $i['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $page = new CustomerPage();
+        $page->customer_id = $i['customer_id'];
+        $page->page_type_id = $i['page_type_id'];
+        $page->url = $i['url'];
+        $page->comments = $i['comments'];
+
+        $page->save();
+
+        $page['type'] = CustomerPage::find($page->id)->type->type;
+
+        $message = 'Se agregó la nueva página: ' . $i['url'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $page));
     }
 }

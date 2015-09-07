@@ -24,6 +24,57 @@
         TableManageDefault.init2('data-table-socialmedia');
         TableManageDefault.init2('data-table-pages');
     });
+
+    function submitForm(url, formData, formId, modalId) {
+        var postData = formData;
+        var inserted = '';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: postData,
+            async: false,
+            success: function (data) {
+                mensaje = data.message;
+                if (data.errores != null) {
+                    mensaje += "<ul>";
+                    $.each(data.errores, function (key, value) {
+                        mensaje += '<li>' + value + '</li>';
+                    });
+                    mensaje += "</ul>";
+                }
+
+
+                $.gritter.add({
+                    title: "Mensaje del servidor",
+                    text: mensaje,
+                    sticky: false,
+                    time: ""
+                });
+
+                if (data.object != null) {
+                    $(formId)[0].reset(); //Resetea el formulario
+                    $(modalId).modal('hide'); //Ocultamos el modal
+
+                    inserted = data.object;
+                } else {
+                    inserted = null;
+                }
+            },
+            error: function (xhr) {
+                var rText = $.parseJSON(xhr.responseText);
+                $.gritter.add({
+                    title: "Mensaje del servidor",
+                    text: "Ocurrió un error con la petición: " + rText.error.message,
+                    sticky: false,
+                    time: ""
+                });
+
+                inserted = null;
+            }
+        });
+
+        return inserted;
+    }
 </script>
 
 <h1 class="page-header"></h1>
@@ -39,23 +90,23 @@
             <div class="panel-body">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a data-toggle="tab" href="#general">Datos generales</a>
+                        <a data-toggle="tab" href="#tab-general">Datos generales</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#assets">Activos</a>
+                        <a data-toggle="tab" href="#tab-assets">Activos</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#employees">Personal</a>
+                        <a data-toggle="tab" href="#tab-employees">Personal</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#socialmedia">Social Media</a>
+                        <a data-toggle="tab" href="#tab-socialmedia">Social Media</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#pages">Portales</a>
+                        <a data-toggle="tab" href="#tab-pages">Portales</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div id="general" class="tab-pane fade active in">
+                    <div id="tab-general" class="tab-pane fade active in">
                         <h1>Detalles del Cliente </h1>
 
                         <div class="widget widget-stats bg-blue">
@@ -72,26 +123,26 @@
                             </div>
                         </div>
                     </div>
-                    <div id="assets" class="tab-pane fade">
+                    <div id="tab-assets" class="tab-pane fade">
                         <h1>Activos</h1>
 
                         @include('customer/assets/_table')
 
                     </div>
-                    <div id="employees" class="tab-pane fade">
+                    <div id="tab-employees" class="tab-pane fade">
                         <h1>Personal</h1>
 
                         @include('customer/employees/_table')
 
                     </div>
-                    <div id="socialmedia" class="tab-pane fade">
+                    <div id="tab-socialmedia" class="tab-pane fade">
                         <h1>Socialmedia</h1>
 
                         @include('customer/socialmedia/_table')
 
 
                     </div>
-                    <div id="pages" class="tab-pane fade">
+                    <div id="tab-pages" class="tab-pane fade">
                         <h1>Portales falsos</h1>
 
                         @include('customer/pages/_table')
@@ -110,7 +161,6 @@
 <script src="/assets/js/table-manage-default.demo.min.js"></script>
 <script src="/assets/js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
-
 
 
 @stop

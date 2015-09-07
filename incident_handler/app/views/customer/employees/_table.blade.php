@@ -54,58 +54,14 @@
     $(document).on('submit', '#employee-form', function (event) {
         event.preventDefault();
 
-        var postData = $(this).serialize();
-        $.ajax({
-            url: '/customer/store/employee',
-            type: 'POST',
-            data: postData,
-            success: function (data) {
-                mensaje = data.message;
-                if (data.errores != null) {
-                    mensaje += "<ul>";
-                    $.each(data.errores, function (key, value) {
-                        mensaje += '<li>' + value + '</li>';
-                    });
-                    mensaje += "</ul>";
-                }
+        var inserted = submitForm('/customer/store/employee', $(this).serialize(), '#employee-form', '#modal-employee-form');
 
+        if (inserted != null) {
+            var table = $('#data-table-employees').DataTable();
+            var dataInsert = [inserted.id, inserted.name + ' ' + inserted.lastname, inserted.corp_email, inserted.personal_email, inserted.socialmedia];
+            table.row.add(dataInsert).draw();
+        }
 
-                $.gritter.add({
-                    title: "Mensaje del servidor",
-                    text: mensaje,
-                    sticky: false,
-                    time: ""
-                });
-
-                if (data.employee != null) {
-                    $("#employee-form")[0].reset(); //Resetea el formulario
-                    $('#modal-employee-form').modal('hide'); //Ocultamos el modal
-                    // Agrega la fila recibida a la tabla
-
-                    var row = '<tr title="' + data.employee.comments + '">' +
-                            '<td>' + data.employee.id + '</td>' +
-                            '<td>' + data.employee.name + ' ' + data.employee.lastname + '</td>' +
-                            '<td>' + data.employee.corp_email + '</td>' +
-                            '<td>' + data.employee.personal_email + '</td>' +
-                            '<td>' + data.employee.socialmedia + '</td>' +
-                            '</tr>';
-
-                    console.log(data.employee);
-                    console.log(row);
-
-                    $('#data-table-employees tr:last').after(row);
-                }
-            },
-            error: function (xhr) {
-                var rText = $.parseJSON(xhr.responseText);
-                $.gritter.add({
-                    title: "Mensaje del servidor",
-                    text: "Ocurrió un error con la petición: " + rText.error.message,
-                    sticky: false,
-                    time: ""
-                });
-            }
-        });
         return false;
     });
 </script>
