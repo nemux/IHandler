@@ -16,7 +16,7 @@ class CreatePageTypeTable extends Migration
         Schema::create('page_type', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

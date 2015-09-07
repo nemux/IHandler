@@ -19,7 +19,7 @@ class CreateCustomerAssetsTable extends Migration
 
             $table->string('domain_name', 255);
             $table->string('ip', 36);
-            $table->text('comments');
+            $table->text('comments')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -80,8 +80,7 @@ class CustomerController extends Controller
         $validator = Validator::make($input, [
             'customer_id' => 'required',
             'domain_name' => 'required|max:255',
-            'ip' => 'required|max:36',
-            'comments' => 'required'
+            'ip' => 'required|max:36'
         ]);
 
         $customer_id = $input['customer_id'];
@@ -112,10 +111,8 @@ class CustomerController extends Controller
             'customer_id' => 'required',
             'name' => 'required|max:255',
             'lastname' => 'required|max:255',
-            'corp_email' => 'required|email',
-            'personal_email' => 'required|email',
-            'socialmedia' => 'required',
-            'comments' => 'required'
+            'corp_email' => 'required|max:255|email',
+            'personal_email' => 'email|max:255'
         ]);
 
         $customer_id = $i['customer_id'];
@@ -147,8 +144,7 @@ class CustomerController extends Controller
         $validator = Validator::make($i, [
             'customer_id' => 'required',
             'page_type_id' => 'required|not_in:0',
-            'url' => 'required|max:255|active_url',
-            'comments' => 'required'
+            'url' => 'required|url'
         ]);
 
         $customer_id = $i['customer_id'];
@@ -178,9 +174,7 @@ class CustomerController extends Controller
 
         $validator = Validator::make($i, [
             'customer_id' => 'required',
-            'reference' => 'required|max:255|url',
-            'description' => 'required',
-            'recommendation' => 'required'
+            'reference' => 'required|url'
         ]);
 
         $customer_id = $i['customer_id'];

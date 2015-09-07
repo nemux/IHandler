@@ -18,8 +18,8 @@ class CreateCustomerPagesTable extends Migration
             $table->integer('customer_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
 
-            $table->string('url');
-            $table->text('comments');
+            $table->text('url');
+            $table->text('comments')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

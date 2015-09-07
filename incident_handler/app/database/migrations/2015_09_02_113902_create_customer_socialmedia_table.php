@@ -16,9 +16,9 @@ class CreateCustomerSocialmediaTable extends Migration
         Schema::create('customer_socialmedia', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('customer_id')->unsigned();
-            $table->string('reference');
-            $table->text('description');
-            $table->text('recommendation');
+            $table->text('reference');
+            $table->text('description')->nullable();
+            $table->text('recommendation')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

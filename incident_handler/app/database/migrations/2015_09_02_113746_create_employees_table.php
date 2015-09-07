@@ -20,10 +20,10 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('corp_email');
-            $table->string('personal_email');
-            $table->text('socialmedia');
+            $table->string('personal_email')->nullable();
+            $table->text('socialmedia')->nullable();
 
-            $table->text('comments');
+            $table->text('comments')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
