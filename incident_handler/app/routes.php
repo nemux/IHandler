@@ -104,6 +104,11 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::post('observation/attend', 'IncidentController@attendObservation');
 });
 
+Route::group(array('before' => 'admin', 'prefix' => 'signatures'), function () {
+    Route::get('/', ['as' => 'signatures.index', 'uses' => 'SignatureController@index']);
+    Route::post('/create', 'SignatureController@store');
+});
+
 Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
 
     # User Routes
@@ -117,6 +122,8 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
 
     #Admin Routes
 });
+
+
 Route::group(array('before' => 'auth', 'prefix' => 'stats'), function () {
     # User Routes
     Route::get('/incident', 'StatsController@incident');
