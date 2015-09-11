@@ -330,8 +330,8 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($i, [
             'customer_id' => 'required',
-            'from_date' => 'required|date_format:d/m/Y',
-            'to_date' => 'required|date_format:d/m/Y'
+            'from_date' => 'required',//|date_format:m/d/Y',
+            'to_date' => 'required',//|date_format:m/d/Y'
         ]);
 
         if ($validator->fails()) {
@@ -346,9 +346,15 @@ class CustomerController extends Controller
             "Content-Disposition" => "attachment;Filename=cyber-surveillance" . $i['customer_id'] . ".doc"
         );
 
+        $from_date = DateTime::createFromFormat('m/d/Y', $i['from_date']);
+        $to_date = DateTime::createFromFormat('m/d/Y', $i['to_date']);
+        $from_date = $from_date->format('Y-m-d');
+        $to_date = $to_date->format('Y-m-d');
+
         $customer = Customer::find($customer_id);
-        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
-        $pages = CustomerPage::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
+        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
+
+        $pages = CustomerPage::whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
 
         $htmlReport = View::make('customer.report.cyber-surv',
             array('from_date' => $i['from_date'],

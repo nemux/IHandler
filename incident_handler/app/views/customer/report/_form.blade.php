@@ -2,7 +2,7 @@
 {{Form::hidden('customer_id',$customer->id)}}
 <div class="row">
     <div class="col-md-3">
-        <div class="input-group input-daterange" data-date-format="dd/mm/yyyy">
+        <div class="input-group input-daterange" data-date-format="mm/dd/yyyy">
             <input type="text" class="form-control" id="from_date" name="from_date"
                    placeholder="Fecha de Inicio"/>
             <span class="input-group-addon">a</span>
