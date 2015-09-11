@@ -123,7 +123,7 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\DomPDF\ServiceProvider',
 //        'Torann\GeoIP\GeoIPServiceProvider',
-//        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 
     ),
 
