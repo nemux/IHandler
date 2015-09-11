@@ -17,6 +17,20 @@
 
 <script src="/assets/plugins/pace/pace.min.js"></script>
 
+<!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet"/>
+<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet"/>
+<link href="/assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinNice.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet"/>
+<link href="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet"/>
+<link href="/assets/plugins/jquery-tag-it/css/jquery.tagit.css" rel="stylesheet"/>
+<!-- ================== END PAGE LEVEL STYLE ================== -->
+
 <script>
     $(document).ready(function () {
         TableManageDefault.init2('data-table-assets');
@@ -108,6 +122,9 @@
                     <li class="">
                         <a data-toggle="tab" href="#tab-pages">Portales</a>
                     </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#tab-cybersurveillance">Cibervigilancia</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-general" class="tab-pane fade active in">
@@ -152,6 +169,11 @@
                         @include('customer/pages/_table')
 
                     </div>
+                    <div id="tab-cybersurveillance" class="tab-pane fade">
+                        <h1>Reportes de Cibervigilancia</h1>
+
+                        @include('customer.report._form',['customer'=>$customer])
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,8 +185,25 @@
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="/assets/plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="/assets/js/table-manage-default.demo.min.js"></script>
+<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/assets/plugins/ionRangeSlider/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+<script src="/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="/assets/plugins/masked-input/masked-input.min.js"></script>
+<script src="/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="/assets/plugins/password-indicator/js/password-indicator.js"></script>
+<script src="/assets/plugins/bootstrap-combobox/js/bootstrap-combobox.js"></script>
+<script src="/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+<script src="/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.js"></script>
+<script src="/assets/plugins/jquery-tag-it/js/tag-it.min.js"></script>
+<script src="/assets/js/form-plugins.demo.min.js"></script>
 <script src="/assets/js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
+<script>
+    $(document).ready(function () {
+        FormPlugins.init();
+    });
+</script>
 
 @stop

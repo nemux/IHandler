@@ -93,7 +93,7 @@
 
 
 <h1 class="page-header" style="color:#FFF">Reporte de incidente (En {{$incident->status->name}} -
-    Actualizado: {{$incident->updated_at}})
+    Actualizado: {{$incident->updated_at}})+
     <small></small>
 </h1>
 <!-- end page-header -->

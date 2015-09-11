@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         @foreach($customer->pages as $page)
-            <tr title="{{$page->comments}}">
+            <tr>
                 <td>{{$page->id}}</td>
                 <td>{{$page->type->type}}</td>
                 <td><a target="_blank" href="{{$page->url}}">{{$page->url}}</a></td>

@@ -22,4 +22,9 @@ class CustomerPage extends Eloquent
     {
         return $this->belongsTo('PageType', 'page_type_id', 'id');
     }
+
+    public function evidences()
+    {
+        return $this->hasMany('PageEvidence', 'pages_id', 'id');
+    }
 }

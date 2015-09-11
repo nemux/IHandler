@@ -51,10 +51,12 @@ class CustomerController extends Controller
 //        $page_types = array();
 //        array_push($page_types, ['0' => 'Selecciona una opción']);
         $page_types = PageType::lists('type', 'id');
+        $criticities = Criticity::lists('name', 'id');
 
         return $this->layout = View::make('customer.view', array(
             'customer' => $customer,
             'page_types' => $page_types,
+            'criticities' => $criticities,
             'action' => 'CustomerController@getUpdate',
         ));
     }
@@ -161,6 +163,12 @@ class CustomerController extends Controller
 
         $page->save();
 
+        if ($i['p-images-evidence']) {
+            foreach ($i['p-images-evidence'] as $img) {
+                $this->compareAndUpload($img, $customer_id, $page->id, 'P');
+            }
+        }
+
         $page['type'] = CustomerPage::find($page->id)->type->type;
 
         $message = 'Se agregó la nueva página: ' . $i['url'];
@@ -174,7 +182,8 @@ class CustomerController extends Controller
 
         $validator = Validator::make($i, [
             'customer_id' => 'required',
-            'reference' => 'required|url'
+            'criticity_id' => 'required|not_in:0',
+            'title' => 'required|max:255'
         ]);
 
         $customer_id = $i['customer_id'];
@@ -185,35 +194,40 @@ class CustomerController extends Controller
 
         $socialmedia = new CustomerSocialmedia();
         $socialmedia->customer_id = $i['customer_id'];
-        $socialmedia->reference = $i['reference'];
+        $socialmedia->title = $i['title'];
+        $socialmedia->reference = 'http://';
         $socialmedia->description = $i['description'];
         $socialmedia->recommendation = $i['recommendation'];
 
         $socialmedia->save();
 
-        if ($i['images-evidence']) {
-            foreach ($i['images-evidence'] as $img) {
-                $this->compareAndUpload($img, $customer_id, $socialmedia->id);
+        if ($i['sm-images-evidence']) {
+            foreach ($i['sm-images-evidence'] as $img) {
+                $this->compareAndUpload($img, $customer_id, $socialmedia->id, 'SM');
             }
         }
 
-        $message = 'Se agregó la nueva red social: ' . $i['reference'];
+        $message = 'Se agregó la nueva red social: ' . $i['title'];
 
         return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $socialmedia));
     }
 
-    private function compareAndUpload($i, $customer_id, $socialmedia_id)
+    private function compareAndUpload($i, $customer_id, $id, $type)
     {
         if ($i) {
             $name = $i->getClientOriginalName();
             $files = explode('.', $name);
             $extension = end($files);
             if (strcasecmp($extension, 'jpg') == 0 || strcasecmp($extension, 'png') == 0) {
-                $new_name = date("Ymd_his") . "_" . $customer_id . "_" . $socialmedia_id . "_" . $files[0] . "." . $extension;
+                $new_name = date("Ymd_his") . "_" . $customer_id . "_" . $type . $id . "_" . $files[0] . "." . $extension;
 
                 try {
 //                    Log::info('files/socialmedia-evidence/' . $new_name);
-                    $i->move('files/socialmedia-evidence/', $new_name);
+                    if ($type == 'SM') {
+                        $i->move('files/socialmedia-evidence/', $new_name);
+                    } else {
+                        $i->move('files/pages-evidence/', $new_name);
+                    }
                 } catch (Exception $e) {
                     Log::error($e->getMessage());
                 }
@@ -221,20 +235,30 @@ class CustomerController extends Controller
                 //consideraremos esto una limitante en el documento de vison.
                 usleep(100000);
 
-                $test_file_read = file_get_contents('files/socialmedia-evidence/' . $new_name);
+                if ($type == 'SM') {
+                    $test_file_read = file_get_contents('files/socialmedia-evidence/' . $new_name);
+                } else {
+                    $test_file_read = file_get_contents('files/pages-evidence/' . $new_name);
+                }
 
                 $sha1 = hash('sha1', $test_file_read);
                 $sha256 = hash('sha256', $test_file_read);
                 $md5 = hash('md5', $test_file_read);
 
-                $im = new SocialMediaEvidence();
+                if ($type == 'SM') {
+                    $im = new SocialMediaEvidence();
+                    $im->file = "files/socialmedia-evidence/" . $new_name;
+                    $im->socialmedia_id = $id;
+                } else {
+                    $im = new PageEvidence();
+                    $im->file = "files/pages-evidence/" . $new_name;
+                    $im->pages_id = $id;
+                }
+
+
                 $im->customer_id = $customer_id;
-                $im->socialmedia_id = $socialmedia_id;
-
-                $im->file = "files/socialmedia-evidence/" . $new_name;
                 $im->name = $new_name;
-                $im->footnote = 'footnote-test';
-
+                $im->footnote = '[[FOOT-NOTE]]';
                 $im->md5 = $md5;
                 $im->sha1 = $sha1;
                 $im->sha256 = $sha256;
@@ -246,5 +270,96 @@ class CustomerController extends Controller
                 return 'La extensión no es JPG o PNG: ' . $extension;
             }
         }
+    }
+
+    /**
+     * Genera el reporte de cibervigilancia
+     */
+    public function cvReport()
+    {
+        return $this->cvGetHtml(Input::all());
+    }
+
+    public function cvMail()
+    {
+        $i = Input::all();
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'from_date' => 'required',//|date_format:d/m/Y',
+            'to_date' => 'required',//|date_format:d/m/Y'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array('message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $customer_id = $i['customer_id'];
+
+        $customer = Customer::find($customer_id);
+        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
+        $pages = CustomerPage::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
+        $month = '[[MES]]';
+
+        $subject = '[GCS-IM][' . $customer->otrs_userID . ']- Reporte de cibervigilancia de ' . $month . '.';
+
+        try {
+            Mail::send('customer.report.cyber-surv',
+                array('from_date' => $i['from_date'],
+                    'to_date' => $i['to_date'],
+                    'customer' => $customer,
+                    'socialmedias' => $socialmedias,
+                    'pages' => $pages,
+                    'mail' => true),
+                function ($message) use ($customer, $subject, $socialmedias) {
+                    $log = new Log\Logger();
+                    $temp_mails = str_replace(array(",", ";"), ",", $customer->mail);
+                    $mails = explode(",", $temp_mails);
+
+//                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO cambiar en producción
+                    $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $customer->mail . ' referente al reporte de Cibervigilancia');
+                });
+        } catch (Exception $e) {
+//            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción: ' . $e->getMessage());
+            Log::info(Auth::user()->id . " " . Auth::user()->username . ' Error al intentar enviar el correo a ' . $customer->mail . ' reference al reporte de Cibervigilancia. Excepción: ' . $e->getMessage());
+        }
+    }
+
+    private function cvGetHtml($i)
+    {
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'from_date' => 'required|date_format:d/m/Y',
+            'to_date' => 'required|date_format:d/m/Y'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array('message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $customer_id = $i['customer_id'];
+
+//
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename=cyber-surveillance" . $i['customer_id'] . ".doc"
+        );
+
+        $customer = Customer::find($customer_id);
+        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
+        $pages = CustomerPage::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
+
+        $htmlReport = View::make('customer.report.cyber-surv',
+            array('from_date' => $i['from_date'],
+                'to_date' => $i['to_date'],
+                'customer' => $customer,
+                'socialmedias' => $socialmedias,
+                'pages' => $pages,
+                'mail' => false))->render();
+
+//        return Response::make($htmlReport, 200, $headers);
+//        return Response::make($htmlReport, 200);
+        return $htmlReport;
     }
 }

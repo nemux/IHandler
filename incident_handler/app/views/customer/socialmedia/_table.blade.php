@@ -7,16 +7,16 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Link</th>
+            <th>Título</th>
             <th>Descripción</th>
         </tr>
         </thead>
         <tbody>
         @foreach($customer->socialmedia as $sm)
-            <tr title="{{$sm->description}}">
+            <tr>
                 <td>{{$sm->id}}</td>
-                <td><a target="_blank" href="{{$sm->reference}}">{{$sm->reference}}</a></td>
-                <td>{{$sm->description}}</td>
+                <td>{{$sm->title}}</td>
+                <td>{{substr($sm->description,0,150)}}@if(strlen($sm->description)>150)[...]@endif</td>
             </tr>
         @endforeach
         </tbody>
@@ -27,7 +27,7 @@
     <div class="modal-dialog">
         <div class="modal-content modal-lg">
             <div class="modal-header">
-                <h4 class="modal-title">Agregar nuevo activo</h4>
+                <h4 class="modal-title">Agregar un hallazgo en redes sociales</h4>
             </div>
 
             {{Form::model(new CustomerSocialmedia(),array('id'=>'socialmedia-form','role'=>'form','class'=>'form-horizontal form-bordered','name'=>'socialmedia-form', 'enctype'=>'multipart/form-data'))}}
@@ -57,7 +57,13 @@
 
         if (inserted != null) {
             var table = $('#data-table-socialmedia').DataTable();
-            var dataInsert = [inserted.id, '<a target="_blank" href="' + inserted.reference + '">' + inserted.reference + "</a>", inserted.description];
+
+            var description = inserted.description.substring(0, 150);
+
+            if (inserted.description.length > 150)
+                description += "[...]";
+
+            var dataInsert = [inserted.id, inserted.title, description];
             table.row.add(dataInsert).draw();
 
             var list = $("#files_list");
