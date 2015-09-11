@@ -35,8 +35,6 @@ class SignatureController extends Controller
     {
         $input = Input::except(['_token', 'query_string']);
 
-        Log::info("QueryString: " . Input::get('query_string'));
-
         $validator = Validator::make($input, [
             'signature' => 'required|max:255',
             'description' => 'required',
@@ -53,7 +51,7 @@ class SignatureController extends Controller
         Signature::insert($input);
         $message = 'Se agregó la nueva firma: ' . $input['signature'];
 
-        return Redirect::route('signatures.index')->with('message_add_sifnature', $message);
+        return Redirect::route('signatures.index')->with('message_add_signature', $message);
     }
 
 

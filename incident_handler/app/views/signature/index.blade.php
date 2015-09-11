@@ -19,9 +19,9 @@
         <div class="panel panel-inverse">
             <div class="panel-body">
                 <div class="row">
-                    @if(Session::has('message_add_sifnature'))
+                    @if(Session::has('message_add_signature'))
                         <div class="col-md-10 alert alert-success">
-                            <span> {{Session::get('message_add_sifnature')}}  </span>
+                            <span> {{Session::get('message_add_signature')}}  </span>
                         </div>
                     @endif
                     <div class="col-md-2 pull-right">

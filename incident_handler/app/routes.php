@@ -10,6 +10,18 @@
 |
 */
 
+/**
+ * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
+ */
+//Event::listen('illuminate.query', function($sql, $bindings)
+//{
+//    foreach ($bindings as $val) {
+//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+//    }
+//
+//    Log::info($sql);
+//});
+
 Route::get('/', 'HomeController@index');
 
 Route::get('dashboard', array('before' => 'auth', 'uses' => 'HomeController@dashboard'));
@@ -120,7 +132,22 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
     Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
     Route::post('importCustomers', 'OtrsController@importCustomers');
 
+    #Store data of Customer
+    Route::post('store/asset', 'CustomerController@storeAsset');
+    Route::post('store/employee', 'CustomerController@storeEmployee');
+    Route::post('store/page', 'CustomerController@storePage');
+    Route::post('store/socialmedia', 'CustomerController@storeSocialmedia');
+
+    #Catalogs
+//    Route::get('catalog/page_type', 'CustomerController@pageTypes');
+
+    #Reports
+    Route::post('cybersurv/report', 'CustomerController@cvReport');
+    Route::post('cybersurv/mail', 'CustomerController@cvMail');
+
     #Admin Routes
+
+
 });
 
 
