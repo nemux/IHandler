@@ -6,10 +6,10 @@ composer.lock
 .env.php
 .DS_Store
 Thumbs.db
-/public/files/
-/files/evidence/
-/files/pages-evidence/
-/files/socialmedia-evidence/
+/public/files/*
+/files/evidence/*
+/files/pages-evidence/*
+/files/socialmedia-evidence/*
 .idea
 
 #archivos modificados para pruebas, no deberá subirse el cambio a menos que sea de funcionalidad
