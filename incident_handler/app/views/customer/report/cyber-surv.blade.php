@@ -231,7 +231,8 @@
                                     <img src="/{{ $evidence->file }}" style="max-height: 400px; max-width: 600px;">
                                     <br>
                                 @endif
-                                <span><b>Figura {{$index+1}}.-</b> <i>{{$evidence->footnote}}</i></span>
+                                    {{--                                <span><b>Figura {{$index+1}}.-</b> <i>{{$evidence->footnote}}</i></span>--}}
+                                    <span><b>Figura {{$index+1}}</b></span>
                             </p>
                         @endforeach
                     </div>
@@ -283,7 +284,8 @@
                                     <img src="/{{ $evidence->file }}" style="max-height: 400px; max-width: 600px;">
                                     <br>
                                 @endif
-                                <span><b>Figura {{$index+1}}.-</b> <i>{{$evidence->footnote}}</i></span>
+                                    {{--<span><b>Figura {{$index+1}}.-</b> <i>{{$evidence->footnote}}</i></span>--}}
+                                    <span><b>Figura {{$index+1}}</b></span>
                             </p>
                         @endforeach
                     </div>
