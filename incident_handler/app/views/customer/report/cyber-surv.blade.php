@@ -297,7 +297,7 @@
 
     <div style="text-align: center;">
         <img height="75"
-             src="data:image/{{pathinfo('files/corp/logo_global_final_cert_fondo_claro.png', PATHINFO_EXTENSION)}};base64,{{base64_encode(file_get_contents('files/corp/logo_global_final_cert_fondo_claro.png'))}}"
+             src="data:image/{{pathinfo('/files/corp/logo_global_final_cert_fondo_claro.png', PATHINFO_EXTENSION)}};base64,{{base64_encode(file_get_contents('/files/corp/logo_global_final_cert_fondo_claro.png'))}}"
              style="max-height: 400px; max-width: 600px;">
     </div>
     <div style="margin: 0px 20px; font-size: 80%; text-align: center; color: rgb(200, 0, 0);">
