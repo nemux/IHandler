@@ -116,21 +116,27 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::post('observation/attend', 'IncidentController@attendObservation');
 });
 
-Route::group(array('before' => 'admin', 'prefix' => 'signatures'), function () {
+Route::group(array('before' => 'auth', 'prefix' => 'signatures'), function () {
     Route::get('/', ['as' => 'signatures.index', 'uses' => 'SignatureController@index']);
     Route::post('/create', 'SignatureController@store');
 });
 
-Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
+Route::group(array('before' => 'auth', 'prefix' => 'customer'), function () {
+
+    Route::group(['before' => 'admin'], function () {
+
+        Route::get('create', 'CustomerController@create');
+        Route::post('create', 'CustomerController@create');
+        Route::get('update/{id}', 'CustomerController@getUpdate')->where(array('id' => '^[0-9]+$'));
+        Route::post('update', 'CustomerController@postUpdate');
+        Route::post('importCustomers', 'OtrsController@importCustomers');
+    });
+
+    Route::get('/', 'CustomerController@index');
+    Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
 
     # User Routes
-    Route::get('/', 'CustomerController@index');
-    Route::get('create', 'CustomerController@create');
-    Route::post('create', 'CustomerController@create');
-    Route::get('update/{id}', 'CustomerController@getUpdate')->where(array('id' => '^[0-9]+$'));
-    Route::post('update', 'CustomerController@postUpdate');
-    Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
-    Route::post('importCustomers', 'OtrsController@importCustomers');
+
 
     #Store data of Customer
     Route::post('store/asset', 'CustomerController@storeAsset');
@@ -146,8 +152,11 @@ Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
     Route::post('cybersurv/mail', 'CustomerController@cvMail');
 
     #Admin Routes
+});
 
-
+Route::group(['before' => 'auth', 'prefix' => 'cybersurv'], function () {
+    Route::get('report/page', ['as' => 'cs-page', 'uses' => 'CybersurveillanceController@reportPage']);
+    Route::get('report/socialmedia', ['as' => 'cs-socialmedia', 'uses' => 'CybersurveillanceController@reportSocialmedia']);
 });
 
 

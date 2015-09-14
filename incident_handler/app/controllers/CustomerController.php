@@ -317,7 +317,8 @@ class CustomerController extends Controller
                     $mails = explode(",", $temp_mails);
 
 //                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO cambiar en producción
-                    $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
+                    $message->to('soc@globalcybersec.com')->subject($subject);
+//                    $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
                     $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $customer->mail . ' referente al reporte de Cibervigilancia');
                 });
         } catch (Exception $e) {

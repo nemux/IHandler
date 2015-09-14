@@ -32,6 +32,19 @@
                     <li><a href="/incident/search/ip">Buscar por Ip</a></li>
                 </ul>
             </li>
+
+            {{--<li class="has-sub">--}}
+            {{--<a href="javascript:;">--}}
+            {{--<b class="caret pull-right"></b>--}}
+            {{--<i class="fa fa-eye"></i>--}}
+            {{--<span>Cybervigilancia</span>--}}
+            {{--</a>--}}
+            {{--<ul class="sub-menu">--}}
+            {{--<li><a href="{{action('cs-socialmedia')}}"> Reportar red social</a></li>--}}
+            {{--<li><a href="{{action('cs-page')}}"> Reportar página sospechosa</a></li>--}}
+            {{--</ul>--}}
+            {{--</li>--}}
+
             <li class="has-sub ">
                 <a href="javascript:;">
                     <b class="caret pull-right"></b>
@@ -49,6 +62,7 @@
                     <li><a href="/incident/view/sensor">Lista Por Sensor</a></li>
                 </ul>
             </li>
+
             @if (Auth::user()->type->name == 'admin')
                 <li class="has-sub ">
                     <a href="javascript:;">
@@ -85,19 +99,21 @@
                         <li><a href="/sensor/">Ver</a></li>
                     </ul>
                 </li>
+            @endif
 
-                <li class="has-sub ">
-                    <a href="javascript:;">
-                        <b class="caret pull-right"></b>
-                        <i class="fa fa-suitcase"></i>
-                        <span>Clientes</span>
-                    </a>
+            <li class="has-sub ">
+                <a href="javascript:;">
+                    <b class="caret pull-right"></b>
+                    <i class="fa fa-suitcase"></i>
+                    <span>Clientes</span>
+                </a>
 
-                    <ul class="sub-menu">
-                        <li><a href="/customer/">Ver</a></li>
-                    </ul>
-                </li>
+                <ul class="sub-menu">
+                    <li><a href="/customer/">Ver</a></li>
+                </ul>
+            </li>
 
+            @if (Auth::user()->type->name == 'admin')
                 <li class="has-sub ">
                     <a href="javascript:;">
                         <b class="caret pull-right"></b>
