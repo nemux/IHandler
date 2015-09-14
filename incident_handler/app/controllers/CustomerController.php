@@ -272,12 +272,60 @@ class CustomerController extends Controller
         }
     }
 
+    private function dataReport($i, $customer_id, $isMail)
+    {
+        $from_date = DateTime::createFromFormat('m/d/Y', $i['from_date']);
+        $to_date = DateTime::createFromFormat('m/d/Y', $i['to_date']);
+        $from_date = $from_date->format('Y-m-d');
+        $to_date = $to_date->format('Y-m-d');
+
+        $customer = Customer::find($customer_id);
+        $socialmedias = CustomerSocialmedia::where('customer_id', '=', $customer_id)->whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
+        $pages = CustomerPage::where('customer_id', '=', $customer_id)->whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
+        $title = 'HALLAZGOS DEL ' .
+            date_format(date_create_from_format('m/d/Y', $i['from_date']), 'd/m/Y') . ' AL ' .
+            date_format(date_create_from_format('m/d/Y', $i['to_date']), 'd/m/Y');
+
+        $data = ['from_date' => $i['from_date'],
+            'to_date' => $i['to_date'],
+            'customer' => $customer,
+            'socialmedias' => $socialmedias,
+            'pages' => $pages,
+            'mail' => $isMail,
+            'title' => $title];
+
+        return $data;
+    }
+
     /**
      * Genera el reporte de cibervigilancia
      */
     public function cvReport()
     {
-        return $this->cvGetHtml(Input::all());
+        $i = Input::all();
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'from_date' => 'required',//|date_format:m/d/Y',
+            'to_date' => 'required',//|date_format:m/d/Y'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array('message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $customer_id = $i['customer_id'];
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename=cyber-surveillance" . $i['customer_id'] . ".doc"
+        );
+
+        $dataReport = $this->dataReport($i, $customer_id, false);
+        $htmlReport = View::make('customer.report.cyber-surv', $dataReport)->render();
+
+//        return Response::make($htmlReport, 200, $headers);
+//        return Response::make($htmlReport, 200);
+        return $htmlReport;
     }
 
     public function cvMail()
@@ -296,77 +344,30 @@ class CustomerController extends Controller
 
         $customer_id = $i['customer_id'];
 
-        $customer = Customer::find($customer_id);
-        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
-        $pages = CustomerPage::whereBetween('created_at', array($i['from_date'] . ' 00:00:00', $i['to_date'] . ' 23:59:59'))->get();
         $month = '[[MES]]';
 
-        $subject = '[GCS-IM][' . $customer->otrs_userID . ']- Reporte de cibervigilancia de ' . $month . '.';
+        $dataReport = $this->dataReport($i, $customer_id, true);
+
+        $subject = '[GCS-IM][' . $dataReport['customer']->otrs_userID . ']- Reporte de cibervigilancia del ' .
+            date_format(date_create_from_format('m/d/Y', $i['from_date']), 'd/m/Y') . ' al ' .
+            date_format(date_create_from_format('m/d/Y', $i['to_date']), 'd/m/Y');
 
         try {
             Mail::send('customer.report.cyber-surv',
-                array('from_date' => $i['from_date'],
-                    'to_date' => $i['to_date'],
-                    'customer' => $customer,
-                    'socialmedias' => $socialmedias,
-                    'pages' => $pages,
-                    'mail' => true),
-                function ($message) use ($customer, $subject, $socialmedias) {
+                $dataReport,
+                function ($message) use ($dataReport, $subject) {
                     $log = new Log\Logger();
-                    $temp_mails = str_replace(array(",", ";"), ",", $customer->mail);
+                    $temp_mails = str_replace(array(",", ";"), ",", $dataReport['customer']->mail);
                     $mails = explode(",", $temp_mails);
 
 //                    $message->to($mails)->cc('soc@globalcybersec.com')->subject($subject); //TODO cambiar en producción
                     $message->to('soc@globalcybersec.com')->subject($subject);
-//                    $message->to($mails)->cc('dlopez@globalcybersec.com')->subject($subject);
-                    $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $customer->mail . ' referente al reporte de Cibervigilancia');
+//                    $message->to('dlopez@globalcybersec.com')->subject($subject);
+                    $log->info(Auth::user()->id, Auth::user()->username, 'Se envió Email a ' . $dataReport['customer']->mail . ' referente al reporte de Cibervigilancia');
                 });
         } catch (Exception $e) {
 //            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción: ' . $e->getMessage());
-            Log::info(Auth::user()->id . " " . Auth::user()->username . ' Error al intentar enviar el correo a ' . $customer->mail . ' reference al reporte de Cibervigilancia. Excepción: ' . $e->getMessage());
+            Log::info(Auth::user()->id . " " . Auth::user()->username . ' Error al intentar enviar el correo a ' . $dataReport['customer']->mail . ' reference al reporte de Cibervigilancia. Excepción: ' . $e->getMessage());
         }
-    }
-
-    private function cvGetHtml($i)
-    {
-        $validator = Validator::make($i, [
-            'customer_id' => 'required',
-            'from_date' => 'required',//|date_format:m/d/Y',
-            'to_date' => 'required',//|date_format:m/d/Y'
-        ]);
-
-        if ($validator->fails()) {
-            return Response::json(array('message' => 'Revise el formulario', 'errores' => $validator->errors()));
-        }
-
-        $customer_id = $i['customer_id'];
-
-//
-        $headers = array(
-            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition" => "attachment;Filename=cyber-surveillance" . $i['customer_id'] . ".doc"
-        );
-
-        $from_date = DateTime::createFromFormat('m/d/Y', $i['from_date']);
-        $to_date = DateTime::createFromFormat('m/d/Y', $i['to_date']);
-        $from_date = $from_date->format('Y-m-d');
-        $to_date = $to_date->format('Y-m-d');
-
-        $customer = Customer::find($customer_id);
-        $socialmedias = CustomerSocialmedia::whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
-
-        $pages = CustomerPage::whereBetween('created_at', array($from_date . ' 00:00:00', $to_date . ' 23:59:59'))->get();
-
-        $htmlReport = View::make('customer.report.cyber-surv',
-            array('from_date' => $i['from_date'],
-                'to_date' => $i['to_date'],
-                'customer' => $customer,
-                'socialmedias' => $socialmedias,
-                'pages' => $pages,
-                'mail' => false))->render();
-
-//        return Response::make($htmlReport, 200, $headers);
-//        return Response::make($htmlReport, 200);
-        return $htmlReport;
     }
 }
