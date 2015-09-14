@@ -9,6 +9,7 @@
             <th>#</th>
             <th>Nombre de dominio</th>
             <th>IP</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                 <td>{{$asset->id}}</td>
                 <td>{{$asset->domain_name}}</td>
                 <td>{{$asset->ip}}</td>
+                <td><a href="{{route('edit-asset',['id'=>$asset->id])}}" class="btn btn-sm btn-info">Editar</a></td>
             </tr>
         @endforeach
         </tbody>
@@ -31,6 +33,7 @@
                 <h4 class="modal-title">Agregar nuevo activo</h4>
             </div>
             {{Form::model(new CustomerAsset(),['id'=>'asset-form','role'=>'form','class'=>'form-horizontal form-bordered','data-parsley-validate'=>'true','name'=>'asset-form','enctype'=>'multipart/form-data'])}}
+            {{Form::hidden('customer_id',$customer->id)}}
             <div class="modal-body">
                 @include('customer.assets._form')
 

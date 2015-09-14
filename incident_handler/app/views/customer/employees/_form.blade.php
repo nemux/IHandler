@@ -1,5 +1,4 @@
-{{Form::hidden('_token',csrf_token())}}
-{{Form::hidden('customer_id',$customer->id)}}
+
 <div class="form-group">
     {{Form::label('name','Nombre')}}
     {{Form::text('name',null,['class'=>'form-control'])}}

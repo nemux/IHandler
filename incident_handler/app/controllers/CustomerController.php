@@ -69,75 +69,6 @@ class CustomerController extends Controller
         ));
     }
 
-//    public function pageTypes()
-//    {
-//        $pages_types = PageType::all(['id', 'type']);
-//        return Response::json(['page_types' => $pages_types]);
-//    }
-
-    public function storeAsset()
-    {
-        $input = Input::except(['_token']);
-
-        $validator = Validator::make($input, [
-            'customer_id' => 'required',
-            'domain_name' => 'required|max:255',
-            'ip' => 'required|max:36'
-        ]);
-
-        $customer_id = $input['customer_id'];
-
-        if ($validator->fails()) {
-            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
-        }
-
-        $asset = new CustomerAsset();
-        $asset->customer_id = $input['customer_id'];
-        $asset->domain_name = $input['domain_name'];
-        $asset->ip = $input['ip'];
-        $asset->comments = $input['comments'];
-
-        $asset->save();
-
-        $message = 'Se agregó el nuevo activo: ' . $input['domain_name'];
-
-        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $asset));
-
-    }
-
-    public function storeEmployee()
-    {
-        $i = Input::except(['_token']);
-
-        $validator = Validator::make($i, [
-            'customer_id' => 'required',
-            'name' => 'required|max:255',
-            'lastname' => 'required|max:255',
-            'corp_email' => 'required|max:255|email',
-            'personal_email' => 'email|max:255'
-        ]);
-
-        $customer_id = $i['customer_id'];
-
-        if ($validator->fails()) {
-            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
-        }
-
-        $employee = new CustomerEmployee();
-        $employee->customer_id = $i['customer_id'];
-        $employee->name = $i['name'];
-        $employee->lastname = $i['lastname'];
-        $employee->corp_email = $i['corp_email'];
-        $employee->personal_email = $i['personal_email'];
-        $employee->comments = $i['comments'];
-        $employee->socialmedia = $i['socialmedia'];
-
-        $employee->save();
-
-        $message = 'Se agregó el nuevo empleado: ' . $i['name'] . ' ' . $i['lastname'];
-
-        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $employee));
-    }
 
     public function storePage()
     {
@@ -165,7 +96,7 @@ class CustomerController extends Controller
 
         if ($i['p-images-evidence']) {
             foreach ($i['p-images-evidence'] as $img) {
-                $this->compareAndUpload($img, $customer_id, $page->id, 'P');
+                $this->compareAndUpload($img, $customer_id, $page->id, 'P', false);
             }
         }
 
@@ -203,7 +134,7 @@ class CustomerController extends Controller
 
         if ($i['sm-images-evidence']) {
             foreach ($i['sm-images-evidence'] as $img) {
-                $this->compareAndUpload($img, $customer_id, $socialmedia->id, 'SM');
+                $this->compareAndUpload($img, $customer_id, $socialmedia->id, 'SM', false);
             }
         }
 
@@ -212,9 +143,27 @@ class CustomerController extends Controller
         return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $socialmedia));
     }
 
-    private function compareAndUpload($i, $customer_id, $id, $type)
+    private function compareAndUpload($i, $customer_id, $id, $type, $isUpdate)
     {
+        //Si se agregaron imágenes al formulario
         if ($i) {
+            //Si es una actualización de un caso
+            if ($isUpdate) {
+                //Para los socialmedia
+                if ($type == 'SM') {
+                    $evidences = SocialMediaEvidence::where('socialmedia_id', '=', $id)->get();
+                    foreach ($evidences as $evidence) {
+                        $evidence->delete();
+                    }
+                    //Para los Pages
+                } else {
+                    $pages = PageEvidence::where('pages_id', '=', $id)->get();
+                    foreach ($pages as $page) {
+                        $page->delete();
+                    }
+                }
+            }
+
             $name = $i->getClientOriginalName();
             $files = explode('.', $name);
             $extension = end($files);
@@ -222,7 +171,6 @@ class CustomerController extends Controller
                 $new_name = date("Ymd_his") . "_" . $customer_id . "_" . $type . $id . "_" . $files[0] . "." . $extension;
 
                 try {
-//                    Log::info('files/socialmedia-evidence/' . $new_name);
                     if ($type == 'SM') {
                         $i->move('files/socialmedia-evidence/', $new_name);
                     } else {
@@ -369,5 +317,196 @@ class CustomerController extends Controller
 //            $log->error(Auth::user()->id, Auth::user()->username, 'Error al intentar enviar el correo a ' . $incident->customer->mail . ' referente al incidente: ' . $incident->id . ' Excepción: ' . $e->getMessage());
             Log::info(Auth::user()->id . " " . Auth::user()->username . ' Error al intentar enviar el correo a ' . $dataReport['customer']->mail . ' reference al reporte de Cibervigilancia. Excepción: ' . $e->getMessage());
         }
+    }
+
+    public function storeAsset()
+    {
+        $input = Input::except(['_token']);
+
+        $validator = Validator::make($input, [
+            'customer_id' => 'required',
+            'domain_name' => 'required|max:255',
+            'ip' => 'required|max:36'
+        ]);
+
+        $customer_id = $input['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $asset = new CustomerAsset();
+        $asset->customer_id = $input['customer_id'];
+        $asset->domain_name = $input['domain_name'];
+        $asset->ip = $input['ip'];
+        $asset->comments = $input['comments'];
+
+        $asset->save();
+
+        $message = 'Se agregó el nuevo activo: ' . $input['domain_name'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $asset));
+    }
+
+    public function editAsset($assetId)
+    {
+        $asset = CustomerAsset::find($assetId);
+        return View::make('customer.assets.edit', compact('asset'));
+    }
+
+    public function updateAsset()
+    {
+        $input = Input::except(['_token']);
+
+        $validator = Validator::make($input, [
+            'domain_name' => 'required|max:255',
+            'ip' => 'required|max:36'
+        ]);
+
+        $asset = CustomerAsset::find($input['id']);
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $asset->customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $asset->update($input);
+
+        return Redirect::to('customer/view/' . $asset->customer_id);
+    }
+
+
+    public function storeEmployee()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'customer_id' => 'required',
+            'name' => 'required|max:255',
+            'lastname' => 'required|max:255',
+            'corp_email' => 'required|max:255|email',
+            'personal_email' => 'email|max:255'
+        ]);
+
+        $customer_id = $i['customer_id'];
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $employee = new CustomerEmployee();
+        $employee->customer_id = $i['customer_id'];
+        $employee->name = $i['name'];
+        $employee->lastname = $i['lastname'];
+        $employee->corp_email = $i['corp_email'];
+        $employee->personal_email = $i['personal_email'];
+        $employee->comments = $i['comments'];
+        $employee->socialmedia = $i['socialmedia'];
+
+        $employee->save();
+
+        $message = 'Se agregó el nuevo empleado: ' . $i['name'] . ' ' . $i['lastname'];
+
+        return Response::json(array("customer_id" => $customer_id, 'message' => $message, 'object' => $employee));
+    }
+
+    public function editEmployee($employeeId)
+    {
+        $employee = CustomerEmployee::find($employeeId);
+        return View::make('customer.employees.edit', compact('employee'));
+    }
+
+    public function updateEmployee()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'name' => 'required|max:255',
+            'lastname' => 'required|max:255',
+            'corp_email' => 'required|max:255|email',
+            'personal_email' => 'email|max:255'
+        ]);
+
+        $employee = CustomerEmployee::find($i['id']);
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $employee->customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $employee->update($i);
+
+        return Redirect::to('customer/view/' . $employee->customer_id);
+    }
+
+    public function editSocialmedia($socialmediaId)
+    {
+        $socialmedia = CustomerSocialmedia::find($socialmediaId);
+        $criticities = Criticity::lists('name', 'id');
+        return View::make('customer.socialmedia.edit', compact('socialmedia', 'criticities'));
+    }
+
+    public function updateSocialmedia()
+    {
+        $i = Input::all();
+
+        $validator = Validator::make($i, [
+            'criticity_id' => 'required|not_in:0',
+            'title' => 'required|max:255'
+        ]);
+
+        $socialmedia = CustomerSocialmedia::find($i['id']);
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $socialmedia->customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $socialmedia->update($i);
+
+
+        if ($i['sm-images-evidence']) {
+            foreach ($i['sm-images-evidence'] as $img) {
+                $this->compareAndUpload($img, $socialmedia->customer_id, $socialmedia->id, 'SM', true);
+            }
+        }
+
+        $message = 'Se agregó la nueva red social: ' . $i['title'];
+
+        return Redirect::to('customer/view/' . $socialmedia->customer_id);
+    }
+
+    public function editPage($pageId)
+    {
+        $page = CustomerPage::find($pageId);
+        $page_types = PageType::lists('type', 'id');
+        return View::make('customer.pages.edit', compact('page', 'page_types'));
+    }
+
+    public function updatePage()
+    {
+        $i = Input::except(['_token']);
+
+        $validator = Validator::make($i, [
+            'page_type_id' => 'required|not_in:0',
+            'url' => 'required|url'
+        ]);
+
+        $page = CustomerPage::find($i['id']);
+
+        if ($validator->fails()) {
+            return Response::json(array("customer_id" => $page->customer_id, 'message' => 'Revise el formulario', 'errores' => $validator->errors()));
+        }
+
+        $page->update($i);
+
+        if ($i['p-images-evidence']) {
+            foreach ($i['p-images-evidence'] as $img) {
+                $this->compareAndUpload($img, $page->customer_id, $page->id, 'P', true);
+            }
+        }
+
+        $page['type'] = CustomerPage::find($page->id)->type->type;
+
+        $message = 'Se agregó la nueva página: ' . $i['url'];
+
+        return Redirect::to('customer/view/' . $page->customer_id);
     }
 }

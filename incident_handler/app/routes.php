@@ -144,6 +144,19 @@ Route::group(array('before' => 'auth', 'prefix' => 'customer'), function () {
     Route::post('store/page', 'CustomerController@storePage');
     Route::post('store/socialmedia', 'CustomerController@storeSocialmedia');
 
+    #Update data of Customer
+    Route::get('edit/asset/{id}', ['as' => 'edit-asset', 'uses' => 'CustomerController@editAsset']);
+    Route::post('edit/asset', ['as' => 'update-asset', 'uses' => 'CustomerController@updateAsset']);
+
+    Route::get('edit/employee/{id}', ['as' => 'edit-employee', 'uses' => 'CustomerController@editEmployee']);
+    Route::post('edit/employee', ['as' => 'update-employee', 'uses' => 'CustomerController@updateEmployee']);
+
+    Route::get('edit/socialmedia/{id}', ['as' => 'edit-socialmedia', 'uses' => 'CustomerController@editSocialmedia']);
+    Route::post('edit/socialmedia', ['as' => 'update-socialmedia', 'uses' => 'CustomerController@updateSocialmedia']);
+
+    Route::get('edit/page/{id}', ['as' => 'edit-page', 'uses' => 'CustomerController@editPage']);
+    Route::post('edit/page', ['as' => 'update-page', 'uses' => 'CustomerController@updatePage']);
+
     #Catalogs
 //    Route::get('catalog/page_type', 'CustomerController@pageTypes');
 

@@ -9,6 +9,7 @@
             <th>#</th>
             <th>Título</th>
             <th>Descripción</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
                 <td>{{$sm->id}}</td>
                 <td>{{$sm->title}}</td>
                 <td>{{substr($sm->description,0,150)}}@if(strlen($sm->description)>150)[...]@endif</td>
+                <td><a href="{{route('edit-socialmedia',['id'=>$sm->id])}}" class="btn btn-sm btn-info">Editar</a></td>
             </tr>
         @endforeach
         </tbody>
@@ -31,6 +33,7 @@
             </div>
 
             {{Form::model(new CustomerSocialmedia(),array('id'=>'socialmedia-form','role'=>'form','class'=>'form-horizontal form-bordered','name'=>'socialmedia-form', 'enctype'=>'multipart/form-data'))}}
+            {{Form::hidden('customer_id',$customer->id)}}
 
             <div class="modal-body">
 

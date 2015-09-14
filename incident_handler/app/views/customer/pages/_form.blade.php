@@ -1,14 +1,19 @@
-{{Form::hidden('customer_id',$customer->id)}}
+<link href="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" rel="stylesheet"/>
+<script src="/assets/plugins/bootstrap-wysihtml5/lib/js/wysihtml5-0.3.0.js"></script>
+<script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
+
 <div class="form-group">
     {{Form::label('page_type_id','Tipo de Página')}}
-    <select id="page_type_id" class="form-control" name="page_type_id">
-        <option value="0" selected>Selecciona una opción</option>
+    {{--<select id="page_type_id" class="form-control" name="page_type_id">--}}
+    {{--<option value="0" selected>Selecciona una opción</option>--}}
 
-        @foreach($page_types as $key => $pt)
-            <option value="{{$key}}">{{$pt}}</option>
-        @endforeach
+    {{--@foreach($page_types as $key => $pt)--}}
+    {{--<option value="{{$key}}">{{$pt}}</option>--}}
+    {{--@endforeach--}}
 
-    </select>
+    {{--</select>--}}
+
+    {{Form::select('page_type_id',$page_types,null,['class'=>'form-control'])}}
 </div>
 <div class="form-group">
     {{Form::label('url','URL')}}
@@ -27,7 +32,13 @@
         </div>
         <div class="col-md-10" id="files-container">
             <h3>Archivos seleccionados</h3>
-            <ul id="p-files_list"></ul>
+            <ul id="p-files_list">
+                @if(isset($page))
+                    @foreach($page->evidences as $index=>$ev)
+                        <li>Archivo #{{$index+1}}: {{$ev->name}}</li>
+                    @endforeach
+                @endif
+            </ul>
         </div>
     </div>
 </div>

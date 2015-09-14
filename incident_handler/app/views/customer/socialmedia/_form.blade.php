@@ -3,7 +3,6 @@
 <script src="/assets/plugins/bootstrap-wysihtml5/src/bootstrap-wysihtml5.js"></script>
 
 
-{{Form::hidden('customer_id',$customer->id)}}
 <div class="form-group">
     {{Form::label('criticity_id','Criticidad')}}
     {{Form::select('criticity_id',$criticities,null,['class'=>'form-control'])}}
@@ -29,7 +28,13 @@
         </div>
         <div class="col-md-10" id="files-container">
             <h3>Archivos seleccionados</h3>
-            <ul id="sm-files_list"></ul>
+            <ul id="sm-files_list">
+                @if(isset($socialmedia))
+                    @foreach($socialmedia->evidences as $index=>$ev)
+                        <li>Archivo #{{$index+1}}: {{$ev->name}}</li>
+                    @endforeach
+                @endif
+            </ul>
         </div>
     </div>
 </div>
