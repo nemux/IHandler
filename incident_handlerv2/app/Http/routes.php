@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', ['as' => 'login.get', 'uses' => 'Auth\AuthController@getLogin']);
+Route::post('/', ['as' => 'login.post', 'uses' => 'Auth\AuthController@postLogin']);
+Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
+
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
+    Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
+
+    Route::group(['prefix' => 'incident'], function () {
+        Route::get('/', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
+    });
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', ['as' => 'user.index', 'uses' => 'UserController@index']);
+    });
 });
