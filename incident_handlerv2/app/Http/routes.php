@@ -11,6 +11,16 @@
 |
 */
 
+/**
+ * Esto permite pasar Objetos a las rutas, en lugar de IDs
+ */
+Route::model('user', 'Models\User');
+
+Route::bind('user', function ($value, $route) {
+    return App\Models\User::whereUsername($value)->first();
+});
+
+
 Route::get('/', ['as' => 'login.get', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('/', ['as' => 'login.post', 'uses' => 'Auth\AuthController@postLogin']);
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
@@ -24,5 +34,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'user.index', 'uses' => 'UserController@index']);
+        Route::get('/create', ['as' => 'user.create', 'uses' => 'UserController@create']);
+        Route::get('/{user}', ['as' => 'user.show', 'uses' => 'UserController@show']);
+        Route::get('/edit/{user}', ['as' => 'user.edit', 'uses' => 'UserController@edit']);
+        Route::post('/edit/{user}', ['as' => 'user.update', 'uses' => 'UserController@update']);
+        Route::delete('/', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
+
+        Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass']);
     });
 });

@@ -25,9 +25,9 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    protected $redirectPath = '/dashboard';
-    protected $loginPath = '/';
     protected $username = 'username';
+
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new authentication controller instance.
@@ -51,8 +51,6 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
-
-        \Log::info('validator');
     }
 
     /**
@@ -89,6 +87,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect()->intended($this->redirectPath());
         } else {
+            return redirect(route('login.get'))->with('message', 'Usuario o contraseña incorrectos');
         }
     }
 }

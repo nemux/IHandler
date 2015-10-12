@@ -1,6 +1,6 @@
-@extends('layout.dashboard')
+@extends('layout.dashboard_topmenu')
 
-@section('title', 'GCS IH | Dashboard')
+@section('title', 'Dashboard')
 
 @section('dashboard_content')
     <p>This is my body content.</p>

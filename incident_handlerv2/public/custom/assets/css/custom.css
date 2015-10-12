@@ -34,3 +34,17 @@
     margin-bottom: 50px;
     margin-right: 50px;
 }
+
+.login-container {
+    max-width: 960px;
+    margin-top: 150px;
+    margin-left: 350px;
+}
+
+.page-container {
+    margin-top: 85px !important;
+}
+
+/*.navbar-fixed-top{*/
+/*background-color: black !important;*/
+/*}*/

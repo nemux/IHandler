@@ -16,7 +16,7 @@ class CreateUserTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('person_id'); //FKey
             $table->unsignedInteger('user_type_id'); //Fkey
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('password');
             $table->boolean('active');
             $table->rememberToken();
