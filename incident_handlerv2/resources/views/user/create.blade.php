@@ -1,7 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title',$user->person->fullName())
-@section('section_description','Editar los datos del usuario')
+@section('title','Crear nuevo usuario')
 
 @section('include_up')
 @endsection
@@ -20,13 +19,6 @@
                     </div>
                     <div class="panel-body">
                         @include('user._form')
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <a href="javascript:"
-                                   onclick="jQuery('#modal-change-password').modal('show', {backdrop: 'fade'});"
-                                   class="btn btn-blue btn-single">Cambiar contraseña</a>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="panel-title">
@@ -55,26 +47,5 @@
             </div>
         </div>
         {!! Form::close() !!}
-
-
-                <!-- Modal 1 (Basic)-->
-        <div class="modal fade" id="modal-change-password">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Cambiar contraseña a {{$user->person->fullName()}}</h4>
-                    </div>
-                    {!! Form::open(['url'=>route('user.change_pass')]) !!}
-                    <div class="modal-body">
-                        @include('user._form_pass')
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info">Guardar</button>
-                    </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
     </section>
 @endsection

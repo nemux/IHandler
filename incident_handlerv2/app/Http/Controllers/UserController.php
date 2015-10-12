@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('user.index', compact('users', 'breadcrumb'));
+        return view('user.index', compact('users'));
     }
 
     /**
@@ -34,7 +34,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $user = new User();
+        $user->person = new Person();
+        $user->person->contact = new PersonContact();
+        return view('user.create', compact('user'));
     }
 
     /**
@@ -45,7 +48,44 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Person::validateCreate($request, $this);
+        PersonContact::validateCreate($request, $this);
+        User::validateCreate($request, $this);
+
+        $person = new Person();
+        $person->name = $request->get('name');
+        $person->mname = $request->get('mname');
+        $person->lname = $request->get('lname');
+        $person->sex = $request->get('sex');
+        $person->save();
+
+        $personContact = new PersonContact();
+        $personContact->person_id = $person->id;
+        $personContact->phone = $request->get('phone');
+        $personContact->email = $request->get('email');
+        $personContact->save();
+
+        $password = str_random(12);
+
+        $user = new User();
+        $user->person_id = $person->id;
+        $user->user_type_id = $request->get('user_type');
+        $user->active = $request->get('active');
+        $user->username = $request->get('username');
+        $user->password = bcrypt($password);
+        $user->save();
+
+        \Mail::send('email.newuser', compact(['user', 'password']), function ($mail) use ($user) {
+            if (!isset($user->person->contact->email) || ends_with($user->person->contact->email, '@test.com')) {
+                $mailTo = 'dlopez@globalcybersec.com';
+            } else {
+                $mailTo = $user->person->contact->email;
+            }
+
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Nuevo Usuario');
+        });
+
+        return redirect()->route('user.index')->withMessage('Nuevo usuario creado');;
     }
 
     /**
@@ -74,29 +114,49 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, User $user)
     {
-        \Log::info($request);
-
         User::validateUpdate($request, $this);
-
         Person::validateUpdate($request, $this);
-
         PersonContact::validateUpdate($request, $this);
 
+        $user->user_type_id = $request->get('user_type');
+        $user->active = $request->get('active');
+        $user->save();
+
+        $user->person->name = $request->get('name');
+        $user->person->lname = $request->get('lname');
+        $user->person->mname = $request->get('mname');
+        $user->person->sex = $request->get('sex');
+        $user->person->save();
+
+        if (!isset($user->person->contact)) {
+            $user->person->contact = new PersonContact();
+            $user->person->contact->person_id = $user->person->id;
+        }
+        $user->person->contact->email = $request->get('email');
+        $user->person->contact->phone = $request->get('phone');
+        $user->person->contact->save();
+
+
+        return redirect()->route('user.edit', $user->username)->withMessage('Datos actualizados');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
-        //
+        $username = $user->username;
+        $user->delete();
+
+        return redirect()->route('user.index')->withMessage("Usuario $username eliminado");
     }
 
     /**
@@ -111,12 +171,21 @@ class UserController extends Controller
 
         User::validateChangePassword($request, $this);
 
-        $user->password = bcrypt($request->get('password'));
-
-        \Log::info($request->get('password'));
+        $password = $request->get('password');
+        $user->password = bcrypt($password);
 
         $user->update();
 
-        return redirect(route('user.edit', $user->username));
+        \Mail::send('email.changepass', compact(['user', 'password']), function ($mail) use ($user) {
+            if (!isset($user->person->contact->email) || ends_with($user->person->contact->email, '@test.com')) {
+                $mailTo = 'dlopez@globalcybersec.com';
+            } else {
+                $mailTo = $user->person->contact->email;
+            }
+
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Cambio de Contraseña');
+        });
+
+        return redirect()->route('user.edit', $user->username)->withMessage('Contraseña actualizada');
     }
 }

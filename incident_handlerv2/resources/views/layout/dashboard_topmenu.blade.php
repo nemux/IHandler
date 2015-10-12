@@ -37,15 +37,6 @@
             <div class="title-env"><h1 class="title">@yield('title')</h1>
 
                 <p class="description">@yield('section_description')</p>
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
@@ -66,6 +57,27 @@
                         </li>
                     @endforeach
                 </ol>
+            </div>
+            <div class="col-md-12">
+
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (Session::has('message'))
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span> <span
+                                    class="sr-only">Close</span>
+                        </button>
+                        <strong>{{ Session::get('message') }}</strong>
+                    </div>
+                @endif
             </div>
         </div>
 

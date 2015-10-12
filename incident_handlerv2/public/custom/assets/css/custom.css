@@ -45,6 +45,6 @@
     margin-top: 85px !important;
 }
 
-/*.navbar-fixed-top{*/
-/*background-color: black !important;*/
-/*}*/
+.modal-dialog {
+    margin: 130px auto;
+}

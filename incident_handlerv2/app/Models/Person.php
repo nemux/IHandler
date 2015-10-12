@@ -26,6 +26,8 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereDeletedAt($value)
  * @property \App\Models\PersonContact $contact
  * @property \App\Models\User $user
+ * @property string $sex
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereSex($value)
  */
 class Person extends Model
 {
@@ -45,7 +47,14 @@ class Person extends Model
      * Campos visibles
      * @var array
      */
-    protected $visible = ['id', 'name', 'lname', 'mname'];
+    protected $visible = ['id', 'name', 'lname', 'mname', 'sex'];
+
+    protected static $attributeNames = [
+        'name' => 'Nombre',
+        'lname' => 'Apellido Paterno',
+        'mname' => 'Apellido Materno',
+        'sex' => 'Sexo'
+    ];
 
     /**
      * Concatena los campos de nombres para obtener una referencia de nombre completo de una persona
@@ -64,6 +73,17 @@ class Person extends Model
      */
     public static function validateUpdate(Request $request, Controller $controller)
     {
+        Person::validateCreate($request, $controller);
+    }
+
+    /**
+     * Valida que los campos pasados como parámetros sean correctos para almacenar un objeto
+     *
+     * @param Request $request
+     * @param Controller $controller
+     */
+    public static function validateCreate(Request $request, Controller $controller)
+    {
         /**
          * Validation for Person _form
          */
@@ -71,7 +91,8 @@ class Person extends Model
             'name' => 'required|max:255',
             'lname' => 'required|max:255',
             'mname' => 'max:255',
-        ]);
+            'sex' => 'required'
+        ], [], Person::$attributeNames);
     }
 
     /**

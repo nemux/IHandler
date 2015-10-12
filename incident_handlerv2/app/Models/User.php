@@ -38,11 +38,18 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereDeletedAt($value)
- * @property-read \App\Models\UserType $type
+ * @property \App\Models\UserType $type
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
+
+    static protected $attributeNames = [
+        'user_type' => 'Tipo de Usuario',
+        'username' => 'Nombre de usuario',
+        'password' => 'Contraseña',
+        'active' => 'Usuario Activo',
+    ];
 
     /**
      * The database table used by the model.
@@ -87,7 +94,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $controller->validate($request, [
             'user_type' => 'required',
             'active' => 'required',
-        ]);
+        ], [], User::$attributeNames);
+    }
+
+    public static function validateCreate(Request $request, Controller $controller)
+    {
+        User::validateUpdate($request, $controller);
+
+        $controller->validate($request, [
+            'username' => 'required|unique:user|max:255',
+        ], [], User::$attributeNames);
     }
 
     /**
@@ -100,7 +116,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $controller->validate($request, [
             'password' => 'required|confirmed',
-        ]);
+        ], [], User::$attributeNames);
     }
 
     /**

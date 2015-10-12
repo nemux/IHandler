@@ -35,10 +35,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'user.index', 'uses' => 'UserController@index']);
         Route::get('/create', ['as' => 'user.create', 'uses' => 'UserController@create']);
+        Route::post('/create', ['as' => 'user.create', 'uses' => 'UserController@store']);
         Route::get('/{user}', ['as' => 'user.show', 'uses' => 'UserController@show']);
         Route::get('/edit/{user}', ['as' => 'user.edit', 'uses' => 'UserController@edit']);
         Route::post('/edit/{user}', ['as' => 'user.update', 'uses' => 'UserController@update']);
-        Route::delete('/', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
+        Route::delete('/{user}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
 
         Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass']);
     });

@@ -40,6 +40,11 @@ class PersonContact extends Model
      */
     protected $table = 'person_contact';
 
+    protected static $attributeNames = [
+        'email' => 'Email',
+        'phone' => 'Teléfono'
+    ];
+
     /**
      * Valida los campos en una actualización
      * @param Request $request
@@ -47,12 +52,17 @@ class PersonContact extends Model
      */
     public static function validateUpdate(Request $request, Controller $controller)
     {
+        PersonContact::validateCreate($request, $controller);
+    }
+
+    public static function validateCreate(Request $request, Controller $controller)
+    {
         /**
          * Validation for PersonContact _form
          */
         $controller->validate($request, [
-            'email' => 'max:60|email',
+            'email' => 'required|max:60|email',
             'phone' => 'max:50',
-        ]);
+        ], [], PersonContact::$attributeNames);
     }
 }

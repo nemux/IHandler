@@ -17,6 +17,7 @@ class CreatePersonTable extends Migration
             $table->string('name');
             $table->string('lname');
             $table->string('mname')->nullable();
+            $table->string('sex', 1);
             $table->timestamps();
             $table->softDeletes();
         });

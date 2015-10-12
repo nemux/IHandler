@@ -24,6 +24,19 @@
                 ],
             });
         });
+
+        function onClickDelete(username) {
+            $('#modalConfirmDelete .modal-title > b').text(username);
+            $('#modalConfirmDelete').modal('show', {backdrop: 'fade'});
+
+            /**
+             * Define la acción en caso de que haya sido presionado el botón "Eliminar"
+             */
+            $('#modalConfirmDelete .modal-footer .btn-danger').click(function () {
+                //En este caso, se ejecuta el submit del form con el id definido
+                $('#deleteForm-' + username).submit();
+            });
+        }
     </script>
 @endsection
 
@@ -34,7 +47,6 @@
             <div class="panel-options"><a href="#" data-toggle="panel">
                     <span class="collapse-icon">&ndash;</span>
                     <span class="expand-icon">+</span> </a>
-                {{--<a href="#" data-toggle="remove">&times;</a>--}}
             </div>
         </div>
         <div class="panel-body">
@@ -54,20 +66,37 @@
                         <td>{{$user->person->fullName()}}</td>
                         <td>{{$user->type->description}}</td>
                         <td>
-                            {!! Form::open() !!}
+                            {!! Form::open(array('id'=>'deleteForm-'.$user->username,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('user.destroy', $user->username))) !!}
                             {!! Form::hidden('id',$user->id) !!}
                             <a href="{{route('user.show',$user->username)}}"
                                class="btn btn-info btn-sm btn-icon icon-left">
                                 Ver perfil</a>
                             <a href="{{route('user.edit',$user->username)}}"
                                class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                            {!! Form::submit('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left']) !!}
+                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("'.$user->username.'")' ]) !!}
                             {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div aria-hidden="false" class="modal fade in" id="modalConfirmDelete">
+        <div class="modal-backdrop fade in"></div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Eliminar usuario <b></b></h4></div>
+                <div class="modal-body">
+                    ¿Seguro que desea eliminar este usuario?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger">Borrar</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

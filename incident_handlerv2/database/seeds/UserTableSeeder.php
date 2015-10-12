@@ -16,7 +16,8 @@ class UserTableSeeder extends Seeder
             'name' => 'Juan',
             'lname' => 'Pérez',
             'created_at' => date('Y-m-d'),
-            'updated_at' => date('Y-m-d')
+            'updated_at' => date('Y-m-d'),
+            'sex' => 'M'
         ]);
 
         //Crear su usuario
