@@ -28,8 +28,8 @@
                     <ul class="nav tabs-vertical">
                         <li><a href="#customer_info" data-toggle="tab">Información General</a></li>
                         <li><a href="#customer_assets" data-toggle="tab">Activos</a></li>
-                        <li class="active"><a href="#customer_employees" data-toggle="tab">Empleados</a></li>
-                        <li><a href="#customer_pages" data-toggle="tab">Páginas</a></li>
+                        <li><a href="#customer_employees" data-toggle="tab">Empleados</a></li>
+                        <li class="active"><a href="#customer_pages" data-toggle="tab">Páginas</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane" id="customer_info">
@@ -72,10 +72,10 @@
                         <div class="tab-pane" id="customer_assets">
                             @include('customer.asset.index')
                         </div>
-                        <div class="tab-pane active" id="customer_employees">
+                        <div class="tab-pane" id="customer_employees">
                             @include('customer.employee.index')
                         </div>
-                        <div class="tab-pane" id="customer_pages">
+                        <div class="tab-pane active" id="customer_pages">
                             @include('customer.page.index')
                         </div>
                     </div>

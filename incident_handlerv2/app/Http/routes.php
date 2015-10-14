@@ -69,5 +69,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
             Route::post('/edit/{id}', ['as' => 'employee.update', 'uses' => 'CustomerEmployeeController@update']);
             Route::delete('/{id}', ['as' => 'employee.destroy', 'uses' => 'CustomerEmployeeController@destroy']);
         });
+
+        Route::group(['prefix' => 'page'], function () {
+            Route::post('/create', ['as' => 'customer.page.store', 'uses' => 'CustomerPageController@store']);
+            Route::get('/{id}', ['as' => 'customer.page.show', 'uses' => 'CustomerPageController@show']);
+            Route::get('/edit/{id}', ['as' => 'customer.page.edit', 'uses' => 'CustomerPageController@edit']);
+            Route::post('/edit/{id}', ['as' => 'customer.page.update', 'uses' => 'CustomerPageController@update']);
+            Route::delete('/{id}', ['as' => 'customer.page.destroy', 'uses' => 'CustomerPageController@destroy']);
+        });
     });
 });

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $link_id
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereLinkId($value)
+ * @property-read Page $page
  */
 class CustomerPage extends Model
 {
@@ -33,8 +34,13 @@ class CustomerPage extends Model
     protected $softDelete = true;
     protected $table = 'customer_page';
 
-//    public function page()
-//    {
-//        return $this->belongsTo(Page::class, 'page_id');
-//    }
+    public function link()
+    {
+        return $this->belongsTo(Link::class, 'link_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
 }

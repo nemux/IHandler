@@ -54,7 +54,7 @@
                         {!! Form::hidden('id',$employee->id) !!}
                         <a href="{{route('employee.show',$employee->id)}}"
                            class="btn btn-info btn-sm btn-icon icon-left">
-                            Ver activo</a>
+                            Ver empleado</a>
                         <a href="{{route('employee.edit',$employee->id)}}"
                            class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
                         {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("empleado","'.$employee->id.'")' ]) !!}

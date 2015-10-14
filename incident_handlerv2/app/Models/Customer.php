@@ -83,4 +83,12 @@ class Customer extends Model
     {
         return $this->hasMany(CustomerEmployee::class, 'customer_id');
     }
+
+    /**
+     *
+     */
+    public function pages()
+    {
+        return $this->hasMany(CustomerPage::class, 'customer_id');
+    }
 }

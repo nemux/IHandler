@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 /**
  * App\Models\Link
@@ -15,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
+ * @property integer $link_type_id
+ * @property string $title
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link wherePageTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereLink($value)
@@ -22,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereLinkTypeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereTitle($value)
  */
 class Link extends Model
 {
@@ -32,4 +38,24 @@ class Link extends Model
      */
     protected $softDelete = true;
     protected $table = 'link';
+    protected static $attributeNames = [
+        'link' => 'Enlcea',
+        'title' => 'Título',
+        'link_comments' => 'Comentarios',
+        'link_type_id' => 'Tipo de Página'
+    ];
+
+    public static function validateCreate(Request $request, Controller $controller)
+    {
+        $controller->validate($request, [
+            'link' => 'required',
+            'title' => 'max:255',
+            'link_type_id' => 'required|exists:link_type,id'
+        ], [], Link::$attributeNames);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(LinkType::class, 'link_type_id');
+    }
 }
