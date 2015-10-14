@@ -27,7 +27,7 @@
         <div class="navbar-mobile-clear">
         </div>
         <!-- main menu -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" id="main-menu">
             <li>
                 <a class="l1" href="{{route('incident.index')}}">
                     <i class="fa-exclamation-triangle"></i>
@@ -48,13 +48,23 @@
                 </a>
                 <ul>
                     <li>
-                        <a class="l2" href="{{route('user.index')}}">
-                            <span class="title">Lista de Usuarios</span>
+                        <a class="l2" href="{{route('user.create')}}">
+                            <i class="fa-plus"></i>
+                            <span class="title">Agregar Usuario</span>
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li>
+                <a class="l1" href="{{route('customer.index')}}">
+                    <i class="fa-suitcase"></i>
+                    <span class="title">Clientes</span>
+                </a>
+                <ul>
                     <li>
-                        <a class="l2" href="{{route('user.create')}}">
-                            <span class="title">Agregar Usuario</span>
+                        <a class="l2" href="{{route('customer.create')}}">
+                            <i class="fa-plus"></i>
+                            <span class="title">Agregar Cliente</span>
                         </a>
                     </li>
                 </ul>

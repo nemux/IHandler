@@ -43,4 +43,31 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass']);
     });
+
+    Route::group(['prefix' => 'customer'], function () {
+        Route::get('/', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
+        Route::get('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@create']);
+        Route::post('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@store']);
+        Route::delete('/{id}', ['as' => 'customer.destroy', 'uses' => 'CustomerController@destroy']);
+        Route::get('/{id}', ['as' => 'customer.show', 'uses' => 'CustomerController@show']);
+        Route::get('/edit/{id}', ['as' => 'customer.edit', 'uses' => 'CustomerController@edit']);
+        Route::post('/edit/{id}', ['as' => 'customer.update', 'uses' => 'CustomerController@update']);
+
+        Route::group(['prefix' => 'asset'], function () {
+            Route::post('/create', ['as' => 'asset.store', 'uses' => 'CustomerAssetController@store']);
+            Route::get('/{id}', ['as' => 'asset.show', 'uses' => 'CustomerAssetController@show']);
+            Route::get('/edit/{id}', ['as' => 'asset.edit', 'uses' => 'CustomerAssetController@edit']);
+            Route::post('/edit/{id}', ['as' => 'asset.update', 'uses' => 'CustomerAssetController@update']);
+            Route::delete('/{id}', ['as' => 'asset.destroy', 'uses' => 'CustomerAssetController@destroy']);
+        });
+
+        Route::group(['prefix' => 'employee'], function () {
+            Route::get('/create/{customer_id}', ['as' => 'employee.create', 'uses' => 'CustomerEmployeeController@create']);
+            Route::post('/create/{customer_id}', ['as' => 'employee.store', 'uses' => 'CustomerEmployeeController@store']);
+            Route::get('/{id}', ['as' => 'employee.show', 'uses' => 'CustomerEmployeeController@show']);
+            Route::get('/edit/{id}', ['as' => 'employee.edit', 'uses' => 'CustomerEmployeeController@edit']);
+            Route::post('/edit/{id}', ['as' => 'employee.update', 'uses' => 'CustomerEmployeeController@update']);
+            Route::delete('/{id}', ['as' => 'employee.destroy', 'uses' => 'CustomerEmployeeController@destroy']);
+        });
+    });
 });

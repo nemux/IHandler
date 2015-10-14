@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Crear nuevo usuario')
+@section('title','Editar la información del activo: '.$asset->domain_name)
 
 @section('include_up')
 @endsection
@@ -10,30 +10,17 @@
 
 @section('dashboard_content')
     <section class="">
-        {!! Form::model(new \App\Models\User(),['class'=>'form-horizontal','role'=>'form']) !!}
+        {!! Form::model($asset,['class'=>'form-horizontal','role'=>'form']) !!}
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-title">
-                        <h3>Datos de Usuario</h3>
+                        <h3>Datos del Cliente</h3>
                     </div>
                     <div class="panel-body">
-                        @include('user._form')
+                        @include('customer.asset._form')
                     </div>
 
-                    <div class="panel-title">
-                        <h3>Datos Personales</h3>
-                    </div>
-                    <div class="panel-body">
-                        @include('person._form')
-                    </div>
-
-                    <div class="panel-title">
-                        <h3>Datos de Contacto</h3>
-                    </div>
-                    <div class="panel-body">
-                        @include('person.contact._form')
-                    </div>
                     <div class="panel-body">
                         <div class="form-group row">
                             <div class="col-md-12 text-right">

@@ -1,10 +1,8 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Usuarios')
+@section('title','Clientes')
 
 @section('include_up')
-@endsection
-
 @section('include_down')
     <link rel="stylesheet" href="/xenon/assets/js/datatables/dataTables.bootstrap.css" id="style-resource-1">
     <script src="/xenon/assets/js/datatables/js/jquery.dataTables.min.js" id="script-resource-7"></script>
@@ -14,9 +12,8 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
-            $("#users-table").dataTable({
+            $("#customers-table").dataTable({
                 aoColumns: [
-                    null,
                     null,
                     null,
                     null
@@ -28,8 +25,7 @@
 
 @section('dashboard_content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Lista de Usuarios</h3>
+        <div class="panel-heading"><h3 class="panel-title">Lista de Clientes</h3>
 
             <div class="panel-options"><a href="#" data-toggle="panel">
                     <span class="collapse-icon">&ndash;</span>
@@ -37,30 +33,28 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-bordered table-striped" id="users-table">
+            <table class="table table-bordered table-striped" id="customers-table">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Nombre completo</th>
-                    <th>Tipo de Usuario</th>
+                    <th>Nombre de la empresa</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody class="middle-align">
-                @foreach($users as $index=>$user)
+                @foreach($customers as $index=>$customer)
                     <tr>
                         <td>{{$index+1}}</td>
-                        <td>{{$user->person->fullName()}}</td>
-                        <td>{{$user->type->description}}</td>
+                        <td>{{$customer->customer_name}}</td>
                         <td>
-                            {!! Form::open(array('id'=>'deleteForm-'.$user->username,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('user.destroy', $user->username))) !!}
-                            {!! Form::hidden('id',$user->id) !!}
-                            <a href="{{route('user.show',$user->username)}}"
+                            {!! Form::open(array('id'=>'deleteForm-'.$customer->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('customer.destroy', $customer->id))) !!}
+                            {!! Form::hidden('id',$customer->id) !!}
+                            <a href="{{route('customer.show',$customer->id)}}"
                                class="btn btn-info btn-sm btn-icon icon-left">
                                 Ver perfil</a>
-                            <a href="{{route('user.edit',$user->username)}}"
+                            <a href="{{route('customer.edit',$customer->id)}}"
                                class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("usuario","'.$user->username.'")' ]) !!}
+                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("cliente","'.$customer->id.'")' ]) !!}
                             {!! Form::close() !!}
                         </td>
                     </tr>

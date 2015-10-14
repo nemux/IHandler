@@ -35,9 +35,10 @@ class UserController extends Controller
     public function create()
     {
         $user = new User();
-        $user->person = new Person();
-        $user->person->contact = new PersonContact();
-        return view('user.create', compact('user'));
+        $person = new Person();
+        $person->contact = new PersonContact();
+
+        return view('user.create', compact('user', 'person'));
     }
 
     /**
@@ -85,7 +86,7 @@ class UserController extends Controller
             $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Nuevo Usuario');
         });
 
-        return redirect()->route('user.index')->withMessage('Nuevo usuario creado');;
+        return redirect()->route('user.index')->withMessage('Nuevo usuario creado');
     }
 
     /**
@@ -107,7 +108,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit', compact('user'));
+        $person = $user->person;
+        return view('user.edit', compact('user', 'person'));
     }
 
     /**

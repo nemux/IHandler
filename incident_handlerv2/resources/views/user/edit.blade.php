@@ -40,7 +40,7 @@
                         <h3>Datos de Contacto</h3>
                     </div>
                     <div class="panel-body">
-                        @include('person_contact._form')
+                        @include('person.contact._form')
                     </div>
                     <div class="panel-body">
                         <div class="form-group row">

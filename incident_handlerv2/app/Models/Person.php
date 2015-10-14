@@ -104,14 +104,4 @@ class Person extends Model
     {
         return $this->hasOne('App\Models\PersonContact', 'person_id');
     }
-
-    /**
-     * Relación Person->User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function user()
-    {
-        return $this->hasOne('App\Models\User', 'person_id');
-    }
 }
