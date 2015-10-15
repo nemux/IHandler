@@ -17,6 +17,7 @@ class CreateLinkTable extends Migration
 
             $table->unsignedInteger('link_type_id');
 
+            $table->string('title')->nullable();
             $table->text('link');
             $table->text('comments')->nullable();
 
