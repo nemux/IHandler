@@ -56,7 +56,7 @@ class CustomerPageController extends Controller
         $page->customer_id = $customer_id;
         $page->save();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó una nueva página');
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó una nueva página');//->withTab('page');
     }
 
 
@@ -100,7 +100,18 @@ class CustomerPageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Link::validateUpdate($request, $this);
+
+        $customerPage = CustomerPage::findOrNew($id);
+
+        $link = $customerPage->link;
+        $link->title = $request->get('title');
+        $link->link = $request->get('link');
+        $link->comments = $request->get('link_comments');
+        $link->link_type_id = $request->get('link_type_id');
+        $link->save();
+
+        return redirect()->route('customer.show', $customerPage->customer_id)->withMessage('Se actualizó la página ' . $link->title);//->withTab('page');
     }
 
     /**
@@ -116,6 +127,6 @@ class CustomerPageController extends Controller
         $page_title = $customerPage->link->title;
         $customerPage->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó la página ' . $page_title);
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó la página ' . $page_title);//->withTab('page');
     }
 }

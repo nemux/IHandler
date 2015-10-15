@@ -78,7 +78,14 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Customer::findOrNew($id);
-        return view('customer.show', compact('customer'));
+
+//        if (\Session::has('tab')) {
+//            $tab = \Session::get('tab');
+//        } else {
+//            $tab = 'customer';
+//        }
+
+        return view('customer.show', compact('customer'));//->withTab($tab);
     }
 
     /**
@@ -133,6 +140,6 @@ class CustomerController extends Controller
         $contact->phone = $request->get('phone');
         $contact->save();
 
-        return redirect()->route('customer.edit', $customer->id)->withMessage('Datos del cliente actualizados');
+        return redirect()->route('customer.show', $customer->id)->withMessage('Datos del cliente actualizados');
     }
 }

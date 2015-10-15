@@ -12,7 +12,6 @@
 @endsection
 
 @section('dashboard_content')
-
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Cliente: <b>{{$customer->customer_name}}</b></h3>
@@ -26,13 +25,19 @@
             <div class="col-md-12">
                 <div class="tabs-vertical-env tabs-vertical-bordered">
                     <ul class="nav tabs-vertical">
-                        <li><a href="#customer_info" data-toggle="tab">Información General</a></li>
-                        <li><a href="#customer_assets" data-toggle="tab">Activos</a></li>
-                        <li><a href="#customer_employees" data-toggle="tab">Empleados</a></li>
-                        <li class="active"><a href="#customer_pages" data-toggle="tab">Páginas</a></li>
+                        @if(!isset($tab)) {{$tab='customer'}} @endif
+                        {{Log::info("TAB: ".$tab)}}
+                        <li class="{{ ($tab=='customer')?' active':'' }}"><a href="#customer_info" data-toggle="tab">Información
+                                General</a></li>
+                        <li class="{{ ($tab=='asset')?' active':'' }}"><a href="#customer_assets" data-toggle="tab">Activos</a>
+                        </li>
+                        <li class="{{ ($tab=='employee')?' active':'' }}"><a href="#customer_employees"
+                                                                             data-toggle="tab">Empleados</a></li>
+                        <li class="{{ ($tab=='page')?' active':'' }}"><a href="#customer_pages" data-toggle="tab">Páginas</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="customer_info">
+                        <div class="tab-pane {{ ($tab=='customer')?' active':'' }}" id="customer_info">
                             <section class="profile-env">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -40,6 +45,8 @@
                                             <a href="#" class="user-name">
                                                 {{$customer->customer_name}}
                                             </a>
+                                            <a href="{{route('customer.edit',$customer->id)}}"
+                                               class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
                                             <span class="user-title"> {{$customer->business_name}}</span>
                                             <hr/>
                                             <span class="user-details">Datos de Contacto</span>
@@ -69,13 +76,13 @@
                                 </div>
                             </section>
                         </div>
-                        <div class="tab-pane" id="customer_assets">
+                        <div class="tab-pane {{ ($tab=='asset')?' active':'' }}" id="customer_assets">
                             @include('customer.asset.index')
                         </div>
-                        <div class="tab-pane" id="customer_employees">
+                        <div class="tab-pane {{ ($tab=='employee')?' active':'' }}" id="customer_employees">
                             @include('customer.employee.index')
                         </div>
-                        <div class="tab-pane active" id="customer_pages">
+                        <div class="tab-pane {{ ($tab=='page')?' active':'' }}" id="customer_pages">
                             @include('customer.page.index')
                         </div>
                     </div>

@@ -28,7 +28,7 @@ class CustomerAssetController extends Controller
         $asset->comments = $request->get('comments');
         $asset->save();
 
-        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Se almacenó el nuevo activo del cliente');
+        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Se almacenó el nuevo activo del cliente');//->withTab('asset');
     }
 
     /**
@@ -68,7 +68,7 @@ class CustomerAssetController extends Controller
         $asset->comments = $request->get('comments');
         $asset->save();
 
-        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Activo actualizado');
+        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Activo actualizado');//->withTab('asset');
     }
 
 
@@ -84,6 +84,6 @@ class CustomerAssetController extends Controller
         $customer_id = $asset->customer_id;
         $asset->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el activo ' . $domain_name);
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el activo ' . $domain_name);//->withTab('asset');
     }
 }

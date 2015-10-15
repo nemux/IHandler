@@ -64,7 +64,7 @@ class CustomerEmployeeController extends Controller
         $employee->phone = $request->get('corp_phone');
         $employee->save();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó el empleado');
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó el empleado');//->withTab('employee');
     }
 
     /**
@@ -126,7 +126,7 @@ class CustomerEmployeeController extends Controller
         $contact->phone = $request->get('phone');
         $contact->save();
 
-        return redirect()->route('customer.show', $employee->customer_id)->withMessage('Se actualizó el empleado');
+        return redirect()->route('customer.show', $employee->customer_id)->withMessage('Se actualizó el empleado');//->withTab('employee');
     }
 
     /**
@@ -142,6 +142,6 @@ class CustomerEmployeeController extends Controller
         $customer_id = $employee->customer_id;
         $employee->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el empleado ' . $employee_name);
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el empleado ' . $employee_name);//->withTab('employee');
     }
 }

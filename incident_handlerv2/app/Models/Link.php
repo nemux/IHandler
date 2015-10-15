@@ -54,6 +54,11 @@ class Link extends Model
         ], [], Link::$attributeNames);
     }
 
+    public static function validateUpdate(Request $request, Controller $controller)
+    {
+        Link::validateCreate($request, $controller);
+    }
+
     public function type()
     {
         return $this->belongsTo(LinkType::class, 'link_type_id');
