@@ -46,15 +46,7 @@ class SurveillanceController extends Controller
     public function store(Request $request)
     {
         //Agregar todos los archivos de evidencia
-        $values = $request->all();
-        $evidences = array();
-        foreach ($values as $field => $value) {
-            $pos = strpos($field, 'evidence_');
-            if ($pos !== false) {
-                $evidence = Evidence::whereId($value)->first();
-                array_push($evidences, $evidence);
-            }
-        }
+        $evidences = $this->getEvidences($request);
 
         \Session::flash('surv_evidences', $evidences);
 
@@ -116,15 +108,10 @@ class SurveillanceController extends Controller
     public function update(Request $request, $id)
     {
         //Agregar todos los archivos de evidencia
-        $values = $request->all();
-        $evidences = array();
-        foreach ($values as $field => $value) {
-            $pos = strpos($field, 'evidence_');
-            if ($pos !== false) {
-                $evidence = Evidence::whereId($value)->first();
-                array_push($evidences, $evidence);
-            }
-        }
+        $evidences = $this->getEvidences($request);
+
+        //Almacena en variables de sesión las evidencias, por si ocurriera un error en la actualización
+        \Session::flash('surv_evidences', $evidences);
 
         SurveillanceCase::validateUpdate($request, $this);
 
@@ -135,13 +122,6 @@ class SurveillanceController extends Controller
         $surv->description = $request->get('description');
         $surv->recommendation = $request->get('recommendation');
         $surv->save();
-
-        //Deletes all evidences related to this case
-        $old_evidences = SurveillanceCaseEvidence::whereSurveillanceCaseId($surv->id)->get();
-        foreach ($old_evidences as $ev) {
-            $ev->delete();
-        }
-
 
         foreach ($evidences as $evidence) {
             $surv_evidence = new SurveillanceCaseEvidence();
@@ -162,6 +142,26 @@ class SurveillanceController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Obtiene de un $request todos los elementos que estén relacionados con evidencia.
+     * @param Request $request
+     * @return array
+     */
+    private function getEvidences(Request $request)
+    {
+        $values = $request->all();
+        $evidences = array();
+        foreach ($values as $field => $value) {
+            $pos = strpos($field, 'evidence_');
+            if ($pos !== false) {
+                $evidence = Evidence::whereId($value)->first();
+                array_push($evidences, $evidence);
+            }
+        }
+
+        return $evidences;
     }
 
     /**
