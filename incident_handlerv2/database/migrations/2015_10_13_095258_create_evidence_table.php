@@ -18,8 +18,9 @@ class CreateEvidenceTable extends Migration
             $table->unsignedInteger('evidence_type_id');
 
             $table->string('mime_type');
-            $table->string('file');
+            $table->string('path');
             $table->string('name');
+            $table->string('original_name');
             $table->string('note')->nullable();
             $table->string('md5', 32)->nullable();
             $table->string('sha1', 40)->nullable();

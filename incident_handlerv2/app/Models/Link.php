@@ -28,6 +28,7 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereLinkTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereTitle($value)
+ * @property-read LinkType $type
  */
 class Link extends Model
 {

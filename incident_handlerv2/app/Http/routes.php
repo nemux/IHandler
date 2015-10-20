@@ -78,4 +78,26 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
             Route::delete('/{id}', ['as' => 'customer.page.destroy', 'uses' => 'CustomerPageController@destroy']);
         });
     });
+
+    Route::group(['prefix' => 'surveillance'], function () {
+        Route::get('/', ['as' => 'surveillance.index', 'uses' => 'SurveillanceController@index']);
+
+        Route::get('/create', ['as' => 'surveillance.create', 'uses' => 'SurveillanceController@create']);
+        Route::post('/create', ['as' => 'surveillance.create', 'uses' => 'SurveillanceController@store']);
+
+        Route::get('/show/{id}', ['as' => 'surveillance.show', 'uses' => 'SurveillanceController@show']);
+
+        Route::get('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@edit']);
+        Route::post('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@update']);
+    });
+
+    Route::group(['prefix' => 'evidence'], function () {
+        Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
+    });
+
+//    Route::group(['prefix' => 'test'], function () {
+//        Route::get('files', ['as' => 'test.files.index', 'uses' => 'TestController@indexFiles']);
+//        Route::get('files/create', ['as' => 'test.files.create', 'uses' => 'TestController@createFiles']);
+//        Route::post('files/create', ['as' => 'test.files.store', 'uses' => 'TestController@storeFiles']);
+//    });
 });

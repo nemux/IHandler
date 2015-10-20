@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereLinkId($value)
  * @property-read Page $page
+ * @property-read Link $link
+ * @property-read Customer $customer
  */
 class CustomerPage extends Model
 {

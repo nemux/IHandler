@@ -26,6 +26,8 @@ use Illuminate\Http\Request;
  * @property-read \Illuminate\Database\Eloquent\Collection|CustomerAsset[] $assets
  * @property-read \Illuminate\Database\Eloquent\Collection|CustomerPage[] $pages
  * @property-read \Illuminate\Database\Eloquent\Collection|CustomerContact[] $contacts
+ * @property string $name
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereName($value)
  */
 class Customer extends Model
 {

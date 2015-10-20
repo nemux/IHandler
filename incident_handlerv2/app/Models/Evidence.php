@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property integer $id
  * @property integer $evidence_type_id
- * @property string $file
+ * @property string $path
  * @property string $name
  * @property string $note
  * @property string $md5
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereEvidenceTypeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereFile($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence wherePath($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereNote($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereMd5($value)
@@ -32,6 +32,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereDeletedAt($value)
  * @property string $mime_type
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereMimeType($value)
+ * @property string $original_name
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereOriginalName($value)
  */
 class Evidence extends Model
 {
@@ -42,4 +44,13 @@ class Evidence extends Model
      */
     protected $softDelete = true;
     protected $table = 'evidence';
+
+    /**
+     * Devuelve la ruta completa del fichero para poder ser consultado desde WEB
+     * @return string
+     */
+    public function fullPath()
+    {
+        return url() . "/" . $this->path . $this->name;
+    }
 }

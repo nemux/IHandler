@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCaseEvidence whereDeletedAt($value)
  * @property integer $id
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCaseEvidence whereId($value)
+ * @property-read Evidence $evidence
  */
 class SurveillanceCaseEvidence extends Model
 {
@@ -35,4 +36,13 @@ class SurveillanceCaseEvidence extends Model
      * @var string
      */
     protected $table = 'surveillance_case_evidence';
+
+    /**
+     * Representa la relación entre un caso y una evidencia
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function evidence()
+    {
+        return $this->belongsTo(Evidence::class, 'evidence_id');
+    }
 }

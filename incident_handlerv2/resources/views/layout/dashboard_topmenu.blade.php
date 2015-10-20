@@ -99,14 +99,16 @@
 {{--<div class="page-loading-overlay">--}}
 {{--<div class="loader-2"></div>--}}
 {{--</div>--}}
-@yield('include_down')
+
 <script src="{{asset('/xenon/assets/js/bootstrap.min.js')}}" id="script-resource-1"></script>
 <script src="{{asset('/xenon/assets/js/TweenMax.min.js')}}" id="script-resource-2"></script>
 <script src="{{asset('/xenon/assets/js/resizeable.js')}}" id="script-resource-3"></script>
 <script src="{{asset('/xenon/assets/js/joinable.js')}}" id="script-resource-4"></script>
 <script src="{{asset('/xenon/assets/js/xenon-api.js')}}" id="script-resource-5"></script>
 <script src="{{asset('/xenon/assets/js/xenon-toggles.js')}}" id="script-resource-6"></script>
-<!-- JavaScripts initializations and stuff -->
+
+@yield('include_down')
+        <!-- JavaScripts initializations and stuff -->
 <script src="{{asset('/xenon/assets/js/xenon-custom.js')}}" id="script-resource-7"></script>
 </body>
 </html>

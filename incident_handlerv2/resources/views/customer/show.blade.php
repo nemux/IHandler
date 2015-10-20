@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title',$customer->customer_name)
+@section('title',$customer->name)
 @section('section_description',$customer->business_name)
 
 @section('include_down')
@@ -14,7 +14,7 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Cliente: <b>{{$customer->customer_name}}</b></h3>
+            <h3 class="panel-title">Cliente: <b>{{$customer->name}}</b></h3>
 
             <div class="panel-options"><a href="#" data-toggle="panel">
                     <span class="collapse-icon">&ndash;</span>
@@ -25,7 +25,6 @@
             <div class="col-md-12">
                 <div class="tabs-vertical-env tabs-vertical-bordered">
                     <ul class="nav tabs-vertical">
-                        @if(!isset($tab)) {{$tab='customer'}} @endif
                         {{Log::info("TAB: ".$tab)}}
                         <li class="{{ ($tab=='customer')?' active':'' }}"><a href="#customer_info" data-toggle="tab">Información
                                 General</a></li>
@@ -43,7 +42,7 @@
                                     <div class="col-md-4">
                                         <div class="user-info-sidebar">
                                             <a href="#" class="user-name">
-                                                {{$customer->customer_name}}
+                                                {{$customer->name}}
                                             </a>
                                             <a href="{{route('customer.edit',$customer->id)}}"
                                                class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>

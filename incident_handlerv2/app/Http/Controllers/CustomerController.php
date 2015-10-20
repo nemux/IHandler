@@ -45,7 +45,7 @@ class CustomerController extends Controller
         PersonContact::validateCreate($request, $this);
 
         $customer = new Customer();
-        $customer->customer_name = $request->get('customer_name');
+        $customer->name = $request->get('customer_name');
         $customer->business_name = $request->get('business_name');
         $customer->save();
 
@@ -85,7 +85,7 @@ class CustomerController extends Controller
 //            $tab = 'customer';
 //        }
 
-        return view('customer.show', compact('customer'));//->withTab($tab);
+        return view('customer.show', compact('customer'))->withTab('customer');
     }
 
     /**
@@ -95,7 +95,7 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customer = Customer::findOrNew($id);
-        $name = $customer->customer_name;
+        $name = $customer->name;
 
         $customer->delete();
 
@@ -124,7 +124,7 @@ class CustomerController extends Controller
         Customer::validateCreate($request, $this);
 
         $customer = Customer::findOrNew($id);
-        $customer->customer_name = $request->get('customer_name');
+        $customer->name = $request->get('customer_name');
         $customer->business_name = $request->get('business_name');
         $customer->save();
 

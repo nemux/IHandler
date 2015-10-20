@@ -45,7 +45,7 @@
                 @foreach($customers as $index=>$customer)
                     <tr>
                         <td>{{$index+1}}</td>
-                        <td>{{$customer->customer_name}}</td>
+                        <td>{{$customer->name}}</td>
                         <td>
                             {!! Form::open(array('id'=>'deleteForm-'.$customer->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('customer.destroy', $customer->id))) !!}
                             {!! Form::hidden('id',$customer->id) !!}

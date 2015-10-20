@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LinkTypeSeeder::class);
         $this->call(EvidenceTypeSeeder::class);
 
+        $this->call(CriticitySeeder::class);
+
         Model::reguard();
     }
 }

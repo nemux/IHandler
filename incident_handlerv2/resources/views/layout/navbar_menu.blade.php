@@ -69,6 +69,20 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a class="l1" href="{{route('surveillance.index')}}">
+                    <i class="fa-eye"></i>
+                    <span class="title">Cibervigilancia</span>
+                </a>
+                <ul>
+                    <li>
+                        <a class="l2" href="{{route('surveillance.create')}}">
+                            <i class="fa-plus"></i>
+                            <span class="title">Agregar Caso de Cibervigilancia</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <ul class="nav nav-userinfo navbar-right">
             <li class="dropdown user-profile">

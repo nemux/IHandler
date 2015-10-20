@@ -33,7 +33,7 @@
             <div class="col-md-4">
                 <div class="user-info">
                     <div class="user-image"><a href="/xenon/extra/profile/"> <img src="/xenon/assets/images/user-2.png"
-                                                                                 class="img-responsive img-circle"/>
+                                                                                  class="img-responsive img-circle"/>
                     </a></div>
                     <div class="user-details"><h3><a href="/xenon/extra/profile/">John Smith</a> <span
                             class="user-status is-online"></span></h3>
@@ -488,7 +488,7 @@ John Smith
 // Events
                                     addedfile: function (file) {
                                         if (i == 1) {
-                                            $example_dropzone_filetable.find('tbody').html('');
+                                            dropzone_filetable.find('tbody').html('');
                                         }
                                         var size = parseInt(file.size / 1024, 10);
                                         size = size < 1024 ? (size + " KB") : (parseInt(size / 1024, 10) + " MB");
@@ -499,7 +499,7 @@ John Smith
 <td>' + size + '</td>\
 <td>Uploading...</td>\
 </tr>');
-                                        $example_dropzone_filetable.find('tbody').append($entry);
+                                        dropzone_filetable.find('tbody').append($entry);
                                         file.fileEntryTd = $entry;
                                         file.progressBar = $entry.find('.progress-bar');
                                     },

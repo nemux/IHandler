@@ -48,3 +48,23 @@
 .modal-dialog {
     margin: 130px auto;
 }
+
+.droppable-area {
+    width: 250px;
+    min-height: 250px !important;
+    height: 250px;
+    line-height: 250px;
+}
+
+.gallery-env .album-images .album-image .name {
+    float: left;
+    width: 100%;
+}
+
+.gallery-env .album-images .album-image .name span, .gallery-env .album-images .album-image .name em {
+    max-width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
