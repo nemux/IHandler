@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereLinkTypeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereTitle($value)
  * @property-read LinkType $type
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Link whereUserId($value)
  */
 class Link extends Model
 {
@@ -45,6 +47,15 @@ class Link extends Model
         'link_comments' => 'Comentarios',
         'link_type_id' => 'Tipo de Página'
     ];
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     public static function validateCreate(Request $request, Controller $controller)
     {

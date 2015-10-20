@@ -26,6 +26,9 @@ class CreateCustomerAssetTable extends Migration
             $table->softDeletes();
 
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

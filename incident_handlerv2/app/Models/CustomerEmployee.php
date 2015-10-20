@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Customer $customer
  * @property integer $id
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereId($value)
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereUserId($value)
  */
 class CustomerEmployee extends Model
 {
@@ -49,6 +51,15 @@ class CustomerEmployee extends Model
         'corp_email' => 'Correo Corporativo',
         'corp_phone' => 'Teléfono Corporativo',
     ];
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
 
     /**

@@ -21,6 +21,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property integer $id
  * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCaseEvidence whereId($value)
  * @property-read Evidence $evidence
+ * @property string $note
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCaseEvidence whereNote($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCaseEvidence whereUserId($value)
  */
 class SurveillanceCaseEvidence extends Model
 {
@@ -36,6 +40,15 @@ class SurveillanceCaseEvidence extends Model
      * @var string
      */
     protected $table = 'surveillance_case_evidence';
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     /**
      * Representa la relación entre un caso y una evidencia

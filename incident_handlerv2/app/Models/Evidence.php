@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereMimeType($value)
  * @property string $original_name
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereOriginalName($value)
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Evidence whereUserId($value)
  */
 class Evidence extends Model
 {
@@ -44,6 +46,15 @@ class Evidence extends Model
      */
     protected $softDelete = true;
     protected $table = 'evidence';
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     /**
      * Devuelve la ruta completa del fichero para poder ser consultado desde WEB

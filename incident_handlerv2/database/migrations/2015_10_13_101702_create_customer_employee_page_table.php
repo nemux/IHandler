@@ -23,6 +23,9 @@ class CreateCustomerEmployeePageTable extends Migration
 
             $table->foreign('customer_employee_id')->references('id')->on('customer_employee')->onDelete('cascade');
             $table->foreign('link_id')->references('id')->on('link')->onDelete('cascade');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

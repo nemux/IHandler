@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Page $page
  * @property-read Link $link
  * @property-read Customer $customer
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereUserId($value)
  */
 class CustomerPage extends Model
 {
@@ -35,6 +37,15 @@ class CustomerPage extends Model
      */
     protected $softDelete = true;
     protected $table = 'customer_page';
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     public function link()
     {

@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployeePage whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployeePage whereCustomerEmployeeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployeePage whereLinkId($value)
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployeePage whereUserId($value)
  */
 class CustomerEmployeePage extends Model
 {
@@ -37,20 +39,12 @@ class CustomerEmployeePage extends Model
     protected $softDelete = true;
     protected $table = 'customer_employee_page';
 
-//    public function employee()
-//    {
-//        //TODO no estoy seguro de que de esta forma se haga la relación de tablas
-//        return $this->belongsToMany(CustomerEmployee::class, 'customer_employee', 'customer_id', 'person_id');
-//    }
-//
-//    public function customer()
-//    {
-//        //TODO no estoy seguro de que de esta forma se haga la relación de tablas
-//        return $this->belongsTo(Customer::class, 'customer_id');
-//    }
-//
-//    public function page()
-//    {
-//        return $this->belongsTo(Page::class, 'page_id');
-//    }
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 }

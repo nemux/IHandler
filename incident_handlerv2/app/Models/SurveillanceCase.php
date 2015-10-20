@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Criticity $criticity
  * @property-read Customer $customer
  * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCaseEvidence[] $evidences
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereUserId($value)
  */
 class SurveillanceCase extends Model
 {
@@ -48,6 +50,15 @@ class SurveillanceCase extends Model
         'customer_id' => 'Cliente',
         'criticity_id' => 'Criticidad'
     ];
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     /**
      * Valida los inputs para crear un nuevo caso

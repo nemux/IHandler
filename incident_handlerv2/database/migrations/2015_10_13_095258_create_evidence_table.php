@@ -33,6 +33,9 @@ class CreateEvidenceTable extends Migration
 
             $table->foreign('evidence_type_id')->references('id')->on('evidence_type')->onDelete('cascade');
 
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+
 
         });
     }

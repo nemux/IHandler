@@ -20,6 +20,9 @@ class CreateCustomerTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

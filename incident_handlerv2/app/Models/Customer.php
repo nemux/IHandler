@@ -28,6 +28,8 @@ use Illuminate\Http\Request;
  * @property-read \Illuminate\Database\Eloquent\Collection|CustomerContact[] $contacts
  * @property string $name
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereName($value)
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUserId($value)
  */
 class Customer extends Model
 {
@@ -42,6 +44,15 @@ class Customer extends Model
         'customer_name' => 'Nombre de la compañía',
         'business_bame' => 'Razón Social'
     ];
+
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 
     /**
      * Valida que los parámetros pasados por un Request sean correctos con respecto al modelo de base de datos

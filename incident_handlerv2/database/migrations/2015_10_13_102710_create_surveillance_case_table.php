@@ -27,6 +27,9 @@ class CreateSurveillanceCaseTable extends Migration
 
             $table->foreign('criticity_id')->references('id')->on('criticity')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

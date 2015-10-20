@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerAsset whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerAsset whereDeletedAt($value)
  * @property-read Customer $customer
+ * @property integer $user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerAsset whereUserId($value)
  */
 class CustomerAsset extends Model
 {
@@ -38,8 +40,12 @@ class CustomerAsset extends Model
     protected $softDelete = true;
     protected $table = 'customer_asset';
 
-//    public function customer()
-//    {
-//        return $this->belongsTo(Customer::class, 'customer_id');
-//    }
+    /**
+     * Cosntructor de la clase
+     */
+    public function __construct()
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+        $this->user_id = \Auth::user()->id;
+    }
 }
