@@ -5,10 +5,11 @@
     <div class="col-md-11 col-md-offset-1">
         <p>
             <span class="h4">
-                <b><span id="preview-created_at">({{isset($case->created_at)?$case->created_at->format('d/m/Y'):date('d/m/Y')}}
-                        )</span>
+                <b><span id="preview-created_at">
+                        ({{isset($case->created_at)?$case->created_at->format('d/m/Y'):date('d/m/Y')}})
+                    </span>
                     Criticidad
-                    <span id="preview-criticity_id">{{isset($case->criticity)?$case->criticity->name:''}}</span></b>
+                    <span id="preview-criticity_id">{{isset($case->criticity->name)?$case->criticity->name:''}}</span></b>
             </span>
         </p>
     </div>

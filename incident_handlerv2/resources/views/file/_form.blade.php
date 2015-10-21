@@ -68,7 +68,7 @@
 
                 file.progressBar.removeClass('progress-bar-warning').addClass('progress-bar-success');
 
-                var img_thumbnail = '@include('file._evidence_thumb')';
+                var img_thumbnail = "@include('file._evidence_thumb',['isJavascript'=>true])";
 
                 $('#evidences-thumbs').html($('#evidences-thumbs').html() + img_thumbnail);
 

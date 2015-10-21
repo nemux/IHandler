@@ -34,6 +34,9 @@
                                                                              data-toggle="tab">Empleados</a></li>
                         <li class="{{ ($tab=='page')?' active':'' }}"><a href="#customer_pages" data-toggle="tab">Páginas</a>
                         </li>
+                        <li class="{{($tab=='surveillance')?' active':''}}">
+                            <a href="#surveillance" data-toggle="tab">Cibervigilancia</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane {{ ($tab=='customer')?' active':'' }}" id="customer_info">
@@ -83,6 +86,9 @@
                         </div>
                         <div class="tab-pane {{ ($tab=='page')?' active':'' }}" id="customer_pages">
                             @include('customer.page.index')
+                        </div>
+                        <div class="tab-pane {{($tab=='surveillance')?' active':''}}" id="surveillance">
+                            @include('surveillance._table',['cases'=>$customer->surveillances])
                         </div>
                     </div>
                 </div>

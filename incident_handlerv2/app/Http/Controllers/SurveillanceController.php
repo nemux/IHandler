@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Criticity;
 use App\Models\Customer;
 use App\Models\Evidence;
+use App\Models\PersonContact;
 use App\Models\SurveillanceCase;
 use App\Models\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
@@ -21,6 +22,7 @@ class SurveillanceController extends Controller
     public function index()
     {
         $cases = SurveillanceCase::all();
+
         return view('surveillance.index', compact('cases'));
     }
 
@@ -64,8 +66,20 @@ class SurveillanceController extends Controller
             $surv_evidence = new SurveillanceCaseEvidence();
             $surv_evidence->surveillance_case_id = $surv->id;
             $surv_evidence->evidence_id = $evidence->id;
+            $surv_evidence->note = 'SN';
             $surv_evidence->save();
         }
+
+        \Mail::send('email.surveillance', ['case' => $surv], function ($mail) {
+            // TODO define a qué correo se enviarán los casos recién creados de cibervigilancia
+            //Temporalmente se envia al correo de cibervigilancia a quien crea el caso
+
+            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+
+            \Log::info($mailTo);
+
+            $mail->to($mailTo, \Auth::user()->person->fullName())->subject('[GCS-IH][CV] Nuevo caso de Cibervigilancia');
+        });
 
         return redirect()->route('surveillance.index')->withMessage('Nuevo caso de Cibervigilancia creado');
     }
@@ -127,6 +141,7 @@ class SurveillanceController extends Controller
             $surv_evidence = new SurveillanceCaseEvidence();
             $surv_evidence->surveillance_case_id = $surv->id;
             $surv_evidence->evidence_id = $evidence->id;
+            $surv_evidence->note = 'SN';
             $surv_evidence->save();
         }
 

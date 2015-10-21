@@ -65,4 +65,17 @@ class PersonContact extends Model
             'phone' => 'max:50',
         ], [], PersonContact::$attributeNames);
     }
+
+    public static function compareEmail($email)
+    {
+        // Si el correo existe y termina con @test.com,
+        // lo envía al correo del desarrollador para cuestiones de pruebas.
+        if (!isset($email) || ends_with($email, '@test.com')) {
+            $mailTo = 'dlopez@globalcybersec.com';
+        } else {
+            $mailTo = $email;
+        }
+
+        return $mailTo;
+    }
 }

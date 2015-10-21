@@ -150,7 +150,7 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
-        /*
+        /**
          * For forms
          */
         Illuminate\Html\HtmlServiceProvider::class,
@@ -207,8 +207,7 @@ return [
          * For forms
          */
         'Form' => Illuminate\Html\FormFacade::class,
-        'HTML' => Illuminate\Html\HtmlFacade::class
-
+        'HTML' => Illuminate\Html\HtmlFacade::class,
     ],
 
 ];

@@ -7,30 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-/**
- * App\Models\Customer
- *
- * @property integer $id
- * @property string $customer_name
- * @property string $business_name
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereBusinessName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereCustomerName($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerEmployee[] $employees
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerAsset[] $assets
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerPage[] $pages
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerContact[] $contacts
- * @property string $name
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereName($value)
- * @property integer $user_id
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUserId($value)
- */
+
 class Customer extends Model
 {
     use SoftDeletes;
@@ -98,10 +75,17 @@ class Customer extends Model
     }
 
     /**
+     * Regresa una lista de las páginas reportadas al cliente
      *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function pages()
     {
         return $this->hasMany(CustomerPage::class, 'customer_id');
+    }
+
+    public function surveillances()
+    {
+        return $this->hasMany(SurveillanceCase::class, 'customer_id');
     }
 }

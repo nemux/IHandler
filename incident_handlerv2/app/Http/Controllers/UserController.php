@@ -77,11 +77,7 @@ class UserController extends Controller
         $user->save();
 
         \Mail::send('email.newuser', compact(['user', 'password']), function ($mail) use ($user) {
-            if (!isset($user->person->contact->email) || ends_with($user->person->contact->email, '@test.com')) {
-                $mailTo = 'dlopez@globalcybersec.com';
-            } else {
-                $mailTo = $user->person->contact->email;
-            }
+            $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
             $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Nuevo Usuario');
         });
@@ -135,14 +131,14 @@ class UserController extends Controller
         $user->person->sex = $request->get('sex');
         $user->person->save();
 
-        if (!isset($user->person->contact)) {
+        if (!$user->person->contact) {
             $user->person->contact = new PersonContact();
             $user->person->contact->person_id = $user->person->id;
         }
+
         $user->person->contact->email = $request->get('email');
         $user->person->contact->phone = $request->get('phone');
         $user->person->contact->save();
-
 
         return redirect()->route('user.edit', $user->username)->withMessage('Datos actualizados');
     }
@@ -179,15 +175,12 @@ class UserController extends Controller
         $user->update();
 
         \Mail::send('email.changepass', compact(['user', 'password']), function ($mail) use ($user) {
-            if (!isset($user->person->contact->email) || ends_with($user->person->contact->email, '@test.com')) {
-                $mailTo = 'dlopez@globalcybersec.com';
-            } else {
-                $mailTo = $user->person->contact->email;
-            }
+            $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
             $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Cambio de Contraseña');
         });
 
         return redirect()->route('user.edit', $user->username)->withMessage('Contraseña actualizada');
     }
+
 }
