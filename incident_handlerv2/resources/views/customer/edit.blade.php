@@ -10,7 +10,7 @@
 
 @section('dashboard_content')
     <section class="">
-        {!! Form::model($customer,['class'=>'form-horizontal','role'=>'form']) !!}
+        {!! Form::model($customer,['class'=>'form-horizontal','role'=>'form','files' => true]) !!}
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">

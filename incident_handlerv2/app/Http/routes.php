@@ -89,6 +89,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@edit']);
         Route::post('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@update']);
+
+        Route::get('/pdf/{id}/{download}', ['as' => 'surveillance.pdf', 'uses' => 'SurveillanceController@getPdf']);
+        Route::get('/email/{id}', ['as' => 'surveillance.email', 'uses' => 'SurveillanceController@email']);
     });
 
     Route::group(['prefix' => 'evidence'], function () {

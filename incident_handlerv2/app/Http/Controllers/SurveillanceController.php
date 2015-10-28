@@ -71,16 +71,7 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        $html = view('pdf.surveillance', ['case' => $surv, 'isPdf' => true])->render();
-        $pdf = \PDF::loadHTML($html);
-
-        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($pdf, $surv) {
-            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
-
-            $message->attachData($pdf->output(), $surv->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());
-            $message->subject('[GCS-IH][Cibervigilancia] Nuevo caso de Cibervigilancia');
-        });
+        $this->sendEmail($surv);
 
         return redirect()->route('surveillance.index')->withMessage('Nuevo caso de Cibervigilancia creado');
     }
@@ -181,25 +172,61 @@ class SurveillanceController extends Controller
     }
 
     /**
-     * Probando cómo encontrar tags con una URL
+     * Genera el PDF con la vista correspondiente
+     * @param SurveillanceCase $surv
+     * @return \PDF
      */
-    private function testSearchImages()
+    private function generatePdf(SurveillanceCase $surv)
     {
-        $description = '<div id="lipsum">
-<p><img alt="" src="http://localhost:8080/evidences/2015/10/20/3bdba9ad125e74e1e71b149baa7eb007.jpg" style="height:266px; width:500px" /></p>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet mi in nisi facilisis consectetur. Fusce fermentum sollicitudin urna, eget viverra dolor porttitor id. Fusce fringilla diam sed commodo convallis. Nulla congue interdum ultricies. Curabitur pellentesque luctus elementum. Aenean mauris tellus, luctus vitae eros ac, viverra sagittis erat. Mauris suscipit ut felis suscipit maximus. Nullam semper pretium felis sit amet accumsan. Pellentesque malesuada libero eu tristique convallis. Nam eros enim, semper egestas pretium eu, condimentum vitae mauris. Quisque sodales efficitur lorem id aliquet. Morbi at ultrices est. Pellentesque ac diam venenatis, congue arcu ut, finibus metus.</p>
-<p><img alt="" src="/evidences/2015/10/20/3bdba9ad125e74e1e71b149baa7eb007.jpg" style="height:266px; width:500px" /></p>
-<p>Pellentesque hendrerit finibus arcu ac faucibus. In semper velit ac libero tristique tempus. Aliquam rhoncus fringilla sapien, vitae scelerisque est iaculis tempor. Aliquam ullamcorper magna non est faucibus luctus. Ut varius arcu et blandit congue. Etiam a felis varius, gravida felis id, placerat lorem. Etiam nec nulla at sapien tempor pretium vel vitae purus. Nunc condimentum vulputate porta. Aenean malesuada gravida erat eu molestie. Nulla nec pulvinar augue. Quisque et consectetur urna, nec tincidunt enim. Morbi semper, nisi et convallis iaculis, lacus nibh interdum nunc, et feugiat ex ligula eleifend lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc in sem mollis, ornare nisl et, luctus lectus.</p>
-<p><img alt="" src="http://localhost:8080/evidences/2015/10/20/3bdba9ad125e74e1e71b149baa7eb007.jpg" style="height:266px; width:500px" /></p>
-<p>Integer condimentum aliquet turpis. Pellentesque ut rhoncus dolor. Nunc bibendum convallis elit eget facilisis. In luctus risus sem, a vehicula ante blandit quis. Morbi tempor interdum lorem ac egestas. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas id elit aliquet, tempus nisl ac, rutrum tellus. Nam scelerisque, dolor vel tincidunt commodo, nulla nunc sagittis neque, at tempus tortor nulla et ipsum. Nunc nec semper sem. Vivamus finibus vestibulum erat id auctor. Duis vehicula porta mauris sed sollicitudin. Maecenas vulputate, orci at pharetra convallis, felis mi egestas tortor, eget tempus diam quam vitae nulla. Integer pharetra at lectus id tempus. Donec non ante laoreet, finibus lorem nec, bibendum nunc. Phasellus leo diam, mollis eget lacinia ut, congue non est.</p>
-<p>Proin ac eros sed dui laoreet ornare. Vivamus tortor diam, eleifend sit amet odio semper, feugiat consectetur justo. Aliquam consequat, nunc vitae semper convallis, felis massa malesuada leo, quis euismod est metus quis lorem. In et sodales diam, eget molestie risus. Morbi id urna nunc. Suspendisse in nulla id nulla mollis gravida. Vestibulum imperdiet tellus metus, id tempus turpis lacinia eget. Morbi placerat mollis diam, a pulvinar augue bibendum a. Mauris feugiat luctus nibh, vitae luctus augue tempus eget. Nullam viverra lobortis diam. Donec vel nunc vitae libero porta tristique. Nulla sed nunc vestibulum, pellentesque neque ut, bibendum velit. Phasellus ligula ante, auctor vitae efficitur vitae, laoreet sit amet arcu.</p>
-<p>Duis porta at eros a congue. Suspendisse porttitor sodales sapien, ac placerat lectus porta a. Donec est erat, finibus a finibus vel, pretium in ligula. Ut justo elit, semper eu justo ac, pellentesque ullamcorper mauris. Maecenas nisi nulla, commodo non lacus ac, varius pharetra justo. Vestibulum a aliquet lacus. Duis commodo, nisi eget molestie bibendum, tortor lorem dictum tellus, id sodales ipsum lectus sit amet massa. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed dapibus mi eu nunc pharetra, eget luctus libero luctus. In vitae sem quis odio rutrum vestibulum bibendum et augue. Nunc lobortis augue sit amet mi tincidunt consectetur. Aliquam fringilla eget risus at porta. Integer suscipit eleifend orci ut auctor. Fusce pulvinar odio sollicitudin eros ultricies, eu condimentum ipsum aliquam.</p>
-<p><img alt="" src="/evidences/2015/10/20/3bdba9ad125e74e1e71b149baa7eb007.jpg" style="height:266px; width:500px" /></p>
-</div>';
+        $html = view('pdf.surveillance', ['case' => $surv, 'isPdf' => true])->render();
+        $pdf = \PDF::loadHTML($html);
+        return $pdf;
+    }
 
-        $pattern = '/([https*:\/\/)([\S]*:*[\d]*]*)(\/evidences\/)([\d]*\/[\d]*\/[\d]*\/)([\w]+.[\w]+)/i';
-        preg_match_all($pattern, $description, $imgs);
+    /**
+     * Devuelve al navegador el stream del PDF
+     * @param $id
+     * @return mixed
+     */
+    public function getPdf($id, $download = false)
+    {
+        $surv = SurveillanceCase::whereId($id)->first();
+        $pdf = $this->generatePdf($surv);
+        $docName = $surv->title . '.pdf';
 
-        \Log::info($imgs);
+        if ($download) {
+            return $pdf->download($docName);
+        } else {
+            return $pdf->stream($docName);
+        }
+    }
+
+    /**
+     * Llamada por GET para enviar correo del caso
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function email($id)
+    {
+        $surv = SurveillanceCase::whereId($id)->first();
+        $this->sendEmail($surv);
+        return redirect()->route('surveillance.show', $id)->withMessage('Se envió el correo electrónico del caso ' . $surv->title);
+    }
+
+    /**
+     * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     * @param SurveillanceCase $surv
+     */
+    public function sendEmail(SurveillanceCase $surv)
+    {
+        $pdf = $this->generatePdf($surv);
+
+        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($pdf, $surv) {
+            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+
+            $message->attachData($pdf->output(), $surv->title . '.pdf');
+            $message->to($mailTo, \Auth::user()->person->fullName());
+            $message->subject('[GCS-IH][CV][' . $surv->customer->name . '] ' . $surv->title);
+        });
     }
 }

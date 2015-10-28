@@ -31,6 +31,10 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUserId($value)
+ * @property string $mimetype
+ * @property string $logo
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereMimetype($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereLogo($value)
  */
 class Customer extends Model
 {

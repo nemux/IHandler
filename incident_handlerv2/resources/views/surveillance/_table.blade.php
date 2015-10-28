@@ -6,6 +6,7 @@
                 null,
                 null,
                 null,
+                null,
                 null
             ],
         });
@@ -19,6 +20,7 @@
             <th>Título</th>
             <th>Cliente</th>
             <th>Criticidad</th>
+            <th>Fecha de Creación</th>
             <th></th>
         </tr>
         </thead>
@@ -29,6 +31,7 @@
                 <td>{{$case->title}}</td>
                 <td>{{$case->customer->name}}</td>
                 <td>{{$case->criticity->name}}</td>
+                <td>{{date_format($case->created_at,'d/M/Y H:i')}}</td>
                 <td>
                     <a href="{{route('surveillance.show',$case->id)}}"
                        class="btn btn-info btn-sm btn-icon icon-left">

@@ -126,6 +126,15 @@ class CustomerController extends Controller
         $customer = Customer::findOrNew($id);
         $customer->name = $request->get('customer_name');
         $customer->business_name = $request->get('business_name');
+
+        \Log::info($request->file('logo')->getClientOriginalName());
+
+        if ($request->file('logo')) {
+            $customer->logo = hash('md5', $id) . "." . $request->file('logo')->getClientOriginalExtension();
+            $customer->mimetype = $request->file('logo')->getClientMimeType();
+            $request->file('logo')->move('customer/', $customer->logo);
+        }
+
         $customer->save();
 
         $person = sizeof($customer->contacts) == 0 ? new Person() : $customer->contacts[0]->person;
