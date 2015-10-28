@@ -2,12 +2,36 @@
 
 namespace App\Models;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
+/**
+ * App\Models\Customer
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $business_name
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
+ * @property integer $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|CustomerContact[] $contacts
+ * @property-read \Illuminate\Database\Eloquent\Collection|CustomerAsset[] $assets
+ * @property-read \Illuminate\Database\Eloquent\Collection|CustomerEmployee[] $employees
+ * @property-read \Illuminate\Database\Eloquent\Collection|CustomerPage[] $pages
+ * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCase[] $surveillances
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereBusinessName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereUserId($value)
+ */
 class Customer extends Model
 {
     use SoftDeletes;
@@ -25,10 +49,14 @@ class Customer extends Model
     /**
      * Cosntructor de la clase
      */
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         //Almacena de forma automática el ID del usuario que lo está invocando.
-        $this->user_id = \Auth::user()->id;
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
     }
 
     /**

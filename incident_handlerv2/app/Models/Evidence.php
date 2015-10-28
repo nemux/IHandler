@@ -50,10 +50,14 @@ class Evidence extends Model
     /**
      * Cosntructor de la clase
      */
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         //Almacena de forma automática el ID del usuario que lo está invocando.
-        $this->user_id = \Auth::user()->id;
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
     }
 
     /**
