@@ -11,6 +11,9 @@
             <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
             <div class="row">
+                <div class="btn btn-primary" onclick="window.open('{{route('surveillance.edit',[$case])}}','_self');">
+                    <i class="fa fa-pencil fa-fw"></i> Editar Caso
+                </div>
                 <div class="btn btn-info" onclick="window.open('{{route('surveillance.pdf',[$case,true])}}','_self');">
                     <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
                 </div>

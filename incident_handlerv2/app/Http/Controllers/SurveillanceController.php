@@ -140,16 +140,16 @@ class SurveillanceController extends Controller
         return redirect()->route('surveillance.index')->withMessage('Se actualizó el caso ' . $surv->title);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param  int $id
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function destroy($id)
+//    {
+//        //
+//    }
 
     /**
      * Obtiene de un $request todos los elementos que estén relacionados con evidencia.

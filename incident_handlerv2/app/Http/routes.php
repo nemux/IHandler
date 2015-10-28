@@ -97,10 +97,4 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'evidence'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
     });
-
-//    Route::group(['prefix' => 'test'], function () {
-//        Route::get('files', ['as' => 'test.files.index', 'uses' => 'TestController@indexFiles']);
-//        Route::get('files/create', ['as' => 'test.files.create', 'uses' => 'TestController@createFiles']);
-//        Route::post('files/create', ['as' => 'test.files.store', 'uses' => 'TestController@storeFiles']);
-//    });
 });

@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Editar el caso <b>'.$case->id.'</b>')
+@section('title','Editar el caso '.$case->title)
 
 @section('include_down')
     {{--Form wizard--}}
