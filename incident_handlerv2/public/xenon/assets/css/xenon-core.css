@@ -226,7 +226,7 @@
 .cbp_tmtimeline > li .cbp_tmicon {
     width: 40px;
     height: 40px;
-    speak: none;
+    /*speak: none;*/
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -829,7 +829,7 @@ body {
     padding: 30px;
     padding-bottom: 0;
     vertical-align: top;
-    word-break: break-word;
+    word-break: break-all;
     width: 100%;
     -webkit-transition: opacity 100ms ease-in-out;
     -moz-transition: opacity 100ms ease-in-out;
@@ -2315,14 +2315,14 @@ body {
     }
 }
 
-@media screen and (max-width: 768px) and screen and (max-width: 768px) {
+@media screen and (max-width: 768px) and (max-width: 768px) {
     .navbar.horizontal-menu .navbar-inner .navbar-nav {
         margin-top: 10px;
         margin-bottom: 10px;
     }
 }
 
-@media screen and (max-width: 768px) and screen and (min-width: 768px) {
+@media screen and (max-width: 768px) and (min-width: 768px) {
     .navbar.horizontal-menu .navbar-inner .navbar-nav ul li.is-hidden {
         left: -20px;
         zoom: 1;
@@ -2835,7 +2835,7 @@ body.chat-open .user-info-navbar a[data-toggle="chat"] {
     left: 0;
     right: 0;
     top: -1px;
-    background-color: none;
+    /*background-color: none;*/
     height: 1px;
     background-color: #ededed;
 }
@@ -7017,55 +7017,55 @@ blockquote small {
 
 .table.table-bordered > thead > tr > td,
 .table.table-bordered > tbody > tr > td,
-.table.table-bordered > tfood > tr > td,
+.table.table-bordered > tfoot > tr > td,
 .table.table-bordered > thead > tr > th,
 .table.table-bordered > tbody > tr > th,
-.table.table-bordered > tfood > tr > th {
+.table.table-bordered > tfoot > tr > th {
     border-color: #eeeeee;
 }
 
 .table > thead > tr > td,
 .table > tbody > tr > td,
-.table > tfood > tr > td,
+.table > tfoot > tr > td,
 .table > thead > tr > th,
 .table > tbody > tr > th,
-.table > tfood > tr > th {
+.table > tfoot > tr > th {
     padding: 12px 15px;
 }
 
 .text-center.table > thead > tr > td,
 .text-center.table > tbody > tr > td,
-.text-center.table > tfood > tr > td,
+.text-center.table > tfoot > tr > td,
 .text-center.table > thead > tr > th,
 .text-center.table > tbody > tr > th,
-.text-center.table > tfood > tr > th {
+.text-center.table > tfoot > tr > th {
     text-align: center !important;
 }
 
 .middle-align.table > thead > tr > td,
 .middle-align.table > tbody > tr > td,
-.middle-align.table > tfood > tr > td,
+.middle-align.table > tfoot > tr > td,
 .middle-align.table > thead > tr > th,
 .middle-align.table > tbody > tr > th,
-.middle-align.table > tfood > tr > th {
+.middle-align.table > tfoot > tr > th {
     vertical-align: middle;
 }
 
 .table > thead > tr > td.middle-align,
 .table > tbody > tr > td.middle-align,
-.table > tfood > tr > td.middle-align,
+.table > tfoot > tr > td.middle-align,
 .table > thead > tr > th.middle-align,
 .table > tbody > tr > th.middle-align,
-.table > tfood > tr > th.middle-align {
+.table > tfoot > tr > th.middle-align {
     vertical-align: middle;
 }
 
 .table > thead > tr.no-borders > td,
 .table > tbody > tr.no-borders > td,
-.table > tfood > tr.no-borders > td,
+.table > tfoot > tr.no-borders > td,
 .table > thead > tr.no-borders > th,
 .table > tbody > tr.no-borders > th,
-.table > tfood > tr.no-borders > th {
+.table > tfoot > tr.no-borders > th {
     border-left: 0;
     border-right: 0;
 }
@@ -7150,10 +7150,10 @@ blockquote small {
 
 .table.table-model-2 > thead > tr > td,
 .table.table-model-2 > tbody > tr > td,
-.table.table-model-2 > tfood > tr > td,
+.table.table-model-2 > tfoot > tr > td,
 .table.table-model-2 > thead > tr > th,
 .table.table-model-2 > tbody > tr > th,
-.table.table-model-2 > tfood > tr > th {
+.table.table-model-2 > tfoot > tr > th {
     border-color: #dddddd;
 }
 
@@ -8336,9 +8336,9 @@ div.scrollable {
     margin-top: -15px;
 }
 
-lesshat-selector {
-    -lh-property: 0;
-}
+/*lesshat-selector {*/
+    /*-lh-property: 0;*/
+/*}*/
 
 @-webkit-keyframes loaderAnimate {
     0% {
@@ -8349,7 +8349,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @-moz-keyframes loaderAnimate {
     0% {
         -moz-transform: rotate(0deg);
@@ -8359,7 +8359,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @-o-keyframes loaderAnimate {
     0% {
         -o-transform: rotate(0deg);
@@ -8369,7 +8369,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @keyframes loaderAnimate {
     0% {
         -webkit-transform: rotate(0deg);
@@ -8385,11 +8385,11 @@ lesshat-selector {
     }
 }
 
-;
-}
-lesshat-selector {
-    -lh-property: 0;
-}
+/*;*/
+/*}*/
+/*lesshat-selector {*/
+    /*-lh-property: 0;*/
+/*}*/
 
 @-webkit-keyframes loaderAnimate2 {
     0% {
@@ -8405,7 +8405,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @-moz-keyframes loaderAnimate2 {
     0% {
         box-shadow: inset #555555 0 0 0 8px;
@@ -8420,7 +8420,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @-o-keyframes loaderAnimate2 {
     0% {
         box-shadow: inset #555555 0 0 0 8px;
@@ -8435,7 +8435,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @keyframes loaderAnimate2 {
     0% {
         box-shadow: inset #555555 0 0 0 8px;
@@ -8456,8 +8456,8 @@ lesshat-selector {
     }
 }
 
-;
-}
+/*;*/
+/*}*/
 .loader-1:after {
     -webkit-animation: loaderAnimate2 1000ms ease-in-out infinite;
     -moz-animation: loaderAnimate2 1000ms ease-in-out infinite;
@@ -8500,9 +8500,9 @@ lesshat-selector {
     margin-top: -15px;
 }
 
-lesshat-selector {
-    -lh-property: 0;
-}
+/*lesshat-selector {*/
+    /*-lh-property: 0;*/
+/*}*/
 
 @-webkit-keyframes loaderAnimate2 {
     0% {
@@ -8533,7 +8533,7 @@ lesshat-selector {
     }
 }
 
-}
+/*}*/
 @keyframes loaderAnimate2 {
     0% {
         -webkit-transform: rotate(0deg);
@@ -8551,9 +8551,9 @@ lesshat-selector {
 
 /*;*/
 /*}*/
-lesshat-selector {
-    -lh-property: 0;
-}
+/*lesshat-selector {*/
+    /*-lh-property: 0;*/
+/*}*/
 
 @-webkit-keyframes loaderAnimate22 {
     0% {
@@ -8658,9 +8658,9 @@ lesshat-selector {
     overflow: hidden;
     background: #2c2e2f;
     z-index: 10000;
-    -webkit-perspective: 10000;
-    -moz-perspective: 10000;
-    perspective: 10000;
+    /*-webkit-perspective: 10000;*/
+    /*-moz-perspective: 10000;*/
+    /*perspective: 10000;*/
     -webkit-perspective: 10000px;
     -moz-perspective: 10000px;
     perspective: 10000px;

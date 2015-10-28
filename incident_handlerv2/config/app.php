@@ -154,6 +154,19 @@ return [
          * For forms
          */
         Illuminate\Html\HtmlServiceProvider::class,
+
+        /**
+         * For PDF Dom
+         * Using https://github.com/barryvdh/laravel-dompdf
+         */
+        Barryvdh\DomPDF\ServiceProvider::class,
+
+        /**
+         * Snappy PDF and Image
+         * Using https://github.com/barryvdh/laravel-snappy
+         */
+//        Barryvdh\Snappy\ServiceProvider::class,
+
     ],
 
     /*
@@ -208,6 +221,17 @@ return [
          */
         'Form' => Illuminate\Html\FormFacade::class,
         'HTML' => Illuminate\Html\HtmlFacade::class,
+
+        /**
+         * For PDF Dom
+         */
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+
+        /**
+         * Snappy PDF and Image
+         */
+//        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+//        'Image' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

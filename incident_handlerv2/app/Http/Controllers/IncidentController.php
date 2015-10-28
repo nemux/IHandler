@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PersonContact;
+use App\Models\SurveillanceCase;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Library\InlineCss;
 
 class IncidentController extends Controller
 {

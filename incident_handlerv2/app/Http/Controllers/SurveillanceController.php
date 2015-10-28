@@ -11,6 +11,7 @@ use App\Models\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Library\InlineCss;
 
 class SurveillanceController extends Controller
 {
@@ -70,15 +71,15 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        \Mail::send('email.surveillance', ['case' => $surv], function ($mail) {
-            // TODO define a qué correo se enviarán los casos recién creados de cibervigilancia
-            //Temporalmente se envia al correo de cibervigilancia a quien crea el caso
+        $html = view('pdf.surveillance', ['case' => $surv, 'isPdf' => true])->render();
+        $pdf = \PDF::loadHTML($html);
 
+        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($pdf, $surv) {
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
-            \Log::info($mailTo);
-
-            $mail->to($mailTo, \Auth::user()->person->fullName())->subject('[GCS-IH][CV] Nuevo caso de Cibervigilancia');
+            $message->attachData($pdf->output(), $surv->title . '.pdf');
+            $message->to($mailTo, \Auth::user()->person->fullName());
+            $message->subject('[GCS-IH][Cibervigilancia] Nuevo caso de Cibervigilancia');
         });
 
         return redirect()->route('surveillance.index')->withMessage('Nuevo caso de Cibervigilancia creado');
