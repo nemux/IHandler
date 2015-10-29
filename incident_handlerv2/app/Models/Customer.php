@@ -120,8 +120,24 @@ class Customer extends Model
         return $this->hasMany(CustomerPage::class, 'customer_id');
     }
 
+
+    /**
+     * Devuelve una lista con los casos de cibervigilancia del cliente
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function surveillances()
     {
         return $this->hasMany(SurveillanceCase::class, 'customer_id');
     }
+
+    /**
+     * Devuelve una lista de los sensores registrados al cliente
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sensors()
+    {
+        return $this->hasMany(CustomerSensor::class, 'customer_id');
+    }
+
+
 }

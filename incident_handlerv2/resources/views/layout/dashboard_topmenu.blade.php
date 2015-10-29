@@ -39,26 +39,26 @@
 
                 <p class="description">@yield('section_description')</p>
             </div>
-            <div class="breadcrumb-env">
-                <ol class="breadcrumb bc-1">
-                    <?php $href = '/'; ?>
-                    @foreach(explode('/', \Route::getCurrentRequest()->decodedPath()) as $index=>$crumb)
-                        <?php $href .= $crumb . '/'; ?>
-                        <li>
-                            @if($index==0)
-                                <i class="fa-home"></i>
-                            @endif
+            {{--<div class="breadcrumb-env">--}}
+            {{--<ol class="breadcrumb bc-1">--}}
+            <?php //$href = '/'; ?>
+            {{--@foreach(explode('/', \Route::getCurrentRequest()->decodedPath()) as $index=>$crumb)--}}
+            <?php //$href .= $crumb . '/'; ?>
+            {{--<li>--}}
+            {{--@if($index==0)--}}
+            {{--<i class="fa-home"></i>--}}
+            {{--@endif--}}
 
-                            @if($index==sizeof(explode('/', \Route::getCurrentRequest()->decodedPath()))-1)
-                                <strong>{{ucfirst($crumb)}}</strong>
-                            @else
-                                <a href='{{$href}}'>{{ucfirst($crumb)}}</a>
-                            @endif
+            {{--@if($index==sizeof(explode('/', \Route::getCurrentRequest()->decodedPath()))-1)--}}
+            {{--<strong>{{ucfirst($crumb)}}</strong>--}}
+            {{--@else--}}
+            {{--<a href='{{$href}}'>{{ucfirst($crumb)}}</a>--}}
+            {{--@endif--}}
 
-                        </li>
-                    @endforeach
-                </ol>
-            </div>
+            {{--</li>--}}
+            {{--@endforeach--}}
+            {{--</ol>--}}
+            {{--</div>--}}
             <div class="col-md-12">
 
                 @if (count($errors) > 0)

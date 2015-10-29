@@ -77,6 +77,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
             Route::post('/edit/{id}', ['as' => 'customer.page.update', 'uses' => 'CustomerPageController@update']);
             Route::delete('/{id}', ['as' => 'customer.page.destroy', 'uses' => 'CustomerPageController@destroy']);
         });
+
+        Route::group(['prefix' => 'sensor'], function () {
+            Route::post('/create', ['as' => 'sensor.store', 'uses' => 'CustomerSensorController@store']);
+            Route::get('/{id}', ['as' => 'sensor.show', 'uses' => 'CustomerSensorController@show']);
+            Route::get('/edit/{id}', ['as' => 'sensor.edit', 'uses' => 'CustomerSensorController@edit']);
+            Route::post('/edit/{id}', ['as' => 'sensor.update', 'uses' => 'CustomerSensorController@update']);
+            Route::delete('/{id}', ['as' => 'sensor.destroy', 'uses' => 'CustomerSensorController@destroy']);
+        });
     });
 
     Route::group(['prefix' => 'surveillance'], function () {

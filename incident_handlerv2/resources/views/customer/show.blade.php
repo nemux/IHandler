@@ -28,6 +28,8 @@
                         {{Log::info("TAB: ".$tab)}}
                         <li class="{{ ($tab=='customer')?' active':'' }}"><a href="#customer_info" data-toggle="tab">Información
                                 General</a></li>
+                        <li class="{{($tab=='sensor')?' active':''}}"><a href="#customer_sensor" data-toggle="tab">Sensores</a>
+                        </li>
                         <li class="{{ ($tab=='asset')?' active':'' }}"><a href="#customer_assets" data-toggle="tab">Activos</a>
                         </li>
                         <li class="{{ ($tab=='employee')?' active':'' }}"><a href="#customer_employees"
@@ -77,6 +79,9 @@
                                     </div>
                                 </div>
                             </section>
+                        </div>
+                        <div class="tab-pane {{ ($tab=='sensor')?' active':'' }}" id="customer_sensor">
+                            @include('customer.sensor.index')
                         </div>
                         <div class="tab-pane {{ ($tab=='asset')?' active':'' }}" id="customer_assets">
                             @include('customer.asset.index')
