@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonContact;
-use App\Models\SurveillanceCase;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Library\InlineCss;
+use App\Library\Otrs\OtrsClient;
 
 class IncidentController extends Controller
 {
@@ -18,7 +15,11 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        //
+        $client = new OtrsClient();
+
+        $ticket = $client->createTicket("Test Title", 5, "ctest", "dlopez@globalcybersec.com", "Body of the ticket TEST");
+
+        return \Response::json($ticket);
     }
 
     /**
