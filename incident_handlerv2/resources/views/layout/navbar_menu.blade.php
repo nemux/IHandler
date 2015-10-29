@@ -28,6 +28,7 @@
         </div>
         <!-- main menu -->
         <ul class="navbar-nav" id="main-menu">
+            {{--Incidentes--}}
             <li>
                 <a class="l1" href="{{route('incident.index')}}">
                     <i class="fa-exclamation-triangle"></i>
@@ -41,56 +42,7 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <a class="l1" href="{{route('user.index')}}">
-                    <i class="fa-user"></i>
-                    <span class="title">Usuarios</span>
-                </a>
-                <ul>
-                    {{--Niveles de acceso según rol--}}
-                    @if(Auth::user()->isAdmin())
-                        <li>
-                            <a class="l2" href="{{route('user.create')}}">
-                                <i class="fa-plus"></i>
-                                <span class="title">Agregar Usuario</span>
-                            </a>
-                        </li>
-                    @endif
-                </ul>
-            </li>
-            <li>
-                <a class="l1" href="{{route('customer.index')}}">
-                    <i class="fa-suitcase"></i>
-                    <span class="title">Clientes</span>
-                </a>
-                <ul>
-                    {{--Niveles de acceso según rol--}}
-                    @if(Auth::user()->isAdmin())
-                        <li>
-                            <a class="l2" href="{{route('customer.create')}}">
-                                <i class="fa-plus"></i>
-                                <span class="title">Agregar Cliente</span>
-                            </a>
-                        </li>
-                    @endif
-                </ul>
-            </li>
-            @if(Auth::user()->isAdmin())
-                <li>
-                    <a class="l1">
-                        <i class="fa-ticket"></i>
-                        <span class="title">OTRS</span>
-                    </a>
-                    <ul>
-                        <li>
-                            <a class="l2" href="{{route('otrs.index')}}">
-                                <i class="fa-download"></i>
-                                <span class="title">Importar Información</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endif
+            {{--Cibervigilancia--}}
             <li>
                 <a class="l1" href="{{route('surveillance.index')}}">
                     <i class="fa-eye"></i>
@@ -105,6 +57,39 @@
                     </li>
                 </ul>
             </li>
+            @if(Auth::user()->isAdmin())
+                {{--Administrar el sistema--}}
+                <li>
+                    <a class="l1">
+                        <i class="fa fa-gears"></i>
+                        <span class="title">Administrar Sistema</span>
+                    </a>
+                    <ul>
+                        {{--OTRS--}}
+                        <li>
+                            <a class="l1" href="{{route('otrs.index')}}">
+                                <i class="fa-ticket"></i>
+                                <span class="title">OTRS</span>
+                            </a>
+                        </li>
+                        {{--Clientes--}}
+                        <li>
+                            <a class="l1" href="{{route('customer.index')}}">
+                                <i class="fa-suitcase"></i>
+                                <span class="title">Clientes</span>
+                            </a>
+                        </li>
+                        {{--Usuarios--}}
+                        <li>
+                            <a class="l1" href="{{route('user.index')}}">
+                                <i class="fa-user"></i>
+                                <span class="title">Usuarios</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            @endif
         </ul>
         <ul class="nav nav-userinfo navbar-right">
             <li class="dropdown user-profile">
@@ -139,30 +124,20 @@
 </nav>
 <script>
     $(document).ready(function () {
-//        console.log('ready2');
-
         $('#main-menu li a').each(function (index) {
-//            console.log(index);
             var path = window.location.href;
-//            console.log('Path: ' + path);
             var href = $(this).attr('href');
-//            console.log('Url: ' + href);
-
-//            console.log();
 
             if ($(this).attr("class") == 'l1') { //Validate if the menu item level is one
                 if (path.indexOf(href) >= 0) {
-//                    console.log('contains text');
                     $(this.parentNode).addClass('opened active expanded');
                 }
             }
             if ($(this).attr("class") == 'l2') {//Validate if the menu item level is two
                 if (href == path) {
-//                    console.log('equals text');
                     $(this.parentNode).addClass('active');
                 }
             }
         });
-
     });
 </script>

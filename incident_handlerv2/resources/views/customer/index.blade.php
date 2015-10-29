@@ -25,7 +25,16 @@
 
 @section('dashboard_content')
     <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Lista de Clientes</h3>
+        <div class="panel-heading">
+            <h3 class="panel-title">Lista de Clientes</h3>
+            <br/>
+
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{route('customer.create')}}">
+                    <i class="fa fa-plus"></i>
+                    <span class="title">Agregar Cliente</span>
+                </a>
+            </div>
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped" id="customers-table">

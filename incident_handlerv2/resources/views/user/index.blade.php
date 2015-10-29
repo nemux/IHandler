@@ -29,11 +29,13 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Lista de Usuarios</h3>
+            <h3 class="panel-title">Lista de Usuarios</h3><br/>
 
-            <div class="panel-options"><a href="#" data-toggle="panel">
-                    <span class="collapse-icon">&ndash;</span>
-                    <span class="expand-icon">+</span> </a>
+            <div class="btn-group">
+                <a class="btn btn-success" href="{{route('user.create')}}">
+                    <i class="fa fa-plus"></i>
+                    <span class="title">Agregar Usuario</span>
+                </a>
             </div>
         </div>
         <div class="panel-body">
