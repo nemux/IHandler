@@ -47,12 +47,15 @@
                     <span class="title">Usuarios</span>
                 </a>
                 <ul>
-                    <li>
-                        <a class="l2" href="{{route('user.create')}}">
-                            <i class="fa-plus"></i>
-                            <span class="title">Agregar Usuario</span>
-                        </a>
-                    </li>
+                    {{--Niveles de acceso según rol--}}
+                    @if(Auth::user()->isAdmin())
+                        <li>
+                            <a class="l2" href="{{route('user.create')}}">
+                                <i class="fa-plus"></i>
+                                <span class="title">Agregar Usuario</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             <li>
@@ -61,14 +64,33 @@
                     <span class="title">Clientes</span>
                 </a>
                 <ul>
-                    <li>
-                        <a class="l2" href="{{route('customer.create')}}">
-                            <i class="fa-plus"></i>
-                            <span class="title">Agregar Cliente</span>
-                        </a>
-                    </li>
+                    {{--Niveles de acceso según rol--}}
+                    @if(Auth::user()->isAdmin())
+                        <li>
+                            <a class="l2" href="{{route('customer.create')}}">
+                                <i class="fa-plus"></i>
+                                <span class="title">Agregar Cliente</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
+            @if(Auth::user()->isAdmin())
+                <li>
+                    <a class="l1">
+                        <i class="fa-ticket"></i>
+                        <span class="title">OTRS</span>
+                    </a>
+                    <ul>
+                        <li>
+                            <a class="l2" href="{{route('otrs.index')}}">
+                                <i class="fa-download"></i>
+                                <span class="title">Importar Información</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
             <li>
                 <a class="l1" href="{{route('surveillance.index')}}">
                     <i class="fa-eye"></i>

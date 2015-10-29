@@ -35,6 +35,10 @@ use Illuminate\Http\Request;
  * @property string $logo
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereMimetype($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereLogo($value)
+ * @property string $otrs_customer_id
+ * @property string $otrs_user_id
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereOtrsCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer whereOtrsUserId($value)
  */
 class Customer extends Model
 {

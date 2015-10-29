@@ -26,11 +26,6 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading"><h3 class="panel-title">Lista de Clientes</h3>
-
-            <div class="panel-options"><a href="#" data-toggle="panel">
-                    <span class="collapse-icon">&ndash;</span>
-                    <span class="expand-icon">+</span> </a>
-            </div>
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped" id="customers-table">

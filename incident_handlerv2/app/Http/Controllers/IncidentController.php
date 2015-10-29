@@ -15,11 +15,15 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $client = new OtrsClient();
-
-        $ticket = $client->createTicket("Test Title", 5, "ctest", "dlopez@globalcybersec.com", "Body of the ticket TEST");
-
-        return \Response::json($ticket);
+//        $client = new OtrsClient();
+//
+////        $result = $client->createTicket("Test Title", 5, "ctest", "dlopez@globalcybersec.com", "<h1>lala</h1><br/>Body of the ticket TEST");
+////        $result = $client->closeTicket(2, "Nothing nothing");
+////        $result = $client->getUsers();
+////        $result=$client->getUserInfo('admin');
+//        $result = $client->getCustomers();
+//
+//        return \Response::json($result);
     }
 
     /**

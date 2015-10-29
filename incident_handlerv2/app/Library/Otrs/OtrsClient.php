@@ -3,6 +3,7 @@
 namespace App\Library\Otrs;
 
 use SoapClient;
+use SoapFault;
 
 class OtrsClient
 {
@@ -70,7 +71,7 @@ class OtrsClient
      *
      * @return array
      */
-    public function getCustomers()
+    public function getCustomerUsers()
     {
         try {
             $customersList = $this->client->__soapCall("Dispatch",
@@ -176,8 +177,6 @@ class OtrsClient
                     'Body' => $body
                 ),
             ));
-
-            \Log::info($articleId);
 
             return $this->returnSoapData($articleId);
         } catch (SoapFault $s) {
@@ -333,11 +332,8 @@ class OtrsClient
         try {
             $userInfo = $this->getUserInfo($this->agent);
 
-            \Log::info($userInfo);
-
             if (isset($userInfo['error_code']))
                 throw new Exception($userInfo);
-
 
             # Create a new ticket. The function returns the Ticket ID.
             $ticketId = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
@@ -356,15 +352,11 @@ class OtrsClient
             # returns an Article ID.
             $articleId = $this->createArticle($ticketId, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customerMail, $body);
 
-            \Log::info($articleId);
-
             if (isset($articleId['error_code']))
                 throw new Exception($articleId);
 
             // Use the Ticket ID to retrieve the Ticket Number.
             $ticketNumber = $this->getTicketNumber($ticketId);
-
-            \Log::info($ticketNumber);
 
             if (isset($ticketNumber['error_code']))
                 throw new Exception($ticketNumber);
@@ -373,8 +365,6 @@ class OtrsClient
             // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
             // $big_integer = 1202400000;
             $formattedTicketNumber = number_format($ticketNumber['TicketNr'], 0, '.', '');
-
-            \Log::info($formattedTicketNumber);
 
             return array("response_status" => 0, "TicketID" => $ticketId, "ArticleID" => $articleId, "TicketNumber" => $formattedTicketNumber);
         } catch (Exception $e) {
@@ -428,6 +418,8 @@ class OtrsClient
     }
 
     /**
+     * Cierra un ticket
+     *
      * @param $ticketID
      * @param $message
      * @return array
@@ -452,7 +444,7 @@ class OtrsClient
                 throw new Exception($customerInfo);
 
 
-            $articleID = $this->createTicket($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo['UserEmail'], $message);
+            $articleID = $this->createArticle($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo['UserEmail'], $message);
 
             if (isset($articleID['error_code']))
                 throw new Exception($articleID);
@@ -464,12 +456,15 @@ class OtrsClient
                 "ArticleID", $articleID['ArticleID'],
                 "UserID", $userInfo['UserID']
             ));
+
+            //TODO ¿En verdad es necesario bloquear el ticket una vez cerrado?
             $success2 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                 "TicketObject", "TicketLockSet",
                 "Lock", "lock",
                 "TicketID", $ticketID,
                 "UserID", $userInfo['UserID']
             ));
+
             if ($success1 && $success2)
                 return array("response_status" => 0);
             else

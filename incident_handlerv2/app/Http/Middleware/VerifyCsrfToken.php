@@ -12,6 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'dashboard/evidence/upload/surveillance'
+        'dashboard/evidence/upload/surveillance',
+        'dashboard/otrs/customer/synch'
     ];
 }

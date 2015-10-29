@@ -138,4 +138,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->belongsTo('App\Models\UserType', 'user_type_id');
     }
+
+    public function isAdmin()
+    {
+        return ($this->type->name === 'admin');
+    }
 }

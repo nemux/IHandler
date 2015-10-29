@@ -97,4 +97,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'evidence'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
     });
+
+    Route::group(['prefix' => 'otrs'], function () {
+        Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index']);
+        Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch']);
+    });
 });
