@@ -34,56 +34,56 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', ['as' => 'user.index', 'uses' => 'UserController@index']);
-        Route::get('/create', ['as' => 'user.create', 'uses' => 'UserController@create']);
-        Route::post('/create', ['as' => 'user.create', 'uses' => 'UserController@store']);
+        Route::get('/create', ['as' => 'user.create', 'uses' => 'UserController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'user.create', 'uses' => 'UserController@store', 'middleware' => 'role:admin']);
         Route::get('/{user}', ['as' => 'user.show', 'uses' => 'UserController@show']);
-        Route::get('/edit/{user}', ['as' => 'user.edit', 'uses' => 'UserController@edit']);
-        Route::post('/edit/{user}', ['as' => 'user.update', 'uses' => 'UserController@update']);
-        Route::delete('/{user}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy']);
+        Route::get('/edit/{user}', ['as' => 'user.edit', 'uses' => 'UserController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{user}', ['as' => 'user.update', 'uses' => 'UserController@update', 'middleware' => 'role:admin']);
+        Route::delete('/{user}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy', 'middleware' => 'role:admin']);
 
-        Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass']);
+        Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass', 'middleware' => 'role:admin']);
     });
 
     Route::group(['prefix' => 'customer'], function () {
         Route::get('/', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
-        Route::get('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@create']);
-        Route::post('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@store']);
-        Route::delete('/{id}', ['as' => 'customer.destroy', 'uses' => 'CustomerController@destroy']);
+        Route::get('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'customer.destroy', 'uses' => 'CustomerController@destroy', 'middleware' => 'role:admin']);
         Route::get('/{id}', ['as' => 'customer.show', 'uses' => 'CustomerController@show']);
-        Route::get('/edit/{id}', ['as' => 'customer.edit', 'uses' => 'CustomerController@edit']);
-        Route::post('/edit/{id}', ['as' => 'customer.update', 'uses' => 'CustomerController@update']);
+        Route::get('/edit/{id}', ['as' => 'customer.edit', 'uses' => 'CustomerController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'customer.update', 'uses' => 'CustomerController@update', 'middleware' => 'role:admin']);
 
         Route::group(['prefix' => 'asset'], function () {
-            Route::post('/create', ['as' => 'asset.store', 'uses' => 'CustomerAssetController@store']);
+            Route::post('/create', ['as' => 'asset.store', 'uses' => 'CustomerAssetController@store', 'middleware' => 'role:admin']);
             Route::get('/{id}', ['as' => 'asset.show', 'uses' => 'CustomerAssetController@show']);
-            Route::get('/edit/{id}', ['as' => 'asset.edit', 'uses' => 'CustomerAssetController@edit']);
-            Route::post('/edit/{id}', ['as' => 'asset.update', 'uses' => 'CustomerAssetController@update']);
-            Route::delete('/{id}', ['as' => 'asset.destroy', 'uses' => 'CustomerAssetController@destroy']);
+            Route::get('/edit/{id}', ['as' => 'asset.edit', 'uses' => 'CustomerAssetController@edit', 'middleware' => 'role:admin']);
+            Route::post('/edit/{id}', ['as' => 'asset.update', 'uses' => 'CustomerAssetController@update', 'middleware' => 'role:admin']);
+            Route::delete('/{id}', ['as' => 'asset.destroy', 'uses' => 'CustomerAssetController@destroy', 'middleware' => 'role:admin']);
         });
 
         Route::group(['prefix' => 'employee'], function () {
             Route::get('/create/{customer_id}', ['as' => 'employee.create', 'uses' => 'CustomerEmployeeController@create']);
             Route::post('/create/{customer_id}', ['as' => 'employee.store', 'uses' => 'CustomerEmployeeController@store']);
             Route::get('/{id}', ['as' => 'employee.show', 'uses' => 'CustomerEmployeeController@show']);
-            Route::get('/edit/{id}', ['as' => 'employee.edit', 'uses' => 'CustomerEmployeeController@edit']);
-            Route::post('/edit/{id}', ['as' => 'employee.update', 'uses' => 'CustomerEmployeeController@update']);
-            Route::delete('/{id}', ['as' => 'employee.destroy', 'uses' => 'CustomerEmployeeController@destroy']);
+            Route::get('/edit/{id}', ['as' => 'employee.edit', 'uses' => 'CustomerEmployeeController@edit', 'middleware' => 'role:admin']);
+            Route::post('/edit/{id}', ['as' => 'employee.update', 'uses' => 'CustomerEmployeeController@update', 'middleware' => 'role:admin']);
+            Route::delete('/{id}', ['as' => 'employee.destroy', 'uses' => 'CustomerEmployeeController@destroy', 'middleware' => 'role:admin']);
         });
 
         Route::group(['prefix' => 'page'], function () {
-            Route::post('/create', ['as' => 'customer.page.store', 'uses' => 'CustomerPageController@store']);
+            Route::post('/create', ['as' => 'customer.page.store', 'uses' => 'CustomerPageController@store', 'middleware' => 'role:admin']);
             Route::get('/{id}', ['as' => 'customer.page.show', 'uses' => 'CustomerPageController@show']);
-            Route::get('/edit/{id}', ['as' => 'customer.page.edit', 'uses' => 'CustomerPageController@edit']);
-            Route::post('/edit/{id}', ['as' => 'customer.page.update', 'uses' => 'CustomerPageController@update']);
-            Route::delete('/{id}', ['as' => 'customer.page.destroy', 'uses' => 'CustomerPageController@destroy']);
+            Route::get('/edit/{id}', ['as' => 'customer.page.edit', 'uses' => 'CustomerPageController@edit', 'middleware' => 'role:admin']);
+            Route::post('/edit/{id}', ['as' => 'customer.page.update', 'uses' => 'CustomerPageController@update', 'middleware' => 'role:admin']);
+            Route::delete('/{id}', ['as' => 'customer.page.destroy', 'uses' => 'CustomerPageController@destroy', 'middleware' => 'role:admin']);
         });
 
         Route::group(['prefix' => 'sensor'], function () {
-            Route::post('/create', ['as' => 'sensor.store', 'uses' => 'CustomerSensorController@store']);
+            Route::post('/create', ['as' => 'sensor.store', 'uses' => 'CustomerSensorController@store', 'middleware' => 'role:admin']);
             Route::get('/{id}', ['as' => 'sensor.show', 'uses' => 'CustomerSensorController@show']);
-            Route::get('/edit/{id}', ['as' => 'sensor.edit', 'uses' => 'CustomerSensorController@edit']);
-            Route::post('/edit/{id}', ['as' => 'sensor.update', 'uses' => 'CustomerSensorController@update']);
-            Route::delete('/{id}', ['as' => 'sensor.destroy', 'uses' => 'CustomerSensorController@destroy']);
+            Route::get('/edit/{id}', ['as' => 'sensor.edit', 'uses' => 'CustomerSensorController@edit', 'middleware' => 'role:admin']);
+            Route::post('/edit/{id}', ['as' => 'sensor.update', 'uses' => 'CustomerSensorController@update', 'middleware' => 'role:admin']);
+            Route::delete('/{id}', ['as' => 'sensor.destroy', 'uses' => 'CustomerSensorController@destroy', 'middleware' => 'role:admin']);
         });
     });
 
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::group(['prefix' => 'otrs'], function () {
-        Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index']);
-        Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch']);
+        Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index', 'middleware' => 'role:admin']);
+        Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
     });
 });

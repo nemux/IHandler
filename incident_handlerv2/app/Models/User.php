@@ -143,4 +143,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return ($this->type->name === 'admin');
     }
+
+    /**
+     * Valida si el usuario tiene ese rol definido
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->type->name===$role;
+    }
 }
