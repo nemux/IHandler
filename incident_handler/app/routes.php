@@ -10,6 +10,18 @@
 |
 */
 
+/**
+ * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
+ */
+//Event::listen('illuminate.query', function($sql, $bindings)
+//{
+//    foreach ($bindings as $val) {
+//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+//    }
+//
+//    Log::info($sql);
+//});
+
 Route::get('/', 'HomeController@index');
 
 Route::get('dashboard', array('before' => 'auth', 'uses' => 'HomeController@dashboard'));
@@ -104,23 +116,60 @@ Route::group(array('before' => 'auth', 'prefix' => 'incident'), function () {
     Route::post('observation/attend', 'IncidentController@attendObservation');
 });
 
-Route::group(array('before' => 'admin', 'prefix' => 'signatures'), function () {
+Route::group(array('before' => 'auth', 'prefix' => 'signatures'), function () {
     Route::get('/', ['as' => 'signatures.index', 'uses' => 'SignatureController@index']);
     Route::post('/create', 'SignatureController@store');
 });
 
-Route::group(array('before' => 'admin', 'prefix' => 'customer'), function () {
+Route::group(array('before' => 'auth', 'prefix' => 'customer'), function () {
+
+    Route::group(['before' => 'admin'], function () {
+
+        Route::get('create', 'CustomerController@create');
+        Route::post('create', 'CustomerController@create');
+        Route::get('update/{id}', 'CustomerController@getUpdate')->where(array('id' => '^[0-9]+$'));
+        Route::post('update', 'CustomerController@postUpdate');
+        Route::post('importCustomers', 'OtrsController@importCustomers');
+    });
+
+    Route::get('/', 'CustomerController@index');
+    Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
 
     # User Routes
-    Route::get('/', 'CustomerController@index');
-    Route::get('create', 'CustomerController@create');
-    Route::post('create', 'CustomerController@create');
-    Route::get('update/{id}', 'CustomerController@getUpdate')->where(array('id' => '^[0-9]+$'));
-    Route::post('update', 'CustomerController@postUpdate');
-    Route::get('view/{id}', 'CustomerController@view')->where(array('id' => '^[0-9]+$'));
-    Route::post('importCustomers', 'OtrsController@importCustomers');
+
+
+    #Store data of Customer
+    Route::post('store/asset', 'CustomerController@storeAsset');
+    Route::post('store/employee', 'CustomerController@storeEmployee');
+    Route::post('store/page', 'CustomerController@storePage');
+    Route::post('store/socialmedia', 'CustomerController@storeSocialmedia');
+
+    #Update data of Customer
+    Route::get('edit/asset/{id}', ['as' => 'edit-asset', 'uses' => 'CustomerController@editAsset']);
+    Route::post('edit/asset', ['as' => 'update-asset', 'uses' => 'CustomerController@updateAsset']);
+
+    Route::get('edit/employee/{id}', ['as' => 'edit-employee', 'uses' => 'CustomerController@editEmployee']);
+    Route::post('edit/employee', ['as' => 'update-employee', 'uses' => 'CustomerController@updateEmployee']);
+
+    Route::get('edit/socialmedia/{id}', ['as' => 'edit-socialmedia', 'uses' => 'CustomerController@editSocialmedia']);
+    Route::post('edit/socialmedia', ['as' => 'update-socialmedia', 'uses' => 'CustomerController@updateSocialmedia']);
+
+    Route::get('edit/page/{id}', ['as' => 'edit-page', 'uses' => 'CustomerController@editPage']);
+    Route::post('edit/page', ['as' => 'update-page', 'uses' => 'CustomerController@updatePage']);
+
+    #Catalogs
+//    Route::get('catalog/page_type', 'CustomerController@pageTypes');
+
+    #Reports
+    Route::post('cybersurv/report', 'CustomerController@cvReport');
+    Route::post('cybersurv/mail', 'CustomerController@cvMail');
 
     #Admin Routes
+});
+
+Route::group(['before' => 'auth', 'prefix' => 'cybersurv'], function () {
+    Route::get('report/page', ['as' => 'cs-page', 'uses' => 'CybersurveillanceController@reportPage']);
+    Route::get('report/socialmedia', ['as' => 'cs-socialmedia', 'uses' => 'CybersurveillanceController@reportSocialmedia']);
 });
 
 

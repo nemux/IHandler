@@ -123,7 +123,7 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\DomPDF\ServiceProvider',
 //        'Torann\GeoIP\GeoIPServiceProvider',
-//        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 
     ),
 
@@ -193,5 +193,6 @@ return array(
         'View' => 'Illuminate\Support\Facades\View',
         'PDF' => 'Barryvdh\DomPDF\Facade',
 //        'GeoIP' => 'Torann\GeoIP\GeoIPFacade',
+        'PhpWord' => 'PhpOffice\PhpWord\PhpWord',
     ),
 );

@@ -19,6 +19,7 @@ class CreateIncidentHasSignatures extends Migration
             $table->integer('signatures_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
+
             $table->foreign('incidents_id')->references('id')->on('incidents');
             $table->foreign('signatures_id')->references('id')->on('signatures');
         });

@@ -110,9 +110,6 @@ class IncidentHandlerController extends Controller
             });
             return Redirect::to('/incident/');
         }
-        /*
-
-        */
     }
 
     public function postUpdate()

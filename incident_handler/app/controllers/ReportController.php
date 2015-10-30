@@ -1,12 +1,15 @@
 <?php
 
-class ReportController extends Controller{
+class ReportController extends Controller
+{
 
-    public function index() {
+    public function index()
+    {
         return View::make('report.incident');
     }
 
-    public  function view($type){
+    public function view($type)
+    {
 
         if ($type == 'ip')
             return View::make('report.ip');
@@ -19,10 +22,11 @@ class ReportController extends Controller{
         ));
     }
 
-    public function create(){
+    public function create()
+    {
         $input = Input::all();
-        $start_date = $input['start_date']. ' ' . '00:00:00';
-        $end_date = $input['end_date']. ' ' . '23:59:59';
+        $start_date = $input['start_date'] . ' ' . '00:00:00';
+        $end_date = $input['end_date'] . ' ' . '23:59:59';
         $customer_id = $input['customer'];
         $time_type = $input['time_type'];
 
@@ -37,8 +41,8 @@ class ReportController extends Controller{
         );
 
         $rules = array(
-            'start_date'=>'required|date_format:m/d/Y',
-            'end_date'=>'required|date_format:m/d/Y'
+            'start_date' => 'required|date_format:m/d/Y',
+            'end_date' => 'required|date_format:m/d/Y'
         );
 
         $validator = Validator::make($userData, $rules);
@@ -49,21 +53,22 @@ class ReportController extends Controller{
                     $ip_type = $input['ip_type'];
                     return $this->byTypeIP($start_date, $end_date, $time_type, $customer_id, $ip_type, $value);
                 } else if ($input['type'] == 'csv')
-                    return $this->csvFile($start_date,$end_date,$time_type,$customer_id);
-                  else
+                    return $this->csvFile($start_date, $end_date, $time_type, $customer_id);
+                else
                     return $this->byType($start_date, $end_date, $time_type, $customer_id, $type, $value);
             } else {
                 return $this->defaultReport($start_date, $end_date, $time_type, $customer_id);
             }
-            } else {
-                if (isset($input['type']))
-                    return Redirect::to('/report/' . $type);
-                else
-                    return Redirect::to('/report');
-            }
+        } else {
+            if (isset($input['type']))
+                return Redirect::to('/report/' . $type);
+            else
+                return Redirect::to('/report');
         }
+    }
 
-    public function ipDoc(){
+    public function ipDoc()
+    {
 
         $start_date = Input::get('s') . " 00:00:00";
         $end_date = Input::get('e') . " 23:59:59";
@@ -71,14 +76,14 @@ class ReportController extends Controller{
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition"=>"attachment;Filename=Reporte_ip.doc"
+            "Content-Disposition" => "attachment;Filename=Reporte_ip.doc"
         );
 
         $ips = DB::table('occurrences AS O')->select('O.ip')->distinct()
-            ->join('incidents_occurences AS IO',$ip_type == 'source_id' ? 'IO.source_id' : 'IO.destiny_id','=','O.id')
+            ->join('incidents_occurences AS IO', $ip_type == 'source_id' ? 'IO.source_id' : 'IO.destiny_id', '=', 'O.id')
             ->whereNull('IO.deleted_at')
-            ->whereBetween('IO.created_at',array(new DateTime($start_date), new DateTime($end_date)))
-            ->where('O.ip','!=','')
+            ->whereBetween('IO.created_at', array(new DateTime($start_date), new DateTime($end_date)))
+            ->where('O.ip', '!=', '')
             ->get();
 
         $htmlReport = View::make('report.ip_table', array(
@@ -88,45 +93,47 @@ class ReportController extends Controller{
             'type' => $ip_type
         ))->render();
 
-        return Response::make($htmlReport,200,$headers);
+        return Response::make($htmlReport, 200, $headers);
     }
 
-    private function defaultReport($start_date, $end_date, $time_type,$customer_id){
+    private function defaultReport($start_date, $end_date, $time_type, $customer_id)
+    {
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
+            "Content-Disposition" => "attachment;Filename=Reporte_incidentes.doc"
         );
 
         if (Input::get('sensor_id') == 'all') {
             $sensors = Sensor::where('customers_id', '=', $customer_id)->get();
-            foreach($sensors as $s )
+            foreach ($sensors as $s)
                 $sensors_id[] = $s->id;
         } else
             $sensors_id[] = Input::get('sensor_id');
 
         $incidents = DB::table('incidents AS I')->select('I.id')
-            ->where('I.customers_id','=',$customer_id)
-            ->join('time AS T',"I.id",'=','T.incidents_id')
-            ->where('T.time_types_id','=',$time_type)
-            ->whereIn('I.sensors_id',$sensors_id)
-            ->whereBetween('T.datetime',array(new DateTime($start_date), new DateTime($end_date)))
-            ->orderBy('T.datetime','asc')
+            ->where('I.customers_id', '=', $customer_id)
+            ->join('time AS T', "I.id", '=', 'T.incidents_id')
+            ->where('T.time_types_id', '=', $time_type)
+            ->whereIn('I.sensors_id', $sensors_id)
+            ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+            ->orderBy('T.datetime', 'asc')
             ->get();
 
         $htmlReport = $this->renderDocReport($incidents);
-        return Response::make($htmlReport,200,$headers);
+        return Response::make($htmlReport, 200, $headers);
     }
 
-    private function byType($start_date, $end_date, $time_type,$customer_id,$type,$value){
+    private function byType($start_date, $end_date, $time_type, $customer_id, $type, $value)
+    {
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition"=>"attachment;Filename=Reporte_incidentes.doc"
+            "Content-Disposition" => "attachment;Filename=Reporte_incidentes.doc"
         );
         $sensors_id = array();
 
         $field = "";
-        switch($type){
+        switch ($type) {
             case 'handler':
                 $field = "I.incident_handler_id";
                 break;
@@ -146,7 +153,7 @@ class ReportController extends Controller{
 
         if (Input::get('sensor_id') == 'all') {
             $sensors = Sensor::where('customers_id', '=', $customer_id)->get();
-            foreach($sensors as $s )
+            foreach ($sensors as $s)
                 $sensors_id[] = $s->id;
         } else
             $sensors_id[] = Input::get('sensor_id');
@@ -156,17 +163,17 @@ class ReportController extends Controller{
             ->where($field, '=', $value)
             ->join('time AS T', "I.id", '=', 'T.incidents_id')
             ->where('T.time_types_id', '=', $time_type)
-            ->whereIn('I.sensors_id',$sensors_id)
+            ->whereIn('I.sensors_id', $sensors_id)
             ->whereNull('I.deleted_at')
             ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
-            ->orderBy('T.datetime','asc')
+            ->orderBy('T.datetime', 'asc')
             ->get();
 
         $htmlReport = $this->renderDocReport($incidents);
-        return Response::make($htmlReport,200,$headers);
+        return Response::make($htmlReport, 200, $headers);
     }
 
-    private function byTypeIP($start_date, $end_date, $time_type,$customer_id,$ip_type,$value)
+    private function byTypeIP($start_date, $end_date, $time_type, $customer_id, $ip_type, $value)
     {
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
@@ -183,7 +190,7 @@ class ReportController extends Controller{
                 ->whereNull('I.deleted_at')
                 ->where('T.time_types_id', '=', $time_type)
                 ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
-                ->orderBy('T.datetime','asc')
+                ->orderBy('T.datetime', 'asc')
                 ->get();
         } else {
             $ips = explode(',', $value);
@@ -196,7 +203,7 @@ class ReportController extends Controller{
                 ->where('T.time_types_id', '=', $time_type)
                 ->where('I.customers_id', '=', $customer_id)
                 ->whereBetween('T.datetime', array(new DateTime($start_date), new DateTime($end_date)))
-                ->orderBy('T.datetime','asc')
+                ->orderBy('T.datetime', 'asc')
                 ->get();
         }
 
@@ -204,61 +211,62 @@ class ReportController extends Controller{
         return Response::make($htmlReport, 200, $headers);
     }
 
-    private function csvFile($start_date,$end_date,$time_type,$customer_id){
+    private function csvFile($start_date, $end_date, $time_type, $customer_id)
+    {
 
         //Incidentes que tienen un ticket en el sistema
         $incidents = $incidents = DB::table('incidents AS I')->distinct()->select('I.id', 'Tim.datetime')
-                                ->join('time AS Tim',"I.id",'=','Tim.incidents_id')
-                                ->join('tickets as Tik','I.id','=','Tik.incidents_id')
-                                ->where('I.customers_id','=',$customer_id)
-                                ->where('Tim.time_types_id','=',$time_type)
-                                ->whereNull('Tik.deleted_at')
-                                ->whereBetween('Tim.datetime',array(new DateTime($start_date), new DateTime($end_date)))
-                                ->orderBy('Tim.datetime','asc')
-                                ->get();
+            ->join('time AS Tim', "I.id", '=', 'Tim.incidents_id')
+            ->join('tickets as Tik', 'I.id', '=', 'Tik.incidents_id')
+            ->where('I.customers_id', '=', $customer_id)
+            ->where('Tim.time_types_id', '=', $time_type)
+            ->whereNull('Tik.deleted_at')
+            ->whereBetween('Tim.datetime', array(new DateTime($start_date), new DateTime($end_date)))
+            ->orderBy('Tim.datetime', 'asc')
+            ->get();
 
         $report_info = $this->getIncidentsInfo($incidents);
 
         // the csv file with the first row
         $output = implode(",", array('Titulo', 'Categoria',
-                                     'Sensores','Ticket','Estatus',
-                                     'Indicador_de_compromiso_inicial','Flujo_de_ataque', 'Fecha_de_deteccion',
-                                     'Severidad','IP_de_origen','IP_de_destino',
-                                     'Blacklist','Descripcion','Recomendacion',
-                                     'Referencias','Anexos'));
+            'Sensores', 'Ticket', 'Estatus',
+            'Indicador_de_compromiso_inicial', 'Flujo_de_ataque', 'Fecha_de_deteccion',
+            'Severidad', 'IP_de_origen', 'IP_de_destino',
+            'Blacklist', 'Descripcion', 'Recomendacion',
+            'Referencias', 'Anexos'));
         $output .= "\n";
         $tmp_str = "";
 
-        foreach ($incidents as  $i) {
+        foreach ($incidents as $i) {
             $incident = Incident::find($i->id);
             $tmp = 0;
 
             $tmp_str = $incident->title;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $title = "\"" . $tmp_str . "\"";
 
 
             //Puede haber varias categorias
-            $tmp_str = "[" . ($incident->category->id -1) . "|" . $incident->category->name . "|" . $incident->category->description . "]";
+            $tmp_str = "[" . ($incident->category->id - 1) . "|" . $incident->category->name . "|" . $incident->category->description . "]";
             foreach ($incident->extraCategory as $ec)
-                $tmp_str .= "[" . ($ec->category->id -1) . "|" . $ec->category->name . "|" . $ec->category->description . "]";
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+                $tmp_str .= "[" . ($ec->category->id - 1) . "|" . $ec->category->name . "|" . $ec->category->description . "]";
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $categorias = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->sensor->name;
             foreach ($incident->extraSensor as $es)
                 $tmp_str .= "|" . $es->sensor->name;
-            $tmp_str =  str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $sensor = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->ticket->internal_number;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $ticket = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->status->name;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $status = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
@@ -269,20 +277,20 @@ class ReportController extends Controller{
                 $tmp_str .= $r->rule->message;
                 $tmp++;
             }
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $rules = "\"" . $tmp_str . "\"";
 
             $tmp_str = $incident->stream;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $flujo_ataque = "\"" . $tmp_str . "\"";
 
-            $tmp_str = $report_info[$incident->id]['det_time']['datetime'] .",". $report_info[$incident->id]['det_time']['zone'];
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = $report_info[$incident->id]['det_time']['datetime'] . "," . $report_info[$incident->id]['det_time']['zone'];
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $occurrence_datetime = "\"" . $tmp_str . "\"";
 
 
             $tmp_str = $incident->criticity;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $severidad = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
@@ -295,35 +303,35 @@ class ReportController extends Controller{
                     $tmp++;
                 }
             }
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $ip_origen = "\"" . $tmp_str . "\"";
 
             $tmp = 0;
             $tmp_str = "";
             foreach ($incident->srcDst as $ip) {
-                if ($ip->dst->ip!="" && $ip->dst->show != false) {
+                if ($ip->dst->ip != "" && $ip->dst->show != false) {
                     if ($tmp > 0)
                         $tmp_str .= "|";
                     $tmp_str .= $ip->dst->ip;
                     $tmp++;
                 }
             }
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $ip_destino = "\"" . $tmp_str . "\"";
 
             $tmp_str = "";
             if (count($report_info[$incident->id]['listed']) > 0) {
-                for ($i = 0; $i < count($report_info[$incident->id]['listed']); $i++){
-                    $tmp_str .= "[".$report_info[$incident->id]['listed'][$i]['ip'] . "|";
+                for ($i = 0; $i < count($report_info[$incident->id]['listed']); $i++) {
+                    $tmp_str .= "[" . $report_info[$incident->id]['listed'][$i]['ip'] . "|";
                     $tmp_str .= isset($report_info[$incident->id]['location'][$i]) != null ? $report_info[$incident->id]['location'][$i]->location : "";
                     $tmp_str .= "]";
                 }
             }
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $blacklist = "\"" . $tmp_str . "\"";
 
-            $tmp_str = $incident->description ."\n" .  $incident->conclution;
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = $incident->description . "\n" . $incident->conclution;
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $descripcion = "\"" . $tmp_str . "\"";
 
             $tmp_str = "[" . $incident->recomendation;
@@ -332,28 +340,28 @@ class ReportController extends Controller{
                     $tmp_str .= "," . $report_info[$incident->id]['recomendations'][$i];
 
             $tmp_str .= "]";
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $recomendacion = "\"" . $tmp_str . "\"";
 
             if (isset($incident->reference->link)) {
                 $tmp_str = $incident->reference->link;
-                $tmp_str = str_replace("\"","\"\"",$tmp_str);
+                $tmp_str = str_replace("\"", "\"\"", $tmp_str);
                 $referencias = "\"" . $tmp_str . "\"";
             }
 
             $tmp_str = "";
-            foreach ($incident->annexes as $a )
+            foreach ($incident->annexes as $a)
                 $tmp_str .= "[" . $a->title . "|" . $a->field . "|" . $a->content . "]";
-            $tmp_str = str_replace("\"","\"\"",$tmp_str);
+            $tmp_str = str_replace("\"", "\"\"", $tmp_str);
             $anexos = "\"" . $tmp_str . "\"";
 
             $output .= implode(",", array(
                 $title, $categorias,
                 $sensor, $ticket, $status,
-                $rules,$flujo_ataque,$occurrence_datetime,
+                $rules, $flujo_ataque, $occurrence_datetime,
                 $severidad, $ip_origen, $ip_destino,
                 $blacklist, $descripcion, $recomendacion,
-                $referencias,$anexos));
+                $referencias, $anexos));
             $output .= "\n";
         }
 
@@ -367,45 +375,48 @@ class ReportController extends Controller{
         return Response::make(rtrim($output, "\n"), 200, $headers);
     }
 
-    private function getIncidentsInfo($incidents){
+    private function getIncidentsInfo($incidents)
+    {
         $report_info = array();
 
-        foreach ($incidents as $i){
-            $incident['det_time'] = Time::where('time_types_id','=','1')->where('incidents_id','=',$i->id)->first();
-            $incident['occ_time'] = Time::where('time_types_id','=','2')->where('incidents_id','=',$i->id)->first();
+        foreach ($incidents as $i) {
+            $incident['det_time'] = Time::where('time_types_id', '=', '1')->where('incidents_id', '=', $i->id)->first();
+            $incident['occ_time'] = Time::where('time_types_id', '=', '2')->where('incidents_id', '=', $i->id)->first();
             $listed = array();
-            $black_preview = IncidentOccurence::where("incidents_id","=",$i->id)->get();
+            $black_preview = IncidentOccurence::where("incidents_id", "=", $i->id)->get();
             $location = array();
             foreach ($black_preview as $b) {
                 if ($b->src->blacklist) {
-                    array_push($listed,$b->src);
-                    $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->src->id)->groupBy('location')->orderBy('hist','desc')->first();
-                    array_push($location,$loc);
+                    array_push($listed, $b->src);
+                    $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->src->id)->groupBy('location')->orderBy('hist', 'desc')->first();
+                    array_push($location, $loc);
                 }
                 if ($b->dst->blacklist) {
-                    array_push($listed,$b->dst);
-                    $loc=DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id',"=",$b->dst->id)->groupBy('location')->orderBy('hist','desc')->first();
-                    array_push($location,$loc);
+                    array_push($listed, $b->dst);
+                    $loc = DB::table('occurences_history')->select(DB::raw('max(datetime) as hist, location'))->where('occurences_id', "=", $b->dst->id)->groupBy('location')->orderBy('hist', 'desc')->first();
+                    array_push($location, $loc);
                 }
             }
 
             $incident['listed'] = $listed;
             $incident['location'] = $location;
-            $incident['recomendations'] = Recomendation::where('incidents_id','=',$i->id)->get();
+            $incident['recomendations'] = Recomendation::where('incidents_id', '=', $i->id)->get();
             $report_info[$i->id] = $incident;
         }
         return $report_info;
     }
 
-    private function renderDocReport($incidents, $introduction=null){
+    private function renderDocReport($incidents, $introduction = null)
+    {
 
         $report_info = $this->getIncidentsInfo($incidents);
 
         return View::make('report.doc', array(
             'incidents' => $incidents,
-            'report_info'=>$report_info,
+            'report_info' => $report_info,
             'body' => $introduction
         ))->render();
     }
 }
+
 ?>
