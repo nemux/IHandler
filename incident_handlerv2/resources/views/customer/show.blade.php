@@ -100,8 +100,5 @@
             </div>
         </div>
     </div>
-
+    @include('modal.confirm_delete')
 @endsection
-
-
-@include('modal.confirm_delete')

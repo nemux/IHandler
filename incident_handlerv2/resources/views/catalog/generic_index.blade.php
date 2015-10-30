@@ -63,6 +63,6 @@
             </table>
         </div>
     </div>
-@endsection
 
-@include('modal.confirm_delete')
+    @include('modal.confirm_delete')
+@endsection
