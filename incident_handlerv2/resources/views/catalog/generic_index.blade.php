@@ -24,7 +24,7 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Lista de {{$base->name}}s</h3>
+            <h3 class="panel-title">Lista de {{$base->name}}</h3>
             <br/>
 
             <div class="btn-group">

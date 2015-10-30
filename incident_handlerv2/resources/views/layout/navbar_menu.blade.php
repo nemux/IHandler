@@ -112,9 +112,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="l3">
+                                    <a class="l3" href="{{route('criticity.index')}}">
                                         <i class="fa fa-exclamation"></i>
-                                        <span class="title">Severidad</span>
+                                        <span class="title">Severidad (Criticidad)</span>
                                     </a>
                                 </li>
                                 <li>

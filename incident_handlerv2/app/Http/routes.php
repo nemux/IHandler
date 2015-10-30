@@ -120,4 +120,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy']);
         Route::get('/show/{id}', ['as' => 'attack.show', 'uses' => 'AttackTypeController@show']);
     });
+
+    Route::group(['prefix' => 'criticity', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'criticity.index', 'uses' => 'CriticityController@index']);
+        Route::get('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@edit']);
+        Route::post('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@update']);
+        Route::get('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@create']);
+        Route::post('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@store']);
+        Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy']);
+        Route::get('/show/{id}', ['as' => 'criticity.show', 'uses' => 'CriticityController@show']);
+    });
 });

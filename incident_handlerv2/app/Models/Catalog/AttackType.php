@@ -47,6 +47,11 @@ class AttackType extends Model
         ], [], AttackType::$attributeNames);
     }
 
+    public static function validateUpdate(Request $request, Controller $controller)
+    {
+        AttackType::validateCreate($request, $controller);
+    }
+
     public function parent()
     {
         return $this->belongsTo(AttackType::class, 'attack_type_parent_id');
