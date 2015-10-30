@@ -26,6 +26,7 @@ use Illuminate\Database\Query\Builder;
  * @method static Builder|AttackType whereCreatedAt($value)
  * @method static Builder|AttackType whereUpdatedAt($value)
  * @method static Builder|AttackType whereDeletedAt($value)
+ * @property-read AttackType $parent
  */
 class AttackType extends Model
 {

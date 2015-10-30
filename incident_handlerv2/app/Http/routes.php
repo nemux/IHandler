@@ -130,4 +130,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy']);
         Route::get('/show/{id}', ['as' => 'criticity.show', 'uses' => 'CriticityController@show']);
     });
+
+    Route::group(['prefix' => 'flow', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'flow.index', 'uses' => 'AttackFlowController@index']);
+        Route::get('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@edit']);
+        Route::post('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@update']);
+        Route::get('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@create']);
+        Route::post('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@store']);
+        Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy']);
+        Route::get('/show/{id}', ['as' => 'flow.show', 'uses' => 'AttackFlowController@show']);
+    });
 });

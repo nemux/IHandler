@@ -118,7 +118,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="l3">
+                                    <a class="l3" href="{{route('flow.index')}}">
                                         <i class="fa fa-arrows-h"></i>
                                         <span class="title">Flujo del Ataque</span>
                                     </a>
