@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerPage;
-use App\Models\Link;
+use App\Models\Customer\CustomerPage;
+use App\Models\Link\Link;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

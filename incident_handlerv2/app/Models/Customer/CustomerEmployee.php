@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Person\Person;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 /**
- * App\Models\CustomerEmployee
+ * App\Models\Customer\CustomerEmployee
  *
  * @property integer $id
  * @property integer $person_id
@@ -22,16 +22,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $deleted_at
  * @property integer $user_id
  * @property-read Person $person
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereComments($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerEmployee whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee wherePersonId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee wherePhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereComments($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereUserId($value)
  */
 class CustomerEmployee extends Model
 {

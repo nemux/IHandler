@@ -1,28 +1,29 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Customer;
 
+use App\Models\Person\Person;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\CustomerContact
+ * App\Models\Customer\CustomerContact
  *
+ * @property integer $id
  * @property integer $customer_id
  * @property integer $person_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereDeletedAt($value)
- * @property integer $id
- * @property-read Person $person
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereId($value)
  * @property integer $user_id
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerContact whereUserId($value)
+ * @property-read Person $person
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact wherePersonId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereUserId($value)
  */
 class CustomerContact extends Model
 {

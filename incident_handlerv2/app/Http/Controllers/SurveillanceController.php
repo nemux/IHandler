@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Criticity;
-use App\Models\Customer;
-use App\Models\Evidence;
-use App\Models\PersonContact;
-use App\Models\SurveillanceCase;
-use App\Models\SurveillanceCaseEvidence;
+use App\Models\Catalog\Criticity;
+use App\Models\Customer\Customer;
+use App\Models\Evidence\Evidence;
+use App\Models\Person\PersonContact;
+use App\Models\Surveillance\SurveillanceCase;
+use App\Models\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

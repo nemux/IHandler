@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\CustomerEmployee;
-use App\Models\PersonContact;
-use App\Models\Person;
+use App\Models\Customer\Customer;
+use App\Models\Customer\CustomerEmployee;
+use App\Models\Person\PersonContact;
+use App\Models\Person\Person;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

@@ -45,17 +45,23 @@
             {{--Cibervigilancia--}}
             <li>
                 <a class="l1" href="{{route('surveillance.index')}}">
-                    <i class="fa-eye"></i>
+                    <i class="fa fa-eye"></i>
                     <span class="title">Cibervigilancia</span>
                 </a>
                 <ul>
                     <li>
                         <a class="l2" href="{{route('surveillance.create')}}">
-                            <i class="fa-plus"></i>
+                            <i class="fa fa-plus"></i>
                             <span class="title">Agregar Caso de Cibervigilancia</span>
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a class="l1">
+                    <i class="fa fa-file-pdf-o"></i>
+                    <span class="title">Reportes</span>
+                </a>
             </li>
             @if(Auth::user()->isAdmin())
                 {{--Administrar el sistema--}}
@@ -67,24 +73,69 @@
                     <ul>
                         {{--OTRS--}}
                         <li>
-                            <a class="l1" href="{{route('otrs.index')}}">
-                                <i class="fa-ticket"></i>
+                            <a class="l2" href="{{route('otrs.index')}}">
+                                <i class="fa fa-ticket"></i>
                                 <span class="title">OTRS</span>
                             </a>
                         </li>
                         {{--Clientes--}}
                         <li>
-                            <a class="l1" href="{{route('customer.index')}}">
-                                <i class="fa-suitcase"></i>
+                            <a class="l2" href="{{route('customer.index')}}">
+                                <i class="fa fa-suitcase"></i>
                                 <span class="title">Clientes</span>
                             </a>
                         </li>
                         {{--Usuarios--}}
                         <li>
-                            <a class="l1" href="{{route('user.index')}}">
-                                <i class="fa-user"></i>
+                            <a class="l2" href="{{route('user.index')}}">
+                                <i class="fa fa-user"></i>
                                 <span class="title">Usuarios</span>
                             </a>
+                        </li>
+                        {{--Catálogos--}}
+                        <li>
+                            <a class="l2">
+                                <i class="fa fa-book"></i>
+                                <span class="title">Catálogos</span>
+                            </a>
+                            <ul>
+                                <li>
+                                    <a class="l3" href="{{route('attack.index')}}">
+                                        <i class="fa fa-crosshairs"></i>
+                                        <span class="title">Tipos de ataque</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="l3">
+                                        <i class="fa fa-cubes"></i>
+                                        <span class="title">Categorías de un Incidente</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="l3">
+                                        <i class="fa fa-exclamation"></i>
+                                        <span class="title">Severidad</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="l3">
+                                        <i class="fa fa-arrows-h"></i>
+                                        <span class="title">Flujo del Ataque</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="l3">
+                                        <i class="fa fa-signal"></i>
+                                        <span class="title">Firmas de Detección</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="l3">
+                                        <i class="fa fa-list"></i>
+                                        <span class="title">Blacklist</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

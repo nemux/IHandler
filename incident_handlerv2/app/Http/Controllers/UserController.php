@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonContact;
-use App\Models\Person;
-use App\Models\User;
+use App\Models\Person\PersonContact;
+use App\Models\Person\Person;
+use App\Models\User\User;
 use Illuminate\Contracts\Validation\ValidationException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -88,7 +88,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\User\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)

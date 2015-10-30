@@ -1,32 +1,30 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Customer;
 
+use App\Models\Link\Link;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\CustomerPage
+ * App\Models\Customer\CustomerPage
  *
+ * @property integer $id
  * @property integer $customer_id
- * @property integer $page_id
+ * @property integer $link_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage wherePageId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereDeletedAt($value)
- * @property integer $id
- * @property integer $link_id
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereLinkId($value)
- * @property-read Page $page
+ * @property integer $user_id
  * @property-read Link $link
  * @property-read Customer $customer
- * @property integer $user_id
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerPage whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereLinkId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereUserId($value)
  */
 class CustomerPage extends Model
 {

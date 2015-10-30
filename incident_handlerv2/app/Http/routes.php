@@ -14,10 +14,10 @@
 /**
  * Esto permite pasar Objetos a las rutas, en lugar de IDs
  */
-Route::model('user', 'Models\User');
+Route::model('user', 'Models\User\User');
 
 Route::bind('user', function ($value, $route) {
-    return App\Models\User::whereUsername($value)->first();
+    return App\Models\User\User::whereUsername($value)->first();
 });
 
 
@@ -109,5 +109,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'otrs'], function () {
         Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index', 'middleware' => 'role:admin']);
         Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
+    });
+
+    Route::group(['prefix' => 'attack', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'attack.index', 'uses' => 'AttackTypeController@index']);
+        Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit']);
+        Route::post('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@update']);
+        Route::get('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@create']);
+        Route::post('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@store']);
+        Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy']);
+        Route::get('/show/{id}', ['as' => 'attack.show', 'uses' => 'AttackTypeController@show']);
     });
 });

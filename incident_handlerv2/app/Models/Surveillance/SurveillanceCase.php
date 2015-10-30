@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Surveillance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalog\Criticity;
+use App\Models\Customer\Customer;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\SurveillanceCase
+ * App\Models\Surveillance\SurveillanceCase
  *
  * @property integer $id
  * @property integer $customer_id
@@ -19,20 +21,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereCriticityId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereTitle($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereRecommendation($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereDeletedAt($value)
- * @property-read Criticity $criticity
- * @property-read Customer $customer
- * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCaseEvidence[] $evidences
  * @property integer $user_id
- * @method static \Illuminate\Database\Query\Builder|\App\Models\SurveillanceCase whereUserId($value)
+ * @property-read Customer $customer
+ * @property-read Criticity $criticity
+ * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCaseEvidence[] $evidences
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCriticityId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereTitle($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereRecommendation($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereUserId($value)
  */
 class SurveillanceCase extends Model
 {

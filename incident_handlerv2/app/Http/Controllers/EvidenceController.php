@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evidence;
-use App\Models\EvidenceType;
+use App\Models\Evidence\Evidence;
+use App\Models\Evidence\EvidenceType;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

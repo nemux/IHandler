@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 /**
- * App\CustomerSensorModel
+ * App\Models\Customer\CustomerSensor
  *
  * @property integer $id
  * @property string $name
@@ -19,17 +19,17 @@ use Illuminate\Http\Request;
  * @property integer $user_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereIpv4($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereIpv6($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereMountPoint($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\CustomerSensor whereDeletedAt($value)
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereIpv4($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereIpv6($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereMountPoint($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereCustomerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereDeletedAt($value)
  */
 class CustomerSensor extends Model
 {

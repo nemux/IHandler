@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Person;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use \Illuminate\Http\Request;
 
 /**
- * App\Models\PersonContact
+ * App\Models\Person\PersonContact
  *
  * @property integer $id
  * @property integer $person_id
@@ -17,13 +18,13 @@ use \Illuminate\Http\Request;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\PersonContact whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact wherePersonId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact wherePhone($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereDeletedAt($value)
  */
 class PersonContact extends Model
 {

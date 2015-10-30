@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Person;
+use App\Models\Person\Person;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -15,9 +15,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Http\Request;
 
 /**
- * App\Models\User
+ * App\Models\User\User
  *
- * @property Person $person
  * @property integer $id
  * @property integer $person_id
  * @property integer $user_type_id
@@ -28,17 +27,18 @@ use Illuminate\Http\Request;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereUserTypeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereUsername($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereActive($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereRememberToken($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User whereDeletedAt($value)
- * @property \App\Models\UserType $type
+ * @property-read Person $person
+ * @property-read UserType $type
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User wherePersonId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUserTypeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUsername($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereActive($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereDeletedAt($value)
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
@@ -126,7 +126,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function person()
     {
-        return $this->belongsTo('App\Models\Person', 'person_id');
+        return $this->belongsTo(Person::class, 'person_id');
     }
 
     /**
@@ -136,7 +136,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function type()
     {
-        return $this->belongsTo('App\Models\UserType', 'user_type_id');
+        return $this->belongsTo(UserType::class, 'user_type_id');
     }
 
     public function isAdmin()

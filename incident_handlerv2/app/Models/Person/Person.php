@@ -1,33 +1,33 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Person;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 /**
- * App\Models\Person
+ * App\Models\Person\Person
  *
  * @property integer $id
  * @property string $name
  * @property string $lname
  * @property string $mname
+ * @property string $sex
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereLname($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereMname($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereDeletedAt($value)
- * @property \App\Models\PersonContact $contact
- * @property \App\Models\User $user
- * @property string $sex
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person whereSex($value)
+ * @property \App\Models\Person\PersonContact $contact
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereLname($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereMname($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereSex($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereDeletedAt($value)
  */
 class Person extends Model
 {
@@ -102,6 +102,6 @@ class Person extends Model
      */
     public function contact()
     {
-        return $this->hasOne('App\Models\PersonContact', 'person_id');
+        return $this->hasOne(PersonContact::class, 'person_id');
     }
 }

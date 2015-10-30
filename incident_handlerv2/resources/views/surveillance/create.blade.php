@@ -35,7 +35,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                {!! Form::model(new \App\Models\SurveillanceCase(),['id'=>'surveillance-form','class'=>'form-wizard validate']) !!}
+                                {!! Form::model(new \App\Models\Surveillance\SurveillanceCase(),['id'=>'surveillance-form','class'=>'form-wizard validate']) !!}
                                 @include('surveillance._form')
                                 {!! Form::close() !!}</div>
                         </div>
