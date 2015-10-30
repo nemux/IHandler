@@ -34,7 +34,7 @@ class CriticityController extends Controller
      */
     public function index()
     {
-        $items = Criticity::all();
+        $items = Criticity::orderBy('id')->get();
         $base = $this->viewParams;
 
         return view('catalog.generic_index', compact('items', 'base'));

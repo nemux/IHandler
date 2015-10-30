@@ -140,4 +140,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy']);
         Route::get('/show/{id}', ['as' => 'flow.show', 'uses' => 'AttackFlowController@show']);
     });
+
+    Route::group(['prefix' => 'category', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'category.index', 'uses' => 'AttackCategoryController@index']);
+        Route::get('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@edit']);
+        Route::post('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@update']);
+        Route::get('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@create']);
+        Route::post('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@store']);
+        Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy']);
+        Route::get('/show/{id}', ['as' => 'category.show', 'uses' => 'AttackCategoryController@show']);
+    });
 });

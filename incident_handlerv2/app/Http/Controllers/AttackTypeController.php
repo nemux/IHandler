@@ -36,7 +36,7 @@ class AttackTypeController extends Controller
      */
     public function index()
     {
-        $items = AttackType::all();
+        $items = AttackType::orderBy('id')->get();
         $base = $this->viewParams;
 
         return view('catalog.generic_index', compact('items', 'base'));

@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Catalog\AttackFlow;
+use App\Models\Catalog\AttackCategory;
 use App\Models\Catalog\BaseCatalog;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class AttackFlowController extends Controller
+class AttackCategoryController extends Controller
 {
     private $viewParams;
 
     public function __construct()
     {
         $this->viewParams = new BaseCatalog(
-            'Tipo de Flujo',
-            'Flujo',
+            'Tipo de Categoría',
+            'Categoría',
             'null,null,null',
-            '<th>#</th><th>Flujo</th><th></th>',
-            'flow-table',
-            'flow.create',
-            'flow.edit',
-            'flow.destroy',
-            'flow.show',
+            '<th>#</th><th>Categoría</th><th></th>',
+            'category-table',
+            'category.create',
+            'category.edit',
+            'category.destroy',
+            'category.show',
             'catalog._generic_form',
             'catalog._generic_show');
     }
@@ -35,7 +35,7 @@ class AttackFlowController extends Controller
      */
     public function index()
     {
-        $items = AttackFlow::orderBy('id')->get();
+        $items = AttackCategory::orderBy('id')->get();
         $base = $this->viewParams;
 
         return view('catalog.generic_index', compact('items', 'base'));
@@ -48,7 +48,7 @@ class AttackFlowController extends Controller
      */
     public function create()
     {
-        $model = new AttackFlow();
+        $model = new AttackCategory();
         $base = $this->viewParams;
 
         return view('catalog.generic_create', compact('model', 'base'));
@@ -62,14 +62,14 @@ class AttackFlowController extends Controller
      */
     public function store(Request $request)
     {
-        AttackFlow::validateCreate($request, $this);
+        AttackCategory::validateCreate($request, $this);
 
-        $item = new AttackFlow();
+        $item = new AttackCategory();
         $item->name = $request['name'];
         $item->description = $request['description'];
         $item->save();
 
-        return redirect()->route('flow.index')->withMessage('Se agregó un nuevo Flujo de Ataque al catálogo');
+        return redirect()->route('category.index')->withMessage('Se agregó una nueva Categoria de Ataque al catálogo');
     }
 
     /**
@@ -80,7 +80,7 @@ class AttackFlowController extends Controller
      */
     public function show($id)
     {
-        $item = AttackFlow::whereId($id)->first();
+        $item = AttackCategory::whereId($id)->first();
         $base = $this->viewParams;
 
         return view('catalog.generic_show', compact('item', 'base'));
@@ -94,7 +94,7 @@ class AttackFlowController extends Controller
      */
     public function edit($id)
     {
-        $item = AttackFlow::whereId($id)->first();
+        $item = AttackCategory::whereId($id)->first();
         $base = $this->viewParams;
 
         return view('catalog.generic_edit', compact('item', 'base', 'parents'));
@@ -109,14 +109,14 @@ class AttackFlowController extends Controller
      */
     public function update(Request $request, $id)
     {
-        AttackFlow::validateUpdate($request, $this);
+        AttackCategory::validateUpdate($request, $this);
 
-        $item = AttackFlow::whereId($id)->first();
+        $item = AttackCategory::whereId($id)->first();
         $item->name = $request['name'];
         $item->description = $request['description'];
         $item->save();
 
-        return redirect()->route('flow.index')->withMessage('Se actualizó el Flujo ' . $item->name);
+        return redirect()->route('category.index')->withMessage('Se actualizó la Categoría ' . $item->name);
     }
 
     /**
@@ -127,10 +127,10 @@ class AttackFlowController extends Controller
      */
     public function destroy($id)
     {
-        $item = AttackFlow::whereId($id)->first();
+        $item = AttackCategory::whereId($id)->first();
         $name = $item->name;
         $item->delete();
 
-        return redirect()->route('flow.index')->withMessage('Se eliminó el Flujo ' . $name);
+        return redirect()->route('category.index')->withMessage('Se eliminó la Categoría ' . $name);
     }
 }

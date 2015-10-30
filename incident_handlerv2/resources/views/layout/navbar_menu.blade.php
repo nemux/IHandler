@@ -106,7 +106,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="l3">
+                                    <a class="l3" href="{{route('category.index')}}">
                                         <i class="fa fa-cubes"></i>
                                         <span class="title">Categorías de un Incidente</span>
                                     </a>

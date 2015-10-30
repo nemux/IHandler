@@ -22,7 +22,7 @@ class SurveillanceController extends Controller
      */
     public function index()
     {
-        $cases = SurveillanceCase::all();
+        $cases = SurveillanceCase::orderBy('id', 'desc')->get();
 
         return view('surveillance.index', compact('cases'));
     }
