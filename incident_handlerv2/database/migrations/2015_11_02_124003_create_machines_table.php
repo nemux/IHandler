@@ -29,6 +29,9 @@ class CreateMachinesTable extends Migration
             $table->foreign('location_id')->references('id')->on('location')->onDelete('cascade');
             $table->foreign('machine_type_id')->references('id')->on('machine_type')->onDelete('cascade');
 
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+
             $table->timestamps();
             $table->softDeletes();
         });

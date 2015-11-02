@@ -21,6 +21,9 @@ class CreateIncidentAttackSignaturesTable extends Migration
 
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
             $table->foreign('attack_signature_id')->references('id')->on('attack_signature')->onDelete('cascade');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 
@@ -31,5 +34,6 @@ class CreateIncidentAttackSignaturesTable extends Migration
      */
     public function down()
     {
+        Schema::drop('incident_attack_signature');
     }
 }

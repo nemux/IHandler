@@ -37,7 +37,7 @@ class AttackSignature extends Model
     protected $table = 'attack_signature';
 
     private static $attributeNames = [
-        'signature' => 'Nombre de la firma',
+        'name' => 'Nombre de la firma',
         'description' => 'Descripción',
         'recommendation' => 'Recomendación(es)',
         'risk' => 'Riesgo(s)',
@@ -47,7 +47,7 @@ class AttackSignature extends Model
     public static function validateCreate(Request $request, Controller $controller)
     {
         $controller->validate($request, [
-            'signature' => 'required|max:255'
+            'name' => 'required|max:255'
         ], [], AttackSignature::$attributeNames);
     }
 

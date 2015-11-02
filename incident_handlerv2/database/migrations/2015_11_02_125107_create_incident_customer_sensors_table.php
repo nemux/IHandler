@@ -21,6 +21,9 @@ class CreateIncidentCustomerSensorsTable extends Migration
 
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
             $table->foreign('customer_sensor_id')->references('id')->on('customer_sensor')->onDelete('cascade');
+
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

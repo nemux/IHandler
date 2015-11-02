@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncidentEventsTable extends Migration
+class CreateIncidentEvidencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,19 @@ class CreateIncidentEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('incident_event', function (Blueprint $table) {
+        Schema::create('incident_evidence', function (Blueprint $table) {
             $table->increments('id');
+
             $table->unsignedInteger('incident_id');
-            $table->unsignedInteger('source_machine_id');
-            $table->unsignedInteger('target_machine_id');
-            $table->text('payload')->nullable();
+            $table->unsignedInteger('evidence_id');
+
+            $table->string('note')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
-            $table->foreign('source_machine_id')->references('id')->on('machine')->onDelete('cascade');
-            $table->foreign('target_machine_id')->references('id')->on('machine')->onDelete('cascade');
+            $table->foreign('evidence_id')->references('id')->on('evidence')->onDelete('cascade');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
@@ -37,6 +38,6 @@ class CreateIncidentEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('incident_event');
+        Schema::drop('incident_evidence');
     }
 }
