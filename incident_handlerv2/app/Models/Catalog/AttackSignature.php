@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
  * @method static Builder|AttackSignature whereCreatedAt($value)
  * @method static Builder|AttackSignature whereUpdatedAt($value)
  * @method static Builder|AttackSignature whereDeletedAt($value)
+ * @property string $name
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Catalog\AttackSignature whereName($value)
  */
 class AttackSignature extends Model
 {

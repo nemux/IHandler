@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Incident\Incident;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
@@ -15,15 +16,8 @@ class IncidentController extends Controller
      */
     public function index()
     {
-//        $client = new OtrsClient();
-//
-////        $result = $client->createTicket("Test Title", 5, "ctest", "dlopez@globalcybersec.com", "<h1>lala</h1><br/>Body of the ticket TEST");
-////        $result = $client->closeTicket(2, "Nothing nothing");
-////        $result = $client->getUsers();
-////        $result=$client->getUserInfo('admin');
-//        $result = $client->getCustomers();
-//
-//        return \Response::json($result);
+        $incidents = Incident::orderBy('id')->get();
+        return view('incident.index', compact('incidents'));
     }
 
     /**

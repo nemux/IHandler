@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
     Route::group(['prefix' => 'incident'], function () {
-        Route::get('/', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
+        Route::get('/all', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
     });
 
     Route::group(['prefix' => 'user'], function () {
