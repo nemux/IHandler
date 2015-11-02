@@ -47,7 +47,7 @@
                 @foreach($signatures as $index=>$item)
                     <tr>
                         <td>{{$index+1}}</td>
-                        <td>{{$item->signature}}</td>
+                        <td>{{$item->name}}</td>
                         <td>
                             {!! Form::open(array('id'=>'deleteForm-'.$item->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('signature.destroy', $item->id))) !!}
                             {!! Form::hidden('id',$item->id) !!}

@@ -1,12 +1,12 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Firma '.$item->signature)
+@section('title','Firma '.$item->name)
 
 @section('dashboard_content')
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Firma: <b>{{$item->signature}}</b></h3>
+            <h3 class="panel-title">Firma: <b>{{$item->name}}</b></h3>
         </div>
         <div class="panel-body">
             <div class="row">
