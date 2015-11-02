@@ -150,4 +150,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy']);
         Route::get('/show/{id}', ['as' => 'category.show', 'uses' => 'AttackCategoryController@show']);
     });
+
+    Route::group(['prefix' => 'signature', 'middleware' => 'role:admin,coord'], function () {
+        Route::get('/', ['as' => 'signature.index', 'uses' => 'AttackSignatureController@index']);
+        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit']);
+        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update']);
+        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create']);
+        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store']);
+        Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy']);
+        Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
+    });
 });

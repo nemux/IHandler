@@ -124,7 +124,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="l3">
+                                    <a class="l3" href="{{route('signature.index')}}">
                                         <i class="fa fa-signal"></i>
                                         <span class="title">Firmas de Detección</span>
                                     </a>

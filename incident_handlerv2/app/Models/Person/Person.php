@@ -20,14 +20,14 @@ use Illuminate\Http\Request;
  * @property \Carbon\Carbon $updated_at
  * @property string $deleted_at
  * @property \App\Models\Person\PersonContact $contact
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereLname($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereMname($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereSex($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\Person whereDeletedAt($value)
+ * @method static Builder|Person whereId($value)
+ * @method static Builder|Person whereName($value)
+ * @method static Builder|Person whereLname($value)
+ * @method static Builder|Person whereMname($value)
+ * @method static Builder|Person whereSex($value)
+ * @method static Builder|Person whereCreatedAt($value)
+ * @method static Builder|Person whereUpdatedAt($value)
+ * @method static Builder|Person whereDeletedAt($value)
  */
 class Person extends Model
 {
