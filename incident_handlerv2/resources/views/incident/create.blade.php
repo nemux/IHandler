@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Crear caso de Cibervigilancia')
+@section('title','Agregar Incidente')
 
 @section('include_down')
     {{--Form wizard--}}
@@ -22,6 +22,14 @@
     {{--Validate Fields--}}
     <script src="/custom/assets/js/jquery-validate/jquery.validate.js" id="script-resource-7"></script>
     <script src="/custom/assets/js/jquery-validate/localization/messages_es.js" id="script-resource-7"></script>
+
+    {{--Date & Time Pickers--}}
+    <link rel="stylesheet" href="/xenon/assets/js/daterangepicker/daterangepicker-bs3.css" id="style-resource-1">
+
+    <script src="/xenon/assets/js/moment.min.js" id="script-resource-7"></script>
+    <script src="/xenon/assets/js/daterangepicker/daterangepicker.js" id="script-resource-8"></script>
+    <script src="/xenon/assets/js/datepicker/bootstrap-datepicker.js" id="script-resource-9"></script>
+    <script src="/xenon/assets/js/timepicker/bootstrap-timepicker.min.js" id="script-resource-10"></script>
 @endsection
 
 @section('dashboard_content')
@@ -35,8 +43,8 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                {!! Form::model(new \App\Models\Surveillance\SurveillanceCase(),['id'=>'surveillance-form','class'=>'form-wizard validate']) !!}
-                                @include('surveillance._form')
+                                {!! Form::model(new \App\Models\Incident\Incident(),['id'=>'incident-form','class'=>'form-wizard validate']) !!}
+                                @include('incident._form')
                                 {!! Form::close() !!}</div>
                         </div>
                     </div>

@@ -30,6 +30,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     Route::group(['prefix' => 'incident'], function () {
         Route::get('/all', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
+        Route::get('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@create']);
+        Route::post('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@store']);
+        Route::get('/show/{id}', ['as' => 'incident.show', 'uses' => 'IncidentController@show']);
     });
 
     Route::group(['prefix' => 'user'], function () {
@@ -104,6 +107,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     Route::group(['prefix' => 'evidence'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
+        Route::post('upload/incident', ['as' => 'file.upload.incident', 'uses' => 'EvidenceController@uploadIncident']);
     });
 
     Route::group(['prefix' => 'otrs'], function () {
@@ -160,4 +164,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
     });
+
+    /**
+     * WebServices para obtener datos en formato Json
+     */
+    Route::group(['prefix' => 'ws', 'middleware' => 'auth'], function () {
+        Route::get('/sensors/{id}', ['as' => 'ws.getSensors', 'uses' => 'CustomerSensorController@getSensors']);
+    });
+
 });

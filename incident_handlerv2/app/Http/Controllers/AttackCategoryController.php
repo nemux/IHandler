@@ -24,8 +24,8 @@ class AttackCategoryController extends Controller
             'category.edit',
             'category.destroy',
             'category.show',
-            'catalog._generic_form',
-            'catalog._generic_show');
+            'catalog.category._form',
+            'catalog.category._show');
     }
 
     /**

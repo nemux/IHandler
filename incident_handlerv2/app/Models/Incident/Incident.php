@@ -2,6 +2,9 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Catalog\AttackCategory;
+use App\Models\Customer\Customer;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,10 +45,99 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Incident whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Incident whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Incident whereUserId($value)
+ * @property \Illuminate\Database\Eloquent\Collection|IncidentAttackCategory[] $categories
+ * @property \Illuminate\Database\Eloquent\Collection|IncidentAttackSignature[] $signatures
+ * @property \Illuminate\Database\Eloquent\Collection|IncidentCustomerSensor[] $sensors
+ * @property \Illuminate\Database\Eloquent\Collection|IncidentEvent[] $events
+ * @property \Illuminate\Database\Eloquent\Collection|IncidentEvidence[] $evidences
  */
 class Incident extends Model
 {
     use SoftDeletes;
 
     protected $table = 'incident';
+
+    /**
+     * Constructor de la clase
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
+    }
+
+    /**
+     * Devuelve las categorias del incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(IncidentAttackCategory::class, 'incident_id');
+    }
+
+    /**
+     * Devuelve la lista de firmas del incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function signatures()
+    {
+        return $this->hasMany(IncidentAttackSignature::class, 'incident_id');
+    }
+
+    /**
+     * Devuelve la lista de sensores del incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sensors()
+    {
+        return $this->hasMany(IncidentCustomerSensor::class, 'incident_id');
+    }
+
+    /**
+     * Devuelve la lista de eventos del incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function events()
+    {
+        return $this->hasMany(IncidentEvent::class, 'incident_id');
+    }
+
+    /**
+     * Devuelve la lista de evidencias del Incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evidences()
+    {
+        return $this->hasMany(IncidentEvidence::class, 'incident_id');
+    }
+
+    /**
+     * Devuelve el Cliente con quien esta relacionado el incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    /**
+     * Devuelve el usuario que creo el incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

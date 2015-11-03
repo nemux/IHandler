@@ -36,6 +36,12 @@
                 </a>
                 <ul>
                     <li>
+                        <a class="l2" href="{{route('incident.create')}}">
+                            <i class="fa fa-plus"></i>
+                            <span class="title">Agregar Incidente</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="l2" href="{{route('incident.index')}}">
                             <span class="title">Lista de Incidentes</span>
                         </a>

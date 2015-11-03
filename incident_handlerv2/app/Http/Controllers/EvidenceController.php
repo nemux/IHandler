@@ -87,15 +87,43 @@ class EvidenceController extends Controller
     }
 
     /**
-     * Método para subir archivos diréctamente en el folder correspondiente
+     * Método para subir archivos directamente en el folder de Incidentes
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadIncident(Request $request)
+    {
+        $file = $request->file('file');
+        $type = EvidenceType::whereName('Incidente')->first();
+
+        return $this->upload($file, $type);
+    }
+
+    /**
+     * Método para subir archivos diréctamente en el folder de Cibervigilancia
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function uploadSurveillance(Request $request)
     {
         $file = $request->file('file');
-        $evidence = false;
         $type = EvidenceType::whereName('Cibervigilancia')->first();
+
+        return $this->upload($file, $type);
+    }
+
+    /**
+     * Con base en el archivo y el tipo de evidencia, se subirá la evidencia
+     *
+     * @param $file
+     * @param $type
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload($file, $type)
+    {
+        $evidence = false;
 
         if (!is_array($file)) {
             $evidence = $this->uploadSingleFile($file, $type);
@@ -153,5 +181,25 @@ class EvidenceController extends Controller
         } else {
             return false;
         }
+    }
+
+    /**
+     * Obtiene de un $request todos los elementos que estén relacionados con evidencia.
+     * @param Request $request
+     * @return array
+     */
+    public static function getEvidences(Request $request)
+    {
+        $values = $request->all();
+        $evidences = array();
+        foreach ($values as $field => $value) {
+            $pos = strpos($field, 'evidence_');
+            if ($pos !== false) {
+                $evidence = Evidence::whereId($value)->first();
+                array_push($evidences, $evidence);
+            }
+        }
+
+        return $evidences;
     }
 }

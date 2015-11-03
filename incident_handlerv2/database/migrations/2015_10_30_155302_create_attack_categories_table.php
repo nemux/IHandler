@@ -15,7 +15,8 @@ class CreateAttackCategoriesTable extends Migration
         Schema::create('attack_category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
+            $table->string('time_range')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

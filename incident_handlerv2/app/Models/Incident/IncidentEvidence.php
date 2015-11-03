@@ -30,4 +30,18 @@ class IncidentEvidence extends Model
     use  SoftDeletes;
 
     protected $table = 'incident_evidence';
+
+    /**
+     * Constructor de la clase
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
+    }
 }

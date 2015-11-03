@@ -22,6 +22,4 @@
             @include('incident._table')
         </div>
     </div>
-
-    @include('modal.confirm_delete')
 @endsection

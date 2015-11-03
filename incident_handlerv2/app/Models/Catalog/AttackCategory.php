@@ -22,6 +22,8 @@ use Illuminate\Http\Request;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Catalog\AttackCategory whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Catalog\AttackCategory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Catalog\AttackCategory whereDeletedAt($value)
+ * @property string $time_range
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Catalog\AttackCategory whereTimeRange($value)
  */
 class AttackCategory extends Model
 {
@@ -31,13 +33,14 @@ class AttackCategory extends Model
     private static $attributeNames = [
         'name' => 'Nombre de la Categoría',
         'description' => 'Descripción de la Categoría',
+        'time_range' => 'Rango de Tiempo',
     ];
 
     public static function validateCreate(Request $request, Controller $controller)
     {
         $controller->validate($request, [
             'name' => 'required|max:255',
-            'description' => 'max:255'
+            'time_range' => 'max:255'
         ], [], AttackCategory::$attributeNames);
     }
 

@@ -38,10 +38,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereDeletedAt($value)
+ * @property boolean $hide
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereHide($value)
  */
 class Machine extends Model
 {
     use SoftDeletes;
 
     protected $table = 'machine';
+
+    /**
+     * Constructor de la clase
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
+    }
 }

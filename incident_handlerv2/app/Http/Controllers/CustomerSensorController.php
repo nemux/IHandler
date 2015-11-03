@@ -6,6 +6,7 @@ use App\Models\Customer\CustomerSensor;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Request as Request2;
 
 class CustomerSensorController extends Controller
 {
@@ -112,5 +113,18 @@ class CustomerSensorController extends Controller
         $sensor->delete();
 
         return redirect()->route('customer.show', $customer_id)->withMessage("Se eliminó el sensor: $name");
+    }
+
+    /**
+     * Devuelve un objeto Json con los sensores del cliente
+     *
+     * @param $customer_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getSensors($customer_id)
+    {
+        $sensors = CustomerSensor::whereCustomerId($customer_id)->orderBy('id')->get(['name', 'id']);
+
+        return \Response::json(['status' => true, 'sensors' => $sensors]);
     }
 }

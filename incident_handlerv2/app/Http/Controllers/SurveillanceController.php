@@ -49,7 +49,7 @@ class SurveillanceController extends Controller
     public function store(Request $request)
     {
         //Agregar todos los archivos de evidencia
-        $evidences = $this->getEvidences($request);
+        $evidences = EvidenceController::getEvidences($request);
 
         \Session::flash('surv_evidences', $evidences);
 
@@ -151,25 +151,7 @@ class SurveillanceController extends Controller
 //        //
 //    }
 
-    /**
-     * Obtiene de un $request todos los elementos que estén relacionados con evidencia.
-     * @param Request $request
-     * @return array
-     */
-    private function getEvidences(Request $request)
-    {
-        $values = $request->all();
-        $evidences = array();
-        foreach ($values as $field => $value) {
-            $pos = strpos($field, 'evidence_');
-            if ($pos !== false) {
-                $evidence = Evidence::whereId($value)->first();
-                array_push($evidences, $evidence);
-            }
-        }
 
-        return $evidences;
-    }
 
     /**
      * Genera el PDF con la vista correspondiente
