@@ -2,6 +2,7 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Catalog\AttackSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,5 +42,10 @@ class IncidentAttackSignature extends Model
             $this->user_id = \Auth::user()->id;
 
         parent::__construct($attributes);
+    }
+
+    public function signature()
+    {
+        return $this->belongsTo(AttackSignature::class, 'attack_signature_id');
     }
 }

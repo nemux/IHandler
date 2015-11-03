@@ -2,6 +2,7 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Customer\CustomerSensor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,5 +42,10 @@ class IncidentCustomerSensor extends Model
             $this->user_id = \Auth::user()->id;
 
         parent::__construct($attributes);
+    }
+
+    public function sensor()
+    {
+        return $this->belongsTo(CustomerSensor::class, 'customer_sensor_id');
     }
 }

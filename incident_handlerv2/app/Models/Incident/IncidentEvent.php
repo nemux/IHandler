@@ -46,4 +46,14 @@ class IncidentEvent extends Model
 
         parent::__construct($attributes);
     }
+
+    public function source()
+    {
+        return $this->belongsTo(Machine::class, 'source_machine_id');
+    }
+
+    public function target()
+    {
+        return $this->belongsTo(Machine::class, 'target_machine_id');
+    }
 }

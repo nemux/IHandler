@@ -143,7 +143,9 @@ class IncidentController extends Controller
      */
     public function show($id)
     {
-        //
+        $case = Incident::whereId($id)->first();
+
+        return view('incident.show', compact('case'));
     }
 
     /**
@@ -178,5 +180,15 @@ class IncidentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getPdf($id, $download = false)
+    {
+
+    }
+
+    public function email($id)
+    {
+
     }
 }

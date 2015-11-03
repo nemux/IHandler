@@ -2,6 +2,7 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Catalog\AttackCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,5 +42,10 @@ class IncidentAttackCategory extends Model
             $this->user_id = \Auth::user()->id;
 
         parent::__construct($attributes);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(AttackCategory::class, 'attack_category_id');
     }
 }

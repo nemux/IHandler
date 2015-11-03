@@ -27,7 +27,7 @@
     @foreach($incidents as $index=>$incident)
         <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
             <td>{{$incident->id}}</td>
-            <td>{{isset($incident->ticket)?$incident->ticket:'S/D'}}</td>
+            <td>{{isset($incident->ticket)?$incident->ticket:'Por asignar...'}}</td>
             <td>{{$incident->customer->name}}</td>
             <td>{{$incident->title}}</td>
             <td>{{$incident->detection_time}}</td>

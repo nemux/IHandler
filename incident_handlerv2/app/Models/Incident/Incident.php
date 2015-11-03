@@ -3,6 +3,8 @@
 namespace App\Models\Incident;
 
 use App\Models\Catalog\AttackCategory;
+use App\Models\Catalog\AttackFlow;
+use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
@@ -139,5 +141,15 @@ class Incident extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function flow()
+    {
+        return $this->belongsTo(AttackFlow::class, 'attack_flow_id');
+    }
+
+    public function criticity()
+    {
+        return $this->belongsTo(Criticity::class, 'criticity_id');
     }
 }

@@ -33,6 +33,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@create']);
         Route::post('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@store']);
         Route::get('/show/{id}', ['as' => 'incident.show', 'uses' => 'IncidentController@show']);
+        Route::get('/edit/{id}', ['as' => 'incident.edit', 'uses' => 'IncidentController@edit']);
+
+        Route::get('/pdf/{id}/{download}', ['as' => 'incident.pdf', 'uses' => 'IncidentController@getPdf']);
+        Route::get('/email/{id}', ['as' => 'incident.email', 'uses' => 'IncidentController@email']);
     });
 
     Route::group(['prefix' => 'user'], function () {
