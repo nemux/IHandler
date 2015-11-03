@@ -184,7 +184,15 @@ class IncidentController extends Controller
 
     public function getPdf($id, $download = false)
     {
+        $case = Incident::whereId($id)->first();
+        $pdf = PdfController::generatePdf($case, 'pdf.incident');
+        $docName = $case->title . '.pdf';
 
+        if ($download) {
+            return $pdf->download($docName);
+        } else {
+            return $pdf->stream($docName);
+        }
     }
 
     public function email($id)

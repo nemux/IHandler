@@ -3,9 +3,9 @@
         color: black;
         text-align: center;
         width: 100%;
-        font-size: 12pt;
+        /*font-size: 12pt;*/
         border-color: #AAA;
-        border-width: 2px;
+        border-width: 1px;
     }
 
     table.events {
@@ -14,9 +14,9 @@
     }
 
     td, th {
-        padding: 10px;
+        padding: 5px;
         border-color: #AAA;
-        border-width: 2px;
+        border-width: 1px;
         text-align: center;
     }
 
@@ -37,10 +37,15 @@
     p {
         color: black;
     }
+
+    ul, ol {
+        list-style-position: inside;
+        list-style: none;
+    }
 </style>
-<table class="incident" border="">
+<table class="incident" border="1">
     <tr class="title">
-        <td colspan="2"><h1>Incidente: {{$case->title}}</h1></td>
+        <td colspan="2"><h3>Incidente: {{$case->title}}</h3></td>
     </tr>
     <tr>
         <td class="title_column">Número de Ticket:</td>
@@ -55,7 +60,7 @@
         <td class="content_column">
             <ul>
                 @foreach($case->categories as $category)
-                    <li>{{$category->category->name }}</li>
+                    <li><i>•</i> {{$category->category->name }}</li>
                 @endforeach
             </ul>
         </td>
@@ -63,8 +68,11 @@
     <tr>
         <td class="title_column">Sensor(es):</td>
         <td class="content_column">
-            <ul>@foreach($case->sensors as $sensor)
-                    <li>{{$sensor->sensor->name }}</li> @endforeach</ul>
+            <ul>
+                @foreach($case->sensors as $sensor)
+                    <li><i>•</i> {{$sensor->sensor->name }}</li>
+                @endforeach
+            </ul>
         </td>
     </tr>
     <tr>
@@ -72,7 +80,7 @@
         <td class="content_column">
             <ul>
                 @foreach($case->signatures as $signature)
-                    <li>{{$signature->signature->name }}</li>
+                    <li><i>•</i> {{$signature->signature->name }}</li>
                 @endforeach
             </ul>
         </td>

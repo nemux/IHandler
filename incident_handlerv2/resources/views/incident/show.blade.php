@@ -14,7 +14,7 @@
                 <div class="btn btn-primary" onclick="window.open('{{route('incident.edit',[$case])}}','_self');">
                     <i class="fa fa-pencil fa-fw"></i> Editar Caso
                 </div>
-                <div class="btn btn-info" onclick="window.open('{{route('incident.pdf',[$case,true])}}','_self');">
+                <div class="btn btn-info" onclick="window.open('{{route('incident.pdf',[$case,1])}}','_self');">
                     <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
                 </div>
                 <div class="btn btn-success"
