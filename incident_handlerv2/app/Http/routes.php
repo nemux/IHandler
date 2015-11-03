@@ -37,6 +37,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/pdf/{id}/{download}', ['as' => 'incident.pdf', 'uses' => 'IncidentController@getPdf']);
         Route::get('/email/{id}', ['as' => 'incident.email', 'uses' => 'IncidentController@email']);
+
+        Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
     });
 
     Route::group(['prefix' => 'user'], function () {

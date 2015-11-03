@@ -199,4 +199,11 @@ class IncidentController extends Controller
     {
 
     }
+
+    public function preview($id)
+    {
+        $case = Incident::whereId($id)->first();
+
+        return view('pdf.incident', compact('case'));
+    }
 }

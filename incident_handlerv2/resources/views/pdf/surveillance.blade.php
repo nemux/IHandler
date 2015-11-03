@@ -131,10 +131,25 @@
             text-align: justify;
         }
 
+        .watermark {
+            opacity: 0.25;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            position: fixed;
+
+            background-image: url('/custom/assets/img/logo-bgclaro-watermark.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
 
     </style>
 </head>
 <body class="page-body">
+<div class="watermark"></div>
 <div class="page-container">
     <div class="main-content">
         <div class="panel panel-default">
