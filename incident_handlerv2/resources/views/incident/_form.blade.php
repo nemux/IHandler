@@ -75,6 +75,61 @@
         var descriptionField = CKEDITOR.replace('description');
         var recommendationField = CKEDITOR.replace('recommendation');
         var referenceField = CKEDITOR.replace('reference');
+
+        $("#title").on('change', function () {
+            $('#pv-title').text($(this).val());
+        });
+
+        $("#category_id").change(function () {
+            $('#pv-categories').empty();
+            $('#category_id :selected').each(function (i, selected) {
+                var text = $(selected).text();
+                $('#pv-categories').append('<li><i>•</i> ' + text + '</li>');
+            });
+        });
+
+        $("#sensor_id").change(function () {
+            $('#pv-sensors').empty();
+            $('#sensor_id :selected').each(function (i, selected) {
+                var text = $(selected).text();
+                $('#pv-sensors').append('<li><i>•</i> ' + text + '</li>');
+            });
+        });
+
+        $("#flow_id").change(function () {
+            var text = $('#flow_id option:selected').text();
+            $('#pv-flow').text(text);
+        });
+
+        $("#detection_date").blur(function () {
+            $('#pv-detection-date').text($("#detection_date").val() + " " + $("#detection_time").val());
+        });
+        $("#detection_time").blur(function () {
+            $('#pv-detection-date').text($("#detection_date").val() + " " + $("#detection_time").val());
+        });
+
+        $("#criticity_id").change(function () {
+            var text = $('#criticity_id option:selected').text();
+            $('#pv-criticity').text(text);
+        });
+
+        $("#signature").change(function () {
+            $('#pv-signatures').empty();
+            $('#signature :selected').each(function (i, selected) {
+                var text = $(selected).text();
+                $('#pv-signatures').append('<li><i>•</i> ' + text + '</li>');
+            });
+        });
+
+        descriptionField.on('change', function (evt) {
+            $('#pv-description').html(evt.editor.getData());
+        });
+        recommendationField.on('change', function (evt) {
+            $('#pv-recommendation').html(evt.editor.getData());
+        });
+        referenceField.on('change', function (evt) {
+            $('#pv-reference').html(evt.editor.getData());
+        });
     });
 
     /**
@@ -140,6 +195,22 @@
             var tar_mac = makeTextInput('tar_mac_', 'MAC', tar, 1);
 
             var tar = $('<hr>').appendTo('#events');
+
+            //Agregar un elemento a pv-events
+            var pv_events = $('<tr>').attr({id: 'pv-event-' + count_event}).appendTo('#pv-events');
+
+            var pv_src = $('<td>').attr({id: 'pv-src-' + count_event}).appendTo(pv_events);
+            var pv_tar = $('<td>').attr({id: 'pv-tar-' + count_event}).appendTo(pv_events);
+
+            $('#src_ip_' + count_event).blur(function () {
+                console.log('blur src ' + $(this).val());
+                $(pv_src).text($(this).val());
+            });
+
+            $('#tar_ip_' + count_event).blur(function () {
+                console.log('blur tar ' + $(this).val());
+                $(pv_tar).text($(this).val());
+            });
 
             count_event++;
         });
@@ -406,7 +477,19 @@
         @include('file._form',['file_list'=>'incident-form'])
     </div>
     <div class="tab-pane" id="incident-resume-tab">
-        {!! Form::submit('Guardar Incidente',['class'=>'btn btn-lg btn-blue']) !!}
+        <h3 class="title">Previsualizar y Guardar</h3>
+
+        <div class="row">
+            <div id="surveillance-preview" class="col-sm-12">
+                @include('incident._preview',['case'=>new \App\Models\Incident\Incident()])
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                {!! Form::submit('Guardar Caso',['class'=>'btn btn-lg btn-blue']) !!}
+            </div>
+        </div>
     </div>
     <ul class="pager wizard">
         <li class="previous first"><a href="#">Primero</a></li>

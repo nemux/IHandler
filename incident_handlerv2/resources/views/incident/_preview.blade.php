@@ -38,27 +38,27 @@
         color: black;
     }
 
-    ul, ol {
+    ul.nostyle, ol.nostyle {
         list-style-position: inside;
         list-style: none;
     }
 </style>
 <table class="incident" border="1">
     <tr class="title">
-        <td colspan="2"><h3>Incidente: {{$case->title}}</h3></td>
+        <td colspan="2"><h3>Incidente: <span id="pv-title">{{$case->title}}</span></h3></td>
     </tr>
     <tr>
         <td class="title_column">Número de Ticket:</td>
-        <td class="content_column">#{{isset($case->ticket)?$case->ticket:'Por asignar...'}}</td>
+        <td class="content_column" id="pv-ticket">#{{isset($case->ticket)?$case->ticket:'Por asignar...'}}</td>
     </tr>
     <tr>
         <td class="title_column">Estatus</td>
-        <td class="content_column">{{isset($case->status)?$case->status:'Abierto'}}</td>
+        <td class="content_column" id="pv-status">{{isset($case->status)?$case->status:'Abierto'}}</td>
     </tr>
     <tr>
         <td class="title_column">Categoría(s):</td>
         <td class="content_column">
-            <ul>
+            <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
                     <li><i>•</i> {{$category->category->name }}</li>
                 @endforeach
@@ -68,7 +68,7 @@
     <tr>
         <td class="title_column">Sensor(es):</td>
         <td class="content_column">
-            <ul>
+            <ul class="nostyle" id="pv-sensors">
                 @foreach($case->sensors as $sensor)
                     <li><i>•</i> {{$sensor->sensor->name }}</li>
                 @endforeach
@@ -78,7 +78,7 @@
     <tr>
         <td class="title_column">Indicador(es) de Compromiso:</td>
         <td class="content_column">
-            <ul>
+            <ul class="nostyle" id="pv-signatures">
                 @foreach($case->signatures as $signature)
                     <li><i>•</i> {{$signature->signature->name }}</li>
                 @endforeach
@@ -87,15 +87,16 @@
     </tr>
     <tr>
         <td class="title_column">Flujo del Ataque:</td>
-        <td class="content_column">{{$case->flow->name}}</td>
+        <td class="content_column" id="pv-flow">{{isset($case->flow)?$case->flow->name:''}}</td>
     </tr>
     <tr>
         <td class="title_column">Fecha de Detección:</td>
-        <td class="content_column">{{date('d/m/Y H:i',strtotime($case->detection_time))}}</td>
+        <td class="content_column"
+            id="pv-detection-date">{{date('d/m/Y H:i',strtotime(isset($case->detection_time)?$case->detection_time:'now'))}}</td>
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>
-        <td class="content_column">{{$case->criticity->name}}</td>
+        <td class="content_column" id="pv-criticity">{{isset($case->criticity)?$case->criticity->name:''}}</td>
     </tr>
     <tr>
         <td class="title_column">Eventos:</td>
@@ -107,7 +108,7 @@
                     <th>Destino</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="pv-events">
                 @foreach($case->events as $event)
                     <tr>
                         <td>{{$event->source->ipv4}}</td>
@@ -120,14 +121,17 @@
     </tr>
     <tr>
         <td class="title_column">Descripción:</td>
-        <td class="content_column" style="text-align: justify; padding:20px;">{!! $case->description !!}</td>
+        <td class="content_column" style="text-align: justify; padding:20px;"
+            id="pv-description">{!! $case->description !!}</td>
     </tr>
     <tr>
         <td class="title_column">Recomendación(es):</td>
-        <td class="content_column" style="text-align: justify; padding:20px;">{!! $case->recommendation !!}</td>
+        <td class="content_column" style="text-align: justify; padding:20px;"
+            id="pv-recommendation">{!! $case->recommendation !!}</td>
     </tr>
     <tr>
         <td class="title_column">Referencia(s):</td>
-        <td class="content_column" style="text-align: justify; padding:20px;">{!! $case->reference !!}</td>
+        <td class="content_column" style="text-align: justify; padding:20px;"
+            id="pv-reference">{!! $case->reference !!}</td>
     </tr>
 </table>

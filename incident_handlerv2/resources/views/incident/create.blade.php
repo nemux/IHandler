@@ -52,6 +52,4 @@
             </div>
         </div>
     </section>
-
-    @include('file._explorer_modal')
 @endsection
