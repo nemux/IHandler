@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvent whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvent whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvent whereUserId($value)
+ * @property-read Machine $source
+ * @property-read Machine $target
  */
 class IncidentEvent extends Model
 {

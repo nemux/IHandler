@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackCategory whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackCategory whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackCategory whereUserId($value)
+ * @property-read AttackCategory $category
  */
 class IncidentAttackCategory extends Model
 {

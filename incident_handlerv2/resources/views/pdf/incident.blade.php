@@ -78,6 +78,84 @@
             max-width: 100%;
         }
 
+        /*For surveillance._preview*/
+        .row {
+            width: 100%;
+        }
+
+        .col-md-12 {
+            width: 100%;
+        }
+
+        .col-md-11 {
+            width: 91.66%;
+        }
+
+        .col-md-10 {
+            width: 83.33%;
+        }
+
+        .col-md-offset-1 {
+            padding-left: 30px;
+            /*30px;*/
+        }
+
+        .col-md-offset-2 {
+            padding-left: 60px;
+            /*16.66%;*/
+        }
+
+        .col-md-offset-3 {
+            padding-left: 90px;
+            /*25%;*/
+        }
+
+        .h3 {
+
+        }
+
+        .semi-bold {
+            font-weight: bolder;
+        }
+
+        .h4 {
+
+        }
+
+        .text-justify {
+            text-align: justify;
+        }
+
+        .page-container .main-content .page-title .title-env .title {
+            margin: 0px;
+            font-size: 27px;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6 {
+            font-weight: normal;
+        }
+
+        .h1 {
+            font-size: 33px;
+        }
+
+        .h1, .h2, .h3 {
+            margin-top: 18px;
+            margin-bottom: 9px;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6 {
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.1;
+            color: inherit;
+        }
+
+        .h1 {
+            font-size: 2em;
+            margin: 0.67em 0px;
+        }
+
         .watermark {
             opacity: 0.25;
             width: 100%;
@@ -91,6 +169,10 @@
             background-repeat: no-repeat;
             background-position: center center;
         }
+
+        img.logo {
+            max-height: 120px;
+        }
     </style>
 </head>
 <body class="page-body">
@@ -98,6 +180,15 @@
 <div class="page-container">
     <div class="main-content">
         <div class="panel panel-default">
+            <div class="panel-heading">
+                <tr>
+                    @if(isset($case->customer->logo))
+                        <img class="img-responsive logo" src="{{$isPdf?'':'/'}}customer/{{$case->customer->logo}}">
+                    @else
+                        <h1>Cliente: {{$case->customer->name}}</h1>
+                    @endif
+                </tr>
+            </div>
             <div class="panel-body">
                 @include('incident._preview')
             </div>

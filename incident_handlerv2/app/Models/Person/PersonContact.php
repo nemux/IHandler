@@ -56,6 +56,12 @@ class PersonContact extends Model
         PersonContact::validateCreate($request, $controller);
     }
 
+    /**
+     * Valida las entradas para crear un nuevo contacto de persona
+     *
+     * @param Request $request
+     * @param Controller $controller
+     */
     public static function validateCreate(Request $request, Controller $controller)
     {
         /**
@@ -67,6 +73,13 @@ class PersonContact extends Model
         ], [], PersonContact::$attributeNames);
     }
 
+    /**
+     * Compara si el correo de  la persona a quien se enviar4á el email termina en @test.com, de ser así
+     * el correo se redirige a la cuenta dlopez@globalcybersec.com
+     *
+     * @param $email
+     * @return string
+     */
     public static function compareEmail($email)
     {
         // Si el correo existe y termina con @test.com,

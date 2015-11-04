@@ -109,6 +109,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/pdf/{id}/{download}', ['as' => 'surveillance.pdf', 'uses' => 'SurveillanceController@getPdf']);
         Route::get('/email/{id}', ['as' => 'surveillance.email', 'uses' => 'SurveillanceController@email']);
+
+        Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'SurveillanceController@preview']);
     });
 
     Route::group(['prefix' => 'evidence'], function () {

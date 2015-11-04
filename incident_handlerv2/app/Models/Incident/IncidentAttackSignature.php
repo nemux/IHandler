@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackSignature whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackSignature whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentAttackSignature whereUserId($value)
+ * @property-read AttackSignature $signature
  */
 class IncidentAttackSignature extends Model
 {

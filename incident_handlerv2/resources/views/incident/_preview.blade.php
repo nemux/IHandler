@@ -42,6 +42,10 @@
         list-style-position: inside;
         list-style: none;
     }
+
+    td:first-child.logo > img {
+        max-height: 80px;
+    }
 </style>
 <table class="incident" border="1">
     <tr class="title">

@@ -8,12 +8,16 @@ use App\Models\Incident\IncidentAttackSignature;
 use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
+use App\Models\Person\PersonContact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
 
 class IncidentController extends Controller
 {
+
+    protected $email_subject_prefix = '[GCS-IH][Incidente]';
+
     /**
      * Display a listing of the resource.
      *
@@ -182,6 +186,13 @@ class IncidentController extends Controller
         //
     }
 
+    /**
+     * Método que se ejecuta en una petición GET para generar el PDF del incidente
+     *
+     * @param $id
+     * @param bool|false $download Define si se descarga el PDF o se muestra en el navegador
+     * @return \Illuminate\Http\Response
+     */
     public function getPdf($id, $download = false)
     {
         $case = Incident::whereId($id)->first();
@@ -195,15 +206,46 @@ class IncidentController extends Controller
         }
     }
 
-    public function email($id)
+    /**
+     * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     * @param Incident $incident
+     */
+    public function sendEmail(Incident $incident)
     {
+        \Mail::send('email.incident', compact('incident'), function ($message) use ($incident) {
+            $pdf = PdfController::generatePdf($incident, 'pdf.incident');
 
+            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+
+            $message->attachData($pdf->output(), $incident->title . '.pdf');
+            $message->to($mailTo, \Auth::user()->person->fullName());
+            $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . '] ' . $incident->title);
+        });
     }
 
+    /**
+     * Método ejecutado en una petición GET para el envío de correo del incidente
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function email($id)
+    {
+        $incident = Incident::whereId($id)->first();
+        $this->sendEmail($incident);
+        return redirect()->route('incident.show', $id)->withMessage('Se envió el correo electrónico del Incidente ' . $incident->title);
+    }
+
+    /**
+     * Muestra una vista previa del incidente tal como se creará el documento PDF
+     * @param $id
+     * @return \Illuminate\View\View
+     */
     public function preview($id)
     {
         $case = Incident::whereId($id)->first();
+        $isPdf = false;
 
-        return view('pdf.incident', compact('case'));
+        return view('pdf.incident', compact('case', 'isPdf'));
     }
 }

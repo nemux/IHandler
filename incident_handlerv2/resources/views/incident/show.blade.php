@@ -7,9 +7,7 @@
 
 @section('dashboard_content')
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
-
+        <div class="panel-body">
             <div class="row">
                 <div class="btn btn-primary" onclick="window.open('{{route('incident.edit',[$case])}}','_self');">
                     <i class="fa fa-pencil fa-fw"></i> Editar Caso
@@ -22,6 +20,11 @@
                     <i class="fa fa-envelope fa-fw"></i> Enviar Correo
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
         </div>
         <div class="panel-body">
             @include('incident._preview')

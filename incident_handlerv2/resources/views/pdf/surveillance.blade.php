@@ -145,7 +145,9 @@
             background-position: center center;
         }
 
-
+        img.logo {
+            max-height: 120px;
+        }
     </style>
 </head>
 <body class="page-body">
@@ -154,7 +156,11 @@
     <div class="main-content">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3>
+                @if(isset($case->customer->logo))
+                    <img class="img-responsive logo" src="{{$isPdf?'':'/'}}customer/{{$case->customer->logo}}">
+                @else
+                    <h1>Cliente: {{$case->customer->name}}</h1>
+                @endif
             </div>
             <div class="panel-body">
                 @include('surveillance._preview')

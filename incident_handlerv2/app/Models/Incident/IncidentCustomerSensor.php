@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentCustomerSensor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentCustomerSensor whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentCustomerSensor whereUserId($value)
+ * @property-read CustomerSensor $sensor
  */
 class IncidentCustomerSensor extends Model
 {

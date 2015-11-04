@@ -2,7 +2,6 @@
 
 namespace App\Models\Incident;
 
-use App\Models\Catalog\AttackCategory;
 use App\Models\Catalog\AttackFlow;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
@@ -52,6 +51,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Database\Eloquent\Collection|IncidentCustomerSensor[] $sensors
  * @property \Illuminate\Database\Eloquent\Collection|IncidentEvent[] $events
  * @property \Illuminate\Database\Eloquent\Collection|IncidentEvidence[] $evidences
+ * @property-read Customer $customer
+ * @property-read User $user
+ * @property-read AttackFlow $flow
+ * @property-read Criticity $criticity
  */
 class Incident extends Model
 {
@@ -143,11 +146,22 @@ class Incident extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Devuelve la relación del Incidente y el flujo del ataque
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function flow()
     {
         return $this->belongsTo(AttackFlow::class, 'attack_flow_id');
     }
 
+
+    /**
+     * Devuelve la relación del incidente y su criticidad
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function criticity()
     {
         return $this->belongsTo(Criticity::class, 'criticity_id');

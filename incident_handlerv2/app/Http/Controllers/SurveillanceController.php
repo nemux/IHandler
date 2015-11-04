@@ -15,6 +15,8 @@ use App\Library\InlineCss;
 
 class SurveillanceController extends Controller
 {
+    protected $email_subject_prefix = '[GCS-IH][Cibervigilancia]';
+
     /**
      * Display a listing of the resource.
      *
@@ -151,20 +153,6 @@ class SurveillanceController extends Controller
 //        //
 //    }
 
-
-
-    /**
-     * Genera el PDF con la vista correspondiente
-     * @param SurveillanceCase $surv
-     * @return \PDF
-     */
-    private function generatePdf(SurveillanceCase $surv)
-    {
-        $html = view('pdf.surveillance', ['case' => $surv, 'isPdf' => true])->render();
-        $pdf = \PDF::loadHTML($html);
-        return $pdf;
-    }
-
     /**
      * Devuelve al navegador el stream del PDF
      * @param $id
@@ -173,7 +161,7 @@ class SurveillanceController extends Controller
     public function getPdf($id, $download = false)
     {
         $surv = SurveillanceCase::whereId($id)->first();
-        $pdf = $this->generatePdf($surv);
+        $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
         $docName = $surv->title . '.pdf';
 
         if ($download) {
@@ -201,14 +189,28 @@ class SurveillanceController extends Controller
      */
     public function sendEmail(SurveillanceCase $surv)
     {
-        $pdf = $this->generatePdf($surv);
 
-        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($pdf, $surv) {
+        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
+            $pdf = $this->generatePdf($surv);
+
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName());
-            $message->subject('[GCS-IH][CV][' . $surv->customer->name . '] ' . $surv->title);
+            $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });
+    }
+
+    /**
+     * Muestra una vista previa del caso de cibervigilancia tal como se creará el documento PDF
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function preview($id)
+    {
+        $case = SurveillanceCase::whereId($id)->first();
+        $isPdf = false;
+
+        return view('pdf.surveillance', compact('case', 'isPdf'));
     }
 }
