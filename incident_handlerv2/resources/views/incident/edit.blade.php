@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Agregar Incidente')
+@section('title','Editar Incidente '.$case->title)
 
 @section('include_down')
     {{--Form wizard--}}
@@ -43,9 +43,10 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                {!! Form::model(new \App\Models\Incident\Incident(),['id'=>'incident-form','class'=>'form-wizard validate']) !!}
+                                {!! Form::model($case,['id'=>'incident-form','class'=>'form-wizard validate']) !!}
                                 @include('incident._form')
-                                {!! Form::close() !!}</div>
+                                {!! Form::close() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

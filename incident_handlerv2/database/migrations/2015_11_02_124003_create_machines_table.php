@@ -21,8 +21,8 @@ class CreateMachinesTable extends Migration
             $table->string('os')->nullable();
             $table->string('port');
             $table->string('protocol');
-            $table->boolean('hide')->default(false);
-            $table->boolean('blacklist')->default(false);
+            $table->boolean('hide')->default(false)->nullable();
+            $table->boolean('blacklist')->default(false)->nullable();
             $table->unsignedInteger('location_id')->nullable();
             $table->unsignedInteger('machine_type_id');
 

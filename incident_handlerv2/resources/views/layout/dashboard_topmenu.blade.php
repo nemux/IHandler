@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="{{ asset('custom/favicon.ico') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <title>GCS IH | @yield('title')</title>
 
@@ -82,8 +82,6 @@
             </div>
         </div>
 
-        {{--        @include('layout.dummy_content')--}}
-
         @yield('dashboard_content')
 
                 <!-- Main Footer -->
@@ -97,9 +95,9 @@
         {{--</footer>--}}
     </div>
 </div>
-{{--<div class="page-loading-overlay">--}}
-{{--<div class="loader-2"></div>--}}
-{{--</div>--}}
+<div class="page-loading-overlay">
+    <div class="loader-2"></div>
+</div>
 
 <script src="{{asset('/xenon/assets/js/bootstrap.min.js')}}" id="script-resource-1"></script>
 <script src="{{asset('/xenon/assets/js/TweenMax.min.js')}}" id="script-resource-2"></script>

@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $os
  * @property string $port
  * @property string $protocol
- * @property boolean $show
  * @property boolean $blacklist
  * @property integer $location_id
  * @property integer $machine_type_id
@@ -59,5 +58,15 @@ class Machine extends Model
             $this->user_id = \Auth::user()->id;
 
         parent::__construct($attributes);
+    }
+
+    public function __toString()
+    {
+        return $this->protocol . '://' . $this->ipv4 . ':' . $this->port;
+    }
+
+    public function json()
+    {
+        return $this->toJson();
     }
 }

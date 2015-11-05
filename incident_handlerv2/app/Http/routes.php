@@ -33,12 +33,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@create']);
         Route::post('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@store']);
         Route::get('/show/{id}', ['as' => 'incident.show', 'uses' => 'IncidentController@show']);
+
         Route::get('/edit/{id}', ['as' => 'incident.edit', 'uses' => 'IncidentController@edit']);
+        Route::post('/edit/{id}', ['as' => 'incident.edit', 'uses' => 'IncidentController@update']);
 
         Route::get('/pdf/{id}/{download}', ['as' => 'incident.pdf', 'uses' => 'IncidentController@getPdf']);
         Route::get('/email/{id}', ['as' => 'incident.email', 'uses' => 'IncidentController@email']);
 
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
+
+        Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
+        Route::delete('/delete/event/{incidenteventid}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
     });
 
     Route::group(['prefix' => 'user'], function () {

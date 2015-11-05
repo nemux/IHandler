@@ -3,6 +3,15 @@
 @section('title', 'Caso '.$case->title)
 
 @section('include_up')
+    <script>
+        $(document).ready(function () {
+            @foreach($case->events as $index=>$event)
+            addPreviewRow(0, JSON.parse('{!! $event->source->json() !!}'), JSON.parse('{!! $event->target->json() !!}'));
+            @endforeach
+
+
+        });
+    </script>
 @endsection
 
 @section('dashboard_content')

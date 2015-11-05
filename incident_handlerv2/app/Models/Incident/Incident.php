@@ -2,7 +2,10 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Catalog\AttackCategory;
 use App\Models\Catalog\AttackFlow;
+use App\Models\Catalog\AttackSignature;
+use App\Models\Catalog\AttackType;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\User\User;
@@ -87,6 +90,25 @@ class Incident extends Model
     }
 
     /**
+     * <b>TRUE</b>, si la categoría está seleccionada en el incidente
+     * <b>FALSE</b>, si la categoría no está en el incidente
+     *
+     * @param AttackCategory $category
+     *
+     * @return bool
+     */
+    public function hasCategory(AttackCategory $category)
+    {
+        foreach ($this->categories as $cat) {
+            if ($category->id == $cat->id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Devuelve la lista de firmas del incidente
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -94,6 +116,32 @@ class Incident extends Model
     public function signatures()
     {
         return $this->hasMany(IncidentAttackSignature::class, 'incident_id');
+    }
+
+    public function signatures_list()
+    {
+        $list = '<ul>';
+        foreach ($this->signatures as $signature) {
+            $list .= '<li>' . $signature->signature->name . '</li>';
+        }
+        $list .= '</ul>';
+        return $list;
+    }
+
+    /**
+     * Resuelve si una firma está relacionada con las firmas de un incidente
+     *
+     * @param AttackSignature $signature
+     * @return bool
+     */
+    public function hasSignature(AttackSignature $signature)
+    {
+        foreach ($this->signatures as $sign) {
+            if ($sign->id == $signature->id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -104,6 +152,16 @@ class Incident extends Model
     public function sensors()
     {
         return $this->hasMany(IncidentCustomerSensor::class, 'incident_id');
+    }
+
+    public function sensors_list()
+    {
+        $list = '<ul>';
+        foreach ($this->sensors as $sensor) {
+            $list .= '<li>' . $sensor->sensor->name . '</li>';
+        }
+        $list .= '</ul>';
+        return $list;
     }
 
     /**
@@ -165,5 +223,10 @@ class Incident extends Model
     public function criticity()
     {
         return $this->belongsTo(Criticity::class, 'criticity_id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(AttackType::class, 'attack_type_id');
     }
 }

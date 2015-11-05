@@ -7,6 +7,8 @@
                 null,
                 null,
                 null,
+                null,
+                null,
                 null
             ],
         });
@@ -17,10 +19,12 @@
     <tr>
         <th>ID</th>
         <th># Ticket</th>
-        <th>Cliente</th>
         <th>Titulo</th>
+        <th>Indicadores</th>
         <th>Detección</th>
-        <th>Usuario</th>
+        <th>Sensores</th>
+        <th>Status</th>
+        <th>Handler</th>
     </tr>
     </thead>
     <tbody class="middle-align">
@@ -28,9 +32,11 @@
         <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
             <td>{{$incident->id}}</td>
             <td>{{isset($incident->ticket)?$incident->ticket:'Por asignar...'}}</td>
-            <td>{{$incident->customer->name}}</td>
             <td>{{$incident->title}}</td>
-            <td>{{$incident->detection_time}}</td>
+            <td>{!! $incident->signatures_list() !!}</td>
+            <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
+            <td>{!! $incident->sensors_list() !!}</td>
+            <td>{{isset($incident->status)?$incident->status:'Abierto'}}</td>
             <td>{{$incident->user->username}}</td>
         </tr>
     @endforeach

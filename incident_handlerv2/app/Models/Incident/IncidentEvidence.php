@@ -2,6 +2,7 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Evidence\Evidence;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -43,5 +44,10 @@ class IncidentEvidence extends Model
             $this->user_id = \Auth::user()->id;
 
         parent::__construct($attributes);
+    }
+
+    public function evidence()
+    {
+        return $this->belongsTo(Evidence::class, 'evidence_id');
     }
 }

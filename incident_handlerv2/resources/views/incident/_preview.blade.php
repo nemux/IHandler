@@ -1,3 +1,9 @@
+<script>
+    function addPreviewRow(countGeneralEvents, src, tar) {
+        var pv_row = $('<tr id="pv-event-row-' + countGeneralEvents + '"><td>' + src.ipv4 + '</td><td>' + tar.ipv4 + '</td></tr>');
+        pv_row.appendTo('#pv-events');
+    }
+</script>
 <style>
     table.incident {
         color: black;
@@ -49,7 +55,7 @@
 </style>
 <table class="incident" border="1">
     <tr class="title">
-        <td colspan="2"><h3>Incidente: <span id="pv-title">{{$case->title}}</span></h3></td>
+        <td colspan="2"><h3>Incidente: <span id="pv-title">{{($case->id!=null)?$case->title:''}}</span></h3></td>
     </tr>
     <tr>
         <td class="title_column">Número de Ticket:</td>
@@ -91,16 +97,16 @@
     </tr>
     <tr>
         <td class="title_column">Flujo del Ataque:</td>
-        <td class="content_column" id="pv-flow">{{isset($case->flow)?$case->flow->name:''}}</td>
+        <td class="content_column" id="pv-flow">{{($case->id!=null)?$case->flow->name:''}}</td>
     </tr>
     <tr>
         <td class="title_column">Fecha de Detección:</td>
         <td class="content_column"
-            id="pv-detection-date">{{date('d/m/Y H:i',strtotime(isset($case->detection_time)?$case->detection_time:'now'))}}</td>
+            id="pv-detection-date">{{date('d/m/Y H:i',strtotime(($case->id!=null)?$case->detection_time:'now'))}}</td>
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>
-        <td class="content_column" id="pv-criticity">{{isset($case->criticity)?$case->criticity->name:''}}</td>
+        <td class="content_column" id="pv-criticity">{{($case->id!=null)?$case->criticity->name:''}}</td>
     </tr>
     <tr>
         <td class="title_column">Eventos:</td>
@@ -113,12 +119,7 @@
                 </tr>
                 </thead>
                 <tbody id="pv-events">
-                @foreach($case->events as $event)
-                    <tr>
-                        <td>{{$event->source->ipv4}}</td>
-                        <td>{{$event->target->ipv4}}</td>
-                    </tr>
-                @endforeach
+
                 </tbody>
             </table>
         </td>

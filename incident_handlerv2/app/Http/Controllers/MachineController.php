@@ -23,47 +23,57 @@ class MachineController extends Controller
         //Para todos los campos pasados a través del request
         foreach ($values as $field => $value) {
             //Verifica si el nombre del campo empieza con $type
-            $pos = strpos($field, 'src_');
+            $pos = strpos($field, 'event_');
 
             //Si comienza por $type
             if ($pos !== false) {
-                //Contar los elementos ingresados como máquinas de este tipo
-                $count = 0;
-                $pos = strpos($field, 'src_ip_' . $count);
+                $var = $request->get($field);
 
-                //Si existe un campo con ese patrón de nombre
-                if ($pos !== false) {
-                    //Se almacenan los pares de Mṕaquinas origen yd estino
+                $var = json_decode($var, true);
+                $source = $var['source'];
+                $target = $var['target'];
 
-                    $src_machine = new Machine();
-                    $src_machine->ipv4 = $request->get('src_ip_' . $count);
-                    if ($request->get('src_location_' . $count) !== '') {
-                        $src_machine->location_id = $request->get('src_location_' . $count);
-                    }
-                    $src_machine->machine_type_id = $request->get('src_type_' . $count);
-                    $src_machine->port = $request->get('src_port_' . $count);
-                    $src_machine->protocol = $request->get('src_protocol_' . $count);
-                    $src_machine->os = $request->get('src_os_' . $count);
-                    $src_machine->mac = $request->get('src_mac_' . $count);
-                    $src_machine->save();
-
-                    $dst_machine = new Machine();
-                    $dst_machine->ipv4 = $request->get('tar_ip_' . $count);
-                    if ($request->get('tar_location_' . $count) !== '') {
-                        $src_machine->location_id = $request->get('tar_location_' . $count);
-                    }
-                    $dst_machine->machine_type_id = $request->get('tar_type_' . $count);
-                    $dst_machine->port = $request->get('tar_port_' . $count);
-                    $dst_machine->protocol = $request->get('tar_protocol_' . $count);
-                    $dst_machine->os = $request->get('tar_os_' . $count);
-                    $dst_machine->mac = $request->get('tar_mac_' . $count);
-                    $dst_machine->save();
-
-                    $count++;
-                    array_push($machines, ['source' => $src_machine, 'target' => $dst_machine]);
+                if ($source['id'] !== null) {
+                    \Log::info('getting source machine from id ' . $source['id']);
+                    $src_machine = Machine::whereId($source['id'])->first();
                 } else {
-                    break;
+                    \Log::info('new source machine from id');
+                    $src_machine = new Machine();
                 }
+                $src_machine->ipv4 = $source['ipv4'];
+                if ($source['location'] !== '') {
+                    $src_machine->location_id = $source['location'];
+                }
+                $src_machine->machine_type_id = $source['type'];
+                $src_machine->port = $source['port'];
+                $src_machine->protocol = $source['protocol'];
+                $src_machine->os = $source['os'];
+                $src_machine->mac = $source['mac'];
+                $src_machine->blacklist = $source['blacklist'];
+                $src_machine->hide = $source['hide'];
+                $src_machine->save();
+
+                if ($target['id'] !== null) {
+                    \Log::info('getting target machine from id');
+                    $dst_machine = Machine::whereId($target['id'])->first();
+                } else {
+                    \Log::info('new target machine');
+                    $dst_machine = new Machine();
+                }
+                $dst_machine->ipv4 = $target['ipv4'];
+                if ($request->get($target['id']) !== '') {
+                    $src_machine->location_id = $target['location'];
+                }
+                $dst_machine->machine_type_id = $target['type'];
+                $dst_machine->port = $target['port'];
+                $dst_machine->protocol = $target['protocol'];
+                $dst_machine->os = $target['os'];
+                $dst_machine->mac = $target['mac'];
+                $dst_machine->blacklist = $target['blacklist'];
+                $dst_machine->hide = $target['hide'];
+                $dst_machine->save();
+
+                array_push($machines, ['source' => $src_machine, 'target' => $dst_machine]);
             }
         }
 
