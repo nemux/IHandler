@@ -176,7 +176,7 @@ class IncidentController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        \Log::info($request->except('_token'));
+        \Log::info($request->except('_token'));
 
         //TODO Validate request fields?
 
@@ -223,6 +223,7 @@ class IncidentController extends Controller
         foreach ($event_machines as $machine) {
             $source = $machine['source'];
             $target = $machine['target'];
+            $payload = $machine['payload'];
 
             $event = IncidentEvent::whereIncidentId($incident->id)
                 ->whereSourceMachineId($source->id)
@@ -234,6 +235,7 @@ class IncidentController extends Controller
             $event->incident_id = $incident->id;
             $event->source_machine_id = $source->id;
             $event->target_machine_id = $target->id;
+            $event->payload = $payload;
             $event->save();
             array_push($incidentEvents, $event);
         }
@@ -287,7 +289,7 @@ class IncidentController extends Controller
         }
         $incident->signatures = $incidentSignatures;
 
-//        return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
+        return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
     }
 
     /**

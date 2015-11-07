@@ -28,10 +28,15 @@ class MachineController extends Controller
             //Si comienza por $type
             if ($pos !== false) {
                 $var = $request->get($field);
+                \Log::info($var);
 
                 $var = json_decode($var, true);
+
+                \Log::info($var);
+
                 $source = $var['source'];
                 $target = $var['target'];
+                $payload = isset($var['payload']) ? $var['payload'] : '';
 
                 if ($source['id'] !== null) {
                     \Log::info('getting source machine from id ' . $source['id']);
@@ -73,7 +78,7 @@ class MachineController extends Controller
                 $dst_machine->hide = $target['hide'];
                 $dst_machine->save();
 
-                array_push($machines, ['source' => $src_machine, 'target' => $dst_machine]);
+                array_push($machines, ['source' => $src_machine, 'target' => $dst_machine, 'payload' => $payload]);
             }
         }
 

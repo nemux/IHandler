@@ -18,14 +18,14 @@ class CreateIncidentEventsTable extends Migration
             $table->unsignedInteger('source_machine_id');
             $table->unsignedInteger('target_machine_id');
             $table->text('payload')->nullable();
+            $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
             $table->foreign('source_machine_id')->references('id')->on('machine')->onDelete('cascade');
             $table->foreign('target_machine_id')->references('id')->on('machine')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

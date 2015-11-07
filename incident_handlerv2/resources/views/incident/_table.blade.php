@@ -19,7 +19,7 @@
     <tr>
         <th>ID</th>
         <th># Ticket</th>
-        <th>Titulo</th>
+        <th>Título</th>
         <th>Indicadores</th>
         <th>Detección</th>
         <th>Sensores</th>

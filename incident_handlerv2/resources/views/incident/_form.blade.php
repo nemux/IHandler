@@ -2,7 +2,7 @@
     var countNewEvents = 0;
     var countGeneralEvents = 0;
 
-    function addEvent(isNew, id, source, target) {
+    function addEvent(isNew, id, source, target, oldPayload) {
         //Obtenemos los valores de origen del formulario
         var srcValidation = {status: false};
         var tarValidation = {status: false};
@@ -33,6 +33,15 @@
                 blacklist: $('#evt-tar-blacklist').is(":checked"),
                 hide: $('#evt-tar-hide').is(":checked")
             };
+
+            //Eliminamos los saltos de linea de la cadena
+
+            //Reemplazamos saltos de línea,
+            // espacios en blanco contínuos por un solo espacio,
+            // escapamos comillas dobles
+            // escapamos Slashes
+//            var payload = encodeURIComponent($('#evt-payload').val().replace(/\r?\n|\r/gm, '').replace(/( )+/gm, ' '));
+            var payload = escape($('#evt-payload').val());
 
             //Validamos las entradas de origen
             srcValidation = validateEvent(src);
@@ -78,6 +87,8 @@
                 blacklist: json_target.blacklist,
                 hide: json_target.hide
             };
+
+            var payload = oldPayload;
         }
 
         //Si ambas entradas son correctas o no es un nuevo evento
@@ -90,6 +101,7 @@
             $('#evt-src-mac').val('');
             $('#evt-src-type').select2('val', '');
             $('#evt-src-location').select2('val', '');
+
             $('#evt-tar-protocol').val('');
             $('#evt-tar-ipv4').val('');
             $('#evt-tar-port').val('');
@@ -98,9 +110,10 @@
             $('#evt-tar-type').select2('val', '');
             $('#evt-tar-location').select2('val', '');
 
+            $('#evt-payload').val('');
 
             //Ensambla un objeto IncidentEvent
-            var inputEvent = {source: src, target: tar};
+            var inputEvent = {source: src, target: tar, payload: payload};
 
             //Ensamblamos las cadenas de texto que irán en los datos informativos
             var src_string = "<b>" + src.protocol + "://" + src.ipv4 + ":" + src.port + "</b> | <b>" + src.os + "</b> | <b>" + src.mac + "</b>";
@@ -158,6 +171,7 @@
                     $('#old-events #' + rowNumber).remove();
                 }
                 $('#pv-event-row-' + rowNumber).remove();
+                countGeneralEvents--;
             }
         });
     }
@@ -628,6 +642,13 @@
                     <input type="checkbox" id="evt-tar-hide" name="evt-tar-hide">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label class="control-label">Payload (Pegar el payload del paquete entre equipos)</label>
+                    <textarea class="form-control" id="evt-payload"></textarea>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12 text-right">
                     <span class="btn btn-blue" id="add-event-btn">Agregar Evento al Incidente</span>

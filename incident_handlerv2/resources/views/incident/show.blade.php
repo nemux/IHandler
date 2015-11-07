@@ -10,25 +10,22 @@
             @endforeach
 
 
+
         });
     </script>
 @endsection
 
 @section('dashboard_content')
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="row">
-                <div class="btn btn-primary" onclick="window.open('{{route('incident.edit',[$case])}}','_self');">
-                    <i class="fa fa-pencil fa-fw"></i> Editar Caso
-                </div>
-                <div class="btn btn-info" onclick="window.open('{{route('incident.pdf',[$case,1])}}','_self');">
-                    <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
-                </div>
-                <div class="btn btn-success"
-                     onclick="window.open('{{route('incident.email',$case)}}','_self');">
-                    <i class="fa fa-envelope fa-fw"></i> Enviar Correo
-                </div>
-            </div>
+    <div class="row">
+        <div class="btn btn-primary" onclick="window.open('{{route('incident.edit',[$case])}}','_self');">
+            <i class="fa fa-pencil fa-fw"></i> Editar Caso
+        </div>
+        <div class="btn btn-info" onclick="window.open('{{route('incident.pdf',[$case,1])}}','_self');">
+            <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
+        </div>
+        <div class="btn btn-success"
+             onclick="window.open('{{route('incident.email',$case)}}','_self');">
+            <i class="fa fa-envelope fa-fw"></i> Enviar Correo
         </div>
     </div>
     <div class="panel panel-default">
