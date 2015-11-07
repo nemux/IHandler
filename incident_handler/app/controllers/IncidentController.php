@@ -808,10 +808,10 @@ class IncidentController extends Controller
                     $signature = new Rule;
                 }
 
-                $incident_rule = new IncidentSignature();
-                $incident_rule->signatures_id = $signature->id;
-                $incident_rule->incidents_id = $incident->id;
-                $incident_rule->save();
+                $incident_signature = new IncidentSignature();
+                $incident_signature->signatures_id = $signature->id;
+                $incident_signature->incidents_id = $incident->id;
+                $incident_signature->save();
             }
             foreach ($delete as $del) {
                 if (File::exists($input[$del])) {

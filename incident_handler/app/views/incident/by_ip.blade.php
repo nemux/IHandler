@@ -85,6 +85,9 @@
                                               <?php foreach ($in->incidentRule as $ir): ?>
                                                 <?php echo $ir->rule->message ?>
                                               <?php endforeach ?>
+                                                <?php foreach ($in->incidentSignatures as $is): ?>
+                                                <?php echo $is->signature->signature ?>
+                                                <?php endforeach ?>
                                             </td>
                                             <td onclick="window.open('/incident/view/<?php echo $in->id ?>','_blank');" style="cursor:pointer">
                                               <?php
