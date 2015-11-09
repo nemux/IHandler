@@ -122,9 +122,8 @@
             blacklist: $('#evt-' + type + '-blacklist').is(":checked"),
             hide: $('#evt-' + type + '-hide').is(":checked")
         };
-
+        return data;
     }
-    return data;
 
     function clearEventForm(type) {
         //Reseteamos el formulario de origen del evento
