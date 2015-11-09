@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvidence whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvidence whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\IncidentEvidence whereUserId($value)
+ * @property-read Evidence $evidence
  */
 class IncidentEvidence extends Model
 {

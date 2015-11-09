@@ -115,6 +115,7 @@
             os: $('#evt-' + type + '-os').val(),
             mac: $('#evt-' + type + '-mac').val(),
             location: $('#evt-' + type + '-location option:selected').val(),
+            location_name: $('#evt-' + type + '-location option:selected').text(),
             type: $('#evt-' + type + '-type option:selected').val(),
             blacklist: $('#evt-' + type + '-blacklist').is(":checked"),
             hide: $('#evt-' + type + '-hide').is(":checked")

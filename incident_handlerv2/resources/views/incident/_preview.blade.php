@@ -14,16 +14,16 @@
             $('<td></td>').appendTo(row);
         }
 
-        var blacklistUl = $('#blacklist-list');
+        var pv_blacklist = $('#pv-blacklist');
 
         if (src.blacklist) {
             $('#blacklist-section').attr('style', 'display: auto');
-            $('<li>' + src.ipv4 + '</li>').appendTo(blacklistUl);
+            $('<tr><td>' + src.ipv4 + '</td><td>' + src.location_name + '</td></tr>').appendTo(pv_blacklist);
         }
 
         if (tar.blacklist) {
             $('#blacklist-section').attr('style', 'display: auto');
-            $('<li>' + tar.ipv4 + '</li>').appendTo(blacklistUl);
+            $('<tr><td>' + tar.ipv4 + '</td><td>' + tar.location_name + '</td></tr>').appendTo(pv_blacklist);
         }
     }
 </script>
@@ -149,10 +149,18 @@
     </tr>
     <tr id="blacklist-section" style="display: none;">
         <td class="title_column">Blacklist:</td>
-        <td class="content_column">
-            <ul id="blacklist-list">
+        <td class="content_column" style="padding: 0px;">
+            <table class="events">
+                <thead style="background-color: #CCC;">
+                <tr>
+                    <th>Dirección IP</th>
+                    <th>País de Origen</th>
+                </tr>
+                </thead>
+                <tbody id="pv-blacklist">
 
-            </ul>
+                </tbody>
+            </table>
         </td>
     </tr>
     <tr>

@@ -60,6 +60,7 @@ use Illuminate\Http\Request;
  * @property-read User $user
  * @property-read AttackFlow $flow
  * @property-read Criticity $criticity
+ * @property-read AttackType $type
  */
 class Incident extends Model
 {

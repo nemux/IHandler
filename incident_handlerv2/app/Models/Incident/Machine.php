@@ -2,6 +2,7 @@
 
 namespace App\Models\Incident;
 
+use App\Models\Catalog\Location;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereDeletedAt($value)
  * @property boolean $hide
  * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereHide($value)
+ * @property-read Location $location
  */
 class Machine extends Model
 {
@@ -65,8 +67,15 @@ class Machine extends Model
         return $this->protocol . '://' . $this->ipv4 . ':' . $this->port;
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
     public function json()
     {
+        $location = $this->location;
+        $this->location_name = isset($location->name) ? $location->name : '';
         return $this->toJson();
     }
 }
