@@ -1,7 +1,30 @@
 <script>
     function addPreviewRow(countGeneralEvents, src, tar) {
-        var pv_row = $('<tr id="pv-event-row-' + countGeneralEvents + '"><td>' + src.ipv4 + '</td><td>' + tar.ipv4 + '</td></tr>');
-        pv_row.appendTo('#pv-events');
+        var row = $('<tr id="pv-event-row-' + countGeneralEvents + '"></tr>').appendTo('#pv-events');
+
+        if (!src.hide) {
+            $('<td>' + src.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        if (!tar.hide) {
+            $('<td>' + tar.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        var blacklistUl = $('#blacklist-list');
+
+        if (src.blacklist) {
+            $('#blacklist-section').attr('style', 'display: auto');
+            $('<li>' + src.ipv4 + '</li>').appendTo(blacklistUl);
+        }
+
+        if (tar.blacklist) {
+            $('#blacklist-section').attr('style', 'display: auto');
+            $('<li>' + tar.ipv4 + '</li>').appendTo(blacklistUl);
+        }
     }
 </script>
 <style>
@@ -122,6 +145,14 @@
 
                 </tbody>
             </table>
+        </td>
+    </tr>
+    <tr id="blacklist-section" style="display: none;">
+        <td class="title_column">Blacklist:</td>
+        <td class="content_column">
+            <ul id="blacklist-list">
+
+            </ul>
         </td>
     </tr>
     <tr>

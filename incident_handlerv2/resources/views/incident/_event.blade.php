@@ -6,14 +6,16 @@
         //Obtenemos los valores de origen del formulario
         var srcValidation = {status: false};
         var tarValidation = {status: false};
+        var src, tar, payload;
+
         if (isNew) {
-            var src = getValues('src');
+            src = getValues('src');
 
             //Obtenemos los valores de destino del formulario
-            var tar = getValues('tar');
+            tar = getValues('tar');
 
             //Escapamos para evitar un XSS autoincrustado
-            var payload = escape($('#evt-payload').val());
+            payload = escape($('#evt-payload').val());
 
             //Validamos las entradas de origen
             srcValidation = validateEvent(src);
@@ -30,14 +32,12 @@
             }
         } else {
             //Obtenemos los valores de origen del objeto json
-            var json_source = source;
-            var src = getJsonValues(json_source);
+            src = getJsonValues(source);
 
             //Obtenemos los valores de destino del objeto json
-            var json_target = target;
-            var tar = getJsonValues(json_target);
+            tar = getJsonValues(target);
 
-            var payload = oldPayload;
+            payload = oldPayload;
         }
 
         //Si ambas entradas son correctas o no es un nuevo evento
@@ -73,7 +73,7 @@
             }
 
             if (!$('#evt-same-target').is(":checked")) {
-                clearEventForam('tar');
+                clearEventForm('tar');
             }
 
             countGeneralEvents++;

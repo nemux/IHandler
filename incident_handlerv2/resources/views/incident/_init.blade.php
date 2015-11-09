@@ -39,6 +39,6 @@
 
     @foreach($case->events as $index=>$event)
         addPreviewRow(countGeneralEvents,JSON.parse('{!! $event->source->json() !!}'),JSON.parse('{!! $event->target->json() !!}'));
-        addEvent(false,{{$event->id}},JSON.parse('{!! $event->source->json() !!}'),JSON.parse('{!! $event->target->json() !!}'));
+        addEvent(false,{{$event->id}},JSON.parse('{!! $event->source->json() !!}'),JSON.parse('{!! $event->target->json() !!}'),'{{$event->payload}}');
     @endforeach
 @endif
