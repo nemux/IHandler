@@ -2,9 +2,11 @@
 
 namespace App\Models\Evidence;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 
 /**
  * App\Models\Evidence\Evidence
@@ -47,6 +49,10 @@ class Evidence extends Model
      */
     protected $softDelete = true;
     protected $table = 'evidence';
+
+    protected static $customAttributes = [
+
+    ];
 
     /**
      * Cosntructor de la clase

@@ -49,7 +49,8 @@ class IncidentController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO Validate request fields?
+        Incident::validateCreate($request, $this);
+        //TODO validate the other fields
 
         //Incidente
         $incident = new Incident();
