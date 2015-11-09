@@ -379,8 +379,7 @@ class IncidentController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public
-    function deleteEvent($id)
+    public function deleteEvent($id)
     {
         $incidentEvent = IncidentEvent::whereId($id)->first();
 
@@ -390,5 +389,10 @@ class IncidentController extends Controller
         } else {
             return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar el Evento']);
         }
+    }
+
+    public function test()
+    {
+        return view('incident.test');
     }
 }

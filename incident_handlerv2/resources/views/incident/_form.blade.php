@@ -1,181 +1,4 @@
 <script type="text/javascript">
-    var countNewEvents = 0;
-    var countGeneralEvents = 0;
-
-    function addEvent(isNew, id, source, target, oldPayload) {
-        //Obtenemos los valores de origen del formulario
-        var srcValidation = {status: false};
-        var tarValidation = {status: false};
-        if (isNew) {
-            var src = {
-                id: null,
-                protocol: $('#evt-src-protocol').val(),
-                ipv4: $('#evt-src-ipv4').val(),
-                port: $('#evt-src-port').val(),
-                os: $('#evt-src-os').val(),
-                mac: $('#evt-src-mac').val(),
-                location: $('#evt-src-location option:selected').val(),
-                type: $('#evt-src-type option:selected').val(),
-                blacklist: $('#evt-src-blacklist').is(":checked"),
-                hide: $('#evt-src-hide').is(":checked")
-            };
-
-            //Obtenemos los valores de destino del formulario
-            var tar = {
-                id: null,
-                protocol: $('#evt-tar-protocol').val(),
-                ipv4: $('#evt-tar-ipv4').val(),
-                port: $('#evt-tar-port').val(),
-                os: $('#evt-tar-os').val(),
-                mac: $('#evt-tar-mac').val(),
-                location: $('#evt-tar-location option:selected').val(),
-                type: $('#evt-tar-type option:selected').val(),
-                blacklist: $('#evt-tar-blacklist').is(":checked"),
-                hide: $('#evt-tar-hide').is(":checked")
-            };
-
-            //Eliminamos los saltos de linea de la cadena
-
-            //Reemplazamos saltos de línea,
-            // espacios en blanco contínuos por un solo espacio,
-            // escapamos comillas dobles
-            // escapamos Slashes
-//            var payload = encodeURIComponent($('#evt-payload').val().replace(/\r?\n|\r/gm, '').replace(/( )+/gm, ' '));
-            var payload = escape($('#evt-payload').val());
-
-            //Validamos las entradas de origen
-            srcValidation = validateEvent(src);
-            if (!srcValidation.status) {
-                alert('El campo ' + srcValidation.field + ' es obligatorio.');
-                return;
-            }
-
-            //Validamos las entradas de destino
-            tarValidation = validateEvent(tar);
-            if (!tarValidation.status) {
-                alert('El campo ' + tarValidation.field + ' es obligatorio.');
-                return;
-            }
-        } else {
-            //Obtenemos los valores de origen del objeto json
-            var json_source = source;
-            var src = {
-                id: json_source.id,
-                protocol: json_source.protocol,
-                ipv4: json_source.ipv4,
-                port: json_source.port,
-                os: json_source.os,
-                mac: json_source.mac,
-                location: json_source.location_id,
-                type: json_source.machine_type_id,
-                blacklist: json_source.blacklist,
-                hide: json_source.hide
-
-            };
-
-            //Obtenemos los valores de destino del objeto json
-            var json_target = target;
-            var tar = {
-                id: json_target.id,
-                protocol: json_target.protocol,
-                ipv4: json_target.ipv4,
-                port: json_target.port,
-                os: json_target.os,
-                mac: json_target.mac,
-                location: json_target.location_id,
-                type: json_target.machine_type_id,
-                blacklist: json_target.blacklist,
-                hide: json_target.hide
-            };
-
-            var payload = oldPayload;
-        }
-
-        //Si ambas entradas son correctas o no es un nuevo evento
-        if (srcValidation.status && tarValidation.status || !isNew) {
-            //Reseteamos el formulario
-            $('#evt-src-protocol').val('');
-            $('#evt-src-ipv4').val('');
-            $('#evt-src-port').val('');
-            $('#evt-src-os').val('');
-            $('#evt-src-mac').val('');
-            $('#evt-src-type').select2('val', '');
-            $('#evt-src-location').select2('val', '');
-
-            $('#evt-tar-protocol').val('');
-            $('#evt-tar-ipv4').val('');
-            $('#evt-tar-port').val('');
-            $('#evt-tar-os').val('');
-            $('#evt-tar-mac').val('');
-            $('#evt-tar-type').select2('val', '');
-            $('#evt-tar-location').select2('val', '');
-
-            $('#evt-payload').val('');
-
-            //Ensambla un objeto IncidentEvent
-            var inputEvent = {source: src, target: tar, payload: payload};
-
-            //Ensamblamos las cadenas de texto que irán en los datos informativos
-            var src_string = "<b>" + src.protocol + "://" + src.ipv4 + ":" + src.port + "</b> | <b>" + src.os + "</b> | <b>" + src.mac + "</b>";
-            var tar_string = "<b>" + tar.protocol + "://" + tar.ipv4 + ":" + tar.port + "</b> | <b>" + tar.os + "</b> | <b>" + tar.mac + "</b>";
-
-            var event = $("<div class='col-md-12 h3'>" +
-                    "<input onclick='removeEvent(" + isNew + "," + id + "," + countGeneralEvents + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-2'>" +
-                    "<input type='hidden' name='event_" +
-                    countGeneralEvents + "' value='" +
-                    JSON.stringify(inputEvent) + "'/><div class='col-md-5'>Origen " +
-                    src_string + "</div><div class='col-md-5'> Destino " +
-                    tar_string +
-                    "</div></div>");
-
-            if (isNew) {
-                event.attr({id: countGeneralEvents}).appendTo('#new-events');
-                countNewEvents++;
-            } else {
-                event.attr({id: countGeneralEvents}).appendTo('#old-events');
-            }
-
-            if (isNew)
-                addPreviewRow(countGeneralEvents, src, tar);
-
-            countGeneralEvents++;
-            return;
-        }
-    }
-
-    function validateEvent(machine) {
-        if (machine.protocol == '') {
-            return {status: false, field: 'protocolo'};
-        }
-        if (machine.ipv4 == '') {
-            return {status: false, field: 'ipv4'};
-        }
-        if (machine.port == '') {
-            return {status: false, field: 'puerto'};
-        }
-        if (machine.type == '') {
-            return {status: false, field: 'tipo de ip'};
-        }
-
-        return {status: true};
-    }
-
-    function removeEvent(isNew, id, rowNumber) {
-        modalDeleteEvent(isNew, id, function (status) {
-            if (status) {
-                if (isNew) {
-                    //Elimina los elementos en la sección con id new-events
-                    $('#new-events #' + rowNumber).remove();
-                } else {
-                    //Elimina los elementos en la sección con id old-events
-                    $('#old-events #' + rowNumber).remove();
-                }
-                $('#pv-event-row-' + rowNumber).remove();
-                countGeneralEvents--;
-            }
-        });
-    }
-
     $(document).ready(function ($) {
         var sel_customer = $("#customer_id").select2({
             placeholder: 'Cliente...',
@@ -183,6 +6,39 @@
             dropdownAutoWidth: true
         }).on('select2-open', function () {
             $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+        });
+
+        /**
+         * Obtiene de un WS los sensores relacionados al cliente seleccionado en el combo box
+         */
+        $('#customer_id').change(function () {
+            var customer_id = $(this).find('option:selected').attr('value');
+            $.ajax({
+                url: '/dashboard/ws/sensors/' + customer_id,
+                type: 'get',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function (result) {
+                    $("#sensor_id").select2("val", "");
+                    $('#sensor_id').empty();
+
+                    if (result.status === true) {
+                        $('#sensor_id').append($('<option>', {}));
+                        $.each(result.sensors, function (i, item) {
+                            $('#sensor_id').append($('<option>', {
+                                value: item.id,
+                                text: item.name
+                            }));
+                        });
+                    }
+                },
+                failed: function (result) {
+                    console.log(result);
+                }
+            });
+
         });
 
         var sel_criticity = $("#criticity_id").select2({
@@ -249,38 +105,6 @@
             $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
         });
 
-        var sel_src_location = $("#evt-src-location").select2({
-            placeholder: 'Selecciona un país',
-            allowClear: true,
-            dropdownAutoWidth: true
-        }).on('select2-open', function () {
-            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-        });
-
-        var sel_tar_location = $("#evt-tar-location").select2({
-            placeholder: 'Selecciona un país',
-            allowClear: true,
-            dropdownAutoWidth: true
-        }).on('select2-open', function () {
-            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-        });
-
-        var sel_src_type = $("#evt-src-type").select2({
-            placeholder: 'Tipo de IP Origen',
-            allowClear: true,
-            dropdownAutoWidth: true
-        }).on('select2-open', function () {
-            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-        });
-
-        var sel_tar_type = $("#evt-tar-type").select2({
-            placeholder: 'Tipo de IP Destino',
-            allowClear: true,
-            dropdownAutoWidth: true
-        }).on('select2-open', function () {
-            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-        });
-
 
         var descriptionField = CKEDITOR.replace('description');
         var recommendationField = CKEDITOR.replace('recommendation');
@@ -341,47 +165,8 @@
             $('#pv-reference').html(evt.editor.getData());
         });
 
-        $('#add-event-btn').on('click', function () {
-            addEvent(true);
-        });
-
 
         @include('incident._init');
-    });
-
-    /**
-     * Updates Sensor List when Customer selected
-     */
-    $(document).ready(function () {
-        $('#customer_id').change(function () {
-            var customer_id = $(this).find('option:selected').attr('value');
-            $.ajax({
-                url: '/dashboard/ws/sensors/' + customer_id,
-                type: 'get',
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function (result) {
-                    $("#sensor_id").select2("val", "");
-                    $('#sensor_id').empty();
-
-                    if (result.status === true) {
-                        $('#sensor_id').append($('<option>', {}));
-                        $.each(result.sensors, function (i, item) {
-                            $('#sensor_id').append($('<option>', {
-                                value: item.id,
-                                text: item.name
-                            }));
-                        });
-                    }
-                },
-                failed: function (result) {
-                    console.log(result);
-                }
-            });
-
-        });
     });
 </script>
 <ul class="tabs">
@@ -554,112 +339,8 @@
             <div class="row">
                 <div class="col-md-10"><span class="h1">Eventos del Incidente</span></div>
             </div>
-            <div class="row">
-                <div class="col-md-1 form-group">
-                    <label class="control-label">ORIGEN</label>
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-src-protocol" type="text" class="form-control" placeholder="Protocolo">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-src-ipv4" type="text" class="form-control" placeholder="IPv4">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-src-port" type="text" class="form-control" placeholder="Puerto">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-src-os" type="text" class="form-control" placeholder="O.S.">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-src-mac" type="text" class="form-control" placeholder="MAC">
-                </div>
-                <div class="col-md-2 form-group">
-                    <select id="evt-src-location">
-                        <option></option>
-                        @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 form-group">
-                    <select id="evt-src-type">
-                        <option></option>
-                        @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="control-label">Blacklist</label>
-                    <input type="checkbox" id="evt-src-blacklist" name="evt-src-blacklist">
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="control-label">No mostrar</label>
-                    <input type="checkbox" id="evt-src-hide" name="evt-src-hide">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1 form-group">
-                    <label class="control-label">DESTINO</label>
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-tar-protocol" type="text" class="form-control" placeholder="Protocolo">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-tar-ipv4" type="text" class="form-control" placeholder="IPv4">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-tar-port" type="text" class="form-control" placeholder="Puerto">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-tar-os" type="text" class="form-control" placeholder="O.S.">
-                </div>
-                <div class="col-md-1 form-group">
-                    <input id="evt-tar-mac" type="text" class="form-control" placeholder="MAC">
-                </div>
-                <div class="col-md-2 form-group">
-                    <select id="evt-tar-location">
-                        <option></option>
-                        @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 form-group">
-                    <select id="evt-tar-type">
-                        <option></option>
-                        @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
-                            <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="control-label">Blacklist</label>
-                    <input type="checkbox" id="evt-tar-blacklist" name="evt-tar-blacklist">
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="control-label">No mostrar</label>
-                    <input type="checkbox" id="evt-tar-hide" name="evt-tar-hide">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
-                    <label class="control-label">Payload (Pegar el payload del paquete entre equipos)</label>
-                    <textarea class="form-control" id="evt-payload"></textarea>
-                </div>
-            </div>
+            @include('incident._event')
 
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <span class="btn btn-blue" id="add-event-btn">Agregar Evento al Incidente</span>
-                </div>
-            </div>
-            <div class="row" id="new-events">
-
-            </div>
-            <div class="row" id="old-events">
-
-            </div>
         @endif
     </div>
     <div class="tab-pane" id="incident-description-tab">
