@@ -98,6 +98,7 @@
             os: json.os,
             mac: json.mac,
             location: json.location_id,
+            location_name: json.location_name,
             type: json.machine_type_id,
             blacklist: json.blacklist,
             hide: json.hide
@@ -122,8 +123,8 @@
             hide: $('#evt-' + type + '-hide').is(":checked")
         };
 
-        return data;
     }
+    return data;
 
     function clearEventForm(type) {
         //Reseteamos el formulario de origen del evento
