@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/delete/event/{incidenteventid}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
 
         Route::get('/test', ['uses' => 'IncidentController@test']);
+        Route::post('/test', ['uses' => 'IncidentController@postTest']);
     });
 
     Route::group(['prefix' => 'user'], function () {

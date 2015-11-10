@@ -45,7 +45,8 @@
                             <div class="col-md-12">
                                 {!! Form::model(new \App\Models\Incident\Incident(),['id'=>'incident-form','class'=>'form-wizard validate']) !!}
                                 @include('incident._form')
-                                {!! Form::close() !!}</div>
+                                {!! Form::close() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

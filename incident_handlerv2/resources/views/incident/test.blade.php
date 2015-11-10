@@ -43,7 +43,10 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
+                                {!! Form::model(null,['id'=>'incident-form','class'=>'form-wizard validate']) !!}
                                 @include('incident._event')
+                                {!! Form::submit('Submit',['class'=>'btn btn-success']) !!}
+                                {!! Form::close() !!}
                             </div>
                         </div>
                     </div>
