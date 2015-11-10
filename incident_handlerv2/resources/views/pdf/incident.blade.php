@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta content="text/html">
-
     <style>
         html {
             margin: 0px;
@@ -190,7 +189,7 @@
                 </tr>
             </div>
             <div class="panel-body">
-                @include('incident._preview')
+                @include('incident._preview',['forpdf'=>true])
             </div>
         </div>
     </div>

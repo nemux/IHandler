@@ -1,4 +1,10 @@
 <script>
+    function enableBlacklist() {
+        var count = document.getElementById('pv-blacklist').getElementsByTagName("tr").length;
+        if (count > 0)
+            document.getElementById('blacklist-section').style.visibility = 'visible';
+    }
+
     function addPreviewRow(countGeneralEvents, src, tar) {
         var row = $('<tr id="pv-event-row-' + countGeneralEvents + '"></tr>').appendTo('#pv-events');
 
@@ -17,13 +23,15 @@
         var pv_blacklist = $('#pv-blacklist');
 
         if (src.blacklist) {
-            $('#blacklist-section').attr('style', 'display: auto');
             $('<tr><td>' + src.ipv4 + '</td><td>' + src.location_name + '</td></tr>').appendTo(pv_blacklist);
+
+            $('#blacklist-section').attr('style', 'visibility:visible;');
         }
 
         if (tar.blacklist) {
-            $('#blacklist-section').attr('style', 'display: auto');
             $('<tr><td>' + tar.ipv4 + '</td><td>' + tar.location_name + '</td></tr>').appendTo(pv_blacklist);
+
+            $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
 </script>
@@ -76,7 +84,7 @@
         max-height: 80px;
     }
 </style>
-<table class="incident" border="1">
+<table class="incident" border="1" onload="enableBlacklist()">
     <tr class="title">
         <td colspan="2"><h3>Incidente: <span id="pv-title">{{($case->id!=null)?$case->title:''}}</span></h3></td>
     </tr>
@@ -142,12 +150,19 @@
                 </tr>
                 </thead>
                 <tbody id="pv-events">
-
+                @if(isset($forpdf) && $forpdf)
+                    @foreach($case->events as $event)
+                        <tr>
+                            <td>@if(!$event->source->hide) {{$event->source->ipv4}} @endif</td>
+                            <td>@if(!$event->target->hide) {{$event->target->ipv4}} @endif</td>
+                        </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </td>
     </tr>
-    <tr id="blacklist-section" style="display: none;">
+    <tr id="blacklist-section" style="visibility: {{$case->hasOneBlacklist()?'visible':'collapse'}};">
         <td class="title_column">Blacklist:</td>
         <td class="content_column" style="padding: 0px;">
             <table class="events">
@@ -158,7 +173,22 @@
                 </tr>
                 </thead>
                 <tbody id="pv-blacklist">
-
+                @if(isset($forpdf) && $forpdf)
+                    @foreach($case->events as $event)
+                        @if($event->source->blacklist)
+                            <tr onload="">
+                                <td> {{$event->source->ipv4}}</td>
+                                <td>{{$event->source->location->name}} </td>
+                            </tr>
+                        @endif
+                        @if($event->target->blacklist)
+                            <tr onload="enableBlacklist()">
+                                <td>{{$event->target->ipv4}}</td>
+                                <td>{{$event->target->location->name}} </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </td>

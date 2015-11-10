@@ -120,7 +120,7 @@ class Incident extends Model
             'impact' => 'required|numeric',
             'risk' => 'required|numeric',
             'attack_type_id' => 'required|exists:attack_type,id',
-            'customer_id' => 'Cliente',
+            'customer_id' => 'required|exists:customer,id',
         ], [], Incident::$attributeNames);
     }
 
@@ -278,5 +278,18 @@ class Incident extends Model
     public function type()
     {
         return $this->belongsTo(AttackType::class, 'attack_type_id');
+    }
+
+    /**
+     * Función que permite determinar si un incidente tiene al menos una máquina en lista negra
+     */
+    public function hasOneBlacklist()
+    {
+
+        foreach ($this->events as $event) {
+            if ($event->source->blacklist || $event->target->blacklist)
+                return true;
+        }
+        return false;
     }
 }
