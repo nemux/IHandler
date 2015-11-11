@@ -8,27 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
-/**
- * App\Models\Person\Person
- *
- * @property integer $id
- * @property string $name
- * @property string $lname
- * @property string $mname
- * @property string $sex
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property \App\Models\Person\PersonContact $contact
- * @method static Builder|Person whereId($value)
- * @method static Builder|Person whereName($value)
- * @method static Builder|Person whereLname($value)
- * @method static Builder|Person whereMname($value)
- * @method static Builder|Person whereSex($value)
- * @method static Builder|Person whereCreatedAt($value)
- * @method static Builder|Person whereUpdatedAt($value)
- * @method static Builder|Person whereDeletedAt($value)
- */
+
 class Person extends Model
 {
     use SoftDeletes;

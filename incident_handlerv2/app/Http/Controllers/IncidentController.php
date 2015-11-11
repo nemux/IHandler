@@ -90,14 +90,13 @@ class IncidentController extends Controller
         $event_machines = MachineController::getMachines($request);
         $incidentEvents = array();
         foreach ($event_machines as $machine) {
-            $source = $machine['source'];
-            $target = $machine['target'];
-
             $event = new IncidentEvent();
             $event->incident_id = $incident->id;
-            $event->source_machine_id = $source->id;
-            $event->target_machine_id = $target->id;
+            $event->source_machine_id = $machine['source']->id;
+            $event->target_machine_id = $machine['target']->id;
+            $event->payload = $machine['payload'];
             $event->save();
+
             array_push($incidentEvents, $event);
         }
         $incident->events = $incidentEvents;
@@ -138,7 +137,7 @@ class IncidentController extends Controller
         }
         $incident->signatures = $incidentSignatures;
 
-//        return redirect()->route('incident.index')->withMessage('Se creó el Incidente ' . $incident->title);
+        return redirect()->route('incident.index')->withMessage('Se creó el Incidente ' . $incident->title);
     }
 
 
@@ -399,6 +398,6 @@ class IncidentController extends Controller
 
     public function postTest(Request $request)
     {
-        \Log::info($request->except('_token'));
+
     }
 }

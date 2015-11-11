@@ -4,34 +4,6 @@
         if (count > 0)
             document.getElementById('blacklist-section').style.visibility = 'visible';
     }
-
-    //    function addPreviewRow(countGeneralEvents, src, tar) {
-    //        var row = $('<tr id="pv-event-row-' + countGeneralEvents + '"></tr>').appendTo('#pv-events');
-    //
-    //        if (!src.hide) {
-    //            $('<td>' + src.ipv4 + '</td>').appendTo(row);
-    //        } else {
-    //            $('<td></td>').appendTo(row);
-    //        }
-    //
-    //        if (!tar.hide) {
-    //            $('<td>' + tar.ipv4 + '</td>').appendTo(row);
-    //        } else {
-    //            $('<td></td>').appendTo(row);
-    //        }
-    //
-    //        var pv_blacklist = $('#pv-blacklist');
-    //
-    //        if (src.blacklist) {
-    //            $('<tr><td>' + src.ipv4 + '</td><td>' + src.location_name + '</td></tr>').appendTo(pv_blacklist);
-    //            $('#blacklist-section').attr('style', 'visibility:visible;');
-    //        }
-    //
-    //        if (tar.blacklist) {
-    //            $('<tr><td>' + tar.ipv4 + '</td><td>' + tar.location_name + '</td></tr>').appendTo(pv_blacklist);
-    //            $('#blacklist-section').attr('style', 'visibility:visible;');
-    //        }
-    //    }
 </script>
 <style>
     table.incident {

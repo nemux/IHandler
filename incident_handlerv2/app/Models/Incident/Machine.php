@@ -6,42 +6,7 @@ use App\Models\Catalog\Location;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * App\Models\Incident\Machine
- *
- * @property integer $id
- * @property string $ipv4
- * @property string $ipv6
- * @property string $mac
- * @property string $os
- * @property string $port
- * @property string $protocol
- * @property boolean $blacklist
- * @property integer $location_id
- * @property integer $machine_type_id
- * @property integer $user_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereIpv4($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereIpv6($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereMac($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereOs($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine wherePort($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereProtocol($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereShow($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereBlacklist($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereLocationId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereMachineTypeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereDeletedAt($value)
- * @property boolean $hide
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Incident\Machine whereHide($value)
- * @property-read Location $location
- */
+
 class Machine extends Model
 {
     use SoftDeletes;
@@ -77,5 +42,26 @@ class Machine extends Model
         $location = $this->location;
         $this->location_name = isset($location->name) ? $location->name : '';
         return $this->toJson();
+    }
+
+
+    /**
+     * Convierte los parametros de un arreglo en un objeto tipo Machine
+     * @param $data
+     * @return Machine
+     */
+    public static function getMachine($data)
+    {
+        $machine = new Machine();
+        $machine->protocol = $data['protocol'];
+        $machine->ipv4 = $data['ipv4'];
+        $machine->port = $data['port'];
+        $machine->os = $data['os'];
+        $machine->mac = $data['mac'];
+        $machine->location_id = $data['location'];
+        $machine->machine_type_id = $data['type'];
+        $machine->blacklist = $data['blacklist'];
+        $machine->hide = $data['hide'];
+        return $machine;
     }
 }

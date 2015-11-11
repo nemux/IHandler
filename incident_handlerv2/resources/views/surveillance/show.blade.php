@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Caso <b>'.$case->title.'</b>')
+@section('title', 'Caso '.$case->title)
 
 @section('include_up')
 @endsection

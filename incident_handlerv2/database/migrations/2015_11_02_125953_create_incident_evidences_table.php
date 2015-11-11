@@ -20,13 +20,13 @@ class CreateIncidentEvidencesTable extends Migration
 
             $table->string('note')->nullable();
 
+            $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
             $table->foreign('evidence_id')->references('id')->on('evidence')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

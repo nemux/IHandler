@@ -9,33 +9,7 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\Surveillance\SurveillanceCase
- *
- * @property integer $id
- * @property integer $customer_id
- * @property integer $criticity_id
- * @property string $title
- * @property string $description
- * @property string $recommendation
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property-read Customer $customer
- * @property-read Criticity $criticity
- * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCaseEvidence[] $evidences
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCriticityId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereTitle($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereRecommendation($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCase whereUserId($value)
- */
+
 class SurveillanceCase extends Model
 {
 //    use SoftDeletes;

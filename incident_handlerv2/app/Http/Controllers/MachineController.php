@@ -22,142 +22,56 @@ class MachineController extends Controller
 
         //Para todos los campos pasados a través del request
         foreach ($values as $field => $value) {
-            //Verifica si el nombre del campo empieza con $type
-            $pos = strpos($field, 'event_');
-
-            //Si comienza por $type
-            if ($pos !== false) {
+            //Si comienza por 'event_'
+            if (strpos($field, 'event_') !== false) {
+                //Obtenemos el valor en string
                 $var = $request->get($field);
-                \Log::info($var);
-
+                //Parseamos el Json a un array
                 $var = json_decode($var, true);
 
-                \Log::info($var);
+                //Valida que sea una relación 1-source 1-target
+                if (isset($var['source']) && isset($var['target'])) {
 
-                $source = $var['source'];
-                $target = $var['target'];
-                $payload = isset($var['payload']) ? $var['payload'] : '';
+                    $source = Machine::getMachine($var['source']);
+                    $source->save();
 
-                if ($source['id'] !== null) {
-                    \Log::info('getting source machine from id ' . $source['id']);
-                    $src_machine = Machine::whereId($source['id'])->first();
-                } else {
-                    \Log::info('new source machine from id');
-                    $src_machine = new Machine();
-                }
-                $src_machine->ipv4 = $source['ipv4'];
-                if ($source['location'] !== '') {
-                    $src_machine->location_id = $source['location'];
-                }
-                $src_machine->machine_type_id = $source['type'];
-                $src_machine->port = $source['port'];
-                $src_machine->protocol = $source['protocol'];
-                $src_machine->os = $source['os'];
-                $src_machine->mac = $source['mac'];
-                $src_machine->blacklist = $source['blacklist'];
-                $src_machine->hide = $source['hide'];
-                $src_machine->save();
+                    $target = Machine::getMachine($var['target']);
+                    $target->save();
 
-                if ($target['id'] !== null) {
-                    \Log::info('getting target machine from id');
-                    $dst_machine = Machine::whereId($target['id'])->first();
-                } else {
-                    \Log::info('new target machine');
-                    $dst_machine = new Machine();
-                }
-                $dst_machine->ipv4 = $target['ipv4'];
-                if ($request->get($target['id']) !== '') {
-                    $src_machine->location_id = $target['location'];
-                }
-                $dst_machine->machine_type_id = $target['type'];
-                $dst_machine->port = $target['port'];
-                $dst_machine->protocol = $target['protocol'];
-                $dst_machine->os = $target['os'];
-                $dst_machine->mac = $target['mac'];
-                $dst_machine->blacklist = $target['blacklist'];
-                $dst_machine->hide = $target['hide'];
-                $dst_machine->save();
+                    $payload = $var['payload'];
 
-                array_push($machines, ['source' => $src_machine, 'target' => $dst_machine, 'payload' => $payload]);
+                    array_push($machines, ['source' => $source, 'target' => $target, 'payload' => $payload]);
+                } else if (isset($var['source']) && isset($var['targets'])) {
+
+                    $source = Machine::getMachine($var['source']);
+                    $source->save();
+
+                    foreach ($var['targets'] as $var_target) {
+                        $target = Machine::getMachine($var_target['target']);
+                        $target->save();
+                        $payload = $var_target['payload'];
+                        array_push($machines, ['source' => $source, 'target' => $target, 'payload' => $payload]);
+                    }
+                } else if (isset($var['sources']) && isset($var['target'])) {
+
+                    $target = Machine::getMachine($var['target']);
+                    $target->save();
+
+                    foreach ($var['sources'] as $var_target) {
+                        $source = Machine::getMachine($var_target['source']);
+                        $source->save();
+                        $payload = $var_target['payload'];
+                        array_push($machines, ['source' => $source, 'target' => $target, 'payload' => $payload]);
+                    }
+                }
             }
         }
 
         return $machines;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private static function pushToArray($array, $source, $target, $payload)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return array_push($array, ['source' => $source, 'target' => $target, 'payload' => $payload]);
     }
 }

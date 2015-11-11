@@ -79,13 +79,13 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrNew($id);
 
-//        if (\Session::has('tab')) {
-//            $tab = \Session::get('tab');
-//        } else {
-//            $tab = 'customer';
-//        }
+        if (\Session::has('tab')) {
+            $tab = \Session::get('tab');
+        } else {
+            $tab = 'customer';
+        }
 
-        return view('customer.show', compact('customer'))->withTab('customer');
+        return view('customer.show', compact('customer'))->withTab($tab);
     }
 
     /**

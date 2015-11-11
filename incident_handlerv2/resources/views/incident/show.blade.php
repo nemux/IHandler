@@ -8,9 +8,6 @@
             @foreach($case->events as $index=>$event)
             addPreviewRow(0, JSON.parse('{!! $event->source->json() !!}'), JSON.parse('{!! $event->target->json() !!}'));
             @endforeach
-
-
-
         });
     </script>
 @endsection

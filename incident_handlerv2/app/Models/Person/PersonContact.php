@@ -8,24 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use \Illuminate\Http\Request;
 
-/**
- * App\Models\Person\PersonContact
- *
- * @property integer $id
- * @property integer $person_id
- * @property string $email
- * @property string $phone
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Person\PersonContact whereDeletedAt($value)
- */
+
 class PersonContact extends Model
 {
     use SoftDeletes;
@@ -75,7 +58,7 @@ class PersonContact extends Model
 
     /**
      * Compara si el correo de  la persona a quien se enviar4á el email termina en @test.com, de ser así
-     * el correo se redirige a la cuenta dlopez@globalcybersec.com
+     * el correo se redirige a la cuenta devinida en el parámetro DEVELOPER_EMAIL en el archivo .env
      *
      * @param $email
      * @return string
@@ -85,7 +68,7 @@ class PersonContact extends Model
         // Si el correo existe y termina con @test.com,
         // lo envía al correo del desarrollador para cuestiones de pruebas.
         if (!isset($email) || ends_with($email, '@test.com')) {
-            $mailTo = 'dlopez@globalcybersec.com';
+            $mailTo = env('DEVELOPER_EMAIL');
         } else {
             $mailTo = $email;
         }

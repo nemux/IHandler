@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncidentCustomerSensorsTable extends Migration
+class CreateAssetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,18 @@ class CreateIncidentCustomerSensorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('incident_customer_sensor', function (Blueprint $table) {
+        Schema::create('asset', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('incident_id');
-            $table->unsignedInteger('customer_sensor_id');
 
+            $table->string('domain_name')->nullable();
+            $table->string('ipv4')->nullable();
+            $table->string('ipv6')->nullable();
+            $table->text('comments')->nullable();
             $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
-            $table->foreign('customer_sensor_id')->references('id')->on('customer_sensor')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
@@ -34,6 +35,6 @@ class CreateIncidentCustomerSensorsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('incident_customer_sensor');
+        Schema::drop('asset');
     }
 }

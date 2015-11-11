@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterSignatureTableRenameSignatureColumn extends Migration
+class AlterCustomerAssetTableAddAssetForeign extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class AlterSignatureTableRenameSignatureColumn extends Migration
      */
     public function up()
     {
-        Schema::table('attack_signature', function (Blueprint $table) {
-            $table->renameColumn('signature', 'name');
+        Schema::table('customer_asset', function (Blueprint $table) {
+            $table->foreign('asset_id')->references('id')->on('asset')->onDelete('cascade');
         });
     }
 
@@ -24,8 +24,8 @@ class AlterSignatureTableRenameSignatureColumn extends Migration
      */
     public function down()
     {
-        Schema::table('attack_signature', function (Blueprint $table) {
-            $table->renameColumn('name', 'signature');
+        Schema::table('customer_asset', function (Blueprint $table) {
+            $table->dropForeign('asset_id');
         });
     }
 }

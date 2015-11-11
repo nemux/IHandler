@@ -52,21 +52,21 @@
             </tr>
             </thead>
             <tbody class="middle-align">
-            @foreach($customer->assets as $index=>$asset)
+            @foreach($customer->assets as $index=>$customerAsset)
                 <tr>
                     <td>{{$index+1}}</td>
-                    <td>{{$asset->domain_name}}</td>
-                    <td>{{$asset->ipv4}}</td>
-                    <td>{{$asset->ipv6}}</td>
+                    <td>{{$customerAsset->domain_name}}</td>
+                    <td>{{$customerAsset->asset->ipv4}}</td>
+                    <td>{{$customerAsset->asset->ipv6}}</td>
                     <td>
-                        {!! Form::open(array('id'=>'deleteForm-'.$asset->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('asset.destroy', $asset->id))) !!}
-                        {!! Form::hidden('id',$asset->id) !!}
-                        <a href="{{route('asset.show',$asset->id)}}"
+                        {!! Form::open(array('id'=>'deleteForm-'.$customerAsset->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('asset.destroy', $customerAsset->id))) !!}
+                        {!! Form::hidden('id',$customerAsset->id) !!}
+                        <a href="{{route('asset.show',$customerAsset->id)}}"
                            class="btn btn-info btn-sm btn-icon icon-left">
                             Ver activo</a>
-                        <a href="{{route('asset.edit',$asset->id)}}"
+                        <a href="{{route('asset.edit',$customerAsset->id)}}"
                            class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                        {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("activo","'.$asset->id.'")' ]) !!}
+                        {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("activo","'.$customerAsset->id.'")' ]) !!}
                         {!! Form::close() !!}
                     </td>
                 </tr>

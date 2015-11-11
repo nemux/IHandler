@@ -6,26 +6,7 @@ use App\Models\Link\Link;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * App\Models\Customer\CustomerPage
- *
- * @property integer $id
- * @property integer $customer_id
- * @property integer $link_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property-read Link $link
- * @property-read Customer $customer
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereLinkId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerPage whereUserId($value)
- */
+
 class CustomerPage extends Model
 {
     use SoftDeletes;

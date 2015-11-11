@@ -6,25 +6,6 @@ use App\Models\Person\Person;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * App\Models\Customer\CustomerContact
- *
- * @property integer $id
- * @property integer $customer_id
- * @property integer $person_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property-read Person $person
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerContact whereUserId($value)
- */
 class CustomerContact extends Model
 {
     use SoftDeletes;

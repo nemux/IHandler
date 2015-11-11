@@ -8,31 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * App\Models\Customer\CustomerEmployee
- *
- * @property integer $id
- * @property integer $person_id
- * @property integer $customer_id
- * @property string $email
- * @property string $phone
- * @property string $comments
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property-read Person $person
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereComments($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerEmployee whereUserId($value)
- */
 class CustomerEmployee extends Model
 {
     use SoftDeletes;

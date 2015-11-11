@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLogoColumnCustomerTable extends Migration
+class AlterCustomerAssetTableAddDomainName extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,8 @@ class AddLogoColumnCustomerTable extends Migration
      */
     public function up()
     {
-        Schema::table('customer', function (Blueprint $table) {
-            $table->string('mimetype')->nullable();
-            $table->string('logo')->nullable();
+        Schema::table('customer_asset', function (Blueprint $table) {
+            $table->string('domain_name')->nullable();
         });
     }
 
@@ -25,8 +24,8 @@ class AddLogoColumnCustomerTable extends Migration
      */
     public function down()
     {
-        Schema::table('customer', function (Blueprint $table) {
-            $table->dropColumn(['mimetype', 'logo']);
+        Schema::table('customer_asset', function (Blueprint $table) {
+            $table->dropColumn('domain_name');
         });
     }
 }

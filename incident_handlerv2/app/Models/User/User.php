@@ -14,32 +14,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Http\Request;
 
-/**
- * App\Models\User\User
- *
- * @property integer $id
- * @property integer $person_id
- * @property integer $user_type_id
- * @property string $username
- * @property string $password
- * @property boolean $active
- * @property string $remember_token
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property-read Person $person
- * @property-read UserType $type
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User wherePersonId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUserTypeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUsername($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User wherePassword($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereActive($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereRememberToken($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\User\User whereDeletedAt($value)
- */
+
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;

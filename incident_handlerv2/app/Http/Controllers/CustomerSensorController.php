@@ -48,7 +48,7 @@ class CustomerSensorController extends Controller
         $sensor->mount_point = $request['mount_point'];
         $sensor->save();
 
-        return redirect()->route('customer.show', $sensor->customer_id)->withMessage('Se agregó el nuevo sensor ' . $sensor->name);
+        return redirect()->route('customer.show', $sensor->customer_id)->withMessage('Se agregó el nuevo sensor ' . $sensor->name)->withTab('sensor');
     }
 
     /**
@@ -95,7 +95,7 @@ class CustomerSensorController extends Controller
         $sensor->mount_point = $request['mount_point'];
         $sensor->save();
 
-        return redirect()->route('sensor.show', $sensor->id)->withMessage('Se actualizaron los datos del sensor');
+        return redirect()->route('sensor.show', $sensor->id)->withMessage('Se actualizaron los datos del sensor')->withTab('sensor');
     }
 
     /**
@@ -112,7 +112,7 @@ class CustomerSensorController extends Controller
 
         $sensor->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage("Se eliminó el sensor: $name");
+        return redirect()->route('customer.show', $customer_id)->withMessage("Se eliminó el sensor: $name")->withTab('sensor');
     }
 
     /**

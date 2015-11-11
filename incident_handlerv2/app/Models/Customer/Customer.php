@@ -9,38 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-/**
- * App\Models\Customer\Customer
- *
- * @property integer $id
- * @property string $name
- * @property string $business_name
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property string $mimetype
- * @property string $logo
- * @property string $otrs_customer_id
- * @property string $otrs_user_id
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerContact[] $contacts
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerAsset[] $assets
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerEmployee[] $employees
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerPage[] $pages
- * @property-read \Illuminate\Database\Eloquent\Collection|SurveillanceCase[] $surveillances
- * @property-read \Illuminate\Database\Eloquent\Collection|CustomerSensor[] $sensors
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereBusinessName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereMimetype($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereLogo($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereOtrsCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\Customer whereOtrsUserId($value)
- */
 class Customer extends Model
 {
     use SoftDeletes;

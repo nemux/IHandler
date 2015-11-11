@@ -142,30 +142,22 @@ class SurveillanceController extends Controller
         return redirect()->route('surveillance.index')->withMessage('Se actualizó el caso ' . $surv->title);
     }
 
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
-
     /**
      * Devuelve al navegador el stream del PDF
-     * @param $id
-     * @return mixed
+     * @param $case
+     * @param bool $download
+     * @param bool $output
+     * @return \PDF
      */
-    public function getPdf($id, $download = false)
+    public function getPdf($case, $download = false, $output = false)
     {
-        $surv = SurveillanceCase::whereId($id)->first();
-        $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
-        $docName = $surv->title . '.pdf';
+        $pdf = PdfController::generatePdf($case, 'pdf.surveillance');
+        $docName = $case->title . '.pdf';
 
         if ($download) {
             return $pdf->download($docName);
+        } else if ($output) {
+            return $pdf->output();
         } else {
             return $pdf->stream($docName);
         }
@@ -178,6 +170,8 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
+        \Log::info($id);
+
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);
         return redirect()->route('surveillance.show', $id)->withMessage('Se envió el correo electrónico del caso ' . $surv->title);
@@ -189,13 +183,12 @@ class SurveillanceController extends Controller
      */
     public function sendEmail(SurveillanceCase $surv)
     {
-
         \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
-            $pdf = $this->generatePdf($surv);
+            $pdf = $this->getPdf($surv, false, true);
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
-            $message->attachData($pdf->output(), $surv->title . '.pdf');
+            $message->attachData($pdf, $surv->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName());
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });

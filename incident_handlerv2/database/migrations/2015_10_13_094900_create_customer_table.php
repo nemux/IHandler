@@ -18,10 +18,17 @@ class CreateCustomerTable extends Migration
             $table->string('name');
             $table->string('business_name')->nullable();
 
+            $table->string('mimetype')->nullable();
+            $table->string('logo')->nullable();
+
+            $table->unsignedInteger('user_id');
+
+            $table->string('otrs_customer_id')->nullable();
+            $table->string('otrs_user_id')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

@@ -7,30 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-/**
- * App\Models\Customer\CustomerSensor
- *
- * @property integer $id
- * @property string $name
- * @property string $ipv4
- * @property string $ipv6
- * @property string $mount_point
- * @property integer $customer_id
- * @property integer $user_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereIpv4($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereIpv6($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereMountPoint($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereCustomerId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Customer\CustomerSensor whereDeletedAt($value)
- */
+
 class CustomerSensor extends Model
 {
     use SoftDeletes;

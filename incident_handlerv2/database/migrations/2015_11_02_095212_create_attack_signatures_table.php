@@ -15,13 +15,13 @@ class CreateAttackSignaturesTable extends Migration
         Schema::create('attack_signature', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('signature');
+            $table->string('name');
             $table->text('description')->nullable();
             $table->text('recommendation')->nullable();
             $table->text('risk')->nullable();
             $table->text('reference')->nullable();
-
-
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

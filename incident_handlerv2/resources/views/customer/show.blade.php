@@ -11,6 +11,8 @@
     <script src="/xenon/assets/js/datatables/tabletools/dataTables.tableTools.min.js" id="script-resource-10"></script>
 @endsection
 
+{{Log::info('TAB: '.$tab)}}
+
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -25,7 +27,6 @@
             <div class="col-md-12">
                 <div class="tabs-vertical-env tabs-vertical-bordered">
                     <ul class="nav tabs-vertical">
-                        {{Log::info("TAB: ".$tab)}}
                         <li class="{{ ($tab=='customer')?' active':'' }}"><a href="#customer_info" data-toggle="tab">Información
                                 General</a></li>
                         <li class="{{($tab=='sensor')?' active':''}}"><a href="#customer_sensor" data-toggle="tab">Sensores</a>

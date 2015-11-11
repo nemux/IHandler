@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Models\Incident;
+namespace App\Models\Asset;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class IncidentEvent extends Model
+class Asset extends Model
 {
     use SoftDeletes;
-
-    protected $table = 'incident_event';
+    protected $table = 'asset';
 
     /**
-     * Constructor de la clase
-     * @param array $attributes
+     * Cosntructor de la clase
      */
     public function __construct(array $attributes = [])
     {
@@ -26,13 +23,4 @@ class IncidentEvent extends Model
         parent::__construct($attributes);
     }
 
-    public function source()
-    {
-        return $this->belongsTo(Machine::class, 'source_machine_id');
-    }
-
-    public function target()
-    {
-        return $this->belongsTo(Machine::class, 'target_machine_id');
-    }
 }

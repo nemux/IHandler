@@ -7,27 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 
-/**
- * App\Models\Surveillance\SurveillanceCaseEvidence
- *
- * @property integer $id
- * @property integer $surveillance_case_id
- * @property integer $evidence_id
- * @property string $note
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property integer $user_id
- * @property-read Evidence $evidence
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereSurveillanceCaseId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereEvidenceId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereNote($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\Surveillance\SurveillanceCaseEvidence whereUserId($value)
- */
+
 class SurveillanceCaseEvidence extends Model
 {
     use SoftDeletes;

@@ -16,18 +16,13 @@ class CreateCustomerAssetTable extends Migration
             $table->increments('id');
 
             $table->unsignedInteger('customer_id');
-
-            $table->string('domain_name')->nullable();
-            $table->string('ipv4')->nullable();
-            $table->string('ipv6')->nullable();
-            $table->text('comments')->nullable();
+            $table->unsignedInteger('asset_id');
+            $table->unsignedInteger('user_id');
 
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title','Editar la información del activo: '.$asset->domain_name)
+@section('title','Editar la información del activo: '.$asset->asset->domain_name)
 
 @section('include_up')
 @endsection
@@ -20,7 +20,6 @@
                     <div class="panel-body">
                         @include('customer.asset._form')
                     </div>
-
                     <div class="panel-body">
                         <div class="form-group row">
                             <div class="col-md-12 text-right">
@@ -28,8 +27,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
