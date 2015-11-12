@@ -3,13 +3,7 @@
 @section('title', 'Caso '.$case->title)
 
 @section('include_up')
-    <script>
-        $(document).ready(function () {
-            @foreach($case->events as $index=>$event)
-            addPreviewRow(0, JSON.parse('{!! $event->source->json() !!}'), JSON.parse('{!! $event->target->json() !!}'));
-            @endforeach
-        });
-    </script>
+    <script src="/custom/assets/js/gcs-im/event.js"></script>
 @endsection
 
 @section('dashboard_content')
@@ -30,7 +24,7 @@
             <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
         </div>
         <div class="panel-body">
-            @include('incident._preview')
+            @include('incident._preview',['forpdf'=>false])
         </div>
     </div>
 @endsection

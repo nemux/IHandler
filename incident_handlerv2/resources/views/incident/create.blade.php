@@ -30,6 +30,9 @@
     <script src="/xenon/assets/js/daterangepicker/daterangepicker.js" id="script-resource-8"></script>
     <script src="/xenon/assets/js/datepicker/bootstrap-datepicker.js" id="script-resource-9"></script>
     <script src="/xenon/assets/js/timepicker/bootstrap-timepicker.min.js" id="script-resource-10"></script>
+
+    {{--Permite crear objetos de cierto tipo en el formulario y el preview de eventos--}}
+    <script src="/custom/assets/js/gcs-im/event.js"></script>
 @endsection
 
 @section('dashboard_content')

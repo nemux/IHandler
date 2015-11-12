@@ -84,10 +84,9 @@ class IncidentController extends Controller
             $incident_evidence->save();
             array_push($incidentEvidences, $incident_evidence);
         }
-        $incident->evidences = $incidentEvidences;
 
         //Eventos
-        $event_machines = MachineController::getMachines($request);
+        $event_machines = IncidentEventController::getMachines($request);
         $incidentEvents = array();
         foreach ($event_machines as $machine) {
             $event = new IncidentEvent();
@@ -95,11 +94,11 @@ class IncidentController extends Controller
             $event->source_machine_id = $machine['source']->id;
             $event->target_machine_id = $machine['target']->id;
             $event->payload = $machine['payload'];
+            $event->event_relation = $machine['event_relation'];
             $event->save();
 
             array_push($incidentEvents, $event);
         }
-        $incident->events = $incidentEvents;
 
         //Categorías
         $categories = $request->get('category_id');
@@ -111,7 +110,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentCategories, $item);
         }
-        $incident->categories = $incidentCategories;
 
         //Sensor
         $sensors = $request->get('sensor_id');
@@ -123,7 +121,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentSensors, $item);
         }
-        $incident->sensors = $incidentSensors;
 
         //Firmas
         $signatures = $request->get('signature');
@@ -135,7 +132,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentSignatures, $item);
         }
-        $incident->signatures = $incidentSignatures;
 
         return redirect()->route('incident.index')->withMessage('Se creó el Incidente ' . $incident->title);
     }
@@ -151,7 +147,7 @@ class IncidentController extends Controller
     {
         $case = Incident::whereId($id)->first();
 
-        return view('incident.show', compact('case'));
+        return view('incident.show', compact('case', 'events'));
     }
 
     /**
@@ -215,31 +211,20 @@ class IncidentController extends Controller
             $incident_evidence->save();
             array_push($incidentEvidences, $incident_evidence);
         }
-        $incident->evidences = $incidentEvidences;
 
         //Eventos
-        $event_machines = MachineController::getMachines($request);
+        $event_machines = IncidentEventController::getMachines($request);
         $incidentEvents = array();
         foreach ($event_machines as $machine) {
-            $source = $machine['source'];
-            $target = $machine['target'];
-            $payload = $machine['payload'];
-
-            $event = IncidentEvent::whereIncidentId($incident->id)
-                ->whereSourceMachineId($source->id)
-                ->whereTargetMachineId($target->id)
-                ->first();
-            if (!isset($event))
-                $event = new IncidentEvent();
-
+            $event = new IncidentEvent();
             $event->incident_id = $incident->id;
-            $event->source_machine_id = $source->id;
-            $event->target_machine_id = $target->id;
-            $event->payload = $payload;
+            $event->source_machine_id = $machine['source']->id;
+            $event->target_machine_id = $machine['target']->id;
+            $event->payload = $machine['payload'];
             $event->save();
+
             array_push($incidentEvents, $event);
         }
-        $incident->events = $incidentEvents;
 
         //Categorías
         $oldCategories = IncidentAttackCategory::whereIncidentId($incident->id)->get();
@@ -255,7 +240,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentCategories, $item);
         }
-        $incident->categories = $incidentCategories;
 
         //Sensor
         $oldSensors = IncidentCustomerSensor::whereIncidentId($incident->id)->get();
@@ -271,7 +255,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentSensors, $item);
         }
-        $incident->sensors = $incidentSensors;
 
         //Firmas
         $oldSignatures = IncidentAttackSignature::whereIncidentId($incident->id)->get();
@@ -287,7 +270,6 @@ class IncidentController extends Controller
             $item->save();
             array_push($incidentSignatures, $item);
         }
-        $incident->signatures = $incidentSignatures;
 
         return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
     }
@@ -376,18 +358,33 @@ class IncidentController extends Controller
     /**
      * Deletes a relation from incident and event
      *
-     * @param $id
+     * @param $incidentId
+     * @param $sourceId
+     * @param $targetId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteEvent($id)
+    public function deleteEvent($incidentId, $sourceId, $targetId)
     {
-        $incidentEvent = IncidentEvent::whereId($id)->first();
+        \Log::info($incidentId . " " . $sourceId . " " . $targetId);
+        if (isset($incidentId) && isset($sourceId) && isset($targetId)) {
+            $incidentEvent = null;
+            if ($sourceId !== 'null' && $targetId !== 'null') {
+                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->whereTargetMachineId($targetId)->delete();
+            } else if ($sourceId !== 'null' && $targetId === 'null') {
+                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->delete();
+            } else if ($sourceId === 'null' && $targetId !== 'null') {
+                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereTargetMachineId($targetId)->delete();
+            } else {
+                return \Response::json(['status' => 1, 'message' => 'No se pudieron eliminar los elementos según el criterio']);
+            }
 
-        if ($incidentEvent != null) {
-            $incidentEvent->delete();
-            return \Response::json(['status' => 0, 'message' => 'Se eliminó correctamente el Evento']);
+            if ($incidentEvent != null) {
+                return \Response::json(['status' => 0, 'message' => 'Se eliminó correctamente el Evento']);
+            } else {
+                return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar el o los Eventos']);
+            }
         } else {
-            return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar el Evento']);
+            return \Response::json(['status' => 1, 'message' => 'Faltan parámetros']);
         }
     }
 

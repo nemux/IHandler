@@ -245,4 +245,9 @@ class Incident extends Model
         }
         return false;
     }
+
+    public function getGroupedEvents()
+    {
+        return IncidentEvent::generateArray($this);
+    }
 }

@@ -1,8 +1,105 @@
-<script>
+<script type="text/javascript">
     function enableBlacklist() {
         var count = document.getElementById('pv-blacklist').getElementsByTagName("tr").length;
         if (count > 0)
             document.getElementById('blacklist-section').style.visibility = 'visible';
+    }
+
+    /**
+     * Si es un nuevo evento, se agrega un elemento a la vista previa
+     */
+    function addPreviewRow(event) {
+        var row = $('<tr id="pv-event-row-' + events.indexOf(event) + '"></tr>').appendTo('#pv-events');
+
+        if (!event.source.hide) {
+            $('<td>' + event.source.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        if (!event.target.hide) {
+            $('<td>' + event.target.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        var pv_blacklist = $('#pv-blacklist');
+
+        if (event.source.blacklist) {
+            $('<tr><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
+
+        if (event.target.blacklist) {
+            $('<tr><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
+    }
+
+    /**
+     * Si es un nuevo evento, agregado desde formulario, agrega una fila al preview de eventos
+     */
+    function addMultitargetPreviewRow(event) {
+        var row = $('<tr id="pv-event-row-' + events.indexOf(event) + '"></tr>').appendTo('#pv-events');
+
+        if (!event.source.hide) {
+            $('<td>' + event.source.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        $('<td><ul id="ul-targets-event-' + events.indexOf(event) + '"></ul></td>').appendTo(row);
+
+        var pv_blacklist = $('#pv-blacklist');
+
+        if (event.source.blacklist) {
+            $('<tr><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
+    }
+
+    /**
+     * Si es un nuevo evento, agregado desde formulario, agrega una fila al preview de eventos
+     */
+    function addMultisourcePreviewRow(event) {
+        var row = $('<tr id="pv-event-row-' + events.indexOf(event) + '"></tr>').appendTo('#pv-events');
+
+        $('<td><ul id="ul-sources-event-' + events.indexOf(event) + '"></ul></td>').appendTo(row);
+
+        if (!event.target.hide) {
+            $('<td>' + event.target.ipv4 + '</td>').appendTo(row);
+        } else {
+            $('<td></td>').appendTo(row);
+        }
+
+        var pv_blacklist = $('#pv-blacklist');
+
+        if (event.target.blacklist) {
+            $('<tr><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
+    }
+
+    function addTargetToSourcePreview(event, target) {
+        if (!target.hide)
+            $('<li>' + target.ipv4 + '</li>').appendTo('#ul-targets-event-' + events.indexOf(event));
+
+        if (target.blacklist) {
+            var pv_blacklist = $('#pv-blacklist');
+            $('<tr id="bl-pv-event-' + events.indexOf(event) + '"><td>' + target.ipv4 + '</td><td>' + target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
+    }
+
+    function addSourceToTargetPreview(event, source) {
+        if (!source.hide)
+            $('<li>' + source.ipv4 + '</li>').appendTo('#ul-sources-event-' + events.indexOf(event));
+
+        if (source.blacklist) {
+            var pv_blacklist = $('#pv-blacklist');
+            $('<tr id="bl-pv-event-' + events.indexOf(event) + '"><td>' + source.ipv4 + '</td><td>' + source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('#blacklist-section').attr('style', 'visibility:visible;');
+        }
     }
 </script>
 <style>
@@ -120,14 +217,36 @@
                 </tr>
                 </thead>
                 <tbody id="pv-events">
-                @if(isset($forpdf) && $forpdf)
-                    @foreach($case->events as $event)
-                        <tr>
-                            <td>@if(!$event->source->hide) {{$event->source->ipv4}} @endif</td>
-                            <td>@if(!$event->target->hide) {{$event->target->ipv4}} @endif</td>
+                @foreach($case->getGroupedEvents() as $index=>&$e)
+                    @if($e['type']==='11')
+                        <tr id="old-pv-{{$index}}">
+                            <td>@if(!$e['source']->hide) {{$e['source']->asset->ipv4}} @endif</td>
+                            <td>@if(!$e['target']->hide) {{$e['target']->asset->ipv4}} @endif</td>
                         </tr>
-                    @endforeach
-                @endif
+                    @elseif($e['type']==='1n')
+                        <tr id="old-pv-{{$index}}">
+                            <td>@if(!$e['source']->hide) {{$e['source']->asset->ipv4}} @endif</td>
+                            <td>
+                                <ul class="nostyle">
+                                    @foreach($e['targets'] as &$t)
+                                        <li><i>•</i> @if(!$t->hide) {{$t->asset->ipv4}} @endif</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                        </tr>
+                    @elseif($e['type']==='n1')
+                        <tr id="old-pv-{{$index}}">
+                            <td>
+                                <ul class="nostyle">
+                                    @foreach($e['sources'] as &$s)
+                                        <li><i>•</i> @if(!$s->hide) {{$s->asset->ipv4}} @endif</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+                            <td>@if(!$e['target']->hide) {{$e['target']->asset->ipv4}} @endif</td>
+                        </tr>
+                    @endif
+                @endforeach
                 </tbody>
             </table>
         </td>
@@ -143,22 +262,52 @@
                 </tr>
                 </thead>
                 <tbody id="pv-blacklist">
-                @if(isset($forpdf) && $forpdf)
-                    @foreach($case->events as $event)
-                        @if($event->source->blacklist)
-                            <tr onload="">
-                                <td> {{$event->source->ipv4}}</td>
-                                <td>{{$event->source->location->name}} </td>
+                @foreach($case->getGroupedEvents() as &$e)
+                    @if($e['type']==='11')
+                        @if($e['source']->blacklist)
+                            <tr>
+                                <td>{{$e['source']->asset->ipv4}}</td>
+                                <td>{{isset($e['source']->location->name)?$e['source']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
-                        @if($event->target->blacklist)
-                            <tr onload="enableBlacklist()">
-                                <td>{{$event->target->ipv4}}</td>
-                                <td>{{$event->target->location->name}} </td>
+                        @if($e['target']->blacklist)
+                            <tr>
+                                <td>{{$e['target']->asset->ipv4}}</td>
+                                <td>{{isset($e['target']->location->name)?$e['target']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
-                    @endforeach
-                @endif
+                    @elseif($e['type']==='1n')
+                        @if($e['source']->blacklist)
+                            <tr>
+                                <td>{{$e['source']->asset->ipv4}}</td>
+                                <td>{{isset($e['source']->location->name)?$e['source']->location->name:'S/D'}}</td>
+                            </tr>
+                        @endif
+                        @foreach($e['targets'] as &$t)
+                            @if($t->blacklist)
+                                <tr>
+                                    <td>{{$t->asset->ipv4}}</td>
+                                    <td>{{isset($t->location->name)?$t->location->name:'S/D'}}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    @elseif($e['type']==='n1')
+                        @if($e['target']->blacklist)
+                            <tr>
+                                <td>{{$e['target']->asset->ipv4}}</td>
+                                <td>{{isset($e['target']->location->name)?$e['target']->location->name:'S/D'}}</td>
+                            </tr>
+                        @endif
+                        @foreach($e['sources'] as &$s)
+                            @if($s->blacklist)
+                                <tr>
+                                    <td>{{$s->asset->ipv4}}</td>
+                                    <td>{{isset($s->location->name)?$s->location->name:'S/D'}}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    @endif
+                @endforeach
                 </tbody>
             </table>
         </td>

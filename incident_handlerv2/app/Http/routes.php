@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::get('/', ['as' => 'dashboard.index', 'uses' => 'DashboardController@index']);
 
     Route::group(['prefix' => 'incident'], function () {
-        Route::get('/all', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
+        Route::get('/', ['as' => 'incident.index', 'uses' => 'IncidentController@index']);
         Route::get('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@create']);
         Route::post('/create', ['as' => 'incident.create', 'uses' => 'IncidentController@store']);
         Route::get('/show/{id}', ['as' => 'incident.show', 'uses' => 'IncidentController@show']);
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
 
         Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
-        Route::delete('/delete/event/{incidenteventid}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
+        Route::delete('/delete/event/{incidentId}/{sourceId}/{targetId}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
 
         Route::get('/test', ['uses' => 'IncidentController@test']);
         Route::post('/test', ['uses' => 'IncidentController@postTest']);

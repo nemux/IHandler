@@ -26,12 +26,24 @@
         })
         ;
     }
-    function modalDeleteEvent(isNew, id, callback) {
+    function modalDeleteEvent(id, callback) {
         $('#modalConfirmDeleteEvent').modal('show', {backdrop: 'fade'});
         $('#modalConfirmDeleteEvent .modal-footer .btn-danger').unbind('click').click(function () {
-            if (!isNew)
+
+            callback(true);
+
+            $('#modalConfirmDeleteEvent').modal('hide');
+        });
+
+        return status;
+    }
+
+    function modalDeleteOldEvent(incidentId, sourceId, targetId, callback) {
+        $('#modalConfirmDeleteEvent').modal('show', {backdrop: 'fade'});
+        $('#modalConfirmDeleteEvent .modal-footer .btn-danger').unbind('click').click(function () {
+            if (incidentId && (sourceId || targetId)) {
                 $.ajax({
-                    url: '/dashboard/incident/delete/event/' + id,
+                    url: '/dashboard/incident/delete/event/' + incidentId + '/' + sourceId + '/' + targetId,
                     type: 'post',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -40,6 +52,7 @@
                         _method: 'delete'
                     },
                     success: function (response) {
+                        console.log(response);
                         if (response.status === 0) {
                             callback(true);
                         }
@@ -49,8 +62,9 @@
                         callback(false);
                     }
                 });
-            else
-                callback(true);
+            } else {
+                console.log('somethind wrong');
+            }
 
             $('#modalConfirmDeleteEvent').modal('hide');
         });

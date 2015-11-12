@@ -17,7 +17,7 @@ class CustomerAssetController extends Controller
      */
     public function store(Request $request)
     {
-        $asset = AssetController::saveUpdate($request);
+        $asset = AssetController::saveUpdate($request->get('ipv4'), $request->get('ipv6'));
 
         $customerAsset = new CustomerAsset();
         $customerAsset->domain_name = trim($request->get('domain_name'));
@@ -59,7 +59,7 @@ class CustomerAssetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $asset = AssetController::saveUpdate($request);
+        $asset = AssetController::saveUpdate($request->get('ipv4'), $request->get('ipv6'));
 
         $customerAsset = CustomerAsset::findOrNew($id);
         $customerAsset->asset_id = $asset->id;
