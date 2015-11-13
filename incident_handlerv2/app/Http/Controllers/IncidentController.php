@@ -388,6 +388,11 @@ class IncidentController extends Controller
         }
     }
 
+    public function changeStatus()
+    {
+
+    }
+
     public function test()
     {
         return view('incident.test');

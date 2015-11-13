@@ -9,6 +9,7 @@ use App\Models\Catalog\AttackSignature;
 use App\Models\Catalog\AttackType;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
+use App\Models\Ticket\Ticket;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,8 @@ class Incident extends Model
     use SoftDeletes;
 
     protected $table = 'incident';
+
+    protected $dates = ['created_at', 'updated_at'];
 
     protected static $attributeNames = [
         'title' => 'Título del Incidente',
@@ -231,6 +234,11 @@ class Incident extends Model
     public function type()
     {
         return $this->belongsTo(AttackType::class, 'attack_type_id');
+    }
+
+    public function ticket()
+    {
+        return $this->hasOne(Ticket::class, 'incident_id');
     }
 
     /**

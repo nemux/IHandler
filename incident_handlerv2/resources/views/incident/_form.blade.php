@@ -118,7 +118,7 @@
             $('#pv-categories').empty();
             $('#category_id :selected').each(function (i, selected) {
                 var text = $(selected).text();
-                $('#pv-categories').append('<li><i>•</i> ' + text + '</li>');
+                $('#pv-categories').append('<li>' + text + '</li>');
             });
         });
 
@@ -126,7 +126,7 @@
             $('#pv-sensors').empty();
             $('#sensor_id :selected').each(function (i, selected) {
                 var text = $(selected).text();
-                $('#pv-sensors').append('<li><i>•</i> ' + text + '</li>');
+                $('#pv-sensors').append('<li>' + text + '</li>');
             });
         });
 
@@ -151,7 +151,7 @@
             $('#pv-signatures').empty();
             $('#signature :selected').each(function (i, selected) {
                 var text = $(selected).text();
-                $('#pv-signatures').append('<li><i>•</i> ' + text + '</li>');
+                $('#pv-signatures').append('<li>' + text + '</li>');
             });
         });
 

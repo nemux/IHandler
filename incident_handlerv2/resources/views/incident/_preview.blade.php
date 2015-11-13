@@ -145,10 +145,24 @@
     ul.nostyle, ol.nostyle {
         list-style-position: inside;
         list-style: none;
+        padding: 0;
     }
 
     td:first-child.logo > img {
         max-height: 80px;
+    }
+
+    .criticity-1 {
+        background-color: #CC3F44;
+    }
+
+    .criticity-2 {
+        background-color: #ff7900;
+    }
+
+    .criticity-3 {
+        background-color: #f7cc31;
+
     }
 </style>
 <table class="incident" border="1" onload="enableBlacklist()">
@@ -168,7 +182,7 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
-                    <li><i>•</i> {{$category->category->name }}</li>
+                    <li>{{$category->category->name }}</li>
                 @endforeach
             </ul>
         </td>
@@ -178,7 +192,7 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-sensors">
                 @foreach($case->sensors as $sensor)
-                    <li><i>•</i> {{$sensor->sensor->name }}</li>
+                    <li>{{$sensor->sensor->name }}</li>
                 @endforeach
             </ul>
         </td>
@@ -188,7 +202,7 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-signatures">
                 @foreach($case->signatures as $signature)
-                    <li><i>•</i> {{$signature->signature->name }}</li>
+                    <li>{{$signature->signature->name }}</li>
                 @endforeach
             </ul>
         </td>
@@ -204,7 +218,8 @@
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>
-        <td class="content_column" id="pv-criticity">{{($case->id!=null)?$case->criticity->name:''}}</td>
+        <td class="content_column criticity-{{strtolower($case->criticity->id)}}"
+            id="pv-criticity">{{($case->id!=null)?$case->criticity->name:''}}</td>
     </tr>
     <tr>
         <td class="title_column">Eventos:</td>
@@ -229,7 +244,7 @@
                             <td>
                                 <ul class="nostyle">
                                     @foreach($e['targets'] as &$t)
-                                        <li><i>•</i> @if(!$t->hide) {{$t->asset->ipv4}} @endif</li>
+                                        <li>@if(!$t->hide) {{$t->asset->ipv4}} @endif</li>
                                     @endforeach
                                 </ul>
                             </td>
@@ -239,7 +254,7 @@
                             <td>
                                 <ul class="nostyle">
                                     @foreach($e['sources'] as &$s)
-                                        <li><i>•</i> @if(!$s->hide) {{$s->asset->ipv4}} @endif</li>
+                                        <li>@if(!$s->hide) {{$s->asset->ipv4}} @endif</li>
                                     @endforeach
                                 </ul>
                             </td>
