@@ -5,9 +5,19 @@
     /**
      * Evento Javascript que permite agregar un evento con un origen y un destino
      */
-    function addEvent(id, src, tar, pl) {
-        var source = (src) ? parseMachine(src) : getMachine('src');
-        var target = (tar) ? parseMachine(tar) : getMachine('tar');
+    function addNewEvent(id, src, tar, pl) {
+        var source;
+        if (source) {
+            source = parseMachine(src)
+        } else {
+            source = getMachine('src');
+        }
+        var target;
+        if (target) {
+            target = parseMachine(tar)
+        } else {
+            target = getMachine('tar');
+        }
 
         var validateSource = validateMachine(source);
         var validateTarget = validateMachine(target);
@@ -140,19 +150,22 @@
                 $('#new-events #' + rowNumber).remove();
                 events.splice(rowNumber);
                 $('#pv-event-row-' + rowNumber).remove();
-                $('#bl-pv-event-' + rowNumber).remove();
+                $('#pv-blacklist .new-bl-' + rowNumber).remove();
             }
         });
     }
 
 
+    /**
+     * Elimina elementos específicos de la sección donde se muestran eventos cargados de la base de datos
+     */
     function removeOldEvent(eventNumber, sourceId, targetId) {
         modalDeleteOldEvent({{$case->id}}, sourceId, targetId, function (status) {
             if (status) {
                 //Elimina los elementos en la sección con id new-events
                 $('#old-events #old-e-' + eventNumber).remove();
                 $('#pv-events #old-pv-' + eventNumber).remove();
-//                $('#pv-blacklist #old-bl-' + eventNumber).remove();
+                $('#pv-blacklist .old-bl-' + eventNumber).remove();
             }
         });
     }
@@ -324,7 +337,7 @@
                     } else {
                         //Cambiar el nombre del botón de "Agregar Evento al Incidente" a "Agregar Destino al Incidente"
                         $('#add-event-btn').text('Agregar Evento al Incidente').unbind('click').bind('click', function () {
-                            addEvent();
+                            addNewEvent();
                         });
                     }
 
@@ -357,7 +370,7 @@
                     } else {
                         //Cambiar el nombre del botón de "Agregar Evento al Incidente" a "Agregar Destino al Incidente"
                         $('#add-event-btn').text('Agregar Evento al Incidente').unbind('click').bind('click', function () {
-                            addEvent();
+                            addNewEvent();
                         });
                     }
                 } else {
@@ -403,7 +416,7 @@
         });
 
         $('#add-event-btn').on('click', function () {
-            addEvent(true);
+            addNewEvent();
         });
     });
 </script>

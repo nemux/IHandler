@@ -26,12 +26,12 @@
         var pv_blacklist = $('#pv-blacklist');
 
         if (event.source.blacklist) {
-            $('<tr><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
 
         if (event.target.blacklist) {
-            $('<tr><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
@@ -53,7 +53,7 @@
         var pv_blacklist = $('#pv-blacklist');
 
         if (event.source.blacklist) {
-            $('<tr><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
@@ -75,7 +75,7 @@
         var pv_blacklist = $('#pv-blacklist');
 
         if (event.target.blacklist) {
-            $('<tr><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
@@ -86,7 +86,7 @@
 
         if (target.blacklist) {
             var pv_blacklist = $('#pv-blacklist');
-            $('<tr id="bl-pv-event-' + events.indexOf(event) + '"><td>' + target.ipv4 + '</td><td>' + target.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + target.ipv4 + '</td><td>' + target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
@@ -97,7 +97,7 @@
 
         if (source.blacklist) {
             var pv_blacklist = $('#pv-blacklist');
-            $('<tr id="bl-pv-event-' + events.indexOf(event) + '"><td>' + source.ipv4 + '</td><td>' + source.location_name + '</td></tr>').appendTo(pv_blacklist);
+            $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + source.ipv4 + '</td><td>' + source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
     }
@@ -262,30 +262,30 @@
                 </tr>
                 </thead>
                 <tbody id="pv-blacklist">
-                @foreach($case->getGroupedEvents() as &$e)
+                @foreach($case->getGroupedEvents() as $index=>&$e)
                     @if($e['type']==='11')
                         @if($e['source']->blacklist)
-                            <tr>
+                            <tr class="old-bl-{{$index}}">
                                 <td>{{$e['source']->asset->ipv4}}</td>
                                 <td>{{isset($e['source']->location->name)?$e['source']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
                         @if($e['target']->blacklist)
-                            <tr>
+                            <tr class="old-bl-{{$index}}">
                                 <td>{{$e['target']->asset->ipv4}}</td>
                                 <td>{{isset($e['target']->location->name)?$e['target']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
                     @elseif($e['type']==='1n')
                         @if($e['source']->blacklist)
-                            <tr>
+                            <tr class="old-bl-{{$index}}">
                                 <td>{{$e['source']->asset->ipv4}}</td>
                                 <td>{{isset($e['source']->location->name)?$e['source']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
                         @foreach($e['targets'] as &$t)
                             @if($t->blacklist)
-                                <tr>
+                                <tr class="old-bl-{{$index}}">
                                     <td>{{$t->asset->ipv4}}</td>
                                     <td>{{isset($t->location->name)?$t->location->name:'S/D'}}</td>
                                 </tr>
@@ -293,14 +293,14 @@
                         @endforeach
                     @elseif($e['type']==='n1')
                         @if($e['target']->blacklist)
-                            <tr>
+                            <tr class="old-bl-{{$index}}">
                                 <td>{{$e['target']->asset->ipv4}}</td>
                                 <td>{{isset($e['target']->location->name)?$e['target']->location->name:'S/D'}}</td>
                             </tr>
                         @endif
                         @foreach($e['sources'] as &$s)
                             @if($s->blacklist)
-                                <tr>
+                                <tr class="old-bl-{{$index}}">
                                     <td>{{$s->asset->ipv4}}</td>
                                     <td>{{isset($s->location->name)?$s->location->name:'S/D'}}</td>
                                 </tr>
