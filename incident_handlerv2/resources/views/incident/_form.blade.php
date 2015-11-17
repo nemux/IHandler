@@ -176,31 +176,6 @@
     });
 
     /**
-     * Elimina los contenidos de los campos de descripción, recomendación y referencias
-     */
-    function removeSignatureData(id) {
-        removeSignatureFromCkeditor(descriptionField, id);
-        removeSignatureFromCkeditor(recommendationField, id);
-        removeSignatureFromCkeditor(referenceField, id);
-    }
-
-    /**
-     * Remueve del campo correspondiente los datos de la firma que se removió de la lista de firmas seleccionadas
-     */
-    function removeSignatureFromCkeditor(ckeditor, id) {
-        var data = ckeditor.getData();
-        var string = data.replace(/\r?\n|\n/g, '');
-        var html = $(string);
-        var html2 = $('<div></div>');
-        html.each2(function (index, item) {
-            if ($(item).attr('id') !== 'data-ckeditor-' + id) {
-                $(item).appendTo(html2);
-            }
-        });
-        ckeditor.setData($(html2).html());
-    }
-
-    /**
      * Ejecuta una petición para obtejer un objeto Json con los datos de la firma seleccionada en el campo correspondiente
      */
     function getSignatureData(id) {
@@ -246,6 +221,37 @@
         text = text.replace(/\"/gi, "\'");
         text = text.replace(/\[br\]/gi, "<br/>");
         return '<div id="data-ckeditor-' + id + '"><p><b>' + title + ':</b><br /><br />' + text + '</p><hr /></ div>';
+    }
+
+    /**
+     * Elimina los contenidos de los campos de descripción, recomendación y referencias
+     */
+    function removeSignatureData(id) {
+        removeSignatureFromCkeditor(descriptionField, id);
+        removeSignatureFromCkeditor(recommendationField, id);
+        removeSignatureFromCkeditor(referenceField, id);
+    }
+
+    /**
+     * Remueve del campo correspondiente los datos de la firma que se removió de la lista de firmas seleccionadas
+     */
+    function removeSignatureFromCkeditor(ckeditor, id) {
+        //Obtenemos los datos del ckEditor en cuestión
+        var data = ckeditor.getData();
+        //Eliminamos todos los saltos de línea
+        var string = data.replace(/\r?\n|\n/g, '');
+        //Convertimos la información en un objeto HTML
+        var html = $(string);
+        //Creamos un nuevo contenedor, donde se irá agregando la información o tags que no correspondan al id en cuestión
+        var html2 = $('<div></div>');
+        html.each2(function (index, item) {
+            //Si el ID enviado como parámetro  no coincide con el ID del tag en turno, agrega ese elemento al objeto HTML2
+            if ($(item).attr('id') !== 'data-ckeditor-' + id) {
+                $(item).appendTo(html2);
+            }
+        });
+//        Reemplazamos los datos contenidos en el ckEditor por los recién generados
+        ckeditor.setData($(html2).html());
     }
 </script>
 <ul class="tabs">
