@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    var descriptionField, recommendationField, referenceField;
     $(document).ready(function () {
         var sel_customer = $("#customer_id").select2({
             placeholder: 'Cliente...',
@@ -106,9 +107,9 @@
         });
 
 
-        var descriptionField = CKEDITOR.replace('description');
-        var recommendationField = CKEDITOR.replace('recommendation');
-        var referenceField = CKEDITOR.replace('reference');
+        descriptionField = CKEDITOR.replace('description');
+        recommendationField = CKEDITOR.replace('recommendation');
+        referenceField = CKEDITOR.replace('reference');
 
         $("#title").on('change', function () {
             $('#pv-title').text($(this).val());
@@ -147,12 +148,17 @@
             $('#pv-criticity').text(text);
         });
 
-        $("#signature").change(function () {
+        $("#signature").change(function (data) {
             $('#pv-signatures').empty();
             $('#signature :selected').each(function (i, selected) {
                 var text = $(selected).text();
                 $('#pv-signatures').append('<li>' + text + '</li>');
             });
+            if (!data.removed && data.added) {
+                getSignatureData(data.added.id);
+            } else {
+                removeSignatureData(data.removed.id);
+            }
         });
 
         descriptionField.on('change', function (evt) {
@@ -168,6 +174,79 @@
 
         @include('incident._init');
     });
+
+    /**
+     * Elimina los contenidos de los campos de descripción, recomendación y referencias
+     */
+    function removeSignatureData(id) {
+        removeSignatureFromCkeditor(descriptionField, id);
+        removeSignatureFromCkeditor(recommendationField, id);
+        removeSignatureFromCkeditor(referenceField, id);
+    }
+
+    /**
+     * Remueve del campo correspondiente los datos de la firma que se removió de la lista de firmas seleccionadas
+     */
+    function removeSignatureFromCkeditor(ckeditor, id) {
+        var data = ckeditor.getData();
+        var string = data.replace(/\r?\n|\n/g, '');
+        var html = $(string);
+        var html2 = $('<div></div>');
+        html.each2(function (index, item) {
+            if ($(item).attr('id') !== 'data-ckeditor-' + id) {
+                $(item).appendTo(html2);
+            }
+        });
+        ckeditor.setData($(html2).html());
+    }
+
+    /**
+     * Ejecuta una petición para obtejer un objeto Json con los datos de la firma seleccionada en el campo correspondiente
+     */
+    function getSignatureData(id) {
+        if (id) {
+            $.ajax({
+                url: '/dashboard/signature/json/' + id,
+                type: 'get',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function (result) {
+                    console.log(result);
+
+                    var description = result.description;
+                    var recommendation = result.recommendation;
+                    var reference = result.reference;
+
+                    descriptionField.setData(descriptionField.getData() + formatHtmlText(result.name, description, id));
+                    recommendationField.setData(recommendationField.getData() + formatHtmlText(result.name, recommendation, id));
+                    referenceField.setData(referenceField.getData() + formatHtmlText(result.name, reference, id));
+                },
+                fails: function (result) {
+                    console.log(result);
+                },
+                failed: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    }
+
+    /**
+     * Da formato al texto como si fuese HTML.
+     * Reemplaza el tag [br] que fue agregado como medida para
+     * que javascript no truene al encontrar nuevas líneas en el texto
+     *
+     * @param text Texto que se agregará al campo
+     * @param id id del elemento que se agregará
+     * @returns {string|*}
+     */
+    function formatHtmlText(title, text, id) {
+        text = text.replace(/\"/gi, "\'");
+        text = text.replace(/\[br\]/gi, "<br/>");
+        return '<div id="data-ckeditor-' + id + '"><p><b>' + title + ':</b><br /><br />' + text + '</p><hr /></ div>';
+    }
 </script>
 <ul class="tabs">
     <li class="active"><a href="#incident-basic-tab" data-toggle="tab">Datos básicos</a></li>

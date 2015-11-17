@@ -184,14 +184,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/show/{id}', ['as' => 'category.show', 'uses' => 'AttackCategoryController@show']);
     });
 
-    Route::group(['prefix' => 'signature', 'middleware' => 'role:admin,coord'], function () {
+    Route::group(['prefix' => 'signature'], function () {
         Route::get('/', ['as' => 'signature.index', 'uses' => 'AttackSignatureController@index']);
-        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit']);
-        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update']);
-        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create']);
-        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store']);
-        Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,coord']);
+        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,coord']);
+        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create','middleware'=>'role:admin,coord']);
+        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store','middleware'=>'role:admin,coord']);
+        Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy','middleware'=>'role:admin']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
+        Route::get('/json/{id}', ['as' => 'signature.json', 'uses' => 'AttackSignatureController@getSignature']);
     });
 
     /**

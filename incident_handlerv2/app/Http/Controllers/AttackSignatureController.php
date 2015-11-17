@@ -6,6 +6,7 @@ use App\Models\Catalog\AttackSignature;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Psy\Util\Json;
 
 class AttackSignatureController extends Controller
 {
@@ -114,5 +115,30 @@ class AttackSignatureController extends Controller
         $item->delete();
 
         return redirect()->route('signature.index')->withMessage('Se eliminó la Firma ' . $name);
+    }
+
+    /**
+     * Retorna un objeto Json con los datos de la firma seleccionada en el formulario de creación de un nuevo incidente
+     *
+     * @param Request $request
+     * @param $id Identificador de la Firma seleccionada
+     * @return bool|string
+     */
+    public function getSignature(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $signature = AttackSignature::whereId($id)->first();
+            $signature->description = $this->convertToHtml($signature->description);
+            $signature->recommendation = $this->convertToHtml($signature->recommendation);
+            $signature->reference = $this->convertToHtml($signature->reference);
+            return Json::encode($signature);
+        } else {
+            return Json::encode(false);
+        }
+    }
+
+    private function convertToHtml($data)
+    {
+        return htmlspecialchars(addslashes(str_replace(["\r\n", "\r", "\n"], "[br]", $data)), ENT_NOQUOTES);
     }
 }

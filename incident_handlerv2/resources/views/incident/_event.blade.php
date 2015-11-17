@@ -156,6 +156,7 @@
     }
 
 
+    @if(isset($case))
     /**
      * Elimina elementos específicos de la sección donde se muestran eventos cargados de la base de datos
      */
@@ -169,6 +170,7 @@
             }
         });
     }
+    @endif
 
     /**
      * Agrega un Target a la lista que tiene un Src en común
@@ -545,44 +547,46 @@
 
 </div>
 <div class="row" id="old-events">
-    @foreach($case->getGroupedEvents() as $index=>&$e)
-        @if($e['type']==='11')
-            <div class='col-md-12 h4' id="old-e-{{$index}}">
-                <input onclick='removeOldEvent({{$index}},{{$e['source']->id}},{{$e['target']->id}})' type='button'
-                       value='Eliminar Evento'
-                       class='btn btn-danger col-md-1'/>
+    @if(isset($case))
+        @foreach($case->getGroupedEvents() as $index=>&$e)
+            @if($e['type']==='11')
+                <div class='col-md-12 h4' id="old-e-{{$index}}">
+                    <input onclick='removeOldEvent({{$index}},{{$e['source']->id}},{{$e['target']->id}})' type='button'
+                           value='Eliminar Evento'
+                           class='btn btn-danger col-md-1'/>
 
-                <div class='col-md-6'>Origen {{$e['source']}}</div>
-                <div class='col-md-5'>Destino {{$e['target']}}</div>
-            </div>
-        @elseif($e['type']==='1n')
-            <div class='col-md-12 h4' id="old-e-{{$index}}">
-                <input onclick='removeOldEvent({{ $index }},{{ $e['source']->id }},null)' type='button'
-                       value='Eliminar Evento' class='btn btn-danger col-md-1'/>
-
-                <div class='col-md-6'>Origen {{$e['source']}}</div>
-                <div class='col-md-5'> Destinos
-                    <ul>
-                        @foreach($e['targets'] as &$t)
-                            <li>{{$t}}</li>
-                        @endforeach
-                    </ul>
+                    <div class='col-md-6'>Origen {{$e['source']}}</div>
+                    <div class='col-md-5'>Destino {{$e['target']}}</div>
                 </div>
-            </div>
-        @elseif($e['type']==='n1')
-            <div class='col-md-12 h4' id="old-e-{{$index}}">
-                <input onclick='removeOldEvent({{$index}},null,{{$e['target']->id}});' type='button'
-                       value='Eliminar Evento' class='btn btn-danger col-md-1'/>
+            @elseif($e['type']==='1n')
+                <div class='col-md-12 h4' id="old-e-{{$index}}">
+                    <input onclick='removeOldEvent({{ $index }},{{ $e['source']->id }},null)' type='button'
+                           value='Eliminar Evento' class='btn btn-danger col-md-1'/>
 
-                <div class='col-md-6'>Origenes
-                    <ul>
-                        @foreach($e['sources'] as &$s)
-                            <li>{{$s}}</li>
-                        @endforeach
-                    </ul>
+                    <div class='col-md-6'>Origen {{$e['source']}}</div>
+                    <div class='col-md-5'> Destinos
+                        <ul>
+                            @foreach($e['targets'] as &$t)
+                                <li>{{$t}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
-                <div class='col-md-5'> Destino {{$e['target']}}</div>
-            </div>
-        @endif
-    @endforeach
+            @elseif($e['type']==='n1')
+                <div class='col-md-12 h4' id="old-e-{{$index}}">
+                    <input onclick='removeOldEvent({{$index}},null,{{$e['target']->id}});' type='button'
+                           value='Eliminar Evento' class='btn btn-danger col-md-1'/>
+
+                    <div class='col-md-6'>Origenes
+                        <ul>
+                            @foreach($e['sources'] as &$s)
+                                <li>{{$s}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class='col-md-5'> Destino {{$e['target']}}</div>
+                </div>
+            @endif
+        @endforeach
+    @endif
 </div>

@@ -218,7 +218,7 @@
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>
-        <td class="content_column criticity-{{strtolower($case->criticity->id)}}"
+        <td class="content_column criticity-{{($case->id!=null)?strtolower($case->criticity->id):''}}"
             id="pv-criticity">{{($case->id!=null)?$case->criticity->name:''}}</td>
     </tr>
     <tr>
