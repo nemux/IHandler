@@ -62,6 +62,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/test', ['uses' => 'IncidentController@test']);
         Route::post('/test', ['uses' => 'IncidentController@postTest']);
+
+        Route::post('/annex/create', ['as' => 'incident.annex.store', 'uses' => 'IncidentController@storeAnnex']);
+        Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
     });
 
     Route::group(['prefix' => 'user'], function () {

@@ -20,6 +20,10 @@
             window.open('{{route('incident.email',$case)}}', '_self');
         }
     </script>
+
+
+    {{--CKEditor--}}
+    <script src="/custom/assets/js/ckeditor/ckeditor.js"></script>
 @endsection
 
 @section('dashboard_content')
@@ -38,7 +42,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
                     <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b>
@@ -48,8 +52,8 @@
                     <h3 class="panel-title">Estatus: <b>{{($case->ticket)?$case->ticket->status->name:'Abierto'}}</b>
                     </h3>
                 </div>
-                <div class="col-md-6">
-                    @include('incident._status_buttons')
+                <div class="col-md-8">
+                    @include('incident._extra_buttons')
                 </div>
             </div>
         </div>

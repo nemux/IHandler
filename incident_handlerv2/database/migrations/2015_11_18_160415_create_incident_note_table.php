@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIncidentObservationTable extends Migration
+class CreateIncidentNoteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateIncidentObservationTable extends Migration
      */
     public function up()
     {
-        Schema::create('incident_observation', function (Blueprint $table) {
+        Schema::create('incident_note', function (Blueprint $table) {
             $table->increments('id');
 
             $table->text('content');
@@ -39,6 +39,6 @@ class CreateIncidentObservationTable extends Migration
      */
     public function down()
     {
-        Schema::drop('incident_observation');
+        Schema::drop('incident_note');
     }
 }

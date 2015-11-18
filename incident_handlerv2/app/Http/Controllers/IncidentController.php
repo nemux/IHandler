@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Incident\Annex;
 use App\Models\Incident\Incident;
 use App\Models\Incident\IncidentAttackCategory;
 use App\Models\Incident\IncidentAttackSignature;
 use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
+use App\Models\Incident\Note;
 use App\Models\Person\PersonContact;
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
@@ -501,5 +503,31 @@ class IncidentController extends Controller
     public function postTest(Request $request)
     {
 
+    }
+
+    public function storeAnnex(Request $request)
+    {
+        Annex::validateCreate($request, $this);
+
+        $annex = new Annex();
+        $annex->title = $request->get('title');
+        $annex->field = $request->get('field');
+        $annex->content = $request->get('content');
+        $annex->incident_id = $request->get('incident_id');
+        $annex->save();
+
+        return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó el anexo al incidente');
+    }
+
+    public function storeNote(Request $request)
+    {
+        Note::validateCreate($request, $this);
+
+        $note = new Note();
+        $note->incident_id = $request->get('incident_id');
+        $note->content = $request->get('content');
+        $note->save();
+
+        return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó la observación al incidente');
     }
 }
