@@ -109,4 +109,24 @@ class Customer extends Model
     }
 
 
+    /**
+     * Regresa una cadena con los correos electrónicos separados por punto y coma (;)
+     *
+     * @return string
+     */
+    public function semicolonSeparatedEmails()
+    {
+        $emails = '';
+
+        foreach ($this->contacts as $index => $contact) {
+            $emails .= $contact->person->contact->email;
+            if ($index < count($this->contacts) - 1) {
+                $emails .= ';';
+            }
+
+        }
+        \Log::info($emails);
+
+        return $emails;
+    }
 }

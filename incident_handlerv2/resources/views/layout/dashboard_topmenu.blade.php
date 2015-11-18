@@ -27,6 +27,12 @@
 
     <link rel="stylesheet" href="{{asset('/custom/assets/css/custom.css')}}">
 
+    <style>
+        .toast {
+            opacity: 1 !important;
+        }
+    </style>
+
     @yield('include_up')
 </head>
 <body class="page-body">
@@ -105,6 +111,7 @@
 <script src="{{asset('/xenon/assets/js/joinable.js')}}" id="script-resource-4"></script>
 <script src="{{asset('/xenon/assets/js/xenon-api.js')}}" id="script-resource-5"></script>
 <script src="{{asset('/xenon/assets/js/xenon-toggles.js')}}" id="script-resource-6"></script>
+<script src="/xenon/assets/js/toastr/toastr.min.js" id="script-resource-7"></script>
 
 @yield('include_down')
         <!-- JavaScripts initializations and stuff -->

@@ -46,8 +46,7 @@
                             $('#modal-alert').modal('show', {backdrop: 'static'});
                         }
                     },
-
-                    failed: function (result) {
+                    fail: function (result) {
                         $('#modal-alert-message').empty();
                         $('#modal-alert-message').append('<p>Error en la petición Ajax</p><br>' + result);
                         $('#modal-alert').modal('show', {backdrop: 'static'});

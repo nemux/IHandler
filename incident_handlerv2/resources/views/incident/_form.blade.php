@@ -35,7 +35,7 @@
                         });
                     }
                 },
-                failed: function (result) {
+                fail: function (result) {
                     console.log(result);
                 }
             });
@@ -198,10 +198,7 @@
                     recommendationField.setData(recommendationField.getData() + formatHtmlText(result.name, recommendation, id));
                     referenceField.setData(referenceField.getData() + formatHtmlText(result.name, reference, id));
                 },
-                fails: function (result) {
-                    console.log(result);
-                },
-                failed: function (result) {
+                fail: function (result) {
                     console.log(result);
                 }
             });

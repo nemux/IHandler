@@ -11,9 +11,9 @@
 |
 */
 
-/**
- * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
- */
+///**
+// * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
+// */
 //Event::listen('illuminate.query', function($sql, $bindings)
 //{
 //    foreach ($bindings as $val) {
@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
         Route::delete('/delete/event/{incidentId}/{sourceId}/{targetId}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
+
+        Route::post('/change/status', ['as' => 'incident.change.status', 'uses' => 'IncidentController@changeStatus']);
 
         Route::get('/test', ['uses' => 'IncidentController@test']);
         Route::post('/test', ['uses' => 'IncidentController@postTest']);
@@ -188,9 +190,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/', ['as' => 'signature.index', 'uses' => 'AttackSignatureController@index']);
         Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,coord']);
         Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,coord']);
-        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create','middleware'=>'role:admin,coord']);
-        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store','middleware'=>'role:admin,coord']);
-        Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy','middleware'=>'role:admin']);
+        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create', 'middleware' => 'role:admin,coord']);
+        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store', 'middleware' => 'role:admin,coord']);
+        Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
         Route::get('/json/{id}', ['as' => 'signature.json', 'uses' => 'AttackSignatureController@getSignature']);
     });

@@ -171,7 +171,8 @@
     </tr>
     <tr>
         <td class="title_column">Número de Ticket:</td>
-        <td class="content_column" id="pv-ticket">#{{isset($case->ticket)?$case->ticket:'Por asignar...'}}</td>
+        <td class="content_column"
+            id="pv-ticket">{{isset($case->ticket->internal_number)?$case->ticket->internal_number:'Por asignar...'}}</td>
     </tr>
     <tr>
         <td class="title_column">Estatus</td>
@@ -182,7 +183,7 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
-                    <li>{{$category->category->name }}</li>
+                    <li>{{$category->category->noCat() }}</li>
                 @endforeach
             </ul>
         </td>

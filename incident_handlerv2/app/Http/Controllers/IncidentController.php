@@ -9,10 +9,12 @@ use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
 use App\Models\Person\PersonContact;
+use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
 use Mockery\CountValidator\Exception;
+use Psy\Util\Json;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
 class IncidentController extends Controller
@@ -27,7 +29,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = Incident::orderBy('id')->get();
+        $incidents = Incident::all();
         return view('incident.index', compact('incidents'));
     }
 
@@ -72,6 +74,11 @@ class IncidentController extends Controller
         $incident->attack_type_id = $request->get('attack_type_id');
         $incident->customer_id = $request->get('customer_id');
         $incident->save();
+
+        $ticket = new Ticket();
+        $ticket->incident_id = $incident->id;
+        $ticket->ticket_status_id = 1;
+        $ticket->save();
 
         //Evidencias
         $evidences = EvidenceController::getEvidences($request);
@@ -388,14 +395,91 @@ class IncidentController extends Controller
         }
     }
 
-    public function changeStatus()
+    public function changeStatus(Request $request)
     {
+        $incidentId = $request->get('id');
+        $newTicketStatusId = $request->get('status');
 
+        $incident = Incident::whereId($incidentId)->first();
+        $ticket = $incident->ticket;
+        $oldTicketStatusId = $ticket->ticket_status_id;
+
+        if ($oldTicketStatusId === 1 && ($newTicketStatusId !== 2 || $newTicketStatusId !== 5)) {
+            //De abierto, puede pasar a investigación o falso positivo
+
+            $otrs = new OtrsClient();
+            $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $incident->customer->semicolonSeparatedEmails(), $incident->renderHtml());
+
+            if (!isset($otrsTicket['error_code'])) {
+
+                $ticketCount = Incident::whereCustomerId(2)
+                    ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
+                    ->where('ticket.internal_number', '!=', '')
+                    ->count();
+
+                $ticket->otrs_ticket_id = $otrsTicket['TicketID'];
+                $ticket->otrs_ticket_number = $otrsTicket['TicketNumber'];
+                $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
+                $ticket->ticket_status_id = $newTicketStatusId;
+                $ticket->save();
+
+                if ($newTicketStatusId == 2) {
+                    $this->sendEmail($incident);
+
+//                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente y se envió el correo al cliente ' . $incident->title);
+                    return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
+                } else {
+                    \Log::info('redirecting');
+
+//                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo ');
+                    return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Falso Positivo']);
+                }
+
+            } else {
+                return $this->createOtrsErrorResult($otrsTicket);
+            }
+        } else if ($oldTicketStatusId === 2 && ($newTicketStatusId !== 3 || $newTicketStatusId !== 5)) {
+            //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
+
+
+        } else if ($oldTicketStatusId === 3 && ($newTicketStatusId !== 4 || $newTicketStatusId !== 6)) {
+            //De Resuelto sólo puede pasar a Cerrado o Cerrado automático
+
+
+        } else if ($oldTicketStatusId === 4 || $oldTicketStatusId === 5 || $oldTicketStatusId === 6) {
+            return Json::encode(['status' => false, 'message' => "El estatus {$oldTicketStatusId} ya es un estado final. No se puede transicionar un ticket con este estatus"]);
+        } else {
+            return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus $newTicketStatusId"]);
+        }
+//        return Json::encode(['status' => true, 'message' => 'Todo salió bien']);
+    }
+
+    private function createOtrsErrorResult($otrsResponse)
+    {
+        return Json::encode(['status' => false, 'message' => '(Error Code: ' . $otrsResponse['error_code'] . ') Message: ' . $otrsResponse['error_description']]);
     }
 
     public function test()
     {
-        return view('incident.test');
+        $ticketCount = Incident::whereCustomerId(2)
+            ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
+            ->where('ticket.internal_number', '!=', '')
+            ->count();
+        \Log::info($ticketCount);
+
+//        $incident = Incident::whereId(19)->first();
+//        $emails = '';
+//        foreach ($incident->customer->contacts as $index => $contact) {
+//            $emails .= $contact->person->contact->email;
+//            if ($index < count($incident->customer->contacts) - 1) {
+//                $emails .= ';';
+//            }
+//        }
+//        $otrs = new OtrsClient();
+//        \Log::info($incident->risk);
+//        $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $emails, $incident->renderHtml());
+////
+//        \Log::info($otrsTicket);
     }
 
     public function postTest(Request $request)

@@ -17,7 +17,7 @@
                         $("#ie-" + id).remove();
                     }
                 },
-                failed: function (msg) {
+                fail: function (msg) {
                     alert(msg)
                 }
             });
@@ -57,7 +57,7 @@
                             callback(true);
                         }
                     },
-                    failed: function (msg) {
+                    fail: function (msg) {
                         alert(msg);
                         callback(false);
                     }

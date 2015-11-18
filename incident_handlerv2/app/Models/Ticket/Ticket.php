@@ -12,7 +12,21 @@ class Ticket extends Model
 
     protected $table = 'ticket';
 
-    public function estatus()
+    /**
+     * Constructor de la clase
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        //Almacena de forma automática el ID del usuario que lo está invocando.
+
+        if (\Auth::user() !== null)
+            $this->user_id = \Auth::user()->id;
+
+        parent::__construct($attributes);
+    }
+
+    public function status()
     {
         return $this->belongsTo(TicketStatus::class, 'ticket_status_id');
     }

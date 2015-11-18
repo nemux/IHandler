@@ -47,8 +47,7 @@ class Incident extends Model
      * Constructor de la clase
      * @param array $attributes
      */
-    public
-    function __construct(array $attributes = [])
+    public function __construct(array $attributes = [])
     {
         //Almacena de forma automática el ID del usuario que lo está invocando.
 
@@ -257,5 +256,15 @@ class Incident extends Model
     public function getGroupedEvents()
     {
         return IncidentEvent::generateArray($this);
+    }
+
+    /**
+     * Devuelve la renderización de una vista HTML para el incidente en cuestión
+     * @return string
+     */
+    public function renderHtml()
+    {
+        $view = view('incident._preview', ['case' => $this])->render();
+        return $view;
     }
 }

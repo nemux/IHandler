@@ -14,14 +14,14 @@ class CreateTicketsTable extends Migration
     {
         Schema::create('ticket', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('otrs_ticket_id');
-            $table->string('otrs_ticket_number');
-            $table->string('internal_number');
+            $table->unsignedInteger('otrs_ticket_id')->nullable();
+            $table->string('otrs_ticket_number')->nullable();
+            $table->string('internal_number')->nullable();
             $table->boolean('send_reminder')->default(FALSE)->nullable();
 
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('incident_id');
-            $table->unsignedInteger('ticket_status_id');
+            $table->unsignedInteger('ticket_status_id')->default(1);
 
             $table->timestamps();
             $table->softDeletes();

@@ -22,10 +22,11 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
-
             <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b></h3><br/>
 
-            <h3 class="panel-title">Estatus: <b>{{($case->ticket)?$case->ticket->status->name:'Abierto'}}</b></h3>
+            <h3 class="panel-title">Estatus: <b>{{($case->ticket)?$case->ticket->status->name:'Abierto'}}</b>
+                @include('incident._status_buttons')
+            </h3>
         </div>
         <div class="panel-body">
             @include('incident._preview',['forpdf'=>false])

@@ -11,6 +11,7 @@
                 null,
                 null
             ],
+            order: [[0, 'desc']]
         });
     });
 </script>
@@ -31,12 +32,12 @@
     @foreach($incidents as $index=>$incident)
         <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
             <td>{{$incident->id}}</td>
-            <td>{{isset($incident->ticket)?$incident->ticket:'Por asignar...'}}</td>
+            <td>{{isset($incident->ticket->internal_number)?$incident->ticket->internal_number:'Por asignar...'}}</td>
             <td>{{$incident->title}}</td>
             <td>{!! $incident->signatures_list() !!}</td>
             <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
             <td>{!! $incident->sensors_list() !!}</td>
-            <td>{{isset($incident->status)?$incident->status:'Abierto'}}</td>
+            <td>{{$incident->ticket->status->name}}</td>
             <td>{{$incident->user->username}}</td>
         </tr>
     @endforeach
