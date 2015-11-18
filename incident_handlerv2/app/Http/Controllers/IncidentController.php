@@ -308,6 +308,13 @@ class IncidentController extends Controller
     public function sendEmail(Incident $incident)
     {
         \Mail::send('email.incident', compact('incident'), function ($message) use ($incident) {
+            //Adjuntamos las evidencias cargadas
+            foreach ($incident->evidences as $evidence) {
+                $file = $evidence->evidence->path . $evidence->evidence->name;
+                $name = $evidence->evidence->original_name;
+                $message->attach($file, ['as' => $name]);
+            }
+
             $pdf = PdfController::generatePdf($incident, 'pdf.incident');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
