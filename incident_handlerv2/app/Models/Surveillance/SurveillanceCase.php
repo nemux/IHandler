@@ -5,6 +5,7 @@ namespace App\Models\Surveillance;
 use App\Http\Controllers\Controller;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -12,12 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SurveillanceCase extends Model
 {
-//    use SoftDeletes;
-    /**
-     * Permite borrado lógico
-     * @var bool
-     */
-//    protected $softDelete = true;
+    use SoftDeletes;
+
     protected $table = 'surveillance_case';
 
     protected static $attributeNames = [

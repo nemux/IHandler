@@ -4,29 +4,54 @@
 
 @section('include_up')
     <script src="/custom/assets/js/gcs-im/event.js"></script>
+    <script type="text/javascript">
+        function edit(btn) {
+            window.open('{{route('incident.edit',[$case])}}', '_self');
+        }
+
+        function pdf(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('incident.pdf',[$case,1])}}', '_self');
+            $(btn).attr('disabled', false);
+        }
+
+        function mail(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('incident.email',$case)}}', '_self');
+        }
+    </script>
 @endsection
 
 @section('dashboard_content')
     <div class="row">
-        <div class="btn btn-primary" onclick="window.open('{{route('incident.edit',[$case])}}','_self');">
+        <div class="btn btn-primary" onclick="edit(this)">
             <i class="fa fa-pencil fa-fw"></i> Editar Caso
         </div>
-        <div class="btn btn-info" onclick="window.open('{{route('incident.pdf',[$case,1])}}','_self');">
+        <div class="btn btn-info" onclick="pdf(this)">
             <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
         </div>
         <div class="btn btn-success"
-             onclick="window.open('{{route('incident.email',$case)}}','_self');">
+             onclick="mail(this)">
             <i class="fa fa-envelope fa-fw"></i> Enviar Correo
         </div>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
-            <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b></h3><br/>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
-            <h3 class="panel-title">Estatus: <b>{{($case->ticket)?$case->ticket->status->name:'Abierto'}}</b>
-                @include('incident._status_buttons')
-            </h3>
+                    <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b>
+                    </h3>
+                    <br/>
+
+                    <h3 class="panel-title">Estatus: <b>{{($case->ticket)?$case->ticket->status->name:'Abierto'}}</b>
+                    </h3>
+                </div>
+                <div class="col-md-6">
+                    @include('incident._status_buttons')
+                </div>
+            </div>
         </div>
         <div class="panel-body">
             @include('incident._preview',['forpdf'=>false])

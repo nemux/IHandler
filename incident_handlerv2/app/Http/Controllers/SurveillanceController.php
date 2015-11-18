@@ -144,23 +144,30 @@ class SurveillanceController extends Controller
 
     /**
      * Devuelve al navegador el stream del PDF
-     * @param $case
+     * @param $id
      * @param bool $download
-     * @param bool $output
      * @return \PDF
      */
-    public function getPdf($case, $download = false, $output = false)
+//    public function getPdf($case, $download = false, $output = false)
+    public function getPdf($id, $download = false)
     {
+        $case = SurveillanceCase::whereId($id)->first();
         $pdf = PdfController::generatePdf($case, 'pdf.surveillance');
         $docName = $case->title . '.pdf';
 
         if ($download) {
             return $pdf->download($docName);
-        } else if ($output) {
-            return $pdf->output();
         } else {
             return $pdf->stream($docName);
         }
+
+//        if ($download) {
+//            return $pdf->download($docName);
+//        } else if ($output) {
+//            return $pdf->output();
+//        } else {
+//            return $pdf->stream($docName);
+//        }
     }
 
     /**
@@ -184,11 +191,18 @@ class SurveillanceController extends Controller
     public function sendEmail(SurveillanceCase $surv)
     {
         \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
-            $pdf = $this->getPdf($surv, false, true);
+//            Adjuntamos las evidencias cargadas
+            foreach ($surv->evidences as $evidence) {
+                $file = $evidence->evidence->path . $evidence->evidence->name;
+                $name = $evidence->evidence->original_name;
+                $message->attach($file, ['as' => $name]);
+            }
+
+            $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
-            $message->attachData($pdf, $surv->title . '.pdf');
+            $message->attachData($pdf->output(), $surv->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName());
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });

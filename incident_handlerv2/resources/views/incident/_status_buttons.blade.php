@@ -52,17 +52,17 @@
     }
 </script>
 
-<div id="status-buttons">
+<div id="status-buttons" class="row">
     @if(!isset($case->ticket) || $case->ticket->ticket_status_id===1){{--Sin ticket o Abierto--}}
-    <button id="lalalala" class="btn-sm btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">Mover a
+    <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">Mover a
         Investigación
-    </button>
-    <button class="btn-sm btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</button>
+    </div>
+    <div class="btn btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</div>
     @elseif($case->ticket->ticket_status_id===2){{--De Investigación--}}
-    <button id="lalalala" class="btn-sm btn-success" onclick="changeStatus(this,'{{$case->id}}',3)">Mover a Resuelto
-    </button>
-    <button class="btn-sm btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</button>
+    <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',3)">Mover a Resuelto
+    </div>
+    <div class="btn btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</div>
     @elseif($case->ticket->ticket_status_id===3){{--De Resuelto--}}
-    <button class="btn-sm btn-primary" onclick="changeStatus(this,'{{$case->id}}',4)">Mover a Cerrado</button>
+    <div class="btn btn-primary" onclick="changeStatus(this,'{{$case->id}}',4)">Mover a Cerrado</div>
     @endif
 </div>
