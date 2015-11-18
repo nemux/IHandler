@@ -24,6 +24,9 @@
 
     {{--CKEditor--}}
     <script src="/custom/assets/js/ckeditor/ckeditor.js"></script>
+
+    {{--Xenon Widget--}}
+    <script src="/xenon/assets/js/xenon-widgets.js" id="script-resource-7"></script>
 @endsection
 
 @section('dashboard_content')
@@ -39,6 +42,50 @@
             <i class="fa fa-envelope fa-fw"></i> Enviar Correo
         </div>
     </div>
+    @if(count($case->notes)>0)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Notas (Observaciones)</h3>
+
+                <div class="panel-options">
+                    <a href="#" data-toggle="panel">
+                        <span class="collapse-icon">–</span>
+                        <span class="expand-icon">+</span>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-12">
+                    <div class="xe-widget xe-status-update" data-auto-switch="5">
+                        <div class="xe-header">
+                            <div class="xe-icon">
+                                <i class="fa-book"></i>
+                            </div>
+                            <div class="xe-nav">
+                                <a href="#" class="xe-prev">
+                                    <i class="fa-angle-left"></i>
+                                </a>
+                                <a href="#" class="xe-next">
+                                    <i class="fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="xe-body">
+                            <ul class="list-unstyled">
+                                @foreach($case->notes as $index=>$note)
+                                    <li @if($index===0)class="active"@endif>
+                                        <span class="status-date">{{date('d M',strtotime($note->created_at))}}</span>
+
+                                        <p>{!! $note->content !!}</p>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">

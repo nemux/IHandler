@@ -242,6 +242,8 @@ class Incident extends Model
 
     /**
      * Función que permite determinar si un incidente tiene al menos una máquina en lista negra
+     *
+     * @return bool
      */
     public function hasOneBlacklist()
     {
@@ -260,11 +262,32 @@ class Incident extends Model
 
     /**
      * Devuelve la renderización de una vista HTML para el incidente en cuestión
+     *
      * @return string
      */
     public function renderHtml()
     {
         $view = view('incident._preview', ['case' => $this])->render();
         return $view;
+    }
+
+    /**
+     * Lista de anexos agregados al caso
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function annexes()
+    {
+        return $this->hasMany(Annex::class, 'incident_id')->orderBy('id','asc');
+    }
+
+    /**
+     * Lista de notas (observaciones) agregadas al caso
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'incident_id')->orderBy('id','asc');
     }
 }

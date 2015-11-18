@@ -164,6 +164,10 @@
         background-color: #f7cc31;
 
     }
+
+    .align-justify {
+        text-align: justify;
+    }
 </style>
 <table class="incident" border="1" onload="enableBlacklist()">
     <tr class="title">
@@ -343,4 +347,17 @@
         <td class="content_column" style="text-align: justify; padding:20px;"
             id="pv-reference">{!! $case->reference !!}</td>
     </tr>
+    @if(count($case->annexes)>0)
+        <tr>
+            <td colspan="2" class="title_column"><h3><b>Anexos</b></h3></td>
+        </tr>
+        @foreach($case->annexes as $annex)
+            <tr>
+                <td class="title_column">{{$annex->title}}</td>
+                <td class="content_column align-justify"><p><b>{{$annex->field}}</b></p>
+
+                    <p>{!! $annex->content !!}</p></td>
+            </tr>
+        @endforeach
+    @endif
 </table>
