@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var opts = {
         "closeButton": true,
-        "debug": true,
+        "debug": false,
         "positionClass": "toast-top-full-width",
         "onclick": null,
         "showDuration": "300",
@@ -14,8 +14,8 @@
         "hideMethod": "fadeOut"
     };
 
-    function changeStatus(id, status) {
-
+    function changeStatus(button, id, status) {
+        $('#status-buttons').remove();
         if (id && status) {
             console.log(id + " " + status);
             $.ajax({
@@ -52,12 +52,17 @@
     }
 </script>
 
-@if(!isset($case->ticket) || $case->ticket->ticket_status_id===1){{--Sin ticket o Abierto--}}
-<button class="btn-sm btn-success" onclick="changeStatus('{{$case->id}}',2)">Mover a Investigación</button>
-<button class="btn-sm btn-info" onclick="changeStatus('{{$case->id}}',5)">Mover a Falso Positivo</button>
-@elseif($case->ticket->ticket_status_id===2){{--De Investigación--}}
-<button class="btn-sm btn-success" onclick="changeStatus('{{$case->id}}',3)">Mover a Resuelto</button>
-<button class="btn-sm btn-info" onclick="changeStatus('{{$case->id}}',5)">Mover a Falso Positivo</button>
-@elseif($case->ticket->ticket_status_id===3){{--De Resuelto--}}
-<button class="btn-sm btn-primary" onclick="changeStatus('{{$case->id}}',4)">Mover a Cerrado</button>
-@endif
+<div id="status-buttons">
+    @if(!isset($case->ticket) || $case->ticket->ticket_status_id===1){{--Sin ticket o Abierto--}}
+    <button id="lalalala" class="btn-sm btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">Mover a
+        Investigación
+    </button>
+    <button class="btn-sm btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</button>
+    @elseif($case->ticket->ticket_status_id===2){{--De Investigación--}}
+    <button id="lalalala" class="btn-sm btn-success" onclick="changeStatus(this,'{{$case->id}}',3)">Mover a Resuelto
+    </button>
+    <button class="btn-sm btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">Mover a Falso Positivo</button>
+    @elseif($case->ticket->ticket_status_id===3){{--De Resuelto--}}
+    <button class="btn-sm btn-primary" onclick="changeStatus(this,'{{$case->id}}',4)">Mover a Cerrado</button>
+    @endif
+</div>

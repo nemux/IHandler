@@ -426,12 +426,10 @@ class IncidentController extends Controller
                 if ($newTicketStatusId == 2) {
                     $this->sendEmail($incident);
 
-//                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente y se envió el correo al cliente ' . $incident->title);
                     return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
                 } else {
                     \Log::info('redirecting');
 
-//                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo ');
                     return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Falso Positivo']);
                 }
 
@@ -440,18 +438,29 @@ class IncidentController extends Controller
             }
         } else if ($oldTicketStatusId === 2 && ($newTicketStatusId !== 3 || $newTicketStatusId !== 5)) {
             //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
+            $ticket->ticket_status_id = $newTicketStatusId;
+            $ticket->save();
 
+            if ($newTicketStatusId === 3)
+                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Resuelto']);
+            else
+                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
         } else if ($oldTicketStatusId === 3 && ($newTicketStatusId !== 4 || $newTicketStatusId !== 6)) {
             //De Resuelto sólo puede pasar a Cerrado o Cerrado automático
+            $ticket->ticket_status_id = $newTicketStatusId;
+            $ticket->save();
 
+            if ($newTicketStatusId === 4)
+                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado']);
+            else
+                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);
 
         } else if ($oldTicketStatusId === 4 || $oldTicketStatusId === 5 || $oldTicketStatusId === 6) {
             return Json::encode(['status' => false, 'message' => "El estatus {$oldTicketStatusId} ya es un estado final. No se puede transicionar un ticket con este estatus"]);
         } else {
             return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus $newTicketStatusId"]);
         }
-//        return Json::encode(['status' => true, 'message' => 'Todo salió bien']);
     }
 
     private function createOtrsErrorResult($otrsResponse)
