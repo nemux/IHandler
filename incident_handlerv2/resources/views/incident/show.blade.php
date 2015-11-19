@@ -79,13 +79,13 @@
                 });
             });
 
-            // Delete Modal
+            // Delete Evidence
             $('.gallery-env a[data-action="trash"]').on('click', function (ev) {
                 ev.preventDefault();
-                $("#gallery-image-delete-modal").modal('show');
+                $("#gallery-delete-modal").modal('show');
                 var id = $(this).data('id');
 
-                $('#gallery-image-delete-modal .btn-danger').unbind('click').on('click', function (ev) {
+                $('#gallery-delete-modal .btn-danger').unbind('click').on('click', function (ev) {
                     $.ajax({
                         url: '/dashboard/incident/delete/evidence/' + id,
                         type: 'post',
@@ -109,8 +109,44 @@
                         }
                     });
 
-                    $("#gallery-image-delete-modal").modal('hide');
+                    $("#gallery-delete-modal").modal('hide');
                 });
+            });
+
+            //Delete note
+            $('.xe-body div[data-action="delete"]').on('click', function (ev) {
+                ev.preventDefault();
+                $("#gallery-delete-modal").modal('show');
+                var id = $(this).data('id');
+
+                $('#gallery-delete-modal .btn-danger').unbind('click').on('click', function (ev) {
+                    $.ajax({
+                        url: '/dashboard/incident/note/delete',
+                        type: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: {
+                            _method: 'delete',
+                            id:id
+                        },
+                        success: function (result) {
+                            if (result.status === 0) {
+                                toastr.success(result.message, null, opts);
+
+                                $('#note-' + id).remove();
+                            } else {
+                                toastr.warning(result.message, 'No se puede realizar la petición.', opts);
+                            }
+                        },
+                        fail: function (result) {
+                            toastr.error(result, 'No se puede realizar la petición.', opts);
+                        }
+                    });
+
+                    $("#gallery-delete-modal").modal('hide');
+                });
+
             });
         });
     </script>
@@ -189,10 +225,14 @@
                             <div class="xe-body">
                                 <ul class="list-unstyled">
                                     @foreach($case->notes as $index=>$note)
-                                        <li @if($index===0)class="active"@endif>
+                                        <li @if($index===0) class="active" @endif id="note-{{$note->id}}">
                                             <span class="status-date">{{date('d M',strtotime($note->created_at))}}</span>
 
                                             <p>{!! $note->content !!}</p>
+
+                                            <div data-id="{{$note->id}}" data-action="delete" class="btn btn-blue">
+                                                Eliminar
+                                            </div>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -270,8 +310,8 @@
         </div>
     </div>
 
-    <!-- Gallery Delete Image (Confirm)-->
-    <div class="modal fade" id="gallery-image-delete-modal" data-backdrop="static">
+    <!-- Delete Element (Confirm)-->
+    <div class="modal fade" id="gallery-delete-modal" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

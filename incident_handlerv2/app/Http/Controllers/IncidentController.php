@@ -589,6 +589,12 @@ class IncidentController extends Controller
 
     }
 
+    /**
+     * Recibe una peticion para agregar un anexo a un incidente
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function storeAnnex(Request $request)
     {
         $status = Incident::whereId($request->get('incident_id'))->first()->ticket->ticket_status_id;
@@ -608,6 +614,12 @@ class IncidentController extends Controller
         return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó el anexo al incidente');
     }
 
+    /**
+     * Recibe una peticion para agregar una nota a un incidente
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function storeNote(Request $request)
     {
         $status = Incident::whereId($request->get('incident_id'))->first()->ticket->ticket_status_id;
@@ -623,5 +635,26 @@ class IncidentController extends Controller
         $note->save();
 
         return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó la observación al incidente');
+    }
+
+    /**
+     * Recibe una peticion para eliminar una nota de un incidente
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function deleteNote(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $note = Note::whereId($request->get('id'))->first();
+        $status = $note->incident->ticket->ticket_status_id;
+
+        if ($note != null && $status <= 2) {
+            $note->delete();
+            return \Response::json(['status' => 0, 'message' => 'Se eliminó correctamente la Observación']);
+        } else {
+            return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar la Observación']);
+        }
     }
 }

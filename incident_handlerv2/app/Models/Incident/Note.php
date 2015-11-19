@@ -42,4 +42,14 @@ class Note extends Model
             'content' => 'required'
         ], [], Note::$attributeNames);
     }
+
+    /**
+     * Devuelve el Inhcidente que corresponde a la nota
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function incident()
+    {
+        return $this->belongsTo(Incident::class, 'incident_id');
+    }
 }
