@@ -186,7 +186,27 @@ class Incident extends Model
      */
     public function evidences()
     {
-        return $this->hasMany(IncidentEvidence::class, 'incident_id');
+        return $this->hasMany(IncidentEvidence::class, 'incident_id')->whereEvidenceTypeId(2);
+    }
+
+    /**
+     * Devuelve la lista de evidencias de un incidente con estatus Cerrado
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evidencesForClosed()
+    {
+        return $this->hasMany(IncidentEvidence::class, 'incident_id')->whereEvidenceTypeId(3);
+    }
+
+    /**
+     * Devuelve la lista de evidencias de un incidente con estatus Cerrado
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function evidencesForFalsePositive()
+    {
+        return $this->hasMany(IncidentEvidence::class, 'incident_id')->whereEvidenceTypeId(4);
     }
 
     /**

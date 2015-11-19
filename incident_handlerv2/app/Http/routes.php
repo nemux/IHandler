@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
         Route::delete('/delete/event/{incidentId}/{sourceId}/{targetId}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
 
+        Route::patch('/edit/evidence', ['as' => 'incident.evidence.edit', 'uses' => 'IncidentController@updateEvidence']);
+
         Route::post('/change/status', ['as' => 'incident.change.status', 'uses' => 'IncidentController@changeStatus']);
 
         Route::get('/test', ['uses' => 'IncidentController@test']);

@@ -16,7 +16,7 @@ to avoid javscript errors setting multiline string variable--}}
     <div class="col-md-3 col-sm-4 col-xs-6">
         <div class="album-image">
             <div class="thumb">
-                <img src="{!! isset($evidence)?$evidence->fullPath():''!!}" class="img-responsive"/>
+                <img src="{!! isset($evidence)?$evidence->fullPath():''!!}" class="img-thumbnail img-responsive"/>
             </div>
             <div class="name">
                 <span>{!! isset($evidence)?$evidence->original_name:''!!}</span>

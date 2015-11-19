@@ -23,12 +23,12 @@ class EvidenceTypeSeeder extends Seeder
                 'updated_at' => date('Y-m-d')
             ],
             [
-                'name' => 'Incidente Cerrado',
+                'name' => 'Cerrado',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
             ],
             [
-                'name' => 'Incidente Falso Positivo',
+                'name' => 'Falso Positivo',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
             ],

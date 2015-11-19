@@ -377,6 +377,30 @@ class IncidentController extends Controller
     }
 
     /**
+     * Actualiza el campo "note" de una evidencia de un incidente
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEvidence(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $ie_id = $request->get('id');
+        $ie_note = $request->get('note');
+        $ie = IncidentEvidence::whereId($ie_id)->first();
+
+        if ($ie != null) {
+            $ie->note = $ie_note;
+            $ie->save();
+
+            return \Response::json(['status' => 0, 'message' => 'Se actualizó correctamente la Evidencia']);
+        } else {
+            return \Response::json(['status' => 1, 'message' => 'No se pudo actualizar la Evidencia']);
+        }
+    }
+
+    /**
      * Deletes a relation from incident and event
      *
      * @param $incidentId
@@ -428,10 +452,10 @@ class IncidentController extends Controller
 
             if ($newTicketStatusId == 5) {
                 \Log::info('is 5');
-                $evidenceType = EvidenceType::whereName('Incidente Falso Positivo')->first();
+                $evidenceType = EvidenceType::whereName('Falso Positivo')->first();
             } else if ($newTicketStatusId == 4) {
                 \Log::info('is 4');
-                $evidenceType = EvidenceType::whereName('Incidente Cerrado')->first();
+                $evidenceType = EvidenceType::whereName('Cerrado')->first();
             }
 
             foreach ($files as $file) {
