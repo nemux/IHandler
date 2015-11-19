@@ -298,7 +298,7 @@ class Incident extends Model
      */
     public function annexes()
     {
-        return $this->hasMany(Annex::class, 'incident_id')->orderBy('id','asc');
+        return $this->hasMany(Annex::class, 'incident_id')->orderBy('id', 'asc');
     }
 
     /**
@@ -308,6 +308,12 @@ class Incident extends Model
      */
     public function notes()
     {
-        return $this->hasMany(Note::class, 'incident_id')->orderBy('id','asc');
+        return $this->hasMany(Note::class, 'incident_id')->orderBy('id', 'asc');
+    }
+
+
+    public function fieldEnabled()
+    {
+        return ($this->ticket->ticket_status_id >= 2) ? 'disabled' : '';
     }
 }

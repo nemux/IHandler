@@ -172,8 +172,13 @@ class IncidentController extends Controller
     public function edit($id)
     {
         $case = Incident::whereId($id)->first();
+        $status = $case->ticket->ticket_status_id;
 
-        return view('incident.edit', compact('case'))->withPostroute('file.upload.incident');;
+        if ($status > 2) {
+            abort(404);
+        }
+
+        return view('incident.edit', compact('case'))->withPostroute('file.upload.incident');
     }
 
     /**
@@ -185,104 +190,120 @@ class IncidentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \Log::info($request->except('_token'));
-
-        //TODO Validate request fields?
-
         //Incidente
-        //TODO validate when got another status, can be filled the basic data of incident
         $incident = Incident::whereId($id)->first();
-        $incident->title = $request->get('title');
-        $incident->description = $request->get('description');
-        $incident->recommendation = $request->get('recommendation');
-        $incident->reference = $request->get('reference');
+        $status = $incident->ticket->ticket_status_id;
 
-        $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
-        $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time)));
+        //Si el incidente tiene un estatus mayor a Investigación (resuelto, cerrado, falso positivo, cerrado autom) no se podrá almacenar nada
+        if ($status > 2) {
+            abort(404);
+        }
 
-        $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
-        $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time)));
+        if ($status == 1) {
+            $incident->title = $request->get('title');
+            $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
+            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time)));
 
-        $incident->attack_flow_id = $request->get('flow_id');
-        $incident->criticity_id = $request->get('criticity_id');
-        $incident->impact = $request->get('impact');
-        $incident->risk = $request->get('risk');
-        $incident->attack_type_id = $request->get('attack_type_id');
-        $incident->customer_id = $request->get('customer_id');
+            $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
+            $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time)));
+
+            $incident->attack_flow_id = $request->get('flow_id');
+            $incident->criticity_id = $request->get('criticity_id');
+            $incident->impact = $request->get('impact');
+            $incident->risk = $request->get('risk');
+            $incident->attack_type_id = $request->get('attack_type_id');
+            $incident->customer_id = $request->get('customer_id');
+        }
+
+        if ($status == 1 || $status == 2) {
+            $incident->description = $request->get('description');
+            $incident->recommendation = $request->get('recommendation');
+            $incident->reference = $request->get('reference');
+        }
         $incident->save();
 
-        //Evidencias
-        $evidences = EvidenceController::getEvidences($request);
-        $incidentEvidences = array();
-        foreach ($evidences as $evidence) {
-            $incident_evidence = IncidentEvidence::whereIncidentId($incident->id)->whereEvidenceId($evidence->id)->first();
-            if (!isset($incident_evidence))
-                $incident_evidence = new IncidentEvidence();
-            $incident_evidence->incident_id = $incident->id;
-            $incident_evidence->evidence_id = $evidence->id;
-            $incident_evidence->evidence_type_id = 2;
-            $incident_evidence->note = 'SN';
-            $incident_evidence->save();
-            array_push($incidentEvidences, $incident_evidence);
+        if ($status == 1 || $status == 2) {
+            //Evidencias
+            $evidences = EvidenceController::getEvidences($request);
+            $incidentEvidences = array();
+            foreach ($evidences as $evidence) {
+                $incident_evidence = IncidentEvidence::whereIncidentId($incident->id)->whereEvidenceId($evidence->id)->first();
+                if (!isset($incident_evidence))
+                    $incident_evidence = new IncidentEvidence();
+                $incident_evidence->incident_id = $incident->id;
+                $incident_evidence->evidence_id = $evidence->id;
+                $incident_evidence->evidence_type_id = 2;
+                $incident_evidence->note = 'SN';
+                $incident_evidence->save();
+                array_push($incidentEvidences, $incident_evidence);
+            }
         }
 
-        //Eventos
-        $event_machines = IncidentEventController::getMachines($request);
-        $incidentEvents = array();
-        foreach ($event_machines as $machine) {
-            $event = new IncidentEvent();
-            $event->incident_id = $incident->id;
-            $event->source_machine_id = $machine['source']->id;
-            $event->target_machine_id = $machine['target']->id;
-            $event->payload = $machine['payload'];
-            $event->save();
+        if ($status == 1) {
+            //Eventos
+            $event_machines = IncidentEventController::getMachines($request);
+            $incidentEvents = array();
+            foreach ($event_machines as $machine) {
+                $event = new IncidentEvent();
+                $event->incident_id = $incident->id;
+                $event->source_machine_id = $machine['source']->id;
+                $event->target_machine_id = $machine['target']->id;
+                $event->payload = $machine['payload'];
+                $event->save();
 
-            array_push($incidentEvents, $event);
+                array_push($incidentEvents, $event);
+            }
         }
 
-        //Categorías
-        $oldCategories = IncidentAttackCategory::whereIncidentId($incident->id)->get();
-        foreach ($oldCategories as $old)
-            $old->delete();
+        if ($status == 1) {
+            //Categorías
+            $oldCategories = IncidentAttackCategory::whereIncidentId($incident->id)->get();
+            foreach ($oldCategories as $old)
+                $old->delete();
 
-        $categories = $request->get('category_id');
-        $incidentCategories = array();
-        foreach ($categories as $id) {
-            $item = new IncidentAttackCategory();
-            $item->incident_id = $incident->id;
-            $item->attack_category_id = $id;
-            $item->save();
-            array_push($incidentCategories, $item);
+            $categories = $request->get('category_id');
+            $incidentCategories = array();
+            foreach ($categories as $id) {
+                $item = new IncidentAttackCategory();
+                $item->incident_id = $incident->id;
+                $item->attack_category_id = $id;
+                $item->save();
+                array_push($incidentCategories, $item);
+            }
         }
 
-        //Sensor
-        $oldSensors = IncidentCustomerSensor::whereIncidentId($incident->id)->get();
-        foreach ($oldSensors as $old)
-            $old->delete();
+        if ($status == 1) {
+            //Sensor
+            $oldSensors = IncidentCustomerSensor::whereIncidentId($incident->id)->get();
+            foreach ($oldSensors as $old)
+                $old->delete();
 
-        $sensors = $request->get('sensor_id');
-        $incidentSensors = array();
-        foreach ($sensors as $id) {
-            $item = new IncidentCustomerSensor();
-            $item->incident_id = $incident->id;
-            $item->customer_sensor_id = $id;
-            $item->save();
-            array_push($incidentSensors, $item);
+            $sensors = $request->get('sensor_id');
+            $incidentSensors = array();
+            foreach ($sensors as $id) {
+                $item = new IncidentCustomerSensor();
+                $item->incident_id = $incident->id;
+                $item->customer_sensor_id = $id;
+                $item->save();
+                array_push($incidentSensors, $item);
+            }
         }
 
-        //Firmas
-        $oldSignatures = IncidentAttackSignature::whereIncidentId($incident->id)->get();
-        foreach ($oldSignatures as $old)
-            $old->delete();
+        if ($status == 1 || $status == 2) {
+            //Firmas
+            $oldSignatures = IncidentAttackSignature::whereIncidentId($incident->id)->get();
+            foreach ($oldSignatures as $old)
+                $old->delete();
 
-        $signatures = $request->get('signature');
-        $incidentSignatures = array();
-        foreach ($signatures as $id) {
-            $item = new IncidentAttackSignature();
-            $item->incident_id = $incident->id;
-            $item->attack_signature_id = $id;
-            $item->save();
-            array_push($incidentSignatures, $item);
+            $signatures = $request->get('signature');
+            $incidentSignatures = array();
+            foreach ($signatures as $id) {
+                $item = new IncidentAttackSignature();
+                $item->incident_id = $incident->id;
+                $item->attack_signature_id = $id;
+                $item->save();
+                array_push($incidentSignatures, $item);
+            }
         }
 
         return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
@@ -366,9 +387,11 @@ class IncidentController extends Controller
      */
     public function deleteEvidence($id)
     {
-        $incidentEvidence = IncidentEvidence::whereId($id)->first();
 
-        if ($incidentEvidence != null) {
+        $incidentEvidence = IncidentEvidence::whereId($id)->first();
+        $status = $incidentEvidence->incident->ticket->ticket_status_id;
+
+        if ($incidentEvidence != null && $status <= 2) {
             $incidentEvidence->delete();
             return \Response::json(['status' => 0, 'message' => 'Se eliminó correctamente la Evidencia']);
         } else {
@@ -410,17 +433,20 @@ class IncidentController extends Controller
      */
     public function deleteEvent($incidentId, $sourceId, $targetId)
     {
-        \Log::info($incidentId . " " . $sourceId . " " . $targetId);
+        $status = Incident::whereId($incidentId)->first()->ticket->ticket_status_id;
+
         if (isset($incidentId) && isset($sourceId) && isset($targetId)) {
             $incidentEvent = null;
-            if ($sourceId != 'null' && $targetId != 'null') {
-                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->whereTargetMachineId($targetId)->delete();
-            } else if ($sourceId != 'null' && $targetId === 'null') {
-                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->delete();
-            } else if ($sourceId === 'null' && $targetId != 'null') {
-                $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereTargetMachineId($targetId)->delete();
-            } else {
-                return \Response::json(['status' => 1, 'message' => 'No se pudieron eliminar los elementos según el criterio']);
+            if ($status <= 2) {
+                if ($sourceId != 'null' && $targetId != 'null') {
+                    $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->whereTargetMachineId($targetId)->delete();
+                } else if ($sourceId != 'null' && $targetId === 'null') {
+                    $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->delete();
+                } else if ($sourceId === 'null' && $targetId != 'null') {
+                    $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereTargetMachineId($targetId)->delete();
+                } else {
+                    return \Response::json(['status' => 1, 'message' => 'No se pudieron eliminar los elementos según el criterio']);
+                }
             }
 
             if ($incidentEvent != null) {
@@ -565,6 +591,11 @@ class IncidentController extends Controller
 
     public function storeAnnex(Request $request)
     {
+        $status = Incident::whereId($request->get('incident_id'))->first()->ticket->ticket_status_id;
+        if ($status > 2) {
+            abort(404);
+        }
+
         Annex::validateCreate($request, $this);
 
         $annex = new Annex();
@@ -579,6 +610,11 @@ class IncidentController extends Controller
 
     public function storeNote(Request $request)
     {
+        $status = Incident::whereId($request->get('incident_id'))->first()->ticket->ticket_status_id;
+        if ($status > 3) {
+            abort(404);
+        }
+
         Note::validateCreate($request, $this);
 
         $note = new Note();

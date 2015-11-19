@@ -18,7 +18,6 @@ class IncidentEventController extends Controller
      */
     public static function getMachines(Request $request)
     {
-        \Log::info($request->except('_token'));
         $values = $request->all();
         $machines = array();
 

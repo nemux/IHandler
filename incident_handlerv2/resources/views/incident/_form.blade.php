@@ -266,12 +266,13 @@
         {{--Título--}}
         <div class="form-group">
             <label class="control-label">Título</label>
-            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','data-validate'=>'required,maxlength[255]', isset($case) && 1>=2?'disabled':'' ]) !!}
+            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','data-validate'=>'required,maxlength[255]', $case->fieldEnabled() ]) !!}
         </div>
         <div class="row">
             <div class="form-group col-md-6">
+                {{--Categorías--}}
                 <label class="control-label">Categoría(s)</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} class="form-control" id="category_id"
+                <select {{$case->fieldEnabled()}} class="form-control" id="category_id"
                         name="category_id[]" multiple data-validate="required">
                     <option></option>
                     @foreach(\App\Models\Catalog\AttackCategory::all(['name','id']) as $item)
@@ -282,15 +283,16 @@
                 </select>
             </div>
             <div class="form-group col-md-3">
+                {{--Fecha en que ocurrió el incidente--}}
                 <label class="control-label">Fecha en que Ocurrió el Incidente</label>
 
                 <div class="date-and-time">
-                    <input {{isset($case) && 1>=2?'disabled':''}} data-validate="required" name="occurrence_date"
+                    <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_date"
                            id="occurrence_date" type="text"
                            class="form-control datepicker" data-format="dd/mm/yyyy"
                            data-end-date="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}"
                            value="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}">
-                    <input {{isset($case) && 1>=2?'disabled':''}} data-validate="required" name="occurrence_time"
+                    <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_time"
                            id="occurrence_time" type="text"
                            class="form-control timepicker" data-template="dropdown"
                            data-default-time="{{isset($case)?date('H:i',strtotime($case->occurrence_time)):date('H:i')}}"
@@ -298,15 +300,16 @@
                 </div>
             </div>
             <div class="form-group col-md-3">
+                {{--Fecha en que se reportó el incidente--}}
                 <label class="control-label">Fecha en que se Detectó el Incidente</label>
 
                 <div class="date-and-time">
-                    <input {{isset($case) && 1>=2?'disabled':''}} data-validate="required" name="detection_date"
+                    <input {{$case->fieldEnabled()}} data-validate="required" name="detection_date"
                            id="detection_date" type="text"
                            class="form-control datepicker" data-format="dd/mm/yyyy"
                            data-end-date="{{isset($case)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}"
                            value="{{isset($case)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}">
-                    <input {{isset($case) && 1>=2?'disabled':''}} data-validate="required" name="detection_time"
+                    <input {{$case->fieldEnabled()}} data-validate="required" name="detection_time"
                            id="detection_time" type="text"
                            class="form-control timepicker" data-template="dropdown"
                            data-default-time="{{isset($case)?date('H:i',strtotime($case->detection_time)):date('H:i')}}"
@@ -316,8 +319,9 @@
         </div>
         <div class="row">
             <div class="col-md-2 form-group">
+                {{--Flujo del ataque--}}
                 <label class="control-label">Flujo del Ataque</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} id="flow_id" class="form-control" name="flow_id"
+                <select {{$case->fieldEnabled()}} id="flow_id" class="form-control" name="flow_id"
                         data-validate="required">
                     <option></option>
                     @foreach(\App\Models\Catalog\AttackFlow::all(['name','id']) as $index=>$item)
@@ -328,8 +332,9 @@
                 </select>
             </div>
             <div class="col-md-2 form-group">
+                {{--Tipo de Ataque--}}
                 <label class="control-label">Tipo de Ataque</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} id="attack_type_id" class="form-control"
+                <select {{$case->fieldEnabled()}} id="attack_type_id" class="form-control"
                         name="attack_type_id" data-validate="required">
                     <option></option>
                     @foreach(\App\Models\Catalog\AttackType::all(['name','id']) as $index=>$item)
@@ -340,8 +345,9 @@
                 </select>
             </div>
             <div class="form-group col-md-2">
+                {{--Criticidad--}}
                 <label class="control-label">Criticidad del Ataque</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} id="criticity_id" class="form-control"
+                <select {{$case->fieldEnabled()}} id="criticity_id" class="form-control"
                         name="criticity_id" data-validate="required">
                     <option></option>
                     @foreach(\App\Models\Catalog\Criticity::all(['name','id']) as $index=>$criticity)
@@ -352,8 +358,9 @@
                 </select>
             </div>
             <div class="col-md-3 form-group">
+                {{--Impacto--}}
                 <label class="control-label">Impacto del Ataque</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} id="impact" class="form-control" name="impact"
+                <select {{$case->fieldEnabled()}} id="impact" class="form-control" name="impact"
                         data-validate="required">
                     <option></option>
                     @for($i=0;$i<=10;$i++)
@@ -362,8 +369,9 @@
                 </select>
             </div>
             <div class="col-md-3 form-group">
+                {{--Riesgo--}}
                 <label class="control-label">Riesgo del Ataque</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} id="risk" class="form-control" name="risk"
+                <select {{$case->fieldEnabled()}} id="risk" class="form-control" name="risk"
                         data-validate="required">
                     <option></option>
                     @for($i=1;$i<=10;$i++)
@@ -373,10 +381,11 @@
             </div>
         </div>
         <div class="row">
-            {{--Cliente--}}
             <div class="form-group col-md-6">
+                {{--Cliente--}}
                 <label class="control-label">Cliente</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} class="form-control" id="customer_id" name="customer_id"
+                <select {{$case->fieldEnabled()}} class="form-control" id="customer_id"
+                        name="customer_id"
                         data-validate="required">
                     <option></option>
                     @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
@@ -384,10 +393,11 @@
                     @endforeach
                 </select>
             </div>
-            {{--Sensores--}}
             <div class="form-group col-md-6">
+                {{--Sensores--}}
                 <label class="control-label">Sensor(es)</label>
-                <select {{isset($case) && 1>=2?'disabled':''}} class="form-control" id="sensor_id" name="sensor_id[]"
+                <select {{$case->fieldEnabled()}} class="form-control" id="sensor_id"
+                        name="sensor_id[]"
                         multiple="multiple"
                         data-validate="required">
                     <option></option>
@@ -417,12 +427,11 @@
         </div>
         {{--Eventos--}}
         {{-- Si está abierto el caso o es un caso nuevo --}}
-        @if(1<2 || !isset($case))
+        @if($case->ticket->ticket_status_id==1)
             <div class="row">
                 <div class="col-md-10"><span class="h1">Eventos del Incidente</span></div>
             </div>
             @include('incident._event')
-
         @endif
     </div>
     <div class="tab-pane" id="incident-description-tab">
