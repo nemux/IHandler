@@ -266,7 +266,7 @@
         {{--Título--}}
         <div class="form-group">
             <label class="control-label">Título</label>
-            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','data-validate'=>'required,maxlength[255]', $case->fieldEnabled() ]) !!}
+            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','data-validate'=>'required,maxlength[255]', $case->fieldEnabled()]) !!}
         </div>
         <div class="row">
             <div class="form-group col-md-6">
@@ -307,12 +307,12 @@
                     <input {{$case->fieldEnabled()}} data-validate="required" name="detection_date"
                            id="detection_date" type="text"
                            class="form-control datepicker" data-format="dd/mm/yyyy"
-                           data-end-date="{{isset($case)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}"
-                           value="{{isset($case)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}">
+                           data-end-date="{{isset($case->detection_time)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}"
+                           value="{{isset($case->detection_time)?date('d/m/Y',strtotime($case->detection_time)):date('d/m/Y')}}">
                     <input {{$case->fieldEnabled()}} data-validate="required" name="detection_time"
                            id="detection_time" type="text"
                            class="form-control timepicker" data-template="dropdown"
-                           data-default-time="{{isset($case)?date('H:i',strtotime($case->detection_time)):date('H:i')}}"
+                           data-default-time="{{isset($case->detection_time)?date('H:i',strtotime($case->detection_time)):date('H:i')}}"
                            data-show-meridian="false" data-minute-step="5"/>
                 </div>
             </div>
@@ -427,7 +427,7 @@
         </div>
         {{--Eventos--}}
         {{-- Si está abierto el caso o es un caso nuevo --}}
-        @if($case->ticket->ticket_status_id==1)
+        @if(isset($case->ticket->ticket_status_id) && $case->ticket->ticket_status_id==1)
             <div class="row">
                 <div class="col-md-10"><span class="h1">Eventos del Incidente</span></div>
             </div>

@@ -45,7 +45,8 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        return view('incident.create')->withPostroute('file.upload.incident');
+        $case = new \App\Models\Incident\Incident();
+        return view('incident.create', compact('case'))->withPostroute('file.upload.incident');
     }
 
     /**

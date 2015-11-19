@@ -314,6 +314,6 @@ class Incident extends Model
 
     public function fieldEnabled()
     {
-        return ($this->ticket->ticket_status_id >= 2) ? 'disabled' : '';
+        return (isset($this->ticket->ticket_status_id) && $this->ticket->ticket_status_id >= 2) ? 'disabled' : '';
     }
 }
