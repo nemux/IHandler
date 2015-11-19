@@ -95,9 +95,8 @@ class EvidenceController extends Controller
     public function uploadIncident(Request $request)
     {
         $file = $request->file('file');
-        $type = EvidenceType::whereName('Incidente')->first();
 
-        return $this->upload($file, $type);
+        return $this->upload($file);
     }
 
     /**
@@ -109,27 +108,25 @@ class EvidenceController extends Controller
     public function uploadSurveillance(Request $request)
     {
         $file = $request->file('file');
-        $type = EvidenceType::whereName('Cibervigilancia')->first();
 
-        return $this->upload($file, $type);
+        return $this->upload($file);
     }
 
     /**
      * Con base en el archivo y el tipo de evidencia, se subirá la evidencia
      *
      * @param $file
-     * @param $type
      * @return \Illuminate\Http\JsonResponse
      */
-    public function upload($file, $type)
+    public function upload($file)
     {
         $evidence = false;
 
         if (!is_array($file)) {
-            $evidence = $this->uploadSingleFile($file, $type);
+            $evidence = $this->uploadSingleFile($file);
         } else {
             foreach ($file as $i => $f) {
-                $thisFile = $this->uploadSingleFile($f, $type);
+                $thisFile = $this->uploadSingleFile($f);
 
                 if (!$thisFile) {
                     $evidence = $thisFile;
@@ -144,8 +141,9 @@ class EvidenceController extends Controller
         }
     }
 
-    private function uploadSingleFile($file, EvidenceType $type)
+    public static function uploadSingleFile($file)
     {
+        \Log::info('Updating single file');
         $mimeType = \File::mimeType($file);
 
         $md5 = hash_file('md5', $file);
@@ -163,7 +161,6 @@ class EvidenceController extends Controller
             if (!isset($evidence->id))
                 $evidence = new Evidence();
 
-            $evidence->evidence_type_id = $type->id;
             $evidence->mime_type = $mimeType;
             $evidence->path = $directory;
             $evidence->name = $filename;

@@ -15,7 +15,7 @@ class CreateEvidenceTable extends Migration
         Schema::create('evidence', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->unsignedInteger('evidence_type_id');
+//            $table->unsignedInteger('evidence_type_id');
 
             $table->string('mime_type');
             $table->string('path');
@@ -33,7 +33,7 @@ class CreateEvidenceTable extends Migration
             $table->softDeletes();
 
 
-            $table->foreign('evidence_type_id')->references('id')->on('evidence_type')->onDelete('cascade');
+//            $table->foreign('evidence_type_id')->references('id')->on('evidence_type')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
 
 

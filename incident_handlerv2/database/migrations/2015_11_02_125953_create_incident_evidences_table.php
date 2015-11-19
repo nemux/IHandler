@@ -15,16 +15,18 @@ class CreateIncidentEvidencesTable extends Migration
         Schema::create('incident_evidence', function (Blueprint $table) {
             $table->increments('id');
 
+            $table->unsignedInteger('evidence_type_id');
             $table->unsignedInteger('incident_id');
             $table->unsignedInteger('evidence_id');
 
-            $table->string('note')->nullable();
+            $table->string('note')->nullable()->default('SN');
 
             $table->unsignedInteger('user_id');
 
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('evidence_type_id')->references('id')->on('evidence_type')->onDelete('cascade');
             $table->foreign('incident_id')->references('id')->on('incident')->onDelete('cascade');
             $table->foreign('evidence_id')->references('id')->on('evidence')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');

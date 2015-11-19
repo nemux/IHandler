@@ -31,9 +31,11 @@
 
 @section('dashboard_content')
     <div class="row">
-        <div class="btn btn-primary" onclick="edit(this)">
-            <i class="fa fa-pencil fa-fw"></i> Editar Caso
-        </div>
+        @if($case->ticket->ticket_status_id===1 ||$case->ticket->ticket_status_id===2 )
+            <div class="btn btn-primary" onclick="edit(this)">
+                <i class="fa fa-pencil fa-fw"></i> Editar Caso
+            </div>
+        @endif
         <div class="btn btn-info" onclick="pdf(this)">
             <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
         </div>

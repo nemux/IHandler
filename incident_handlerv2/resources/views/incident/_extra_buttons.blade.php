@@ -58,6 +58,30 @@
     function showObservationForm() {
         $('#modal-form-note').modal('show', {backdrop: 'fade'});
     }
+
+    $(document).ready(function () {
+        console.log('ready');
+        $("#fp-files").change(function () {
+            console.log('changed fp-evidences');
+            var input = document.getElementById('fp-files');
+            var count_files = input.files.length;
+            if (count_files > 0) {
+                $("#fp-submit").attr('disabled', false);
+                $("#fp-filechooser").text(count_files + ' archivos seleccionados');
+            } else {
+                $("#fp-submit").attr('disabled', true);
+                $("#fp-filechooser").text('Seleccionar evidencia');
+            }
+        });
+
+        $('form#fp-form').submit(function (e) {
+            var countFiles = document.getElementById('fp-files').files.length;
+            if (countFiles === 0) {
+                alert('Se deben agregar archivos como evidencia para cambiar el caso a Falso Positivo');
+                return false;
+            }
+        });
+    });
 </script>
 
 <div id="status-buttons">
@@ -65,20 +89,44 @@
     <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">
         Mover a Investigación
     </div>
-    <div class="btn btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">
-        Mover a Falso Positivo
+
+    {!! Form::open(array('id'=>'fp-form','class' => 'form-inline', 'method' => 'POST', 'route' => array('incident.change.status'),'enctype'=>'multipart/form-data' )) !!}
+    <input type="file" id="fp-files" name="fp-files[]" multiple style="display:none">
+    <input type="hidden" name="status" value="5">
+    <input type="hidden" name="id" value="{{$case->id}}">
+
+    <div id="fp-filechooser" class="btn btn-primary" onclick="$('#fp-files').click();">
+        Seleccionar evidencia
     </div>
+    <input id="fp-submit" disabled="true" type="submit" class="btn btn-info" value="Mover a Falso Positivo">
+    {!! Form::close() !!}
+
     @elseif($case->ticket->ticket_status_id===2){{--De Investigación--}}
     <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',3)">
         Mover a Resuelto
     </div>
-    <div class="btn btn-info" onclick="changeStatus(this,'{{$case->id}}',5)">
-        Mover a Falso Positivo
+    {!! Form::open(array('id'=>'fp-form','class' => 'form-inline', 'method' => 'POST', 'route' => array('incident.change.status'),'enctype'=>'multipart/form-data' )) !!}
+    <input type="file" id="fp-files" name="fp-files[]" multiple style="display:none">
+    <input type="hidden" name="status" value="5">
+    <input type="hidden" name="id" value="{{$case->id}}">
+
+    <div id="fp-filechooser" class="btn btn-primary" onclick="$('#fp-files').click();">
+        Seleccionar evidencia
     </div>
+    <input id="fp-submit" disabled="true" type="submit" class="btn btn-info" value="Mover a Falso Positivo">
+    {!! Form::close() !!}
+    <input class="btn btn-default " type="file" id="evidences" name="evidences[]" multiple style="display:none">
     @elseif($case->ticket->ticket_status_id===3){{--De Resuelto--}}
-    <div class="btn btn-primary" onclick="changeStatus(this,'{{$case->id}}',4)">
-        Mover a Cerrado
+    {!! Form::open(array('id'=>'fp-form','class' => 'form-inline', 'method' => 'POST', 'route' => array('incident.change.status'),'enctype'=>'multipart/form-data' )) !!}
+    <input type="file" id="fp-files" name="fp-files[]" multiple style="display:none">
+    <input type="hidden" name="status" value="4">
+    <input type="hidden" name="id" value="{{$case->id}}">
+
+    <div id="fp-filechooser" class="btn btn-primary" onclick="$('#fp-files').click();">
+        Seleccionar evidencia
     </div>
+    <input id="fp-submit" disabled="true" type="submit" class="btn btn-info" value="Cerrar el caso">
+    {!! Form::close() !!}
     @endif
 </div>
 <div id="other-buttons">

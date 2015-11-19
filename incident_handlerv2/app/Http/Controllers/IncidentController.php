@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evidence\Evidence;
+use App\Models\Evidence\EvidenceType;
 use App\Models\Incident\Annex;
 use App\Models\Incident\Incident;
 use App\Models\Incident\IncidentAttackCategory;
@@ -15,6 +17,7 @@ use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
+use Illuminate\Support\Facades\Log;
 use Mockery\CountValidator\Exception;
 use Psy\Util\Json;
 use Symfony\Component\Debug\Exception\FatalErrorException;
@@ -89,6 +92,7 @@ class IncidentController extends Controller
             $incident_evidence = new IncidentEvidence();
             $incident_evidence->incident_id = $incident->id;
             $incident_evidence->evidence_id = $evidence->id;
+            $incident_evidence->evidence_type_id = 2;
             $incident_evidence->note = 'SN';
             $incident_evidence->save();
             array_push($incidentEvidences, $incident_evidence);
@@ -216,6 +220,7 @@ class IncidentController extends Controller
                 $incident_evidence = new IncidentEvidence();
             $incident_evidence->incident_id = $incident->id;
             $incident_evidence->evidence_id = $evidence->id;
+            $incident_evidence->evidence_type_id = 2;
             $incident_evidence->note = 'SN';
             $incident_evidence->save();
             array_push($incidentEvidences, $incident_evidence);
@@ -384,11 +389,11 @@ class IncidentController extends Controller
         \Log::info($incidentId . " " . $sourceId . " " . $targetId);
         if (isset($incidentId) && isset($sourceId) && isset($targetId)) {
             $incidentEvent = null;
-            if ($sourceId !== 'null' && $targetId !== 'null') {
+            if ($sourceId != 'null' && $targetId != 'null') {
                 $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->whereTargetMachineId($targetId)->delete();
-            } else if ($sourceId !== 'null' && $targetId === 'null') {
+            } else if ($sourceId != 'null' && $targetId === 'null') {
                 $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereSourceMachineId($sourceId)->delete();
-            } else if ($sourceId === 'null' && $targetId !== 'null') {
+            } else if ($sourceId === 'null' && $targetId != 'null') {
                 $incidentEvent = IncidentEvent::whereIncidentId($incidentId)->whereTargetMachineId($targetId)->delete();
             } else {
                 return \Response::json(['status' => 1, 'message' => 'No se pudieron eliminar los elementos según el criterio']);
@@ -404,16 +409,46 @@ class IncidentController extends Controller
         }
     }
 
+    /**
+     * Cambia un incidente
+     * @param Request $request
+     * @return bool|string
+     */
     public function changeStatus(Request $request)
     {
         $incidentId = $request->get('id');
         $newTicketStatusId = $request->get('status');
-
         $incident = Incident::whereId($incidentId)->first();
+
+        \Log::info($newTicketStatusId);
+        if ($newTicketStatusId == 5 || $newTicketStatusId == 4) {
+            \Log::info('is 5 or 4');
+
+            $files = $request->file('fp-files');
+
+            if ($newTicketStatusId == 5) {
+                \Log::info('is 5');
+                $evidenceType = EvidenceType::whereName('Incidente Falso Positivo')->first();
+            } else if ($newTicketStatusId == 4) {
+                \Log::info('is 4');
+                $evidenceType = EvidenceType::whereName('Incidente Cerrado')->first();
+            }
+
+            foreach ($files as $file) {
+                \Log::info($file);
+                $evidence = EvidenceController::uploadSingleFile($file);
+                $incidentEvidence = new IncidentEvidence();
+                $incidentEvidence->incident_id = $incident->id;
+                $incidentEvidence->evidence_id = $evidence->id;
+                $incidentEvidence->evidence_type_id = $evidenceType->id;
+                $incidentEvidence->save();
+            }
+        }
+
         $ticket = $incident->ticket;
         $oldTicketStatusId = $ticket->ticket_status_id;
 
-        if ($oldTicketStatusId === 1 && ($newTicketStatusId !== 2 || $newTicketStatusId !== 5)) {
+        if ($oldTicketStatusId == 1 && ($newTicketStatusId != 2 || $newTicketStatusId != 5)) {
             //De abierto, puede pasar a investigación o falso positivo
 
             $otrs = new OtrsClient();
@@ -434,38 +469,37 @@ class IncidentController extends Controller
 
                 if ($newTicketStatusId == 2) {
                     $this->sendEmail($incident);
-
                     return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
-                } else {
-                    \Log::info('redirecting');
 
-                    return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Falso Positivo']);
+                } else {
+
+                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
                 }
 
             } else {
                 return $this->createOtrsErrorResult($otrsTicket);
             }
-        } else if ($oldTicketStatusId === 2 && ($newTicketStatusId !== 3 || $newTicketStatusId !== 5)) {
+        } else if ($oldTicketStatusId == 2 && ($newTicketStatusId != 3 || $newTicketStatusId != 5)) {
             //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId === 3)
+            if ($newTicketStatusId == 3)
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Resuelto']);
             else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
-        } else if ($oldTicketStatusId === 3 && ($newTicketStatusId !== 4 || $newTicketStatusId !== 6)) {
+        } else if ($oldTicketStatusId == 3 && ($newTicketStatusId != 4 || $newTicketStatusId != 6)) {
             //De Resuelto sólo puede pasar a Cerrado o Cerrado automático
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId === 4)
-                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado']);
+            if ($newTicketStatusId == 4)
+                return redirect()->route('incident.show', $incident->id)->withMessage('Se cerró el Incidente y se envió el correo al cliente');
             else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);
 
-        } else if ($oldTicketStatusId === 4 || $oldTicketStatusId === 5 || $oldTicketStatusId === 6) {
+        } else if ($oldTicketStatusId == 4 || $oldTicketStatusId == 5 || $oldTicketStatusId == 6) {
             return Json::encode(['status' => false, 'message' => "El estatus {$oldTicketStatusId} ya es un estado final. No se puede transicionar un ticket con este estatus"]);
         } else {
             return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus $newTicketStatusId"]);
