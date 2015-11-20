@@ -180,6 +180,16 @@ class Incident extends Model
     }
 
     /**
+     * Devuelve una lista con todos las evidencias de todo tipo de un incidente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allEvidences()
+    {
+        return $this->hasMany(IncidentEvidence::class, 'incident_id');
+    }
+
+    /**
      * Devuelve la lista de evidencias del Incidente
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

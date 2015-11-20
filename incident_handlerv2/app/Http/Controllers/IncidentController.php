@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evidence\Evidence;
 use App\Models\Evidence\EvidenceType;
 use App\Models\Incident\Annex;
+use App\Models\Incident\History;
 use App\Models\Incident\Incident;
 use App\Models\Incident\IncidentAttackCategory;
 use App\Models\Incident\IncidentAttackSignature;
@@ -194,6 +195,9 @@ class IncidentController extends Controller
         //Incidente
         $incident = Incident::whereId($id)->first();
         $status = $incident->ticket->ticket_status_id;
+
+        //History
+        $history = History::store($incident);
 
         //Si el incidente tiene un estatus mayor a Investigación (resuelto, cerrado, falso positivo, cerrado autom) no se podrá almacenar nada
         if ($status > 2) {
