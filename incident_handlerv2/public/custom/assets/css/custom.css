@@ -68,3 +68,7 @@
     text-overflow: ellipsis;
     white-space: normal;
 }
+
+.page-container .main-content {
+    word-break: keep-all;
+}

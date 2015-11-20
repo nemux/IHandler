@@ -401,7 +401,7 @@
                         multiple="multiple"
                         data-validate="required">
                     <option></option>
-                    @if(isset($case))
+                    @if(isset($case->id))
                         @foreach($case->customer->sensors as $sensor)
                             <option value="{{$sensor->id}}">
                                 {{$sensor->name}}
