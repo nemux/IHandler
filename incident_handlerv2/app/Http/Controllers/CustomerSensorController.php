@@ -6,7 +6,6 @@ use App\Models\Customer\CustomerSensor;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Request as Request2;
 
 class CustomerSensorController extends Controller
 {

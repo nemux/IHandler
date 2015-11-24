@@ -11,11 +11,10 @@
 |
 */
 
-///**
-// * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
-// */
-//Event::listen('illuminate.query', function($sql, $bindings)
-//{
+/**
+ * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
+ */
+//Event::listen('illuminate.query', function ($sql, $bindings) {
 //    foreach ($bindings as $val) {
 //        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
 //    }
@@ -209,5 +208,16 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'ws', 'middleware' => 'auth'], function () {
         Route::get('/sensors/{id}', ['as' => 'ws.getSensors', 'uses' => 'CustomerSensorController@getSensors']);
     });
+});
 
+//TODO add auth middleware
+Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
+    Route::get('/', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
+    Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
+    Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
+    Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
+    Route::get('/incidents/flow/{days}', ['as' => 'incidents.flow', 'uses' => 'StatisticsController@incidentsFlow']);
+    Route::get('/incidents/type/{days}', ['as' => 'incidents.type', 'uses' => 'StatisticsController@incidentsType']);
+    Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
+    Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
 });
