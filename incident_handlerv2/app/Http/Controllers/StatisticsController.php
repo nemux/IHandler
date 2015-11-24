@@ -158,7 +158,7 @@ class StatisticsController extends Controller
     public function lastIncidents($take)
     {
         if (isset($take) && is_numeric($take)) {
-            $incidents = Incident::orderBy('id', 'desc')->take($take)->get(['id', 'title']);
+            $incidents = Incident::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);
             return \Response::json($incidents);
         } else {
             return \Response::json($this->BAD_REQUEST_PARAMS);
@@ -172,7 +172,7 @@ class StatisticsController extends Controller
     public function lastSurveillances($take)
     {
         if (isset($take) && is_numeric($take)) {
-            $surveillances = SurveillanceCase::orderBy('id', 'desc')->take($take)->get(['id', 'title']);
+            $surveillances = SurveillanceCase::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);
             return \Response::json($surveillances);
         } else {
             return \Response::json($this->BAD_REQUEST_PARAMS);
