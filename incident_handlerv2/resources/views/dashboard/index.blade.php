@@ -24,6 +24,12 @@
             color: #f7cc31;
 
         }
+
+        .text-crop {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
     </style>
 
     <script>
@@ -37,7 +43,7 @@
                         alert(response.message)
                     else {
                         $.each(response, function (index, item) {
-                            var ul = '<li><a class="" href="/dashboard/incident/show/' + item.id + '" target="_blank"><i class="fa fa-bookmark criticity-' + item.criticity_id + '"></i> ' + item.title + '</a></li>';
+                            var ul = '<li class="text-crop"><a class="" href="/dashboard/incident/show/' + item.id + '" target="_blank"><i class="fa fa-bookmark criticity-' + item.criticity_id + '"></i> ' + item.title + '</a></li>';
                             $(ul).appendTo($('#incidents-list'));
                         });
                     }
@@ -56,7 +62,7 @@
                         alert(response.message)
                     else {
                         $.each(response, function (index, item) {
-                            var ul = '<li><a href="/dashboard/surveillance/show/' + item.id + '" target="_blank"><i class="fa fa-bookmark criticity-' + item.criticity_id + '"></i> ' + item.title + '</a></li>';
+                            var ul = '<li class="text-crop"><a href="/dashboard/surveillance/show/' + item.id + '" target="_blank"><i class="fa fa-bookmark criticity-' + item.criticity_id + '"></i> ' + item.title + '</a></li>';
                             $(ul).appendTo($('#surveillance-list'));
                         });
                     }
@@ -74,13 +80,20 @@
         <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="panel-options"><a href="#"> <i class="linecons-cog"></i> </a> <a href="#"
-                                                                                                 data-toggle="panel">
-                            <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#"
-                                                                                                            data-toggle="reload">
-                            <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove">
+                    <div class="panel-options">
+                        <a href="#">
+                            <i class="linecons-cog"></i>
+                        </a> <a href="#" data-toggle="panel">
+                            <span class="collapse-icon">–</span>
+                            <span class="expand-icon">+</span>
+                        </a>
+                        <a href="#" data-toggle="reload">
+                            <i class="fa-rotate-right"></i>
+                        </a>
+                        <a href="#" data-toggle="remove">
                             ×
-                        </a></div>
+                        </a>
+                    </div>
                     <h1 class="panel-title">Incidentes de Seguridad</h1>
                 </div>
                 <div class="panel-body">
