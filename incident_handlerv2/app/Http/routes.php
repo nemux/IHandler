@@ -14,13 +14,13 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-//Event::listen('illuminate.query', function ($sql, $bindings) {
-//    foreach ($bindings as $val) {
-//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-//    }
-//
-//    Log::info($sql);
-//});
+Event::listen('illuminate.query', function ($sql, $bindings) {
+    foreach ($bindings as $val) {
+        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+    }
+
+    Log::info($sql);
+});
 
 
 /**
@@ -200,6 +200,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
         Route::get('/json/{id}', ['as' => 'signature.json', 'uses' => 'AttackSignatureController@getSignature']);
+    });
+
+    Route::group(['prefix' => 'machine'], function () {
+        Route::get('blacklist', ['as' => 'machine.blacklist', 'uses' => 'MachineController@blacklist']);
     });
 
     /**

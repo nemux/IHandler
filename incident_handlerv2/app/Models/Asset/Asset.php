@@ -2,6 +2,8 @@
 
 namespace App\Models\Asset;
 
+use App\Models\Catalog\Location;
+use App\Models\Incident\Machine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,5 +26,4 @@ class Asset extends Model
 
         parent::__construct($attributes);
     }
-
 }

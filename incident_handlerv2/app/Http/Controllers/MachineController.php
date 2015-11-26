@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Incident\Machine;
-use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Models\Asset\Asset;
+use App\Models\Incident\Machine;
 
 class MachineController extends Controller
 {
+    public function blacklist()
+    {
+        $machines = Asset::select(\DB::raw('asset.ipv4,string_agg(DISTINCT location.name,\' | \') as location'))
+            ->leftJoin('machine', 'machine.asset_id', '=', 'asset.id')
+            ->leftJoin('location', 'location.id', '=', 'machine.location_id')
+            ->where('machine.blacklist','true')
+            ->groupBy('asset.ipv4')
+            ->get();
 
-
+        return view('catalog.machine.index', compact('machines'));
+    }
 }

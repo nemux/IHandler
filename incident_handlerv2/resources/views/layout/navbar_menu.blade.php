@@ -136,7 +136,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="l3">
+                                    <a class="l3" href="{{route('machine.blacklist')}}">
                                         <i class="fa fa-list"></i>
                                         <span class="title">Blacklist</span>
                                     </a>
