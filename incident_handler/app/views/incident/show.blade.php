@@ -219,7 +219,7 @@
 
                 <?php foreach ($incident->srcDst as $ip): ?>
                 <?php
-                if($ip->src->ip!="" && $ip->src->show != false){
+                if($ip->srcR->ip!="" && $ip->src->show != false){
                 echo $ip->src->ip.'<br>';}
                 ?>
                 <?php endforeach ?>

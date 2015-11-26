@@ -37,7 +37,11 @@
             <td>{!! $incident->signatures_list() !!}</td>
             <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
             <td>{!! $incident->sensors_list() !!}</td>
-            <td>{{$incident->ticket->status->name}}</td>
+            @if(isset($incident->ticket))
+                <td>{{$incident->ticket->status->name}}</td>
+            @else
+                <td>Por asignar...</td>
+            @endif
             <td>{{$incident->user->username}}</td>
         </tr>
     @endforeach

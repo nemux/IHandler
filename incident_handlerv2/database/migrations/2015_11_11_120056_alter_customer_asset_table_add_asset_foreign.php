@@ -25,7 +25,7 @@ class AlterCustomerAssetTableAddAssetForeign extends Migration
     public function down()
     {
         Schema::table('customer_asset', function (Blueprint $table) {
-            $table->dropForeign('asset_id');
+//            $table->dropForeign('asset_id');
         });
     }
 }

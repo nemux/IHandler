@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AttackFlowSeeder extends Seeder
+class MachineTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,25 +11,20 @@ class AttackFlowSeeder extends Seeder
      */
     public function run()
     {
-        $attackFlows = [
+        $machineTypes = [
             [
-                'name' => 'LOCAL',
+                'name' => 'EXTERNA',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
             ],
             [
-                'name' => 'INTRUSIÓN',
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d')
-            ],
-            [
-                'name' => 'EXTRUSIÓN',
+                'name' => 'INTERNA',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
             ]
         ];
-        foreach ($attackFlows as &$attackFlow) {
-            \DB::table('attack_flow')->insert($attackFlow);
+        foreach ($machineTypes as $attackFlow) {
+            \DB::table('machine_type')->insert($attackFlow);
         }
     }
 }

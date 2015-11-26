@@ -43,14 +43,14 @@ class AttackSignatureController extends Controller
         AttackSignature::validateCreate($request, $this);
 
         $item = new AttackSignature();
-        $item->signature = $request['signature'];
+        $item->name = $request['signature'];
         $item->description = $request['description'];
         $item->recommendation = $request['recommendation'];
         $item->risk = $request['risk'];
         $item->reference = $request['reference'];
         $item->save();
 
-        return redirect()->route('signature.index')->withMessage('Se agregó la Firma ' . $item->signature);
+        return redirect()->route('signature.index')->withMessage('Se agregó la Firma ' . $item->name);
     }
 
     /**
@@ -92,14 +92,14 @@ class AttackSignatureController extends Controller
         AttackSignature::validateUpdate($request, $this);
 
         $item = AttackSignature::whereId($id)->first();
-        $item->signature = $request['signature'];
+        $item->name = $request['name'];
         $item->description = $request['description'];
         $item->recommendation = $request['recommendation'];
         $item->risk = $request['risk'];
         $item->reference = $request['reference'];
         $item->save();
 
-        return redirect()->route('signature.index')->withMessage('Se actualizó la Firma ' . $item->signature);
+        return redirect()->route('signature.index')->withMessage('Se actualizó la Firma ' . $item->name);
     }
 
     /**
@@ -111,7 +111,7 @@ class AttackSignatureController extends Controller
     public function destroy($id)
     {
         $item = AttackSignature::whereId($id)->first();
-        $name = $item->signature;
+        $name = $item->name;
         $item->delete();
 
         return redirect()->route('signature.index')->withMessage('Se eliminó la Firma ' . $name);

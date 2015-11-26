@@ -15,7 +15,7 @@ class CreateTicketStatusesTable extends Migration
         Schema::create('ticket_status', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->string('description',400)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

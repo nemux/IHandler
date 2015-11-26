@@ -19,6 +19,8 @@ class Asset extends Model
 
         if (\Auth::user() !== null)
             $this->user_id = \Auth::user()->id;
+        else
+            $this->user_id = 1;
 
         parent::__construct($attributes);
     }

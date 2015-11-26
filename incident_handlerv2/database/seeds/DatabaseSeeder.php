@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AttackCategorySeeder::class);
         $this->call(AttackSignatureSeeder::class);
         $this->call(AttackTypeSeeder::class);
+        $this->call(MachineTypeSeeder::class);
 
         Model::reguard();
     }

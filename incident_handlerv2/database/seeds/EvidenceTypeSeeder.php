@@ -33,8 +33,8 @@ class EvidenceTypeSeeder extends Seeder
                 'updated_at' => date('Y-m-d')
             ],
         ];
-        foreach ($evidence_types as $evidence_type) {
-            DB::table('evidence_type')->insert($evidence_type);
+        foreach ($evidence_types as &$evidence_type) {
+            \DB::table('evidence_type')->insert($evidence_type);
         }
     }
 }

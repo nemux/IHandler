@@ -15,7 +15,7 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-title">
-                        <h3>Datos de la Firma <b>{{$item->signature}}</b></h3>
+                        <h3>Datos de la Firma <b>{{$item->name}}</b></h3>
                     </div>
                     <div class="panel-body">
                         @include('catalog.signature._form')
