@@ -14,6 +14,7 @@ class MachineController extends Controller
             ->leftJoin('machine', 'machine.asset_id', '=', 'asset.id')
             ->leftJoin('location', 'location.id', '=', 'machine.location_id')
             ->where('machine.blacklist','true')
+            ->where('machine.deleted_at')
             ->groupBy('asset.ipv4')
             ->get();
 
