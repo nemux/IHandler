@@ -56,7 +56,7 @@ class IncidentEvent extends Model
             $event_relation = $event->event_relation;
 
             $event = null;
-            if ($event_relation === '11') {
+            if ($event_relation === '11'||$event_relation === 'ol') {
                 array_push($groupedEvents, ['type' => '11', 'source' => $source, 'target' => $target, 'payload' => $payload]);
             } else if ($event_relation === '1n') {
                 $found = false;
