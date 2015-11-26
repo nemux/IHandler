@@ -5,14 +5,13 @@
 
         //Petición Ajax para la gráfica de estadísticas de incidentes por día, por cliente
         $.ajax({
-            url: '{{route('incidents.customer',30)}}',
+            url: '{{route('incidents.customer',7)}}',
             dataType: 'json',
             async: true,
             success: function (response) {
                 if (response.err_code)
                     alert(response.message); //TODO show it on a modal or some
                 else {
-//                    console.log(response);
                     $("#statistics-customer-incidents").dxChart('instance').option('dataSource', response);
                 }
             },
@@ -28,15 +27,12 @@
          */
         $("#statistics-customer-incidents").dxChart({
             dataSource: {},
-            commonSeriesSettings: {
-                argumentField: "customer_id"
-            },
             series: [
-                    @foreach(\App\Models\Customer\Customer::all('name') as $customer)
-                    {
+                    @foreach(\App\Models\Customer\Customer::all('otrs_customer_id','id') as $customer)
+                {
                     argumentField: "date",
-                    valueField: "incidents",
-                    name: "{{$customer->name}}"
+                    valueField: 'customer_{{$customer->id}}',
+                    name: "{{$customer->otrs_customer_id}}"
                 },
                 @endforeach
             ],

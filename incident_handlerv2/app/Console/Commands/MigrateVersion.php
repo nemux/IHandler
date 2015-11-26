@@ -289,7 +289,7 @@ class MigrateVersion extends Command
                     $n->user_type_id = $o->access_types_id;
                     $n->username = $o->username;
                     $n->password = $o->password;
-                    $n->active = $o->active;
+                    $n->active = !$o->active;
                     $n->remember_token = $o->remember_token;
                     $n->save();
                 } catch (\Exception $e) {

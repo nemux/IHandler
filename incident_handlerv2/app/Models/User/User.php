@@ -68,7 +68,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
          */
         $controller->validate($request, [
             'user_type' => 'required',
-            'active' => 'required',
+//            'active' => 'required',
         ], [], User::$attributeNames);
     }
 

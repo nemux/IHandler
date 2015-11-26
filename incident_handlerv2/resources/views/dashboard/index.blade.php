@@ -93,14 +93,22 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="panel-options"><a href="#"> <i class="linecons-cog"></i> </a> <a href="#"
-                                                                                                 data-toggle="panel">
-                            <span class="collapse-icon">–</span> <span class="expand-icon">+</span> </a> <a href="#"
-                                                                                                            data-toggle="reload">
-                            <i class="fa-rotate-right"></i> </a> <a href="#" data-toggle="remove">
+                    <div class="panel-options">
+                        <a href="#">
+                            <i class="linecons-cog"></i>
+                        </a>
+                        <a href="#" data-toggle="panel">
+                            <span class="collapse-icon">–</span>
+                            <span class="expand-icon">+</span>
+                        </a>
+                        <a href="#" data-toggle="reload">
+                            <i class="fa-rotate-right"></i>
+                        </a>
+                        <a href="#" data-toggle="remove">
                             ×
-                        </a></div>
-                    <h1 class="panel-title">Incidentes por Cliente en los últimos 30 días</h1>
+                        </a>
+                    </div>
+                    <h1 class="panel-title">Incidentes por Cliente en los últimos 7 días</h1>
                 </div>
                 <div class="panel-body">
                     <div class="row">

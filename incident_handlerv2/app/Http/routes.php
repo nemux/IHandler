@@ -208,9 +208,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'ws', 'middleware' => 'auth'], function () {
         Route::get('/sensors/{id}', ['as' => 'ws.getSensors', 'uses' => 'CustomerSensorController@getSensors']);
     });
+
+    Route::get('test', 'DashboardController@test');
 });
 
-//TODO add auth middleware
 Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
     Route::get('/', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
     Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);

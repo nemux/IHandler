@@ -125,9 +125,7 @@ class Customer extends Model
             if ($index < count($this->contacts) - 1) {
                 $emails .= ';';
             }
-
         }
-        \Log::info($emails);
 
         return $emails;
     }

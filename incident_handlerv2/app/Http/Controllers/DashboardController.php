@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Models\Incident\Incident;
 use App\Models\Surveillance\SurveillanceCase;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -18,5 +16,10 @@ class DashboardController extends Controller
     public function index()
     {
         return view('dashboard.index');
+    }
+
+    public function test()
+    {
+        return view('dashboard.test');
     }
 }

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use App\Models\Customer\Customer;
 use App\Models\Incident\Incident;
 use App\Models\Surveillance\SurveillanceCase;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 /**
  * Esta clase contiene todos los métodos utilizados para devolver objetos Json
@@ -35,15 +33,32 @@ class StatisticsController extends Controller
     {
         //Si está definida la variable de días y es de tipo numérico
         if (isset($days) && is_numeric($days)) {
-            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . $days . "D"));
+            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
-            $incidents = Incident::where('incident.detection_time', '>', $fromDate->format('Y-m-d'))
+            $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
                 ->select(\DB::raw('customer_id, count(customer_id) as incidents, to_char(incident.detection_time, \'YYYY-MM-DD\') as date'))
                 ->groupBy(['customer_id', 'date'])
                 ->orderBy('date', 'asc')
                 ->get();
 
-            return \Response::json($incidents);
+            $dataSource = [];
+            foreach ($incidents as $index => &$i) {
+                $item = [];
+                foreach ($dataSource as &$e) {
+                    if ($e['date'] == $i->date) {
+                        $item = $e;
+                        $e['customer_' . $i->customer_id] = $i->incidents;
+                    }
+                }
+
+                if ($item == null) {
+                    $item['date'] = $i->date;
+                    $item['customer_' . $i->customer_id] = $i->incidents;
+                    array_push($dataSource, $item);
+                }
+            }
+
+            return \Response::json($dataSource);
         } else {
             return \Response::json($this->BAD_REQUEST_PARAMS);
         }
@@ -59,9 +74,9 @@ class StatisticsController extends Controller
     public function incidentsCricity($days)
     {
         if (isset($days) && is_numeric($days)) {
-            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . $days . "D"));
+            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
-            $incidents = Incident::where('incident.detection_time', '>', $fromDate->format('Y-m-d'))
+            $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
                 ->select(\DB::raw('criticity.name as name, count(*) as incidents'))
                 ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
                 ->groupBy(['criticity.id'])
@@ -84,9 +99,9 @@ class StatisticsController extends Controller
     public function incidentsFlow($days)
     {
         if (isset($days) && is_numeric($days)) {
-            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . $days . "D"));
+            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
-            $incidents = Incident::where('incident.detection_time', '>', $fromDate->format('Y-m-d'))
+            $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
                 ->select(\DB::raw('attack_flow.name as name, count(*) as incidents'))
                 ->leftJoin('attack_flow', 'attack_flow.id', '=', 'incident.attack_flow_id')
                 ->groupBy(['attack_flow.id'])
@@ -110,9 +125,9 @@ class StatisticsController extends Controller
     public function incidentsCategory($days)
     {
         if (isset($days) && is_numeric($days)) {
-            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . $days . "D"));
+            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
-            $incidents = Incident::where('incident.detection_time', '>', $fromDate->format('Y-m-d'))
+            $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
                 ->select(\DB::raw('attack_category.name as name, count(*) as incidents'))
                 ->leftJoin('incident_attack_category', 'incident_attack_category.incident_id', '=', 'incident.id')
                 ->leftJoin('attack_category', 'attack_category.id', '=', 'incident_attack_category.attack_category_id')
@@ -136,9 +151,9 @@ class StatisticsController extends Controller
     public function incidentsType($days)
     {
         if (isset($days) && is_numeric($days)) {
-            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . $days . "D"));
+            $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
-            $incidents = Incident::where('incident.detection_time', '>', $fromDate->format('Y-m-d'))
+            $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
                 ->select(\DB::raw('attack_type.name as name, count(*) as incidents'))
                 ->leftJoin('attack_type', 'attack_type.id', '=', 'incident.attack_type_id')
                 ->groupBy(['attack_type.id'])
