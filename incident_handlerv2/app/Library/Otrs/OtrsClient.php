@@ -2,8 +2,10 @@
 
 namespace App\Library\Otrs;
 
+use Illuminate\Support\Facades\Log;
 use SoapClient;
 use SoapFault;
+use \Exception;
 
 class OtrsClient
 {
@@ -96,7 +98,7 @@ class OtrsClient
             } else
                 return $this->noDataResponse();;
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Customer::getAll().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Customer::getAll().");
         }
     }
 
@@ -117,7 +119,7 @@ class OtrsClient
             );
             return $this->returnSoapData($customerID);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Customer::getById().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Customer::getById().");
         }
     }
 
@@ -138,7 +140,7 @@ class OtrsClient
             );
             return $this->returnSoapData($customerInfo);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Customer::getInfo().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Customer::getInfo().");
         }
     }
 
@@ -180,7 +182,7 @@ class OtrsClient
 
             return $this->returnSoapData($articleId);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Article::create().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Article::create().");
         }
     }
 
@@ -198,7 +200,7 @@ class OtrsClient
             );
             return $this->returnSoapData($senderTypes);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Article::AllSenderTypeList().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Article::AllSenderTypeList().");
         }
     }
 
@@ -215,7 +217,7 @@ class OtrsClient
             ));
             return $this->returnSoapData($articleTypes);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Article::AllArticleTypeList().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Article::AllArticleTypeList().");
         }
     }
 
@@ -237,7 +239,7 @@ class OtrsClient
             );
             return $users;
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on User::search().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on User::search().");
         }
     }
 
@@ -253,7 +255,8 @@ class OtrsClient
             $users = $this->searchUsers("Search", "*");
 
             if (isset($users['error_code']))
-                throw new Exception($users);
+//                throw new Exception($users);
+                throw new Exception($users['error_description'], $users['error_code']);
 
             if (sizeof($users) > 0) {
                 $usersL = $this->formatOtrsArray($users);
@@ -271,9 +274,9 @@ class OtrsClient
                 return $this->noDataResponse();;
             }
         } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e["error_code"], "error_description" => $e["error_description"]);
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failes to connect to OTRS on User::getAll().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failes to connect to OTRS on User::getAll().");
         }
     }
 
@@ -294,7 +297,7 @@ class OtrsClient
             );
             return $this->returnSoapData($users);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on User::getInfo().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on User::getInfo().");
         }
     }
 
@@ -332,8 +335,10 @@ class OtrsClient
         try {
             $userInfo = $this->getUserInfo($this->agent);
 
+//            \Log::info($userInfo);
+
             if (isset($userInfo['error_code']))
-                throw new Exception($userInfo);
+                throw new Exception($userInfo['error_description'], $userInfo['error_code']);
 
             # Create a new ticket. The function returns the Ticket ID.
             $ticketId = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
@@ -348,18 +353,24 @@ class OtrsClient
                 "UserID", $userInfo['UserID'],
             ));
 
+//            \Log::info($ticketId);
+
             # A ticket is not usefull without at least one article. The function create and
             # returns an Article ID.
             $articleId = $this->createArticle($ticketId, $userInfo['UserID'], $userInfo['UserEmail'], $title, $customerMail, $body);
 
+//            \Log::info($articleId);
+
             if (isset($articleId['error_code']))
-                throw new Exception($articleId);
+//                throw new Exception($articleId);
+                throw new Exception($articleId['error_description'], $articleId['error_code']);
 
             // Use the Ticket ID to retrieve the Ticket Number.
             $ticketNumber = $this->getTicketNumber($ticketId);
 
             if (isset($ticketNumber['error_code']))
-                throw new Exception($ticketNumber);
+//                throw new Exception($ticketNumber);
+                throw new Exception($ticketNumber['error_description'], $ticketNumber['error_code']);
 
             // Make sure the ticket number is not displayed in scientific notation
             // See http://forums.otrs.org/viewtopic.php?f=53&t=5135
@@ -368,9 +379,9 @@ class OtrsClient
 
             return array("response_status" => 0, "TicketID" => $ticketId, "ArticleID" => $articleId, "TicketNumber" => $formattedTicketNumber);
         } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (FatalException  $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::create().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::create().");
         }
     }
 
@@ -388,7 +399,7 @@ class OtrsClient
             ));
             return array('TicketNr' => $ticketNumber, "response_status" => 0);
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getNumber().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::getNumber().");
         }
     }
 
@@ -402,7 +413,8 @@ class OtrsClient
             $userInfo = $this->getUserInfo($this->agent);
 
             if (isset($userInfo['error_code']))
-                throw new Exception($userInfo);
+//                throw new Exception($userInfo);
+                throw new Exception($userInfo['error_description'], $userInfo['error_code']);
 
             $ticketInfo = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                 "TicketObject", "TicketGet",
@@ -411,9 +423,9 @@ class OtrsClient
             ));
             return $this->returnSoapData($ticketInfo);
         } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getInfo().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::getInfo().");
         }
     }
 
@@ -431,23 +443,27 @@ class OtrsClient
             $userInfo = $this->getUserInfo($this->agent);
 
             if (isset($userInfo['error_code']))
-                throw new Exception($userInfo);
+//                throw new Exception($userInfo);
+                throw new Exception($userInfo['error_description'], $userInfo['error_code']);
 
             $ticketInfo = $this->getTicketInfo($ticketID);
 
             if (isset($ticketInfo['error_code']))
-                throw new Exception($ticketInfo);
+//                throw new Exception($ticketInfo);
+                throw new Exception($ticketInfo['error_description'], $ticketInfo['error_code']);
 
             $customerInfo = $this->getCustomerInfo($ticketInfo['CustomerUserID']);
 
             if (isset($customerInfo['error_code']))
-                throw new Exception($customerInfo);
+//                throw new Exception($customerInfo);
+                throw new Exception($customerInfo['error_description'], $customerInfo['error_code']);
 
 
             $articleID = $this->createArticle($ticketID, $userInfo['UserID'], $userInfo['UserEmail'], $ticketInfo['Title'], $customerInfo['UserEmail'], $message);
 
             if (isset($articleID['error_code']))
-                throw new Exception($articleID);
+//                throw new Exception($articleID);
+                throw new Exception($articleID['error_description'], $articleID['error_code']);
 
             $success1 = $this->client->__soapCall("Dispatch", array($this->username, $this->password,
                 "TicketObject", "TicketStateSet",
@@ -470,9 +486,9 @@ class OtrsClient
             else
                 return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close()");
         } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e['error_code'], "error_description" => $e['error_description']);
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::close().");
         }
     }
 
@@ -487,7 +503,7 @@ class OtrsClient
             $priorities = $this->client->__soapCall("Dispatch", array($this->username, $this->password, "Priority", "PrioList", "Valid", 1,));
             return $this->returnSoapData($priorities);
         } catch (SoapFault $e) {
-            return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::getPriorities().");
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage()." -- Failed to connect to OTRS on Ticket::getPriorities().");
         }
     }
 }

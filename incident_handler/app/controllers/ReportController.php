@@ -271,10 +271,18 @@ class ReportController extends Controller
 
             $tmp = 0;
             $tmp_str = "";
+            //Rules
             foreach ($incident->incidentRule as $r) {
                 if ($tmp > 0)
                     $tmp_str .= "|";
                 $tmp_str .= $r->rule->message;
+                $tmp++;
+            }
+            //Signatures
+            foreach ($incident->incidentSignatures as $s) {
+                if ($tmp > 0)
+                    $tmp_str .= "|";
+                $tmp_str .= $s->signature->signature;
                 $tmp++;
             }
             $tmp_str = str_replace("\"", "\"\"", $tmp_str);

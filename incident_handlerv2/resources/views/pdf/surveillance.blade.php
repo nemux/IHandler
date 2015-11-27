@@ -131,15 +131,36 @@
             text-align: justify;
         }
 
+        .watermark {
+            opacity: 0.25;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            position: fixed;
 
+            background-image: url('/custom/assets/img/logo-bgclaro-watermark.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        img.logo {
+            max-height: 120px;
+        }
     </style>
 </head>
 <body class="page-body">
+<div class="watermark"></div>
 <div class="page-container">
     <div class="main-content">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3>
+                @if(isset($case->customer->logo))
+                    <img class="img-responsive logo" src="{{$isPdf?'':'/'}}customer/{{$case->customer->logo}}">
+                @else
+                    <h1>Cliente: {{$case->customer->name}}</h1>
+                @endif
             </div>
             <div class="panel-body">
                 @include('surveillance._preview')

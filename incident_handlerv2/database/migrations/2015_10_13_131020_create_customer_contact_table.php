@@ -18,13 +18,13 @@ class CreateCustomerContactTable extends Migration
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('person_id');
 
+            $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('customer_id')->references('id')->on('customer')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('person')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

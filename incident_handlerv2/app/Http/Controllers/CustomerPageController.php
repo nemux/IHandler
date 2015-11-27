@@ -2,33 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerPage;
-use App\Models\Link;
+use App\Models\Customer\CustomerPage;
+use App\Models\Link\Link;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class CustomerPageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -56,7 +37,7 @@ class CustomerPageController extends Controller
         $page->customer_id = $customer_id;
         $page->save();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó una nueva página');//->withTab('page');
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se agregó una nueva página')->withTab('page');
     }
 
 
@@ -111,7 +92,7 @@ class CustomerPageController extends Controller
         $link->link_type_id = $request->get('link_type_id');
         $link->save();
 
-        return redirect()->route('customer.show', $customerPage->customer_id)->withMessage('Se actualizó la página ' . $link->title);//->withTab('page');
+        return redirect()->route('customer.show', $customerPage->customer_id)->withMessage('Se actualizó la página ' . $link->title)->withTab('page');
     }
 
     /**
@@ -127,6 +108,6 @@ class CustomerPageController extends Controller
         $page_title = $customerPage->link->title;
         $customerPage->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó la página ' . $page_title);//->withTab('page');
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó la página ' . $page_title)->withTab('page');
     }
 }

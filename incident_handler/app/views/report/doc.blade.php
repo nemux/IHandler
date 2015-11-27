@@ -110,7 +110,7 @@ function cleanContent($content)
                         {{ ($incident->category->id)-1 }}
                     </td>
                     <td>
-                        {{ $incident->category->name }}
+                        {{ $incident->category->noCat() }}
                         {{ $incident->category->description }}
                     </td>
                 @foreach ($incident->extraCategory as $ec)
@@ -119,7 +119,7 @@ function cleanContent($content)
                             {{ ($ec->category->id)-1 }}
                         </td>
                         <td>
-                            {{ cleanContent($ec->category->name) }}
+                            {{ cleanContent($ec->category->noCat()) }}
                             {{ cleanContent($ec->category->description) }}
                         </td>
                     </tr>

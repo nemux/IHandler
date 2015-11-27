@@ -1,8 +1,24 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Caso <b>'.$case->title.'</b>')
+@section('title', 'Caso '.$case->title)
 
 @section('include_up')
+    <script type="text/javascript">
+        function edit(btn) {
+            window.open('{{route('surveillance.edit',[$case])}}', '_self');
+        }
+
+        function pdf(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('surveillance.pdf',[$case,true])}}', '_self');
+            $(btn).attr('disabled', false);
+        }
+
+        function mail(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('surveillance.email',$case)}}', '_self');
+        }
+    </script>
 @endsection
 
 @section('dashboard_content')
@@ -11,14 +27,14 @@
             <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
             <div class="row">
-                <div class="btn btn-primary" onclick="window.open('{{route('surveillance.edit',[$case])}}','_self');">
+                <div class="btn btn-primary" onclick="edit(this)">
                     <i class="fa fa-pencil fa-fw"></i> Editar Caso
                 </div>
-                <div class="btn btn-info" onclick="window.open('{{route('surveillance.pdf',[$case,true])}}','_self');">
+                <div class="btn btn-info" onclick="pdf(this)">
                     <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
                 </div>
                 <div class="btn btn-success"
-                     onclick="window.open('{{route('surveillance.email',$case)}}','_self');">
+                     onclick="mail(this)">
                     <i class="fa fa-envelope fa-fw"></i> Enviar Correo
                 </div>
             </div>

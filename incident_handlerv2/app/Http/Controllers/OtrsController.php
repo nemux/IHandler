@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Library\Otrs\OtrsClient;
-use App\Models\Customer;
-use App\Models\CustomerContact;
-use App\Models\Person;
-use App\Models\PersonContact;
+use App\Models\Customer\Customer;
+use App\Models\Customer\CustomerContact;
+use App\Models\Person\Person;
+use App\Models\Person\PersonContact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

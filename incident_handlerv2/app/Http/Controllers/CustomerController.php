@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\CustomerAsset;
-use App\Models\CustomerContact;
-use App\Models\Person;
-use App\Models\PersonContact;
+use App\Models\Customer\Customer;
+use App\Models\Customer\CustomerAsset;
+use App\Models\Customer\CustomerContact;
+use App\Models\Person\Person;
+use App\Models\Person\PersonContact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
@@ -19,7 +19,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::orderBy('id')->get();
         return view('customer.index', compact('customers'));
     }
 
@@ -79,13 +79,13 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrNew($id);
 
-//        if (\Session::has('tab')) {
-//            $tab = \Session::get('tab');
-//        } else {
-//            $tab = 'customer';
-//        }
+        if (\Session::has('tab')) {
+            $tab = \Session::get('tab');
+        } else {
+            $tab = 'customer';
+        }
 
-        return view('customer.show', compact('customer'))->withTab('customer');
+        return view('customer.show', compact('customer'))->withTab($tab);
     }
 
     /**

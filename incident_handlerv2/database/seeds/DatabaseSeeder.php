@@ -22,6 +22,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CriticitySeeder::class);
 
+        $this->call(TicketStatusSeeder::class);
+
+        $this->call(AttackFlowSeeder::class);
+        $this->call(AttackCategorySeeder::class);
+        $this->call(AttackSignatureSeeder::class);
+        $this->call(AttackTypeSeeder::class);
+        $this->call(MachineTypeSeeder::class);
+
         Model::reguard();
     }
 }

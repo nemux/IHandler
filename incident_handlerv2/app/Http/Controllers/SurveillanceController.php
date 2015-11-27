@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Criticity;
-use App\Models\Customer;
-use App\Models\Evidence;
-use App\Models\PersonContact;
-use App\Models\SurveillanceCase;
-use App\Models\SurveillanceCaseEvidence;
+use App\Models\Catalog\Criticity;
+use App\Models\Customer\Customer;
+use App\Models\Evidence\Evidence;
+use App\Models\Person\PersonContact;
+use App\Models\Surveillance\SurveillanceCase;
+use App\Models\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -15,6 +15,8 @@ use App\Library\InlineCss;
 
 class SurveillanceController extends Controller
 {
+    protected $email_subject_prefix = '[GCS-IH][Cibervigilancia]';
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +24,7 @@ class SurveillanceController extends Controller
      */
     public function index()
     {
-        $cases = SurveillanceCase::all();
+        $cases = SurveillanceCase::orderBy('id', 'desc')->get();
 
         return view('surveillance.index', compact('cases'));
     }
@@ -49,7 +51,7 @@ class SurveillanceController extends Controller
     public function store(Request $request)
     {
         //Agregar todos los archivos de evidencia
-        $evidences = $this->getEvidences($request);
+        $evidences = EvidenceController::getEvidences($request);
 
         \Session::flash('surv_evidences', $evidences);
 
@@ -140,65 +142,32 @@ class SurveillanceController extends Controller
         return redirect()->route('surveillance.index')->withMessage('Se actualizó el caso ' . $surv->title);
     }
 
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param  int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
-
-    /**
-     * Obtiene de un $request todos los elementos que estén relacionados con evidencia.
-     * @param Request $request
-     * @return array
-     */
-    private function getEvidences(Request $request)
-    {
-        $values = $request->all();
-        $evidences = array();
-        foreach ($values as $field => $value) {
-            $pos = strpos($field, 'evidence_');
-            if ($pos !== false) {
-                $evidence = Evidence::whereId($value)->first();
-                array_push($evidences, $evidence);
-            }
-        }
-
-        return $evidences;
-    }
-
-    /**
-     * Genera el PDF con la vista correspondiente
-     * @param SurveillanceCase $surv
-     * @return \PDF
-     */
-    private function generatePdf(SurveillanceCase $surv)
-    {
-        $html = view('pdf.surveillance', ['case' => $surv, 'isPdf' => true])->render();
-        $pdf = \PDF::loadHTML($html);
-        return $pdf;
-    }
-
     /**
      * Devuelve al navegador el stream del PDF
      * @param $id
-     * @return mixed
+     * @param bool $download
+     * @return \PDF
      */
+//    public function getPdf($case, $download = false, $output = false)
     public function getPdf($id, $download = false)
     {
-        $surv = SurveillanceCase::whereId($id)->first();
-        $pdf = $this->generatePdf($surv);
-        $docName = $surv->title . '.pdf';
+        $case = SurveillanceCase::whereId($id)->first();
+        $pdf = PdfController::generatePdf($case, 'pdf.surveillance');
+        $docName = $case->title . '.pdf';
 
         if ($download) {
             return $pdf->download($docName);
         } else {
             return $pdf->stream($docName);
         }
+
+//        if ($download) {
+//            return $pdf->download($docName);
+//        } else if ($output) {
+//            return $pdf->output();
+//        } else {
+//            return $pdf->stream($docName);
+//        }
     }
 
     /**
@@ -208,6 +177,8 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
+        \Log::info($id);
+
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);
         return redirect()->route('surveillance.show', $id)->withMessage('Se envió el correo electrónico del caso ' . $surv->title);
@@ -219,14 +190,34 @@ class SurveillanceController extends Controller
      */
     public function sendEmail(SurveillanceCase $surv)
     {
-        $pdf = $this->generatePdf($surv);
+        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
+//            Adjuntamos las evidencias cargadas
+            foreach ($surv->evidences as $evidence) {
+                $file = $evidence->evidence->path . $evidence->evidence->name;
+                $name = $evidence->evidence->original_name;
+                $message->attach($file, ['as' => $name]);
+            }
 
-        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($pdf, $surv) {
+            $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
+
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName());
-            $message->subject('[GCS-IH][CV][' . $surv->customer->name . '] ' . $surv->title);
+            $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });
+    }
+
+    /**
+     * Muestra una vista previa del caso de cibervigilancia tal como se creará el documento PDF
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function preview($id)
+    {
+        $case = SurveillanceCase::whereId($id)->first();
+        $isPdf = false;
+
+        return view('pdf.surveillance', compact('case', 'isPdf'));
     }
 }

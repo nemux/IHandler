@@ -13,6 +13,24 @@ class LinkTypeSeeder extends Seeder
     {
         $page_types = [
             [
+                'name' => 'Página falsa',
+                'description' => 'Página que suplanta otra web del cliente',
+                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d')
+            ],
+            [
+                'name' => 'Página en contra de la institución',
+                'description' => 'Página que publica información en contra del cliente',
+                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d')
+            ],
+            [
+                'name' => 'Página Corporativa',
+                'description' => 'Página perteneciente al cliente que está siendo constantemente monitoreada',
+                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d')
+            ],
+            [
                 'name' => 'Facebook',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
@@ -28,14 +46,7 @@ class LinkTypeSeeder extends Seeder
                 'updated_at' => date('Y-m-d')
             ],
             [
-                'name' => 'Página Corporativa',
-                'description' => 'Página perteneciente al cliente que está siendo constantemente monitoreada',
-                'created_at' => date('Y-m-d'),
-                'updated_at' => date('Y-m-d')
-            ],
-            [
-                'name' => 'Página falsa',
-                'description' => 'Página que suplanta otra web del cliente',
+                'name' => 'Otro',
                 'created_at' => date('Y-m-d'),
                 'updated_at' => date('Y-m-d')
             ]

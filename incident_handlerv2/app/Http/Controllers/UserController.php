@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PersonContact;
-use App\Models\Person;
-use App\Models\User;
-use Illuminate\Contracts\Validation\ValidationException;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
+use App\Models\Person\Person;
+use App\Models\Person\PersonContact;
+use App\Models\User\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -22,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::orderBy('id')->get();
 
         return view('user.index', compact('users'));
     }
@@ -36,9 +32,9 @@ class UserController extends Controller
     {
         $user = new User();
         $person = new Person();
-        $person->contact = new PersonContact();
+        $contact = new PersonContact();
 
-        return view('user.create', compact('user', 'person'));
+        return view('user.create', compact('user', 'person','contact'));
     }
 
     /**
@@ -88,7 +84,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User $user
+     * @param  \App\Models\User\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -105,7 +101,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $person = $user->person;
-        return view('user.edit', compact('user', 'person'));
+        $contact = $person->contact;
+        return view('user.edit', compact('user', 'person','contact'));
     }
 
     /**

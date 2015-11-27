@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\CustomerAsset;
+use App\Models\Customer\CustomerAsset;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -13,22 +12,21 @@ class CustomerAssetController extends Controller
 
 
     /**
-     * Stores New Asset form Customer
+     * Stores New Asset from Customer
      * @param Request $request
      */
     public function store(Request $request)
     {
-        \Log::info($request->except('_token'));
+        $asset = AssetController::saveUpdate($request->get('ipv4'), $request->get('ipv6'));
 
-        $asset = new CustomerAsset();
-        $asset->customer_id = $request->get('customer_id');
-        $asset->domain_name = $request->get('domain_name');
-        $asset->ipv4 = $request->get('ipv4');
-        $asset->ipv6 = $request->get('ipv6');
-        $asset->comments = $request->get('comments');
-        $asset->save();
+        $customerAsset = new CustomerAsset();
+        $customerAsset->domain_name = trim($request->get('domain_name'));
+        $customerAsset->customer_id = $request->get('customer_id');
+        $customerAsset->asset_id = $asset->id;
+        $customerAsset->comments = $request->get('comments');
+        $customerAsset->save();
 
-        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Se almacenó el nuevo activo del cliente');//->withTab('asset');
+        return redirect()->route('customer.show', $customerAsset->customer_id)->withMessage('Se almacenó el nuevo activo del cliente')->withTab('asset');
     }
 
     /**
@@ -61,14 +59,15 @@ class CustomerAssetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $asset = CustomerAsset::findOrNew($id);
-        $asset->domain_name = $request->get('domain_name');
-        $asset->ipv4 = $request->get('ipv4');
-        $asset->ipv6 = $request->get('ipv6');
-        $asset->comments = $request->get('comments');
-        $asset->save();
+        $asset = AssetController::saveUpdate($request->get('ipv4'), $request->get('ipv6'));
 
-        return redirect()->route('customer.show', $asset->customer_id)->withMessage('Activo actualizado');//->withTab('asset');
+        $customerAsset = CustomerAsset::findOrNew($id);
+        $customerAsset->asset_id = $asset->id;
+        $customerAsset->domain_name = trim($request->get('domain_name'));
+        $customerAsset->comments = $request->get('comments');
+        $customerAsset->save();
+
+        return redirect()->route('customer.show', $customerAsset->customer_id)->withMessage('Activo actualizado')->withTab('asset');
     }
 
 
@@ -84,6 +83,6 @@ class CustomerAssetController extends Controller
         $customer_id = $asset->customer_id;
         $asset->delete();
 
-        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el activo ' . $domain_name);//->withTab('asset');
+        return redirect()->route('customer.show', $customer_id)->withMessage('Se eliminó el activo ' . $domain_name)->withTab('asset');
     }
 }

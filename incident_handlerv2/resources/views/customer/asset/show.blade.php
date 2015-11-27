@@ -16,10 +16,18 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-2 text-right">
+                    <b>Nombre de Dominio</b>
+                </div>
+                <div class="col-md-10 text-left">
+                    {{$asset->domain_name}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right">
                     <b>IP V4</b>
                 </div>
                 <div class="col-md-10 text-left">
-                    {{$asset->ipv4}}
+                    {{$asset->asset->ipv4}}
                 </div>
             </div>
             <div class="row">
@@ -27,7 +35,7 @@
                     <b>IP V6</b>
                 </div>
                 <div class="col-md-10">
-                    {{$asset->ipv6}}
+                    {{$asset->asset->ipv6}}
                 </div>
             </div>
             <div class="row">

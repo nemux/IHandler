@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="{{ asset('custom/favicon.ico') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <title>GCS IH | @yield('title')</title>
 
@@ -26,6 +26,12 @@
     <!-- TS1444235278: Xenon - Boostrap Admin Template created by Laborator -->
 
     <link rel="stylesheet" href="{{asset('/custom/assets/css/custom.css')}}">
+
+    <style>
+        .toast {
+            opacity: 1 !important;
+        }
+    </style>
 
     @yield('include_up')
 </head>
@@ -82,8 +88,6 @@
             </div>
         </div>
 
-        {{--        @include('layout.dummy_content')--}}
-
         @yield('dashboard_content')
 
                 <!-- Main Footer -->
@@ -97,9 +101,9 @@
         {{--</footer>--}}
     </div>
 </div>
-{{--<div class="page-loading-overlay">--}}
-{{--<div class="loader-2"></div>--}}
-{{--</div>--}}
+<div class="page-loading-overlay">
+    <div class="loader-2"></div>
+</div>
 
 <script src="{{asset('/xenon/assets/js/bootstrap.min.js')}}" id="script-resource-1"></script>
 <script src="{{asset('/xenon/assets/js/TweenMax.min.js')}}" id="script-resource-2"></script>
@@ -107,6 +111,7 @@
 <script src="{{asset('/xenon/assets/js/joinable.js')}}" id="script-resource-4"></script>
 <script src="{{asset('/xenon/assets/js/xenon-api.js')}}" id="script-resource-5"></script>
 <script src="{{asset('/xenon/assets/js/xenon-toggles.js')}}" id="script-resource-6"></script>
+<script src="/xenon/assets/js/toastr/toastr.min.js" id="script-resource-7"></script>
 
 @yield('include_down')
         <!-- JavaScripts initializations and stuff -->

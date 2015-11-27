@@ -75,6 +75,17 @@ return [
             'schema'   => 'public',
         ],
 
+        'old_pgsql' => [
+            'driver'   => 'pgsql',
+            'host'     => env('OLD_DB_HOST', 'localhost'),
+            'database' => env('OLD_DB_DATABASE', 'forge'),
+            'username' => env('OLD_DB_USERNAME', 'forge'),
+            'password' => env('OLD_DB_PASSWORD', ''),
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ],
+
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),

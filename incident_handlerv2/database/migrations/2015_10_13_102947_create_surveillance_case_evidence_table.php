@@ -20,13 +20,13 @@ class CreateSurveillanceCaseEvidenceTable extends Migration
 
             $table->string('note');
 
+            $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('surveillance_case_id')->references('id')->on('surveillance_case')->onDelete('cascade');
             $table->foreign('evidence_id')->references('id')->on('evidence')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

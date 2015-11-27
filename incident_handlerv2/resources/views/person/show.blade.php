@@ -12,7 +12,13 @@
             <b>Sexo</b>
         </div>
         <div class="col-md-10">
-            {{$person->sex=='M'?'Masculino':'Femenino'}}
+            @if($person->sex=='M')
+                Masculino
+            @elseif($person->sex=='F')
+                Femenino
+            @else
+                Undefined
+            @endif
         </div>
     </div>
     <div class="row">

@@ -5,6 +5,7 @@
                 null,
                 null,
                 null,
+                null,
                 null
             ],
         });
@@ -85,7 +86,7 @@
                 <h4 class="modal-title">Agregar un sensor</h4>
             </div>
             <div class="modal-body">
-                {!! Form::model(new \App\Models\CustomerSensor(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-sensor','url'=>route('sensor.store')]) !!}
+                {!! Form::model(new \App\Models\Customer\CustomerSensor(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-sensor','url'=>route('sensor.store')]) !!}
                 {!! Form::hidden('customer_id',$customer->id) !!}
                 @include('customer.sensor._form')
                 {!! Form::close() !!}

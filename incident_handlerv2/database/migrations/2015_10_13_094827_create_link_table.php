@@ -21,12 +21,12 @@ class CreateLinkTable extends Migration
             $table->text('link');
             $table->text('comments')->nullable();
 
+            $table->unsignedInteger('user_id');
+
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('link_type_id')->references('id')->on('link_type')->onDelete('cascade');
-
-            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }

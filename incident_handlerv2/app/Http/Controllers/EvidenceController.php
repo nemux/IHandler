@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evidence;
-use App\Models\EvidenceType;
+use App\Models\Evidence\Evidence;
+use App\Models\Evidence\EvidenceType;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -87,21 +87,46 @@ class EvidenceController extends Controller
     }
 
     /**
-     * Método para subir archivos diréctamente en el folder correspondiente
+     * Método para subir archivos directamente en el folder de Incidentes
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadIncident(Request $request)
+    {
+        $file = $request->file('file');
+
+        return $this->upload($file);
+    }
+
+    /**
+     * Método para subir archivos diréctamente en el folder de Cibervigilancia
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function uploadSurveillance(Request $request)
     {
         $file = $request->file('file');
+
+        return $this->upload($file);
+    }
+
+    /**
+     * Con base en el archivo y el tipo de evidencia, se subirá la evidencia
+     *
+     * @param $file
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload($file)
+    {
         $evidence = false;
-        $type = EvidenceType::whereName('Cibervigilancia')->first();
 
         if (!is_array($file)) {
-            $evidence = $this->uploadSingleFile($file, $type);
+            $evidence = $this->uploadSingleFile($file);
         } else {
             foreach ($file as $i => $f) {
-                $thisFile = $this->uploadSingleFile($f, $type);
+                $thisFile = $this->uploadSingleFile($f);
 
                 if (!$thisFile) {
                     $evidence = $thisFile;
@@ -116,8 +141,9 @@ class EvidenceController extends Controller
         }
     }
 
-    private function uploadSingleFile($file, EvidenceType $type)
+    public static function uploadSingleFile($file)
     {
+        \Log::info('Updating single file');
         $mimeType = \File::mimeType($file);
 
         $md5 = hash_file('md5', $file);
@@ -135,7 +161,6 @@ class EvidenceController extends Controller
             if (!isset($evidence->id))
                 $evidence = new Evidence();
 
-            $evidence->evidence_type_id = $type->id;
             $evidence->mime_type = $mimeType;
             $evidence->path = $directory;
             $evidence->name = $filename;
@@ -153,5 +178,25 @@ class EvidenceController extends Controller
         } else {
             return false;
         }
+    }
+
+    /**
+     * Obtiene de un $request todos los elementos que estén relacionados con evidencia.
+     * @param Request $request
+     * @return array
+     */
+    public static function getEvidences(Request $request)
+    {
+        $values = $request->all();
+        $evidences = array();
+        foreach ($values as $field => $value) {
+            $pos = strpos($field, 'evidence_');
+            if ($pos !== false) {
+                $evidence = Evidence::whereId($value)->first();
+                array_push($evidences, $evidence);
+            }
+        }
+
+        return $evidences;
     }
 }
