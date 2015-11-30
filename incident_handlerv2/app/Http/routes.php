@@ -214,16 +214,22 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::get('test', 'DashboardController@test');
-});
 
-Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
-    Route::get('/', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
-    Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
-    Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
-    Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
-    Route::get('/incidents/flow/{days}', ['as' => 'incidents.flow', 'uses' => 'StatisticsController@incidentsFlow']);
-    Route::get('/incidents/type/{days}', ['as' => 'incidents.type', 'uses' => 'StatisticsController@incidentsType']);
+    Route::group(['prefix' => 'stats', 'middleware' => 'auth'], function () {
+        Route::get('/', ['as' => 'stats.index', 'uses' => 'StatisticsController@index']);
+        Route::get('/customer', ['as' => 'stats.customer', 'uses' => 'StatisticsController@customer']);
+        Route::post('/customer', ['as' => 'stats.customer.post', 'uses' => 'StatisticsController@customerIncidents']);
+    });
 
-    Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
-    Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+    Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
+//        Route::get('/incidents', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
+        Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
+        Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
+        Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
+        Route::get('/incidents/flow/{days}', ['as' => 'incidents.flow', 'uses' => 'StatisticsController@incidentsFlow']);
+        Route::get('/incidents/type/{days}', ['as' => 'incidents.type', 'uses' => 'StatisticsController@incidentsType']);
+
+        Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
+        Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+    });
 });

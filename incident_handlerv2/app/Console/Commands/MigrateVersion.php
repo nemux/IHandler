@@ -43,12 +43,14 @@ use Illuminate\Console\Command;
 
 class MigrateVersion extends Command
 {
+
+    protected $name = 'version';
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'version:migrate';
+    protected $signature = 'version:migrate {--perform= : Define un método específico para ejecutar}';
 
     /**
      * The console command description.
@@ -74,17 +76,48 @@ class MigrateVersion extends Command
     public function handle()
     {
         if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
-            $this->dropAll();
-            $this->migrate();
-            $this->catalogs();
-            $this->persons();
-            $this->users();
-            $this->customers();
-            $this->surveillances();
-            $this->incidents();
+            if ($this->option('perform')) {
+                $this->info('Ejecutando ' . $this->option('perform'));
+                if ($this->option('perform') == 'references') {
+                    $this->references();
+                }
+            } else {
+                $this->info('Ejecutando todas las instrucciones');
+                $this->dropAll();
+                $this->migrate();
+                $this->catalogs();
+                $this->persons();
+                $this->users();
+                $this->customers();
+                $this->surveillances();
+                $this->incidents();
+            }
 
         }
         $this->info("Terminado [" . date('d/m/Y H:i:s') . "]");
+    }
+
+    private function references()
+    {
+
+        $incidents = Incident::all();
+
+
+        $bar = $this->output->createProgressBar(count($incidents));
+
+        foreach ($incidents as $incident) {
+            $r = $this->query('SELECT link FROM public.references WHERE incidents_id=' . $incident->id . ' LIMIT 1');
+            if (sizeof($r) > 0)
+                $incident->reference = $r[0]->link;
+            else
+                $incident->reference = 'SD';
+            $incident->save();
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+
     }
 
     /**
@@ -553,7 +586,8 @@ class MigrateVersion extends Command
                     $r = $this->query('SELECT link FROM public.references WHERE incidents_id=' . $o->id . ' LIMIT 1');
                     if (sizeof($r) > 0)
                         $incident->reference = $r[0]->link;
-                    $incident->reference = 'SD';
+                    else
+                        $incident->reference = 'SD';
 
                     $incident->attack_type_id = $o->attacks_id;
 

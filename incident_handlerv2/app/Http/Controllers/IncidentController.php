@@ -18,10 +18,7 @@ use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
-use Illuminate\Support\Facades\Log;
-use Mockery\CountValidator\Exception;
 use Psy\Util\Json;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 
 class IncidentController extends Controller
 {
@@ -35,7 +32,7 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = Incident::all();
+//        $incidents = Incident::all();
         return view('incident.index', compact('incidents'));
     }
 

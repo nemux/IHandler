@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
 use App\Models\Customer\Customer;
 use App\Models\Incident\Incident;
 use App\Models\Surveillance\SurveillanceCase;
+use Illuminate\Http\Request;
 
 /**
  * Esta clase contiene todos los métodos utilizados para devolver objetos Json
@@ -18,7 +18,113 @@ class StatisticsController extends Controller
 {
     private $BAD_REQUEST_PARAMS = ['err_code' => '1000', 'message' => 'Los parámetros esperados en la petición no son suficientes o el formato no es correcto'];
 
-    public function listRoutes()
+    /**
+     * Muestra una vista genéérica para ensamblar consultas para estadísticas
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
+        return view('stats.index');
+    }
+
+    public function customer()
+    {
+        return view('stats.customer');
+    }
+
+    public function customerIncidents(Request $request)
+    {
+//        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $sensors = $request->get('sensors');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+        $customer_separated = $request->get('customer_separated');
+        $sensor_separated = $request->get('sensor_separated');
+
+        $query = Incident::select(\DB::raw('date(detection_time) as date,count(detection_time)'))
+            ->whereBetween('detection_time', [$from_date, $to_date])
+            ->groupBy(\DB::raw('date(detection_time)'))
+            ->orderBy(\DB::raw('date(detection_time)'));
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+            if ($sensors != '') {
+                $query->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                    ->whereIn('incident_customer_sensor.customer_sensor_id', $sensors);
+                if ($sensor_separated == 'true') {
+                    $incidents = $query->select(\DB::raw('date(detection_time) as date, count(detection_time), customer_sensor.name as sensor'))
+                        ->leftJoin('customer_sensor', 'customer_sensor.id', '=', 'incident_customer_sensor.customer_sensor_id')
+                        ->groupBy('customer_sensor.name')
+                        ->get();
+
+                    $response = $this->arrayToDatasource($incidents, 'sensor');
+
+                    return \Response::json($response);
+                }
+            }
+        }
+
+        if ($customer_separated == 'true') {
+            $incidents = $query->select(\DB::raw('date(detection_time) as date, count(detection_time), customer.otrs_customer_id as customer'))
+                ->leftJoin('customer', 'customer.id', '=', 'incident.customer_id')
+                ->groupBy('customer.otrs_customer_id')
+                ->get();
+
+            $response = $this->arrayToDatasource($incidents, 'customer');
+
+            return \Response::json($response);
+        } else if ($customer_id != '' && $sensors == '' && $sensor_separated == 'true') {
+            $incidents = $query->select(\DB::raw('date(detection_time) as date, count(detection_time), customer_sensor.name as sensor'))
+                ->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                ->leftJoin('customer_sensor', 'customer_sensor.id', '=', 'incident_customer_sensor.customer_sensor_id')
+                ->groupBy('customer_sensor.name')
+                ->get();
+
+            $response = $this->arrayToDatasource($incidents, 'sensor');
+
+            return \Response::json($response);
+        } else {
+            $response = $query->get();
+
+            return \Response::json($response);
+        }
+    }
+
+    /**
+     * Convierte un set de datos en un objeto json agrupado por el campo $field
+     *
+     * @param $data
+     * @param $field
+     * @return array
+     */
+    private function arrayToDatasource($data, $field)
+    {
+        $response = [];
+        foreach ($data as &$element) {
+            $item = [];
+            foreach ($response as &$r) {
+                if (isset($r['name']) && $r['name'] == $element[$field]) {
+                    $item = $r;
+                    array_push($r['data'], ['date' => $element['date'], 'count' => $element['count']]);
+                }
+            }
+
+            if ($item == null) {
+                $item['name'] = $element[$field];
+                $item['data'] = [];
+
+                array_push($item['data'], ['date' => $element['date'], 'count' => $element['count']]);
+                array_push($response, $item);
+            }
+        }
+
+        return $response;
+    }
+
+    public
+    function listRoutes()
     {
     }
 
@@ -29,7 +135,8 @@ class StatisticsController extends Controller
      * @param $days
      * @return \Illuminate\Http\JsonResponse
      */
-    public function incidentsCustomer($days)
+    public
+    function incidentsCustomer($days)
     {
         //Si está definida la variable de días y es de tipo numérico
         if (isset($days) && is_numeric($days)) {
@@ -71,7 +178,8 @@ class StatisticsController extends Controller
      * @param $days
      * @return \Illuminate\Http\JsonResponse
      */
-    public function incidentsCricity($days)
+    public
+    function incidentsCricity($days)
     {
         if (isset($days) && is_numeric($days)) {
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
@@ -96,7 +204,8 @@ class StatisticsController extends Controller
      * @param $days
      * @return \Illuminate\Http\JsonResponse
      */
-    public function incidentsFlow($days)
+    public
+    function incidentsFlow($days)
     {
         if (isset($days) && is_numeric($days)) {
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
@@ -122,7 +231,8 @@ class StatisticsController extends Controller
      * @param $days
      * @return \Illuminate\Http\JsonResponse
      */
-    public function incidentsCategory($days)
+    public
+    function incidentsCategory($days)
     {
         if (isset($days) && is_numeric($days)) {
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
@@ -148,7 +258,8 @@ class StatisticsController extends Controller
      * @param $days
      * @return \Illuminate\Http\JsonResponse
      */
-    public function incidentsType($days)
+    public
+    function incidentsType($days)
     {
         if (isset($days) && is_numeric($days)) {
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
@@ -170,7 +281,8 @@ class StatisticsController extends Controller
      * @param $take
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastIncidents($take)
+    public
+    function lastIncidents($take)
     {
         if (isset($take) && is_numeric($take)) {
             $incidents = Incident::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);
@@ -184,7 +296,8 @@ class StatisticsController extends Controller
      * @param $take
      * @return \Illuminate\Http\JsonResponse
      */
-    public function lastSurveillances($take)
+    public
+    function lastSurveillances($take)
     {
         if (isset($take) && is_numeric($take)) {
             $surveillances = SurveillanceCase::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);

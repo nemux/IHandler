@@ -19,7 +19,8 @@
             <h3 class="panel-title">Lista de Incidentes</h3><br/>
         </div>
         <div class="panel-body">
-            @include('incident._table')
+            {{--TODO Se quitó hasta que no se solucione el paginado de los incidentes--}}
+            {{--@include('incident._table')--}}
         </div>
     </div>
 @endsection

@@ -42,7 +42,7 @@
 }
 
 .page-container {
-    margin-top: 85px !important;
+    /*margin-top: 85px !important;*/
 }
 
 .modal-dialog {
@@ -71,4 +71,8 @@
 
 .page-container .main-content {
     word-break: keep-all;
+}
+
+.jumbotron {
+    padding: 0 !important;
 }
