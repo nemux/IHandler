@@ -92,10 +92,10 @@
 
                         var blLabel = '';
                         if ($('#blacklist').prop('checked')) {
-                            blLabel = 'en Blacklist';
+                            blLabel = ' en Blacklist';
                         }
 
-                        options.title = {text: 'Top ' + top + ' de IPs registrados ' + blLabel + ' del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
+                        options.title = {text: 'Top ' + top + ' de IPs registrados' + blLabel + ' del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
                         options.subtitle = {text: $('#customer_id option:selected').text()};
 
                         var chart = new Highcharts.Chart(options);
