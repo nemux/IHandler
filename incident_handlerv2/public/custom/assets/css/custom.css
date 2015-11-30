@@ -76,3 +76,7 @@
 .jumbotron {
     padding: 0 !important;
 }
+
+.date-and-time .form-control.datepicker {
+    width: 100%;
+}

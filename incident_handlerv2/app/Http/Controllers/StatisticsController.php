@@ -27,11 +27,73 @@ class StatisticsController extends Controller
         return view('stats.index');
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function customer()
     {
         return view('stats.customer');
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function customerIpList()
+    {
+        return view('stats.ip');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function customerIpListPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+        $side = $request->get('side');
+        $top = $request->get('top');
+        $blacklist = $request->get('blacklist');
+
+        $query = Incident::select(\DB::raw('asset.ipv4 as ip, count(asset.ipv4) as count'))
+            ->leftJoin('incident_event', 'incident_event.incident_id', '=', 'incident.id');
+
+        if ($side == 'source')
+            $query->leftJoin('machine', 'machine.id', '=', 'incident_event.source_machine_id');
+        else if ($side == 'target')
+            $query->leftJoin('machine', 'machine.id', '=', 'incident_event.target_machine_id');
+
+        $query->leftJoin('asset', 'asset.id', '=', 'machine.asset_id');
+
+        if ($customer_id != '')
+            $query->where('incident.customer_id', '=', $customer_id);
+
+        $query->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->where('machine.deleted_at', '=', null)
+            ->where('incident_event.deleted_at', '=', null)
+            ->where('asset.ipv4', '!=', '')
+            ->groupBy('asset.ipv4')
+            ->orderBy('count', 'desc')
+            ->limit($top);
+
+        if ($blacklist == 'true') {
+            $query->where('machine.blacklist', '=', 1);
+        } else {
+            $query->where('machine.blacklist', '=', 0);
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function customerIncidents(Request $request)
     {
 //        \Log::info($request->except('_token'));
@@ -59,7 +121,7 @@ class StatisticsController extends Controller
                         ->groupBy('customer_sensor.name')
                         ->get();
 
-                    $response = $this->arrayToDatasource($incidents, 'sensor');
+                    $response = $this->arrayToDatasource($incidents, 'sensor', 'date');
 
                     return \Response::json($response);
                 }
@@ -72,7 +134,7 @@ class StatisticsController extends Controller
                 ->groupBy('customer.otrs_customer_id')
                 ->get();
 
-            $response = $this->arrayToDatasource($incidents, 'customer');
+            $response = $this->arrayToDatasource($incidents, 'customer', 'date');
 
             return \Response::json($response);
         } else if ($customer_id != '' && $sensors == '' && $sensor_separated == 'true') {
@@ -82,7 +144,7 @@ class StatisticsController extends Controller
                 ->groupBy('customer_sensor.name')
                 ->get();
 
-            $response = $this->arrayToDatasource($incidents, 'sensor');
+            $response = $this->arrayToDatasource($incidents, 'sensor', 'date');
 
             return \Response::json($response);
         } else {
@@ -96,26 +158,26 @@ class StatisticsController extends Controller
      * Convierte un set de datos en un objeto json agrupado por el campo $field
      *
      * @param $data
-     * @param $field
+     * @param $groupField
      * @return array
      */
-    private function arrayToDatasource($data, $field)
+    private function arrayToDatasource($data, $groupField, $label)
     {
         $response = [];
         foreach ($data as &$element) {
             $item = [];
             foreach ($response as &$r) {
-                if (isset($r['name']) && $r['name'] == $element[$field]) {
+                if (isset($r['name']) && $r['name'] == $element[$groupField]) {
                     $item = $r;
-                    array_push($r['data'], ['date' => $element['date'], 'count' => $element['count']]);
+                    array_push($r['data'], [$label => $element[$label], 'count' => $element['count']]);
                 }
             }
 
             if ($item == null) {
-                $item['name'] = $element[$field];
+                $item['name'] = $element[$groupField];
                 $item['data'] = [];
 
-                array_push($item['data'], ['date' => $element['date'], 'count' => $element['count']]);
+                array_push($item['data'], [$label => $element[$label], 'count' => $element['count']]);
                 array_push($response, $item);
             }
         }

@@ -92,7 +92,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.customer.list.ip')}}">
                                     <i class="fa fa-list-ol"></i>
                                     <span class="title">Direcciones IP por Cliente (en blacklist)</span>
                                 </a>
