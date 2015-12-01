@@ -59,6 +59,45 @@ class StatisticsController extends Controller
     }
 
     /**
+     * Devuelve la vista de Estadísticas de Incidentes por Categoría
+     *
+     * @return \Illuminate\View\View
+     */
+    public function categoryIncidents()
+    {
+        return view('stats.category');
+    }
+
+
+    public function categoryIncidentsPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $sensor_id = $request->get('sensor_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+
+        $query = Incident::select(\DB::raw('attack_category.name as name, count(attack_category.name) as count'))
+            ->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->leftJoin('incident_attack_category', 'incident_attack_category.incident_id', '=', 'incident.id')
+            ->leftJoin('attack_category', 'attack_category.id', '=', 'incident_attack_category.attack_category_id')
+            ->groupBy('attack_category.name');
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+            if ($sensor_id != '') {
+                $query->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                    ->where('incident_customer_sensor.customer_sensor_id', '=', $sensor_id);
+            }
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
      * Devuelve un set de datos Json con la información para generar las gráfica de Incidentes agrupados por Handler en un rango de fechas
      *
      * @param Request $request

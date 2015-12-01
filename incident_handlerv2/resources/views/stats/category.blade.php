@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Estadísticas de Incidentes por Cliente')
+@section('title', 'Estadísticas de Incidentes por Categoría')
 
 @section('include_up')
 @endsection
@@ -8,26 +8,38 @@
 @section('include_down')
     <script type="text/javascript">
         var options = {
-            chart: {type: 'spline', renderTo: 'chart'},
-            xAxis: {
-                type: 'datetime',
-                dateTimeLabelFormats: {day: '%d/%b',},
-                title: {text: 'Fecha'}
-            },
-            yAxis: {title: {text: 'Incidentes por día'}, min: 0},
-            tooltip: {
-                headerFormat: '<b>{point.x:%d/%b}</b><br/>',
-                pointFormat: '{point.y} Incidentes'
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                renderTo: 'chart'
             },
             exporting: {sourceWidth: 1800, sourceHeight: 500},
-            plotOptions: {spline: {marker: {enabled: true}}},
-            series: []
+            tooltip: {
+                pointFormat: '{series.name}: {point.y} <b>({point.percentage:.2f}%)</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br/>{point.y} Incidentes <b>({point.percentage:.2f}%)</b>'
+                    }
+                }
+            },
+            series: [{
+                name: 'Incidentes',
+                colorByPoint: true,
+                data: []
+            }]
         };
 
         var Graph = {
             make: function () {
                 $.ajax({
-                    url: '{{route('stats.customer.post')}}',
+                    url: '{{route('stats.category.post')}}',
                     method: 'post',
                     dataType: 'json',
                     data: {
@@ -40,11 +52,10 @@
                         'X-CSRF-TOKEN': '{{csrf_token()}}'
                     },
                     success: function (response) {
+                        console.log(response);
 
                         var div = $("#chart");
                         div.attr('hidden', false);
-                        var data = [];
-                        options.series = [];
 
                         var sensors = '';
 
@@ -55,21 +66,19 @@
                         }
 
                         options.subtitle = {text: $('#customer_id option:selected').text() + sensors};
-                        options.title = {text: 'Incidentes registrados del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
+                        options.title = {text: 'Incidentes por Categoría del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
 
-                        data = [];
+                        var data = [];
                         $.each(response, function (index, item) {
-                            data.push([Date.parse(item.date), item.count]);
+                            console.log(item.name + ':' + item.count);
+                            data.push([item.name, item.count]);
                         });
 
-                        options.series.push({name: 'Incidentes', data: data});
+                        options.series[0].data = data;
 
                         var chart = new Highcharts.Chart(options);
 
                         $('#submit').attr('disabled', false);
-                    },
-                    fail: function (response) {
-                        console.log(response);
                     }
                 });
             }
@@ -97,7 +106,7 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Estadísticas de Incidentes por Cliente</h3>
+            <h3 class="panel-title">Estadísticas de Incidentes por Categoría</h3>
         </div>
         <div class="panel-body">
             <div class="row">

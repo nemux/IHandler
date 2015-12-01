@@ -226,6 +226,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/handler', ['as' => 'stats.handler', 'uses' => 'StatisticsController@handlerIncidents']);
         Route::post('/handler', ['as' => 'stats.handler.post', 'uses' => 'StatisticsController@handlerIncidentsPost']);
+
+        Route::get('/category', ['as' => 'stats.category', 'uses' => 'StatisticsController@categoryIncidents']);
+        Route::post('/category', ['as' => 'stats.category.post', 'uses' => 'StatisticsController@categoryIncidentsPost']);
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {

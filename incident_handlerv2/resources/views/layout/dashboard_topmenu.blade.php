@@ -104,7 +104,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.category')}}">
                                     <i class="fa fa-pie-chart"></i>
                                     <span class="title">Incidentes por Categoría</span>
                                 </a>
