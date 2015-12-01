@@ -50,7 +50,7 @@ class MigrateVersion extends Command
      *
      * @var string
      */
-    protected $signature = 'version:migrate {--perform= : Define un método específico para ejecutar}';
+    protected $signature = 'version:migrate {--perform= : Define un método específico para ejecutar} {--table= : Especifica a qué tabla se le hará la operación}';
 
     /**
      * The console command description.
@@ -75,13 +75,15 @@ class MigrateVersion extends Command
      */
     public function handle()
     {
-        if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
-            if ($this->option('perform')) {
-                $this->info('Ejecutando ' . $this->option('perform'));
-                if ($this->option('perform') == 'references') {
-                    $this->references();
-                }
-            } else {
+        if ($this->option('perform')) {
+            $this->info('Ejecutando ' . $this->option('perform'));
+            if ($this->option('perform') == 'references') {
+                $this->references();
+            } else if ($this->option('perform') == 'update' && $this->option('table') == 'incident_signature') {
+                $this->signatures();
+            }
+        } else {
+            if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
                 $this->info('Ejecutando todas las instrucciones');
                 $this->dropAll();
                 $this->migrate();
@@ -92,9 +94,8 @@ class MigrateVersion extends Command
                 $this->surveillances();
                 $this->incidents();
             }
-
         }
-        $this->info("Terminado [" . date('d/m/Y H:i:s') . "]");
+        $this->info("\nTerminado [" . date('d/m/Y H:i:s') . "]");
     }
 
     private function references()
@@ -115,7 +116,6 @@ class MigrateVersion extends Command
 
             $bar->advance();
         }
-
         $bar->finish();
 
     }
@@ -548,6 +548,54 @@ class MigrateVersion extends Command
         }
     }
 
+    /**
+     * Migra los componentes de las firmas y reglas
+     */
+    private function signatures()
+    {
+        $incidents = $this->query('SELECT * FROM incidents');
+        $bar = $this->output->createProgressBar(count($incidents));
+        foreach ($incidents as $index => &$incident) {
+            try {
+                $this->signaturesForIncident($incident);
+            } catch (\Exception $e) {
+                $this->showError($e, 'incidente', $incident->id);
+            }
+
+            $bar->advance();
+        }
+        $bar->finish();
+    }
+
+    private function signaturesForIncident($o)
+    {
+        //IncidentAttackSignature
+        $oldSignatures = $this->query('SELECT * FROM incidents_signatures WHERE incidents_id=' . $o->id);
+
+        foreach ($oldSignatures as &$oS) {
+            $nS = new IncidentAttackSignature();
+            $this->modelTimestamps($nS, $oS);
+            $nS->incident_id = $oS->incidents_id;
+            $nS->attack_signature_id = $oS->signatures_id;
+            $nS->user_id = $o->incident_handler_id;
+            $nS->save();
+        }
+
+        //IncidentsRules (Para la versión anterior a la de las Signatures)
+        $oldRules = $this->query('SELECT * FROM incidents_rules WHERE incidents_id=' . $o->id);
+        foreach ($oldRules as &$oR) {
+            $rule = $this->query('SELECT * FROM rules WHERE id=' . $oR->rules_id . ' LIMIT 1');
+            $signature = AttackSignature::whereRaw('name=\'' . trim($rule[0]->message) . '\'')->first();
+
+            $nS = new IncidentAttackSignature();
+            $this->modelTimestamps($nS, $oR);
+            $nS->incident_id = $oR->incidents_id;
+            $nS->attack_signature_id = $signature->id;
+            $nS->user_id = $o->incident_handler_id;
+            $nS->save();
+        }
+    }
+
     private function incidents()
     {
         if (Incident::count() == 0) {
@@ -558,10 +606,7 @@ class MigrateVersion extends Command
                 try {
                     $n = $index + 1;
                     $this->info("----($n/$total) Migrando incidente con ID $o->id");
-                    //TODO remove for release
-//                if ($index == 1) {
-//                    break;
-//                }
+
                     $incident = new Incident();
                     $this->modelTimestamps($incident, $o);
                     $incident->id = $o->id;
@@ -800,30 +845,7 @@ class MigrateVersion extends Command
                         $nS->save();
                     }
 
-                    //IncidentAttackSignature
-                    $oldSignatures = $this->query('SELECT * FROM incidents_signatures WHERE incidents_id=' . $o->id);
-                    foreach ($oldSignatures as &$oS) {
-                        $nS = new IncidentAttackSignature();
-                        $this->modelTimestamps($nS, $oS);
-                        $nS->incident_id = $oS->incidents_id;
-                        $nS->attack_signature_id = $oS->signatures_id;
-                        $nS->user_id = $o->incident_handler_id;
-                        $nS->save();
-                    }
-
-                    //IncidentsRules (Para la versión anterior a la de las Signatures)
-                    $oldRules = $this->query('SELECT * FROM incidents_rules WHERE incidents_id=' . $o->id);
-                    foreach ($oldRules as &$oR) {
-                        $rule = $this->query('SELECT * FROM rules WHERE id=' . $oR->rules_id . ' LIMIT 1');
-                        $signature = AttackSignature::whereRaw('name=\'' . trim($rule[0]->message) . '\'')->first();
-
-                        $nS = new IncidentAttackSignature();
-                        $this->modelTimestamps($nS, $oS);
-                        $nS->incident_id = $oR->incidents_id;
-                        $nS->attack_signature_id = $signature->id;
-                        $nS->user_id = $o->incident_handler_id;
-                        $nS->save();
-                    }
+                    $this->signaturesForIncident($o);
 
                     //IncidentHistory
                     $descriptions = $this->query('SELECT * FROM incident_descriptions WHERE incidents_id=' . $o->id);
