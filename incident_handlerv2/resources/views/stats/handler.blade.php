@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Estadísticas de Incidentes por Cliente')
+@section('title', 'Estadísticas de Incidentes por Handler')
 
 @section('include_up')
 @endsection
@@ -12,12 +12,19 @@
             xAxis: {
                 type: 'datetime',
                 dateTimeLabelFormats: {day: '%d/%b',},
-                title: {text: 'Fecha'}
+                title: {text: 'Fecha'},
+                labels: {
+//                    rotation: -45
+//                    style: {
+//                        fontSize: '13px',
+//                        fontFamily: 'Verdana, sans-serif'
+//                    }
+                }
             },
             yAxis: {title: {text: 'Incidentes por día'}, min: 0},
             tooltip: {
                 headerFormat: '<b>{point.x:%d/%b}</b><br/>',
-                pointFormat: '{point.y} Incidentes'
+                pointFormat: '{point.y} Incidentes reportados por <b>{series.name}</b>'
             },
             exporting: {sourceWidth: 1800, sourceHeight: 500},
             plotOptions: {spline: {marker: {enabled: true}}},
@@ -53,7 +60,7 @@
                         $("#sensor_id").select2("val", "").empty().attr('disabled', false);
 
                         if (result.status === true) {
-                            $('#sensor_id').append($('<option>', {}));
+                            $('#sensor_id').append($('<option>'));
                             $.each(result.sensors, function (i, item) {
                                 $('#sensor_id').append($('<option>', {
                                     value: item.id,
@@ -80,7 +87,7 @@
             $('#submit').click(function (e) {
                 $('#submit').attr('disabled', true);
                 $.ajax({
-                    url: '{{route('stats.customer.post')}}',
+                    url: '{{route('stats.handler.post')}}',
                     method: 'post',
                     dataType: 'json',
                     data: {
@@ -93,28 +100,25 @@
                         'X-CSRF-TOKEN': '{{csrf_token()}}'
                     },
                     success: function (response) {
+                        console.log(response);
+
                         var div = $("#chart");
                         div.attr('hidden', false);
                         var data = [];
                         options.series = [];
 
-                        var sensors = '';
+                        options.subtitle = {text: $('#customer_id option:selected').text()};
+                        options.title = {text: 'Incidentes por Handler registrados del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
 
-                        var optSensors = $('#sensor_id option:selected');
 
-                        if (optSensors.text() != '') {
-                            sensors = '<br/>Sensor: ' + optSensors.text();
-                        }
+                        $.each(response, function (index, handler) {
+                            data = [];
+                            $.each(handler.data, function (index, item) {
+                                data.push([Date.parse(item.date), item.count]);
+                            });
 
-                        options.subtitle = {text: $('#customer_id option:selected').text() + sensors};
-                        options.title = {text: 'Incidentes registrados del ' + $('#from_date').val() + ' al ' + $('#to_date').val()};
-
-                        data = [];
-                        $.each(response, function (index, item) {
-                            data.push([Date.parse(item.date), item.count]);
+                            options.series.push({name: handler.name, data: data});
                         });
-
-                        options.series.push({name: 'Incidentes', data: data});
 
                         var chart = new Highcharts.Chart(options);
 

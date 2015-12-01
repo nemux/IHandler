@@ -1,8 +1,6 @@
-
 <?php
 
 $days_between = floor((strtotime($end)-strtotime($start))/(60*60*24));;
-
 
 ?>
 

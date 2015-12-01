@@ -217,10 +217,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
     Route::group(['prefix' => 'stats', 'middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'stats.index', 'uses' => 'StatisticsController@index']);
+
         Route::get('/customer', ['as' => 'stats.customer', 'uses' => 'StatisticsController@customer']);
         Route::post('/customer', ['as' => 'stats.customer.post', 'uses' => 'StatisticsController@customerIncidents']);
+
         Route::get('/customer/ip', ['as' => 'stats.customer.list.ip', 'uses' => 'StatisticsController@customerIpList']);
         Route::post('/customer/ip', ['as' => 'stats.customer.list.ip.post', 'uses' => 'StatisticsController@customerIpListPost']);
+
+        Route::get('/handler', ['as' => 'stats.handler', 'uses' => 'StatisticsController@handlerIncidents']);
+        Route::post('/handler', ['as' => 'stats.handler.post', 'uses' => 'StatisticsController@handlerIncidentsPost']);
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {

@@ -98,7 +98,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.handler')}}">
                                     <i class="fa fa-area-chart"></i>
                                     <span class="title">Incidentes reportados por Handler</span>
                                 </a>
