@@ -73,12 +73,12 @@
                             <span class="title">Agregar Incidente</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="l2" href="{{route('stats.index')}}">
-                            <i class="fa fa-line-chart"></i>
-                            <span class="title">Estadísticas</span>
-                        </a>
-                    </li>
+                    {{--<li>--}}
+                    {{--<a class="l2" href="{{route('stats.index')}}">--}}
+                    {{--<i class="fa fa-line-chart"></i>--}}
+                    {{--<span class="title">Estadísticas</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
                     <li>
                         <a class="l2">
                             <i class="fa fa-line-chart"></i>
@@ -92,9 +92,15 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="{{route('stats.customer.list.ip')}}">
+                                <a class="l3" href="{{route('stats.eventside')}}">
                                     <i class="fa fa-list-ol"></i>
-                                    <span class="title">Direcciones IP por Cliente (en blacklist)</span>
+                                    <span class="title">Direcciones IP (Origen/Destino)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('stats.machinetype')}}">
+                                    <i class="fa fa-list-ol"></i>
+                                    <span class="title">Direcciones IP (Interna/Externa)</span>
                                 </a>
                             </li>
                             <li>
@@ -110,21 +116,27 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.criticity')}}">
                                     <i class="fa fa-pie-chart"></i>
                                     <span class="title">Incidentes por Criticidad</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.attacktype')}}">
                                     <i class="fa fa-pie-chart"></i>
                                     <span class="title">Incidentes por Tipo de Ataque</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="l3" href="">
+                                <a class="l3" href="{{route('stats.sensor')}}">
                                     <i class="fa fa-pie-chart"></i>
                                     <span class="title">Incidentes por Sensor</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('stats.attackflow')}}">
+                                    <i class="fa fa-pie-chart"></i>
+                                    <span class="title">Incidentes por Flujo de Ataque</span>
                                 </a>
                             </li>
                         </ul>
@@ -331,7 +343,7 @@
 <script src="/xenon/assets/js/xenon-toggles.js" id="script-resource-6">
 </script>
 @yield('include_down')
-<!-- JavaScripts initializations and stuff -->
+        <!-- JavaScripts initializations and stuff -->
 <script src="/xenon/assets/js/xenon-custom.js" id="script-resource-7">
 </script>
 </body>

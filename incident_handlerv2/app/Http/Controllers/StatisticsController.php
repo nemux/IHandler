@@ -43,9 +43,19 @@ class StatisticsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function customerIpList()
+    public function eventsideIncidents()
     {
-        return view('stats.ip');
+        return view('stats.eventside');
+    }
+
+    /**
+     * Devuelve la vista de Lista de IPs
+     *
+     * @return \Illuminate\View\View
+     */
+    public function machinetypeIncidents()
+    {
+        return view('stats.machinetype');
     }
 
     /**
@@ -69,6 +79,12 @@ class StatisticsController extends Controller
     }
 
 
+    /**
+     * Devuelve un objeto Json con la lista de Ćategorías de ataque y la cantidad de incidentes reportados en un rango de fechas de un cliente con o sin identificar por un sensor
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function categoryIncidentsPost(Request $request)
     {
         \Log::info($request->except('_token'));
@@ -83,6 +99,178 @@ class StatisticsController extends Controller
             ->leftJoin('incident_attack_category', 'incident_attack_category.incident_id', '=', 'incident.id')
             ->leftJoin('attack_category', 'attack_category.id', '=', 'incident_attack_category.attack_category_id')
             ->groupBy('attack_category.name');
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+            if ($sensor_id != '') {
+                $query->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                    ->where('incident_customer_sensor.customer_sensor_id', '=', $sensor_id);
+            }
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * Devuelve la vista de Estadísticas de Incidentes por Criticidad
+     *
+     * @return \Illuminate\View\View
+     */
+    public function criticityIncidents()
+    {
+        return view('stats.criticity');
+    }
+
+
+    /**
+     * Devuelve un objeto Json con la lista de Criticidades de Incidentes y la cantidad de incidentes reportados en un rango de fechas de un cliente con o sin identificar por un sensor
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function criticityIncidentsPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $sensor_id = $request->get('sensor_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+
+        $query = Incident::select(\DB::raw('criticity.name as name, count(criticity.name) as count'))
+            ->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
+            ->groupBy('criticity.name');
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+            if ($sensor_id != '') {
+                $query->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                    ->where('incident_customer_sensor.customer_sensor_id', '=', $sensor_id);
+            }
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * Devuelve la vista de Estadísticas de Incidentes por Criticidad
+     *
+     * @return \Illuminate\View\View
+     */
+    public function attacktypeIncidents()
+    {
+        return view('stats.attacktype');
+    }
+
+
+    /**
+     * Devuelve un objeto Json con la lista de Tipos de Ataque de Incidentes y la cantidad de incidentes reportados en un rango de fechas de un cliente con o sin identificar por un sensor
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function attacktypeIncidentsPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $sensor_id = $request->get('sensor_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+
+        $query = Incident::select(\DB::raw('attack_type.name as name, count(attack_type.name) as count'))
+            ->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->leftJoin('attack_type', 'attack_type.id', '=', 'incident.attack_type_id')
+            ->groupBy('attack_type.name');
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+            if ($sensor_id != '') {
+                $query->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+                    ->where('incident_customer_sensor.customer_sensor_id', '=', $sensor_id);
+            }
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * Devuelve la vista de Estadísticas de Incidentes por Criticidad
+     *
+     * @return \Illuminate\View\View
+     */
+    public function sensorIncidents()
+    {
+        return view('stats.sensor');
+    }
+
+
+    /**
+     * Devuelve un objeto Json con la lista de Sensores de los Incidentes y la cantidad de incidentes reportados en un rango de fechas de un cliente con o sin identificar por un sensor
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sensorIncidentsPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+
+        $query = Incident::select(\DB::raw('customer_sensor.name as name, count(customer_sensor.name) as count'))
+            ->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->leftJoin('incident_customer_sensor', 'incident_customer_sensor.incident_id', '=', 'incident.id')
+            ->leftJoin('customer_sensor', 'customer_sensor.id', '=', 'incident_customer_sensor.customer_sensor_id')
+            ->groupBy('customer_sensor.name');
+
+        if ($customer_id != '') {
+            $query->where('incident.customer_id', '=', $customer_id);
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * Devuelve la vista de Estadísticas de Incidentes por Criticidad
+     *
+     * @return \Illuminate\View\View
+     */
+    public function attackflowIncidents()
+    {
+        return view('stats.attackflow');
+    }
+
+
+    /**
+     * Devuelve un objeto Json con la lista de Flujos de Ataque y la cantidad de incidentes reportados en un rango de fechas de un cliente con o sin identificar por un sensor
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function attackflowIncidentsPost(Request $request)
+    {
+        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $sensor_id = $request->get('sensor_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+
+        $query = Incident::select(\DB::raw('attack_flow.name as name, count(attack_flow.name) as count'))
+            ->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->leftJoin('attack_flow', 'attack_flow.id', '=', 'incident.attack_flow_id')
+            ->groupBy('attack_flow.name');
 
         if ($customer_id != '') {
             $query->where('incident.customer_id', '=', $customer_id);
@@ -133,24 +321,75 @@ class StatisticsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function customerIpListPost(Request $request)
+    public function eventsideIncidentsPost(Request $request)
     {
 //        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
         $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
-        $side = $request->get('side');
+        $eventside = $request->get('eventside');
         $top = $request->get('top');
         $blacklist = $request->get('blacklist');
 
         $query = Incident::select(\DB::raw('asset.ipv4 as ip, count(asset.ipv4) as count'))
             ->leftJoin('incident_event', 'incident_event.incident_id', '=', 'incident.id');
 
-        if ($side == 'source')
+        if ($eventside == 'source')
             $query->leftJoin('machine', 'machine.id', '=', 'incident_event.source_machine_id');
-        else if ($side == 'target')
+        else if ($eventside == 'target')
             $query->leftJoin('machine', 'machine.id', '=', 'incident_event.target_machine_id');
+        else
+            $query->leftJoin('machine', function ($join) {
+                $join->on('machine.id', '=', 'incident_event.source_machine_id')->orOn('machine.id', '=', 'incident_event.target_machine_id');
+            });
+
+        $query->leftJoin('asset', 'asset.id', '=', 'machine.asset_id');
+
+        if ($customer_id != '')
+            $query->where('incident.customer_id', '=', $customer_id);
+
+        $query->whereBetween('incident.detection_time', [$from_date, $to_date])
+            ->where('incident_event.deleted_at', '=', null)
+            ->where('asset.ipv4', '!=', '')
+            ->where('machine.deleted_at', '=', null)
+            ->groupBy('asset.ipv4')
+            ->orderBy('count', 'desc')
+            ->limit($top);
+
+        if ($blacklist == 'true') {
+            $query->where('machine.blacklist', '=', 1);
+        } else {
+            $query->where('machine.blacklist', '=', 0);
+        }
+
+        $incidents = $query->get();
+
+        return \Response::json($incidents);
+    }
+
+    /**
+     * Devuelve un set de datos Json con la información para generar la gráfica de {n} IPs de un cliente, origen o destino, en blacklist o no, en un rango de fechas
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function machinetypeIncidentsPost(Request $request)
+    {
+//        \Log::info($request->except('_token'));
+
+        $customer_id = $request->get('customer_id');
+        $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
+        $to_date = date('Y-m-d 23:59:59', strtotime(str_replace('/', '-', $request->get('to_date'))));
+        $machinetype = $request->get('machinetype');
+        $top = $request->get('top');
+        $blacklist = $request->get('blacklist');
+
+        $query = Incident::select(\DB::raw('asset.ipv4 as ip, count(asset.ipv4) as count'))
+            ->leftJoin('incident_event', 'incident_event.incident_id', '=', 'incident.id');
+
+        $query->leftJoin('machine', function ($join) {
+            $join->on('machine.id', '=', 'incident_event.source_machine_id')->orOn('machine.id', '=', 'incident_event.target_machine_id');
+        });
 
         $query->leftJoin('asset', 'asset.id', '=', 'machine.asset_id');
 
@@ -164,6 +403,10 @@ class StatisticsController extends Controller
             ->groupBy('asset.ipv4')
             ->orderBy('count', 'desc')
             ->limit($top);
+
+        if ($machinetype != '') {
+            $query->where('machine.machine_type_id', '=', $machinetype);
+        }
 
         if ($blacklist == 'true') {
             $query->where('machine.blacklist', '=', 1);

@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Lista de IPs por Clientes')
+@section('title', 'Lista de IPs (Origen/Destino)')
 
 @section('include_up')
 @endsection
@@ -40,27 +40,11 @@
             series: []
         };
 
-        $(document).ready(function () {
-            $("#customer_id").select2({
-                placeholder: 'Cliente...',
-                allowClear: true,
-                dropdownAutoWidth: true
-            }).on('select2-open', function () {
-                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-            });
-
-            $("#side").select2({
-                placeholder: 'Lado...',
-                allowClear: true,
-                dropdownAutoWidth: true
-            }).on('select2-open', function () {
-                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
-            });
-
-            $('#submit').click(function (e) {
+        var Graph = {
+            make: function () {
                 $('#submit').attr('disabled', true);
                 $.ajax({
-                    url: '{{route('stats.customer.list.ip.post')}}',
+                    url: '{{route('stats.eventside.post')}}',
                     method: 'post',
                     dataType: 'json',
                     data: {
@@ -68,7 +52,7 @@
                         to_date: $('#to_date').val(),
                         customer_id: $('#customer_id').val(),
                         top: $('#top').val(),
-                        side: $('#side').val(),
+                        eventside: $('#eventside').val(),
                         blacklist: $('#blacklist').prop('checked')
                     },
                     headers: {
@@ -103,10 +87,8 @@
                         $('#submit').attr('disabled', false);
                     }
                 });
-            })
-            ;
-        })
-        ;
+            }
+        };
     </script>
     {{--Custom Select Form--}}
     <link rel="stylesheet" href="/xenon/assets/js/select2/select2.css" id="style-resource-2">
@@ -135,44 +117,25 @@
         <div class="panel-body">
             <div class="row">
                 <div class="form-group col-md-1 col-xs-12">
-                    <div class="date-and-time">
-                        <input name="from_date" id="from_date" type="text"
-                               class="form-control datepicker" data-format="dd/mm/yyyy"
-                               data-end-date="{{date('d/m/Y')}}" placeholder="Fecha de Inicio">
-                    </div>
+                    @include('stats.controls._fromdate',['id'=>'from_date'])
                 </div>
                 <div class="form-group col-md-1 col-xs-12">
-                    <div class="date-and-time">
-                        <input name="to_date" id="to_date" type="text"
-                               class="form-control datepicker" data-format="dd/mm/yyyy"
-                               data-end-date="{{date('d/m/Y')}}" placeholder="Fecha Final">
-                    </div>
+                    @include('stats.controls._todate',['id'=>'to_date'])
                 </div>
                 <div class="form-group col-md-1 col-xs-12">
-                    <input type="text" class="form-control" id="top" name="top" placeholder="Top..." value="10"/>
+                    @include('stats.controls._itemscount',['id'=>'top'])
                 </div>
                 <div class="form-group col-md-2 col-xs-12">
-                    <select class="form-control" id="side" name="side">
-                        <option></option>
-                        <option value="source">Origen</option>
-                        <option value="target">Destino</option>
-                    </select>
+                    @include('stats.controls._eventside',['id'=>'eventside'])
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    <select class="form-control" id="customer_id" name="customer_id">
-                        <option></option>
-                        @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
-                            <option value="{{$customer->id}}">{{$customer->name}}</option>
-                        @endforeach
-                    </select>
+                    @include('stats.controls._customer',['id'=>'customer_id'])
                 </div>
                 <div class="form-group col-md-1 col-xs-12">
-                    <label class="control-label">Blacklist
-                        <input type="checkbox" id="blacklist" name="blacklist">
-                    </label>
+                    @include('stats.controls._blacklist',['id'=>'blacklist'])
                 </div>
                 <div class="form-group col-md-2 col-xs-12">
-                    <input type="button" class="form-control btn btn-success" value="Generar gráfica" id="submit">
+                    @include('stats.controls._submit',['id'=>'submit'])
                 </div>
             </div>
             <div class="row">

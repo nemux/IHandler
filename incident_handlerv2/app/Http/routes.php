@@ -221,14 +221,29 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/customer', ['as' => 'stats.customer', 'uses' => 'StatisticsController@customer']);
         Route::post('/customer', ['as' => 'stats.customer.post', 'uses' => 'StatisticsController@customerIncidents']);
 
-        Route::get('/customer/ip', ['as' => 'stats.customer.list.ip', 'uses' => 'StatisticsController@customerIpList']);
-        Route::post('/customer/ip', ['as' => 'stats.customer.list.ip.post', 'uses' => 'StatisticsController@customerIpListPost']);
+        Route::get('/eventside', ['as' => 'stats.eventside', 'uses' => 'StatisticsController@eventsideIncidents']);
+        Route::post('/eventside', ['as' => 'stats.eventside.post', 'uses' => 'StatisticsController@eventsideIncidentsPost']);
 
         Route::get('/handler', ['as' => 'stats.handler', 'uses' => 'StatisticsController@handlerIncidents']);
         Route::post('/handler', ['as' => 'stats.handler.post', 'uses' => 'StatisticsController@handlerIncidentsPost']);
 
         Route::get('/category', ['as' => 'stats.category', 'uses' => 'StatisticsController@categoryIncidents']);
         Route::post('/category', ['as' => 'stats.category.post', 'uses' => 'StatisticsController@categoryIncidentsPost']);
+
+        Route::get('/criticity', ['as' => 'stats.criticity', 'uses' => 'StatisticsController@criticityIncidents']);
+        Route::post('/criticity', ['as' => 'stats.criticity.post', 'uses' => 'StatisticsController@criticityIncidentsPost']);
+
+        Route::get('/attacktype', ['as' => 'stats.attacktype', 'uses' => 'StatisticsController@attacktypeIncidents']);
+        Route::post('/attacktype', ['as' => 'stats.attacktype.post', 'uses' => 'StatisticsController@attacktypeIncidentsPost']);
+
+        Route::get('/sensor', ['as' => 'stats.sensor', 'uses' => 'StatisticsController@sensorIncidents']);
+        Route::post('/sensor', ['as' => 'stats.sensor.post', 'uses' => 'StatisticsController@sensorIncidentsPost']);
+
+        Route::get('/attackflow', ['as' => 'stats.attackflow', 'uses' => 'StatisticsController@attackflowIncidents']);
+        Route::post('/attackflow', ['as' => 'stats.attackflow.post', 'uses' => 'StatisticsController@attackflowIncidentsPost']);
+
+        Route::get('/machinetype', ['as' => 'stats.machinetype', 'uses' => 'StatisticsController@machinetypeIncidents']);
+        Route::post('/machinetype', ['as' => 'stats.machinetype.post', 'uses' => 'StatisticsController@machinetypeIncidentsPost']);
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
