@@ -122,7 +122,7 @@ class TaskController extends Controller
             'subtitle' => $subtitle,
             'body' => $body,
         ),
-            function ($message) use ($incident, $subject){//, $images) {
+            function ($message) use ($incident, $subject) {//, $images) {
                 $log = new Log\Logger();
                 $temp_mails = str_replace(array(",", ";"), ",", $incident->customer->mail);
                 $mails = explode(",", $temp_mails);
