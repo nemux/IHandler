@@ -1,6 +1,7 @@
 <script>
     function onClickDelete(type, id) {
         //Cambia las etiquetas que se requieren para personalizarlo con el módulo en cuestión
+        //TODO mejorar performance en las consultas de jQuery
         $('#modalConfirmDelete .modal-title > b').text(id);
         $('#modalConfirmDelete .modal-title > span').text(type.toLowerCase());
         $('#modalConfirmDelete .modal-body > span').text(type.toLowerCase());

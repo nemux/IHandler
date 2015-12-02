@@ -45,7 +45,7 @@
 <body>
 <div class="container">
     <div class="content">
-        <div class="title">No se encontró la ruta.</div>
+        <div class="title">{{($exception->getMessage()!='')?$exception->getMessage():'No se encontro la ruta'}}</div>
         <a class="sub-title" href="javascript:{window.history.back();}">Regresar...</a>
     </div>
 </div>

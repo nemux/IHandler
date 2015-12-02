@@ -1,14 +1,46 @@
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $("#customer-sensors-table").dataTable({
-            aoColumns: [
-                null,
-                null,
-                null,
-                null,
-                null
-            ],
-        });
+    var sensor_tableClassName = '{{$customer->otrs_customer_id}} - Sensores';
+    var sensor_datatableOptions = {
+        dom: "<'row'<'col-sm-5'B><'col-sm-7'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: [
+            {
+                text: 'Copiar Tabla',
+                extend: 'copyHtml5'
+            }, {
+                extend: 'collection',
+                text: 'Exportar a...',
+                buttons: [{
+                    text: 'CSV',
+                    extend: 'csvHtml5',
+                    title: sensor_tableClassName
+                }, {
+                    text: 'PDF',
+                    extend: 'pdfHtml5',
+                    title: sensor_tableClassName
+                }]
+            }, {
+                text: 'Imprimir',
+                extend: 'print',
+                title: sensor_tableClassName
+            }
+        ],
+        language: {
+            buttons: {
+                pageLength: {
+                    _: 'Mostrar %d ' + sensor_tableClassName,
+                    '-1': 'Todos'
+                }
+            },
+            infoEmpty: 'No hay registros para mostrar',
+            zeroRecords: 'No hay registros para mostrar',
+            info: 'Mostrando del _START_ al _END_ <b>(_TOTAL_ registros)</b>',
+            search: 'Buscar: ',
+            infoFiltered: ' - Filtrado de <b>_MAX_</b> registros en total'
+        },
+        sorting: [[0, 'asc']]
+    };
+    $(document).ready(function ($) {
+        $("#customer-sensors-table").DataTable(sensor_datatableOptions);
     });
 
 

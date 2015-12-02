@@ -2,12 +2,6 @@
 
 @section('title','Editar la información del activo: '.$asset->asset->domain_name)
 
-@section('include_up')
-@endsection
-
-@section('include_down')
-@endsection
-
 @section('dashboard_content')
     <section class="">
         {!! Form::model($asset,['class'=>'form-horizontal','role'=>'form']) !!}

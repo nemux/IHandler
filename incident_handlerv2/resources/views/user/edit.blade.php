@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 <a href="javascript:"
-                                   onclick="jQuery('#modal-change-password').modal('show', {backdrop: 'fade'});"
+                                   onclick="$('#modal-change-password').modal('show', {backdrop: 'fade'});"
                                    class="btn btn-blue btn-single">Cambiar contraseña</a>
                             </div>
                         </div>
