@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Psy\Util\Json;
 
-/**
- * Class History
- * @package App\Models\Incident
- */
 class History extends Model
 {
     use SoftDeletes;

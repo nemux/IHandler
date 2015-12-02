@@ -80,3 +80,11 @@
 .date-and-time .form-control.datepicker {
     width: 100%;
 }
+
+.cut-title {
+    max-width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: normal;
+}

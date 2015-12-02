@@ -24,7 +24,7 @@ class SurveillanceController extends Controller
      */
     public function index()
     {
-        $cases = SurveillanceCase::orderBy('id', 'desc')->get();
+        $cases = SurveillanceCase::orderBy('id', 'desc')->paginate(10);
 
         return view('surveillance.index', compact('cases'));
     }

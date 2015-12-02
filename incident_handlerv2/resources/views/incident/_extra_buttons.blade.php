@@ -115,13 +115,13 @@
     @endif
 </div>
 <div id="other-buttons">
-    @if($case->ticket->ticket_status_id===1)
+    @if(isset($case->ticket) && $case->ticket->ticket_status_id===1)
         <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif($case->ticket->ticket_status_id===2)
+    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===2)
         <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif($case->ticket->ticket_status_id===3)
+    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===3)
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
     @endif
 </div>

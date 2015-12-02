@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="/xenon/assets/css/xenon-skins.css" id="style-resource-8">
     <link rel="stylesheet" href="/xenon/assets/css/custom.css" id="style-resource-9">
     <link rel="stylesheet" href="/custom/assets/css/custom.css">
-    <script src="/xenon/assets/js/jquery-1.11.1.min.js"></script>
+    {{--<script src="/xenon/assets/js/jquery-1.11.1.min.js"></script>--}}
+    <script type="text/javascript" src="/custom/assets/js/DataTables/jQuery-2.1.4/jquery-2.1.4.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -73,12 +74,6 @@
                             <span class="title">Agregar Incidente</span>
                         </a>
                     </li>
-                    {{--<li>--}}
-                    {{--<a class="l2" href="{{route('stats.index')}}">--}}
-                    {{--<i class="fa fa-line-chart"></i>--}}
-                    {{--<span class="title">Estadísticas</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
                     <li>
                         <a class="l2">
                             <i class="fa fa-line-chart"></i>
@@ -275,7 +270,7 @@
 <div class="page-container">
     <div class="main-content">
         <div class="jumbotron">
-            <h1>@yield('title')</h1>
+            <h2>@yield('title')</h2>
 
             <p>
                 @yield('description')
@@ -307,25 +302,6 @@
         </div>
 
         @yield('dashboard_content')
-                <!-- Main Footer -->
-        {{--<footer class="main-footer sticky footer-type-1">--}}
-        {{--<div class="footer-inner">--}}
-        {{--<div class="footer-text">--}}
-        {{--&copy; 2015--}}
-        {{--<strong>Xenon</strong>--}}
-        {{--theme by <a href="http://laborator.co" target="_blank">Laborator</a> - <a--}}
-        {{--href="http://themeforest.net/item/xenon-bootstrap-admin-theme/9059661?ref=Laborator"--}}
-        {{--target="_blank">Purchase for only <strong>24$</strong>--}}
-        {{--</a>--}}
-        {{--</div>--}}
-        {{--<div class="go-up">--}}
-        {{--<a href="#" rel="go-top">--}}
-        {{--<i class="fa-angle-up">--}}
-        {{--</i>--}}
-        {{--</a>--}}
-        {{--</div>--}}
-        {{--</div>--}}
-        {{--</footer>--}}
     </div>
 </div>
 <!-- TS144423527817774: Xenon - Boostrap Admin Template created by Laborator / Please buy this theme and support the updates -->

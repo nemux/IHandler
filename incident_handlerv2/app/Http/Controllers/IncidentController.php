@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use App\Library\Otrs\OtrsClient;
 use App\Models\Evidence\Evidence;
 use App\Models\Evidence\EvidenceType;
 use App\Models\Incident\Annex;
@@ -16,8 +18,6 @@ use App\Models\Incident\Note;
 use App\Models\Person\PersonContact;
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Library\Otrs\OtrsClient;
 use Psy\Util\Json;
 
 class IncidentController extends Controller
@@ -32,7 +32,8 @@ class IncidentController extends Controller
      */
     public function index()
     {
-//        $incidents = Incident::all();
+        $incidents = Incident::orderBy('id', 'desc')->paginate(10);
+
         return view('incident.index', compact('incidents'));
     }
 
