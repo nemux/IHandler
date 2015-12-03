@@ -62,13 +62,13 @@
         @foreach($incidents as $index=>$incident)
             <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
                 <td>{{$incident->id}}</td>
-                <td>{{isset($incident->ticket->internal_number)?$incident->ticket->internal_number:'Por asignar...'}}</td>
+                <td>{{isset($incident->internal_number)?$incident->internal_number:'Por asignar...'}}</td>
                 <td>{{$incident->title}}</td>
                 <td>{!! $incident->signatures_list() !!}</td>
                 <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
                 <td>{!! $incident->sensors_list() !!}</td>
-                <td>{{isset($incident->ticket)?$incident->ticket->status->name:'Por asignar...'}}</td>
-                <td>{{$incident->user->username}}</td>
+                <td>{{isset($incident->status)?$incident->status:'Por asignar...'}}</td>
+                <td>{{$incident->username}}</td>
             </tr>
         @endforeach
     @endif

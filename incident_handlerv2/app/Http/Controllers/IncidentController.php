@@ -32,7 +32,18 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = Incident::orderBy('id', 'desc')->paginate(10);
+        $query = Incident::select('incident.id',
+            'ticket.internal_number',
+            'incident.title',
+            'user.username',
+            'incident.detection_time',
+            'ticket_status.name as status');
+
+        $query->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
+            ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
+            ->leftJoin('user', 'user.id', '=', 'incident.user_id');
+
+        $incidents = $query->orderBy('id', 'desc')->paginate(10);
 
         return view('incident.index', compact('incidents'));
     }
