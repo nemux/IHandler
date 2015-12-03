@@ -42,7 +42,7 @@ class SearchEngineController extends Controller
             foreach ($stringFields as $index => $field) {
                 if ($index == 0)
                     $query->where('incident.title', 'like', "%$search_string%");
-                $query->orWhere($field, 'like', "%$search_string%");
+                $query->orWhere($field, 'ilike', "%$search_string%");
             }
 
             $incidents = $query

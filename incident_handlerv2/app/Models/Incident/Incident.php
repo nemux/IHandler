@@ -22,7 +22,7 @@ class Incident extends Model
 
     protected $table = 'incident';
 
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'detection_time', 'occurrence_time'];
 
     protected static $attributeNames = [
         'title' => 'Título del Incidente',
