@@ -15,6 +15,7 @@
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
 Event::listen('illuminate.query', function ($sql, $bindings) {
+
     foreach ($bindings as $val) {
         $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
     }

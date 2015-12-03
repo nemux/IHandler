@@ -70,7 +70,7 @@
                 <ul>
                     <li>
                         <a class="l2" href="{{route('incident.search')}}">
-                            <i class="fa fa-lupa"></i>
+                            <i class="fa fa-search"></i>
                             <span class="title">Buscador</span>
                         </a>
                     </li>

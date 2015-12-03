@@ -24,32 +24,31 @@ class SearchEngineController extends Controller
 
         $search_type = $request->get('search_type');
 
-        $query = Incident::select('incident.id',
+        $query = Incident::select(
+            'incident.id',
             'ticket.internal_number',
             'incident.title',
             'user.username',
-            'incident.detection_time',
-            'ticket_status.name as status');
+            \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI\') as det_time'),
+            'ticket_status.name as status'
+        );
 
         if ($search_type == 'simple') {
             $search_string = trim($request->get('search_string'));
 
-            $stringFields = [];
-            array_push($stringFields, 'incident.description');
-            array_push($stringFields, 'incident.recommendation');
-            array_push($stringFields, 'incident.reference');
+            $query->whereRaw("incident.tsv @@ plainto_tsquery('pg_catalog.spanish','$search_string')");
 
-            foreach ($stringFields as $index => $field) {
-                if ($index == 0)
-                    $query->where('incident.title', 'like', "%$search_string%");
-                $query->orWhere($field, 'ilike', "%$search_string%");
+            try {
+                $incidents = $query
+                    ->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
+                    ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
+                    ->leftJoin('user', 'user.id', '=', 'incident.user_id')
+                    ->limit(1000)
+                    ->get();
+
+            } catch (\Exception $e) {
+                return \Response::json(['err_code' => $e->getCode(), 'err_message' => $e->getMessage()]);
             }
-
-            $incidents = $query
-                ->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
-                ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
-                ->leftJoin('user', 'user.id', '=', 'incident.user_id')
-                ->get();
 
             return \Response::json(['request' => $search_string, 'items' => $incidents]);
 
@@ -58,5 +57,23 @@ class SearchEngineController extends Controller
         } else {
             return \Response::json(['err_code' => 1, 'err_message' => 'Tipo de búsqueda incorrecta [search_type={simple|advanced}]']);
         }
+    }
+
+    private function escapeChars($string)
+    {
+        $patrones = array();
+        $patrones[0] = '/\?/';
+        $patrones[1] = '/%/';
+        $patrones[2] = '/_/';
+
+        $sustituciones = array();
+        $sustituciones[0] = '\\?';
+        $sustituciones[1] = '\\%';
+        $sustituciones[2] = '\\_';
+
+        $replaced = preg_replace($patrones, $sustituciones, $string);
+        \Log::info($string . ":" . $replaced);
+
+        return $replaced;
     }
 }

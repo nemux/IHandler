@@ -90,7 +90,7 @@
                     dataType: 'json',
                     data: $(this).serialize(),
                     success: function (response) {
-                        var text_footer = $('#search-section').children('.panel-footer');
+                        var text_footer = $('#collapseOne').children('.panel-footer');
                         text_footer.empty();
                         if (response.err_code) {
                             $('<div class="alert alert-danger"><strong>¡Error!</strong> ' + response.err_message + '.</div>').appendTo(text_footer);
@@ -107,7 +107,7 @@
                                     item.internal_number,
                                     item.title,
                                     "Indicadores-" + index,
-                                    item.detection_time,
+                                    item.det_time,
                                     "Sensores-" + index,
                                     item.status,
                                     item.username
@@ -135,22 +135,58 @@
         <div class="panel-heading">
             <h5>Buscador de Incidentes</h5>
         </div>
-        <div class="panel-body">
-            <form id="simple-search">
-                <input id="search_type" type="hidden" value="simple" name="search_type">
+        <div class="panel-body row">
+            <div class="col-sd-12">
+                <div class="panel-group panel-group-joined" id="accordion-test">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion-test" href="#collapseOne"
+                                   class="collapsed">
+                                    Búsqueda Simple
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <form id="simple-search">
+                                    <input id="search_type" type="hidden" value="simple" name="search_type">
 
-                <div class="row">
-                    <div class="col-md-10 col-sm-12 form-group">
-                        <input id="search_string" class="form-control" placeholder="Buscar..." name="search_string">
+                                    <div class="row">
+                                        <div class="col-md-10 col-sm-12 form-group">
+                                            <input id="search_string" class="form-control"
+                                                   placeholder="Buscar... (Título, Descripción, Recomendación ó Referencias)"
+                                                   name="search_string">
+                                        </div>
+                                        <div class="col-md-2 col-sm-12">
+                                            <input type="submit" value="Buscar" class="btn btn-primary" id="submit">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-footer">
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2 col-sm-12">
-                        <input type="submit" value="Buscar" class="btn btn-primary" id="submit">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion-test" href="#collapseTwo">
+                                    Búsqueda Avanzada
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                            </div>
+                            <div class="panel-footer">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="panel-footer">
-
+            </div>
         </div>
     </div>
     <div class="panel panel-default" id="result-section">
