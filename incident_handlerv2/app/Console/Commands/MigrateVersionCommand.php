@@ -41,7 +41,7 @@ use App\Models\User\User;
 use App\Models\User\UserType;
 use Illuminate\Console\Command;
 
-class MigrateVersion extends Command
+class MigrateVersionCommand extends Command
 {
 
     protected $name = 'version';
@@ -50,7 +50,7 @@ class MigrateVersion extends Command
      *
      * @var string
      */
-    protected $signature = 'version:migrate {--perform= : Define un método específico para ejecutar} {--table= : Especifica a qué tabla se le hará la operación}';
+    protected $signature = 'version:migrate {--perform= : Define un método específico para ejecutar} {--table= : Especifica a qué tabla se le hará la operación} {--rollback : Realiza un rollback de la base de datos} ';
 
     /**
      * The console command description.
@@ -85,7 +85,11 @@ class MigrateVersion extends Command
         } else {
             if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
                 $this->info('Ejecutando todas las instrucciones');
-                $this->dropAll();
+                if ($this->option('rollback') != null) {
+                    $this->rollback();
+                } else {
+                    //TODO drops specific table
+                }
                 $this->migrate();
                 $this->catalogs();
                 $this->persons();
@@ -123,7 +127,7 @@ class MigrateVersion extends Command
     /**
      * Hace un rollback de toda la base de datos
      */
-    private function dropAll()
+    private function rollback()
     {
         $this->info("Eliminando la base de datos");
         $code = \Artisan::call('migrate:rollback');
@@ -600,12 +604,15 @@ class MigrateVersion extends Command
     {
         if (Incident::count() == 0) {
             $this->info("Migrando los objetos Incident");
-            $olds = $this->query('SELECT * FROM incidents');
+            $olds = $this->query('SELECT * FROM incidents where created_at > \'2015-10-01 00:00:00\''); //TODO remove date on production
             $total = sizeof($olds);
+
+            $bar = $this->output->createProgressBar(count($olds));
+
             foreach ($olds as $index => &$o) {
                 try {
                     $n = $index + 1;
-                    $this->info("----($n/$total) Migrando incidente con ID $o->id");
+//                    $this->info("----($n/$total) Migrando incidente con ID $o->id");
 
                     $incident = new Incident();
                     $this->modelTimestamps($incident, $o);
@@ -875,11 +882,14 @@ class MigrateVersion extends Command
                 } catch (\Exception $e) {
                     $this->showError($e, 'incidente', $o->id);
                     //return;
+                } finally {
+                    $bar->advance();
                 }
             }
+
+            $bar->finish();
             $this->alterSequence($olds, 'incident');
             $this->alterSequence($this->query('SELECT * FROM tickets'), 'ticket');
-
         }
     }
 
