@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css"
           href="/custom/assets/js/DataTables/Responsive-2.0.0/css/responsive.bootstrap.min.css"/>
     <style>
-        /*#incidents-table > tbody > tr {*/
-        /*cursor: pointer;*/
-        /*}*/
+        #incidents-table > tbody > tr {
+            cursor: pointer;
+        }
     </style>
 @endsection
 
