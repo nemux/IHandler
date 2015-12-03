@@ -20,8 +20,6 @@ class SearchEngineController extends Controller
      */
     public function incidentSearch(Request $request)
     {
-//        \Log::info($request->except('_token'));
-
         $search_type = $request->get('search_type');
 
         $query = Incident::select(
@@ -57,23 +55,5 @@ class SearchEngineController extends Controller
         } else {
             return \Response::json(['err_code' => 1, 'err_message' => 'Tipo de búsqueda incorrecta [search_type={simple|advanced}]']);
         }
-    }
-
-    private function escapeChars($string)
-    {
-        $patrones = array();
-        $patrones[0] = '/\?/';
-        $patrones[1] = '/%/';
-        $patrones[2] = '/_/';
-
-        $sustituciones = array();
-        $sustituciones[0] = '\\?';
-        $sustituciones[1] = '\\%';
-        $sustituciones[2] = '\\_';
-
-        $replaced = preg_replace($patrones, $sustituciones, $string);
-        \Log::info($string . ":" . $replaced);
-
-        return $replaced;
     }
 }
