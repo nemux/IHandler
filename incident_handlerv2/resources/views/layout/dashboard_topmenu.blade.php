@@ -69,6 +69,12 @@
                 </a>
                 <ul>
                     <li>
+                        <a class="l2" href="{{route('incident.search')}}">
+                            <i class="fa fa-lupa"></i>
+                            <span class="title">Buscador</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="l2" href="{{route('incident.create')}}">
                             <i class="fa fa-plus"></i>
                             <span class="title">Agregar Incidente</span>

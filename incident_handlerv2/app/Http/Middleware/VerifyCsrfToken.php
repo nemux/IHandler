@@ -16,6 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
         'dashboard/evidence/upload/incident',
         'dashboard/otrs/customer/synch',
         'dashboard/incident/delete/evidence/*',
-        'dashboard/incident/delete/event/*'
+        'dashboard/incident/delete/event/*',
+        'dashboard/incident/search'
     ];
 }

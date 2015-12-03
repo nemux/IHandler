@@ -67,6 +67,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/annex/create', ['as' => 'incident.annex.store', 'uses' => 'IncidentController@storeAnnex']);
         Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
         Route::delete('/note/delete', ['as' => 'incident.note.delete', 'uses' => 'IncidentController@deleteNote']);
+
+        Route::get('/search', ['as' => 'incident.search', 'uses' => 'SearchEngineController@incident']);
+        Route::post('/search', ['as' => 'incident.search.post', 'uses' => 'SearchEngineController@incidentSearch']);
     });
 
     Route::group(['prefix' => 'user'], function () {
