@@ -311,7 +311,7 @@ class StatisticsController extends Controller
         }
         $incidents = $query->get();
 
-        $response = $this->arrayToDatasource($incidents, 'username', 'date');
+        $response = $this->tableToDatasource($incidents, 'username', 'date');
 
         return \Response::json($response);
     }
@@ -460,13 +460,13 @@ class StatisticsController extends Controller
      * @param $label :Etiqueta que contiene la relación $label=>$count
      * @return array
      */
-    private function arrayToDatasource($data, $name, $label)
+    private function tableToDatasource($data, $name, $label)
     {
-        $response = [];
-        foreach ($data as &$element) {
-            $item = [];
-            foreach ($response as &$r) {
-                if (isset($r['name']) && $r['name'] == $element[$name]) {
+        $response = []; //Objeto transformado
+        foreach ($data as &$element) { //Para cada elemento en el set de datos
+            $item = []; //Creamos un arreglo nuevo
+            foreach ($response as &$r) { //Para cada elemento en el arreglo response
+                if (isset($r['name']) && $r['name'] == $element[$name]) { //Validamos si está definido el campo 'name' y que el valor en ese campo sea igual al elemento con esa etiqueta
                     $item = $r;
                     array_push($r['data'], [$label => $element[$label], 'count' => $element['count']]);
                 }
@@ -501,27 +501,12 @@ class StatisticsController extends Controller
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
             $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
-                ->select(\DB::raw('customer_id, count(customer_id) as incidents, to_char(incident.detection_time, \'YYYY-MM-DD\') as date'))
+                ->select(\DB::raw('customer_id, count(customer_id) as count, to_char(incident.detection_time, \'YYYY-MM-DD\') as date'))
                 ->groupBy(['customer_id', 'date'])
                 ->orderBy('date', 'asc')
                 ->get();
 
-            $dataSource = [];
-            foreach ($incidents as $index => &$i) {
-                $item = [];
-                foreach ($dataSource as &$e) {
-                    if ($e['date'] == $i->date) {
-                        $item = $e;
-                        $e['customer_' . $i->customer_id] = $i->incidents;
-                    }
-                }
-
-                if ($item == null) {
-                    $item['date'] = $i->date;
-                    $item['customer_' . $i->customer_id] = $i->incidents;
-                    array_push($dataSource, $item);
-                }
-            }
+            $dataSource = $this->tableToDatasource($incidents, 'customer', 'date');
 
             return \Response::json($dataSource);
         } else {
