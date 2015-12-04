@@ -421,7 +421,7 @@ class IncidentController extends Controller
      */
     public function updateEvidence(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $ie_id = $request->get('id');
         $ie_note = $request->get('note');
@@ -484,22 +484,22 @@ class IncidentController extends Controller
         $newTicketStatusId = $request->get('status');
         $incident = Incident::whereId($incidentId)->first();
 
-        \Log::info($newTicketStatusId);
+//        \Log::info($newTicketStatusId);
         if ($newTicketStatusId == 5 || $newTicketStatusId == 4) {
-            \Log::info('is 5 or 4');
+//            \Log::info('is 5 or 4');
 
             $files = $request->file('fp-files');
 
             if ($newTicketStatusId == 5) {
-                \Log::info('is 5');
+//                \Log::info('is 5');
                 $evidenceType = EvidenceType::whereName('Falso Positivo')->first();
             } else if ($newTicketStatusId == 4) {
-                \Log::info('is 4');
+//                \Log::info('is 4');
                 $evidenceType = EvidenceType::whereName('Cerrado')->first();
             }
 
             foreach ($files as $file) {
-                \Log::info($file);
+//                \Log::info($file);
                 $evidence = EvidenceController::uploadSingleFile($file);
                 $incidentEvidence = new IncidentEvidence();
                 $incidentEvidence->incident_id = $incident->id;
@@ -581,7 +581,7 @@ class IncidentController extends Controller
             ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
             ->where('ticket.internal_number', '!=', '')
             ->count();
-        \Log::info($ticketCount);
+//        \Log::info($ticketCount);
 
 //        $incident = Incident::whereId(19)->first();
 //        $emails = '';
@@ -659,7 +659,7 @@ class IncidentController extends Controller
      */
     public function deleteNote(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $note = Note::whereId($request->get('id'))->first();
         $status = $note->incident->ticket->ticket_status_id;

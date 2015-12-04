@@ -17,6 +17,20 @@
 @endsection
 
 @section('include_down')
+    {{--Custom Select Form--}}
+    <link rel="stylesheet" href="/xenon/assets/js/select2/select2.css" id="style-resource-2">
+    <link rel="stylesheet" href="/xenon/assets/js/select2/select2-bootstrap.css" id="style-resource-3">
+    <script src="/xenon/assets/js/select2/select2.min.js" id="script-resource-12"></script>
+
+    {{--Date & Time Pickers--}}
+    <link rel="stylesheet" href="/xenon/assets/js/daterangepicker/daterangepicker-bs3.css" id="style-resource-1">
+
+    <script src="/xenon/assets/js/moment.min.js" id="script-resource-7"></script>
+    <script src="/xenon/assets/js/daterangepicker/daterangepicker.js" id="script-resource-8"></script>
+    <script src="/xenon/assets/js/datepicker/bootstrap-datepicker.js" id="script-resource-9"></script>
+    <script src="/xenon/assets/js/timepicker/bootstrap-timepicker.min.js" id="script-resource-10"></script>
+
+    {{--DataTables--}}
     <script type="text/javascript" src="/custom/assets/js/DataTables/pdfmake-0.1.18/build/pdfmake.min.js"></script>
     <script type="text/javascript" src="/custom/assets/js/DataTables/pdfmake-0.1.18/build/vfs_fonts.js"></script>
     <script type="text/javascript"
@@ -82,40 +96,17 @@
             });
 
             $("#simple-search").submit(function (event) {
-                var submit = $('#submit');
+                var submit = $('#submit-sim');
                 submit.attr('disabled', true);
+                var text_footer = $('#collapseOne').children('.panel-footer');
+                text_footer.empty();
                 $.ajax({
                     url: '{{route('incident.search')}}',
                     method: 'post',
                     dataType: 'json',
                     data: $(this).serialize(),
                     success: function (response) {
-                        var text_footer = $('#collapseOne').children('.panel-footer');
-                        text_footer.empty();
-                        if (response.err_code) {
-                            $('<div class="alert alert-danger"><strong>¡Error!</strong> ' + response.err_message + '.</div>').appendTo(text_footer);
-                        } else {
-                            $('<div class="alert alert-success">Se encontraron <strong>' + response.items.length + '</strong> coincidencias.</div>').appendTo(text_footer);
-
-                            incidents_table.clear();
-                            $.each(response.items, function (index, item) {
-                                if (index == 0) {
-                                    console.log(item);
-                                }
-                                incidents_table.row.add([
-                                    item.id,
-                                    item.internal_number,
-                                    item.title,
-                                    "Indicadores-" + index,
-                                    item.det_time,
-                                    "Sensores-" + index,
-                                    item.status,
-                                    item.username
-                                ])
-                            });
-                            incidents_table.draw();
-                        }
-                        submit.attr('disabled', false);
+                        addItems(response, submit, text_footer);
                     },
                     error: function (response) {
                         $('<div class="alert alert-danger"><strong>¡Error!</strong> ' + response + '.</div>').appendTo(text_footer);
@@ -126,7 +117,59 @@
 
                 event.preventDefault();
             });
+
+            $("#advanced-search").submit(function (event) {
+                var submit = $('#submit-adv');
+                submit.attr('disabled', true);
+                var text_footer = $('#collapseTwo').children('.panel-footer');
+                text_footer.empty();
+                $.ajax({
+                    url: '{{route('incident.search')}}',
+                    method: 'post',
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        addItems(response, submit, text_footer);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        $('<div class="alert alert-danger"><strong>¡Error!</strong> ' + response + '.</div>').appendTo(text_footer);
+                        submit.attr('disabled', false);
+                    }
+                });
+
+
+                event.preventDefault();
+            });
         });
+
+        function addItems(response, submit, text_footer) {
+            console.log(response);
+            if (response.err_code) {
+                $('<div class="alert alert-danger"><strong>¡Error!</strong> ' + response.err_message + '.</div>').appendTo(text_footer);
+            } else {
+                $('<div class="alert alert-success">Se encontraron <strong>' + response.items.length + '</strong> coincidencias.</div>').appendTo(text_footer);
+
+                incidents_table.clear();
+                $.each(response.items, function (index, item) {
+                    if (index == 0) {
+                        console.log(item);
+                    }
+                    incidents_table.row.add([
+                        item.id,
+                        item.internal_number,
+                        item.title,
+                        item.signatures,
+                        item.det_time,
+                        item.sensors,
+                        item.status,
+                        item.username
+                    ])
+                });
+                incidents_table.draw();
+            }
+            submit.attr('disabled', false);
+        }
     </script>
 @endsection
 
@@ -147,7 +190,7 @@
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse in">
+                        <div id="collapseOne" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <form id="simple-search">
                                     <input id="search_type" type="hidden" value="simple" name="search_type">
@@ -158,8 +201,9 @@
                                                    placeholder="Buscar... (Título, Descripción, Recomendación ó Referencias)"
                                                    name="search_string">
                                         </div>
-                                        <div class="col-md-2 col-sm-12">
-                                            <input type="submit" value="Buscar" class="btn btn-primary" id="submit">
+                                        <div class="col-md-2 col-sm-12 form-group">
+                                            <input type="submit" value="Buscar" class="btn btn-primary form-control"
+                                                   id="submit-sim">
                                         </div>
                                     </div>
                                 </form>
@@ -177,8 +221,102 @@
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse">
+                        <div id="collapseTwo" class="panel-collapse collapse in">
                             <div class="panel-body">
+                                <form id="advanced-search">
+                                    <input id="search_type" type="hidden" value="advanced" name="search_type">
+
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 form-group">
+                                            <label for="search_string_advanced" class="control-label">Texto o ingresado
+                                                en el Título,
+                                                Descripción, Recomendación y Referencias del Incidente</label>
+                                            <input id="search_string_advanced" class="form-control"
+                                                   placeholder="Incidente... (Título, Descripción, Recomendación ó Referencias)"
+                                                   name="search_string_advanced">
+                                            {{--Notas del Incidente--}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-6 form-group">
+                                            <label class="control-label" for="from_detection">Detección del
+                                                Incidente</label>
+                                            @include('formcontrols._fromdate',['id'=>'from_detection'])
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 form-group">
+                                            <label></label>
+                                            @include('formcontrols._todate',['id'=>'to_detection'])
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 form-group">
+                                            <label class="control-label" for="from_occurrence">Ocurrencia del
+                                                Incidente</label>
+                                            @include('formcontrols._fromdate',['id'=>'from_occurrence'])
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 form-group">
+                                            <label></label>
+                                            @include('formcontrols._todate',['id'=>'to_occurrence'])
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 form-group">
+                                            <label for="user" class="control-label">Usuario(s) que creó el
+                                                incidente</label>
+                                            @include('formcontrols._user',['id'=>'user','multiple'=>true])
+                                        </div>
+                                    </div>
+                                    {{--Ticket del Incidente--}}
+
+                                    {{--Datos de los anexos ?--}}
+                                    {{--Datos de las Evidencias ?--}}
+                                    {{--Eventos del Incidente ?--}}
+
+                                    {{--Customer data--}}
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-12 form-group">
+                                            <label for="customer" class="control-label">Cliente(s) asociado(s) al
+                                                Incidente</label>
+                                            @include('formcontrols._customer',['id'=>'customer','multiple'=>true])
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 form-group">
+                                            <label for="sensor" class="control-label">Sensor(es) asociado(s) al
+                                                Incidente</label>
+                                            @include('formcontrols._sensor',['id'=>'sensor','multiple'=>true])
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 form-group">
+                                            <label for="criticity" class="control-label">Severidad(es) asociada(s) al
+                                                Incidente</label>
+                                            @include('formcontrols._criticity',['id'=>'criticity','multiple'=>true])
+                                        </div>
+                                    </div>
+                                    {{--Incident catalogs data--}}
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 form-group">
+                                            <label for="category" class="control-label">Categoría(s) asociada(s) al
+                                                Incidente</label>
+                                            @include('formcontrols._category',['id'=>'category','multiple'=>true])
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 form-group">
+                                            <label for="signature" class="control-label">Firma(s) asociada(s) al
+                                                Incidente</label>
+                                            @include('formcontrols._signature',['id'=>'signature','multiple'=>true])
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 form-group">
+                                            <label for="flow" class="control-label">Flujo(s) del Incidente</label>
+                                            @include('formcontrols._flow',['id'=>'flow','multiple'=>true])
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 form-group">
+                                            <label for="attacktype" class="control-label">Tipo(s) de Ataque asociado(s)
+                                                al Incidente</label>
+                                            @include('formcontrols._attacktype',['id'=>'attacktype','multiple'=>true])
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-12 form-group">
+                                            <input type="submit" value="Buscar" class="btn btn-primary form-control"
+                                                   id="submit-adv">
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             <div class="panel-footer">
 

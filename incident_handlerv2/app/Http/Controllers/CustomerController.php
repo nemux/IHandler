@@ -127,7 +127,7 @@ class CustomerController extends Controller
         $customer->name = $request->get('customer_name');
         $customer->business_name = $request->get('business_name');
 
-        \Log::info($request->file('logo')->getClientOriginalName());
+//        \Log::info($request->file('logo')->getClientOriginalName());
 
         if ($request->file('logo')) {
             $customer->logo = hash('md5', $id) . "." . $request->file('logo')->getClientOriginalExtension();

@@ -110,21 +110,21 @@
         <div class="panel-body">
             <div class="row">
                 <div class="form-group col-md-2 col-xs-12">
-                    @include('stats.controls._fromdate',['id'=>'from_date'])
+                    @include('formcontrols._fromdate',['id'=>'from_date'])
                 </div>
                 <div class="form-group col-md-2 col-xs-12">
-                    @include('stats.controls._todate',['id'=>'to_date'])
+                    @include('formcontrols._todate',['id'=>'to_date'])
                 </div>
                 <div class="form-group col-md-4 col-xs-12">
-                    @include('stats.controls._customer',['id'=>'customer_id'])
+                    @include('formcontrols._customer',['id'=>'customer_id'])
                 </div>
                 <div class="form-group col-md-2 col-xs-12">
-                    @include('stats.controls._submit',['id'=>'submit'])
+                    @include('formcontrols._submit',['id'=>'submit'])
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @include('stats.controls._chart')
+                    @include('formcontrols._chart')
                 </div>
             </div>
         </div>

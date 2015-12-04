@@ -37,6 +37,11 @@ class CustomerSensor extends Model
         parent::__construct($attributes);
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
 
     public static function validateCreate(Request $request, Controller $controller)
     {

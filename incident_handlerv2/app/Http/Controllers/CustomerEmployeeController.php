@@ -37,7 +37,7 @@ class CustomerEmployeeController extends Controller
     {
         $customer_id = $request->get('customer_id');
 
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         Person::validateCreate($request, $this);
         PersonContact::validateCreate($request, $this);

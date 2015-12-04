@@ -177,7 +177,7 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
-        \Log::info($id);
+//        \Log::info($id);
 
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);

@@ -81,7 +81,7 @@ class InlineCss
 
         foreach ($styles[4] as $style) {
             if (strpos($style, 'googleapis.com') === false) {
-                \Log::info($style);
+//                \Log::info($style);
                 $pathStyle = preg_replace('/(http:\/\/)*([\w]*[:]*[\d]*)*(\/)*([\w\S]*)/', "$4", $style);
                 $css .= file_get_contents($pathStyle);
             }

@@ -20,6 +20,6 @@ class TestController extends Controller
 
     public function storeFiles(Request $request)
     {
-        \Log::info($request);
+//        \Log::info($request);
     }
 }

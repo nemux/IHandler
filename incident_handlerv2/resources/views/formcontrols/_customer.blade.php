@@ -1,4 +1,4 @@
-<select class="form-control" id="{{$id}}" name="{{$id}}">
+<select class="form-control" id="{{$id}}" name="{{isset($multiple) && $multiple?$id.'[]':$id}}" {{isset($multiple) && $multiple?'multiple':''}}>
     <option></option>
     @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
         <option value="{{$customer->id}}">{{$customer->name}}</option>

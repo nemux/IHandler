@@ -16,10 +16,10 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        \Log::info($roles);
+//        \Log::info($roles);
 
         foreach ($roles as $role) {
-            \Log::info($role);
+//            \Log::info($role);
             if ($request->user()->hasRole($role)) {
                 return $next($request);
             }

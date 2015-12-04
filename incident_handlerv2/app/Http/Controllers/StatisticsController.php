@@ -87,7 +87,7 @@ class StatisticsController extends Controller
      */
     public function categoryIncidentsPost(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $sensor_id = $request->get('sensor_id');
@@ -132,7 +132,7 @@ class StatisticsController extends Controller
      */
     public function criticityIncidentsPost(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $sensor_id = $request->get('sensor_id');
@@ -176,7 +176,7 @@ class StatisticsController extends Controller
      */
     public function attacktypeIncidentsPost(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $sensor_id = $request->get('sensor_id');
@@ -220,7 +220,7 @@ class StatisticsController extends Controller
      */
     public function sensorIncidentsPost(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $from_date = date('Y-m-d 00:00:00', strtotime(str_replace('/', '-', $request->get('from_date'))));
@@ -260,7 +260,7 @@ class StatisticsController extends Controller
      */
     public function attackflowIncidentsPost(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $customer_id = $request->get('customer_id');
         $sensor_id = $request->get('sensor_id');
