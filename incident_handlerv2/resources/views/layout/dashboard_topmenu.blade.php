@@ -309,7 +309,11 @@
         @yield('dashboard_content')
     </div>
 </div>
+
 <!-- TS144423527817774: Xenon - Boostrap Admin Template created by Laborator / Please buy this theme and support the updates -->
+<div class="page-loading-overlay">
+    <div class="loader-2"></div>
+</div>
 
 <script src="/xenon/assets/js/bootstrap.min.js" id="script-resource-1">
 </script>

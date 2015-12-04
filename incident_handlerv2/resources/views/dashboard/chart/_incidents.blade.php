@@ -25,19 +25,12 @@
                 url: '{{route('incidents.customer',7)}}',
                 dataType: 'json',
                 success: function (response) {
-
                     incidents_options.series = [];
-
                     incidents_options.title = {text: ''};
-
-
                     $.each(response, function (index, item) {
-                        console.log(item);
-
                         var data = [];
 
                         $.each(item.data, function (index, d) {
-                            console.log(d);
                             data.push([Date.parse(d.date), d.count]);
                         });
 

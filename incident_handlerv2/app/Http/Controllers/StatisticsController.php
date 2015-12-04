@@ -526,7 +526,7 @@ class StatisticsController extends Controller
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
             $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
-                ->select(\DB::raw('criticity.name as name, count(*) as incidents'))
+                ->select(\DB::raw('criticity.name as name, count(*) as count'))
                 ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
                 ->groupBy(['criticity.id'])
                 ->orderBy('criticity.id', 'asc')
@@ -550,7 +550,7 @@ class StatisticsController extends Controller
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
             $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
-                ->select(\DB::raw('attack_flow.name as name, count(*) as incidents'))
+                ->select(\DB::raw('attack_flow.name as name, count(*) as count'))
                 ->leftJoin('attack_flow', 'attack_flow.id', '=', 'incident.attack_flow_id')
                 ->groupBy(['attack_flow.id'])
                 ->orderBy('attack_flow.id', 'asc')
@@ -575,7 +575,7 @@ class StatisticsController extends Controller
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
             $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
-                ->select(\DB::raw('attack_category.name as name, count(*) as incidents'))
+                ->select(\DB::raw('attack_category.name as name, count(*) as count'))
                 ->leftJoin('incident_attack_category', 'incident_attack_category.incident_id', '=', 'incident.id')
                 ->leftJoin('attack_category', 'attack_category.id', '=', 'incident_attack_category.attack_category_id')
                 ->groupBy(['attack_category.id'])
@@ -600,7 +600,7 @@ class StatisticsController extends Controller
             $fromDate = date_sub(new \DateTime(), new \DateInterval("P" . ($days - 1) . "D"));
 
             $incidents = Incident::where('incident.detection_time', '>=', $fromDate->format('Y-m-d'))
-                ->select(\DB::raw('attack_type.name as name, count(*) as incidents'))
+                ->select(\DB::raw('attack_type.name as name, count(*) as count'))
                 ->leftJoin('attack_type', 'attack_type.id', '=', 'incident.attack_type_id')
                 ->groupBy(['attack_type.id'])
                 ->orderBy('attack_type.id', 'asc')

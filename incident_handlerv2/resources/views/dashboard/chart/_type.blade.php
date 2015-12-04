@@ -1,75 +1,57 @@
 <script type="text/javascript">
-    $(document).ready(function ($) {
-        if (!$.isFunction($.fn.dxChart))
-            return;
 
-        var dataSource = [], timer;
-
-        $.ajax({
-            url: '{{route('incidents.type',7)}}',
-            dataType: 'json',
-            async: true,
-            success: function (response) {
-                if (response.err_code)
-                    alert(response.message);
-                else {
-//                    console.log(response);
-                    $("#statistics-type").dxPieChart('instance').option('dataSource', response, timer);
+    var type_options = {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            renderTo: 'statistics-type'
+        },
+        tooltip: false,
+        plotOptions: {
+            pie: {
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b><br/>{point.y} (<b>{point.percentage:.2f}%)</b>)'
                 }
-            },
-            error: function (response) {
-                alert(response);
             }
-        });
+        },
+        series: [{
+            name: 'Incidentes',
+            colorByPoint: true,
+            data: []
+        }]
+    };
 
-        /**
-         * Gráfica de Incidentes agrupados por Categoria
-         */
-        $("#statistics-type").dxPieChart({
-            dataSource: {},
-            series: [
-                {
-                    argumentField: "name",
-                    valueField: "incidents"
+    var TypeGraph = {
+        make: function () {
+            $.ajax({
+                url: '{{route('incidents.type',7)}}',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    type_options.title = {text: ''};
+
+                    var data = [];
+                    $.each(response, function (index, item) {
+                        data.push([item.name, item.count]);
+                    });
+
+                    type_options.series[0].data = data;
+
+                    var chart = new Highcharts.Chart(type_options);
                 }
-            ],
-            tooltip: {
-                enabled: true,
-                customizeText: function () {
-                    return this.argumentText + "<br/>" + this.valueText + " Incidente(s)";
-                }
-            },
-            pointClick: function (point) {
-                point.showTooltip();
+            });
+        }
+    };
 
-                clearTimeout(timer);
-
-                timer = setTimeout(function () {
-                    point.hideTooltip();
-                }, 2000);
-
-                $("select option:contains(" + point.argument + ")").prop("selected", true);
-            },
-            legend: {
-                enabled: false
-            },
-            palette: [
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}',
-                '{{sprintf('#%06X', mt_rand(0, 0xFFFFFF))}}'
-            ]
-        });
+    $(document).ready(function ($) {
+        var chart = new TypeGraph.make();
     });
 </script>
 <div id="statistics-type" style="height: 300px; width: 100%;"></div>

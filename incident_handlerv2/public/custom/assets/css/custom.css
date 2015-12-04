@@ -88,3 +88,9 @@
     text-overflow: ellipsis;
     white-space: normal;
 }
+
+.text-crop {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

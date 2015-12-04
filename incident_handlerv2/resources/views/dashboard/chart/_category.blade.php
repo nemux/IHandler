@@ -1,59 +1,57 @@
 <script type="text/javascript">
+
+    var category_options = {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            renderTo: 'statistics-category'
+        },
+        tooltip: false,
+        plotOptions: {
+            pie: {
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b><br/>{point.y} (<b>{point.percentage:.2f}%)</b>)'
+                }
+            }
+        },
+        series: [{
+            name: 'Incidentes',
+            colorByPoint: true,
+            data: []
+        }]
+    };
+
+    var CategoryGraph = {
+        make: function () {
+            $.ajax({
+                url: '{{route('incidents.category',7)}}',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+                success: function (response) {
+                    category_options.title = {text: ''};
+
+                    var data = [];
+                    $.each(response, function (index, item) {
+                        data.push([item.name, item.count]);
+                    });
+
+                    category_options.series[0].data = data;
+
+                    var chart = new Highcharts.Chart(category_options);
+                }
+            });
+        }
+    };
+
     $(document).ready(function ($) {
-        if (!$.isFunction($.fn.dxChart))
-            return;
-
-        var dataSource = [], timer;
-
-        $.ajax({
-            url: '{{route('incidents.category',7)}}',
-            dataType: 'json',
-            async: true,
-            success: function (response) {
-                if (response.err_code)
-                    alert(response.message);
-                else {
-//                    console.log(response);
-                    $("#statistics-category").dxPieChart('instance').option('dataSource', response, timer);
-                }
-            },
-            error: function (response) {
-                alert(response);
-            }
-        });
-
-        /**
-         * Gráfica de Incidentes agrupados por Categoria
-         */
-        $("#statistics-category").dxPieChart({
-            dataSource: {},
-            series: [
-                {
-                    argumentField: "name",
-                    valueField: "incidents"
-                }
-            ],
-            tooltip: {
-                enabled: true,
-                customizeText: function () {
-                    return this.argumentText + "<br/>" + this.valueText + " Incidente(s)";
-                }
-            },
-            pointClick: function (point) {
-                point.showTooltip();
-
-                clearTimeout(timer);
-
-                timer = setTimeout(function () {
-                    point.hideTooltip();
-                }, 2000);
-
-                $("select option:contains(" + point.argument + ")").prop("selected", true);
-            },
-            legend: {
-                enabled: false
-            }
-        });
+        var chart = new CategoryGraph.make();
     });
 </script>
 <div id="statistics-category" style="height: 300px; width: 100%;"></div>
