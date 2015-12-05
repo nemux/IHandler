@@ -52,6 +52,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/edit/{id}', ['as' => 'incident.edit', 'uses' => 'IncidentController@update']);
 
         Route::get('/pdf/{id}/{download}', ['as' => 'incident.pdf', 'uses' => 'IncidentController@getPdf']);
+        Route::get('/doc/{id}', ['as' => 'incident.doc', 'uses' => 'IncidentController@getDoc']);
         Route::get('/email/{id}', ['as' => 'incident.email', 'uses' => 'IncidentController@email']);
 
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
@@ -141,6 +142,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@update']);
 
         Route::get('/pdf/{id}/{download}', ['as' => 'surveillance.pdf', 'uses' => 'SurveillanceController@getPdf']);
+        Route::get('/doc/{id}', ['as' => 'surveillance.doc', 'uses' => 'SurveillanceController@getDoc']);
         Route::get('/email/{id}', ['as' => 'surveillance.email', 'uses' => 'SurveillanceController@email']);
 
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'SurveillanceController@preview']);
@@ -249,6 +251,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/machinetype', ['as' => 'stats.machinetype', 'uses' => 'StatisticsController@machinetypeIncidents']);
         Route::post('/machinetype', ['as' => 'stats.machinetype.post', 'uses' => 'StatisticsController@machinetypeIncidentsPost']);
+    });
+
+    Route::group(['prefix' => 'report', 'middleware' => 'auth'], function () {
+        Route::get('/incident/{report_type}', ['as' => 'report.incident', 'uses' => 'ReportController@incidentReport']);
+        Route::post('/incident/{report_type}', ['as' => 'report.incident.post', 'uses' => 'ReportController@incidentReportPost']);
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {

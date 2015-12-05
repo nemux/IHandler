@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\Evidence\Evidence;
@@ -9,9 +10,6 @@ use App\Models\Person\PersonContact;
 use App\Models\Surveillance\SurveillanceCase;
 use App\Models\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Library\InlineCss;
 
 class SurveillanceController extends Controller
 {
@@ -148,7 +146,6 @@ class SurveillanceController extends Controller
      * @param bool $download
      * @return \PDF
      */
-//    public function getPdf($case, $download = false, $output = false)
     public function getPdf($id, $download = false)
     {
         $case = SurveillanceCase::whereId($id)->first();
@@ -160,14 +157,27 @@ class SurveillanceController extends Controller
         } else {
             return $pdf->stream($docName);
         }
+    }
 
-//        if ($download) {
-//            return $pdf->download($docName);
-//        } else if ($output) {
-//            return $pdf->output();
-//        } else {
-//            return $pdf->stream($docName);
-//        }
+    /**
+     * Devuelve al navegador el stream del PDF
+     * @param $id
+     * @param bool $download
+     * @return \PDF
+     */
+    public function getDoc($id, $download = false)
+    {
+        $case = SurveillanceCase::whereId($id)->first();
+        $doc = DocController::generateDoc($case, 'pdf.surveillance');
+        $docName = $case->title . '.doc';
+        $docName = preg_replace('/ /', '_', $docName);
+
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename=$docName"
+        );
+
+        return \Response::make($doc, 200, $headers);
     }
 
     /**

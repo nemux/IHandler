@@ -190,7 +190,7 @@
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseOne" class="panel-collapse collapse">
+                        <div id="collapseOne" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <form id="simple-search">
                                     <input id="search_type" type="hidden" value="simple" name="search_type">
@@ -221,7 +221,7 @@
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse in">
+                        <div id="collapseTwo" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <form id="advanced-search">
                                     <input id="search_type" type="hidden" value="advanced" name="search_type">

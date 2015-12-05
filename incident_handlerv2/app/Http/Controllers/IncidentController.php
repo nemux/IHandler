@@ -344,6 +344,28 @@ class IncidentController extends Controller
     }
 
     /**
+     * Método que se ejecuta en una petición GET para generar el Doc de Word del incidente
+     *
+     * @param $id
+     * @param bool|false $download Define si se descarga el PDF o se muestra en el navegador
+     * @return \Illuminate\Http\Response
+     */
+    public function getDoc($id)
+    {
+        $case = Incident::whereId($id)->first();
+        $doc = DocController::generateDoc($case, 'pdf.incident');
+        $docName = $case->title . '.doc';
+        $docName = preg_replace('/ /', '_', $docName);
+
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename=$docName"
+        );
+
+        return \Response::make($doc, 200, $headers);
+    }
+
+    /**
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
      * @param Incident $incident
      */

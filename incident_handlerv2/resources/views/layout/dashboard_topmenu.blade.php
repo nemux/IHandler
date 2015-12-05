@@ -82,6 +82,62 @@
                     </li>
                     <li>
                         <a class="l2">
+                            <i class="fa fa-file-pdf-o"></i>
+                            <span class="title">Reportes</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','date')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">...por Fecha</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','handler')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">...por Handler</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','category')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">...por Categoría</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','criticity')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">...por Severidad</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','status')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">...por Status</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','ip')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">... por IP</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','csv')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">CSV de Tickets</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="{{route('report.incident','list')}}">
+                                    <i class="fa"></i>
+                                    <span class="title">Lista de Incidentes por Sensor</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="l2">
                             <i class="fa fa-line-chart"></i>
                             <span class="title">Estadísticas</span>
                         </a>
@@ -157,12 +213,6 @@
                         </a>
                     </li>
                 </ul>
-            </li>
-            <li>
-                <a class="l1">
-                    <i class="fa fa-file-pdf-o"></i>
-                    <span class="title">Reportes</span>
-                </a>
             </li>
             @if(Auth::user()->isAdmin())
                 {{--Administrar el sistema--}}
@@ -297,8 +347,8 @@
 
                 @if (Session::has('message'))
                     <div class="alert alert-success">
-                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span> <span
-                                    class="sr-only">Close</span>
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span>
+                            <span class="sr-only">Close</span>
                         </button>
                         <strong>{{ Session::get('message') }}</strong>
                     </div>

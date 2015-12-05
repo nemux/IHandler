@@ -31,6 +31,12 @@
             $(btn).attr('disabled', false);
         }
 
+        function doc(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('incident.doc',$case)}}', '_self');
+            $(btn).attr('disabled', false);
+        }
+
         function mail(btn) {
             $(btn).attr('disabled', true);
             window.open('{{route('incident.email',$case)}}', '_self');
@@ -128,7 +134,7 @@
                         },
                         data: {
                             _method: 'delete',
-                            id:id
+                            id: id
                         },
                         success: function (result) {
                             if (result.status === 0) {
@@ -166,8 +172,11 @@
                 <i class="fa fa-pencil fa-fw"></i> Editar Caso
             </div>
         @endif
-        <div class="btn btn-info" onclick="pdf(this)">
+        <div class="btn btn-danger" onclick="pdf(this)">
             <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
+        </div>
+        <div class="btn btn-blue" onclick="doc(this)">
+            <i class="fa fa-file-word-o fa-fw"></i> Generar DOC
         </div>
         <div class="btn btn-success"
              onclick="mail(this)">
