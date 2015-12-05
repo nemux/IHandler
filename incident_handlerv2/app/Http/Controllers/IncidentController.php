@@ -347,7 +347,6 @@ class IncidentController extends Controller
      * Método que se ejecuta en una petición GET para generar el Doc de Word del incidente
      *
      * @param $id
-     * @param bool|false $download Define si se descarga el PDF o se muestra en el navegador
      * @return \Illuminate\Http\Response
      */
     public function getDoc($id)

@@ -162,10 +162,9 @@ class SurveillanceController extends Controller
     /**
      * Devuelve al navegador el stream del PDF
      * @param $id
-     * @param bool $download
-     * @return \PDF
+     * @return \Illuminate\Http\Response
      */
-    public function getDoc($id, $download = false)
+    public function getDoc($id)
     {
         $case = SurveillanceCase::whereId($id)->first();
         $doc = DocController::generateDoc($case, 'pdf.surveillance');
