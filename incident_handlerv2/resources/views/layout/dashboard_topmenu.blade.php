@@ -208,6 +208,58 @@
                     </li>
                 </ul>
             </li>
+            {{--Clientes--}}
+            <li>
+                <a class="l2" href="{{route('customer.index')}}">
+                    <i class="fa fa-suitcase"></i>
+                    <span class="title">Clientes</span>
+                </a>
+            </li>
+            {{--Catálogos--}}
+            <li>
+                <a class="l2">
+                    <i class="fa fa-book"></i>
+                    <span class="title">Catálogos</span>
+                </a>
+                <ul>
+                    <li>
+                        <a class="l3" href="{{route('attack.index')}}">
+                            <i class="fa fa-crosshairs"></i>
+                            <span class="title">Tipos de ataque</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l3" href="{{route('category.index')}}">
+                            <i class="fa fa-cubes"></i>
+                            <span class="title">Categorías de un Incidente</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l3" href="{{route('criticity.index')}}">
+                            <i class="fa fa-exclamation"></i>
+                            <span class="title">Severidad (Criticidad)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l3" href="{{route('flow.index')}}">
+                            <i class="fa fa-arrows-h"></i>
+                            <span class="title">Flujo del Ataque</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l3" href="{{route('signature.index')}}">
+                            <i class="fa fa-signal"></i>
+                            <span class="title">Firmas de Detección</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l3" href="{{route('machine.blacklist')}}">
+                            <i class="fa fa-list"></i>
+                            <span class="title">Blacklist</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             @if(Auth::user()->isAdmin())
                 {{--Administrar el sistema--}}
                 <li>
@@ -223,64 +275,12 @@
                                 <span class="title">OTRS</span>
                             </a>
                         </li>
-                        {{--Clientes--}}
-                        <li>
-                            <a class="l2" href="{{route('customer.index')}}">
-                                <i class="fa fa-suitcase"></i>
-                                <span class="title">Clientes</span>
-                            </a>
-                        </li>
                         {{--Usuarios--}}
                         <li>
                             <a class="l2" href="{{route('user.index')}}">
                                 <i class="fa fa-user"></i>
                                 <span class="title">Usuarios</span>
                             </a>
-                        </li>
-                        {{--Catálogos--}}
-                        <li>
-                            <a class="l2">
-                                <i class="fa fa-book"></i>
-                                <span class="title">Catálogos</span>
-                            </a>
-                            <ul>
-                                <li>
-                                    <a class="l3" href="{{route('attack.index')}}">
-                                        <i class="fa fa-crosshairs"></i>
-                                        <span class="title">Tipos de ataque</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="l3" href="{{route('category.index')}}">
-                                        <i class="fa fa-cubes"></i>
-                                        <span class="title">Categorías de un Incidente</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="l3" href="{{route('criticity.index')}}">
-                                        <i class="fa fa-exclamation"></i>
-                                        <span class="title">Severidad (Criticidad)</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="l3" href="{{route('flow.index')}}">
-                                        <i class="fa fa-arrows-h"></i>
-                                        <span class="title">Flujo del Ataque</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="l3" href="{{route('signature.index')}}">
-                                        <i class="fa fa-signal"></i>
-                                        <span class="title">Firmas de Detección</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="l3" href="{{route('machine.blacklist')}}">
-                                        <i class="fa fa-list"></i>
-                                        <span class="title">Blacklist</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </li>

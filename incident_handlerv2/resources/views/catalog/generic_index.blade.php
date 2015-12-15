@@ -83,13 +83,14 @@
         <div class="panel-heading">
             <h3 class="panel-title">Lista de {{$base->name}}</h3>
             <br/>
-
-            <div class="btn-group">
-                <a class="btn btn-success" href="{{route($base->createRoute)}}">
-                    <i class="fa fa-plus"></i>
-                    <span class="title">Agregar {{$base->name}}</span>
-                </a>
-            </div>
+            @if(Auth::user()->isAdmin())
+                <div class="btn-group">
+                    <a class="btn btn-success" href="{{route($base->createRoute)}}">
+                        <i class="fa fa-plus"></i>
+                        <span class="title">Agregar {{$base->name}}</span>
+                    </a>
+                </div>
+            @endif
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped" id="{{$base->idTable}}">
@@ -104,15 +105,21 @@
                         <td>{{$item->id}}</td>
                         <td>{{$item->name}}</td>
                         <td>
-                            {!! Form::open(array('id'=>'deleteForm-'.$item->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array($base->deleteRoute, $item->id))) !!}
-                            {!! Form::hidden('id',$item->id) !!}
-                            <a href="{{route($base->showRoute,$item->id)}}"
-                               class="btn btn-info btn-sm btn-icon icon-left">
-                                Detalles</a>
-                            <a href="{{route($base->editRoute,$item->id)}}"
-                               class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("'.$base->name.'","'.$item->id.'")' ]) !!}
-                            {!! Form::close() !!}
+                            @if(Auth::user()->isAdmin())
+                                {!! Form::open(array('id'=>'deleteForm-'.$item->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array($base->deleteRoute, $item->id))) !!}
+                                {!! Form::hidden('id',$item->id) !!}
+                                <a href="{{route($base->showRoute,$item->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Detalles</a>
+                                <a href="{{route($base->editRoute,$item->id)}}"
+                                   class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                                {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("'.$base->name.'","'.$item->id.'")' ]) !!}
+                                {!! Form::close() !!}
+                            @else
+                                <a href="{{route($base->showRoute,$item->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Detalles</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

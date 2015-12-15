@@ -67,8 +67,10 @@
                                             <a href="#" class="user-name">
                                                 {{$customer->name}}
                                             </a>
-                                            <a href="{{route('customer.edit',$customer->id)}}"
-                                               class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                                            @if(Auth::user()->isAdmin())
+                                                <a href="{{route('customer.edit',$customer->id)}}"
+                                                   class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                                            @endif
                                             <span class="user-title"> {{$customer->business_name}}</span>
                                             <hr/>
                                             <span class="user-details">Datos de Contacto</span>

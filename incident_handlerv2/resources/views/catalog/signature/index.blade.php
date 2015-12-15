@@ -83,13 +83,14 @@
         <div class="panel-heading">
             <h3 class="panel-title">Lista de Firmas</h3>
             <br/>
-
-            <div class="btn-group">
-                <a class="btn btn-success" href="{{route('signature.create')}}">
-                    <i class="fa fa-plus"></i>
-                    <span class="title">Agregar Firma</span>
-                </a>
-            </div>
+            @if(Auth::user()->isAdmin() || Auth::user()->hasRole('user_1'))
+                <div class="btn-group">
+                    <a class="btn btn-success" href="{{route('signature.create')}}">
+                        <i class="fa fa-plus"></i>
+                        <span class="title">Agregar Firma</span>
+                    </a>
+                </div>
+            @endif
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped" id="signatures-table">
@@ -106,15 +107,27 @@
                         <td>{{$index+1}}</td>
                         <td>{{$item->name}}</td>
                         <td>
-                            {!! Form::open(array('id'=>'deleteForm-'.$item->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('signature.destroy', $item->id))) !!}
-                            {!! Form::hidden('id',$item->id) !!}
-                            <a href="{{route('signature.show',$item->id)}}"
-                               class="btn btn-info btn-sm btn-icon icon-left">
-                                Detalles</a>
-                            <a href="{{route('signature.edit',$item->id)}}"
-                               class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("firma","'.$item->id.'")' ]) !!}
-                            {!! Form::close() !!}
+                            @if(Auth::user()->isAdmin())
+                                {!! Form::open(array('id'=>'deleteForm-'.$item->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('signature.destroy', $item->id))) !!}
+                                {!! Form::hidden('id',$item->id) !!}
+                                <a href="{{route('signature.show',$item->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Detalles</a>
+                                <a href="{{route('signature.edit',$item->id)}}"
+                                   class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                                {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("firma","'.$item->id.'")' ]) !!}
+                                {!! Form::close() !!}
+                            @elseif(Auth::user()->hasRole('user_1'))
+                                <a href="{{route('signature.show',$item->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Detalles</a>
+                                <a href="{{route('signature.edit',$item->id)}}"
+                                   class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                            @else
+                                <a href="{{route('signature.show',$item->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Detalles</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

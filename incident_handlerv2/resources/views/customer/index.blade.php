@@ -83,13 +83,14 @@
         <div class="panel-heading">
             <h3 class="panel-title">Lista de Clientes</h3>
             <br/>
-
-            <div class="btn-group">
-                <a class="btn btn-success" href="{{route('customer.create')}}">
-                    <i class="fa fa-plus"></i>
-                    <span class="title">Agregar Cliente</span>
-                </a>
-            </div>
+            @if(Auth::user()->isAdmin())
+                <div class="btn-group">
+                    <a class="btn btn-success" href="{{route('customer.create')}}">
+                        <i class="fa fa-plus"></i>
+                        <span class="title">Agregar Cliente</span>
+                    </a>
+                </div>
+            @endif
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped" id="customers-table">
@@ -106,15 +107,21 @@
                         <td>{{$index+1}}</td>
                         <td>{{$customer->name}}</td>
                         <td>
-                            {!! Form::open(array('id'=>'deleteForm-'.$customer->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('customer.destroy', $customer->id))) !!}
-                            {!! Form::hidden('id',$customer->id) !!}
-                            <a href="{{route('customer.show',$customer->id)}}"
-                               class="btn btn-info btn-sm btn-icon icon-left">
-                                Ver perfil</a>
-                            <a href="{{route('customer.edit',$customer->id)}}"
-                               class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
-                            {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("cliente","'.$customer->id.'")' ]) !!}
-                            {!! Form::close() !!}
+                            @if(Auth::user()->isAdmin())
+                                {!! Form::open(array('id'=>'deleteForm-'.$customer->id,'class' => 'form-inline', 'method' => 'DELETE', 'route' => array('customer.destroy', $customer->id))) !!}
+                                {!! Form::hidden('id',$customer->id) !!}
+                                <a href="{{route('customer.show',$customer->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Ver perfil</a>
+                                <a href="{{route('customer.edit',$customer->id)}}"
+                                   class="btn btn-secondary btn-sm btn-icon icon-left"> Editar</a>
+                                {!! Form::button('Eliminar',['class'=>'btn btn-danger btn-sm btn-icon icon-left','onClick'=> 'onClickDelete("cliente","'.$customer->id.'")' ]) !!}
+                                {!! Form::close() !!}
+                            @else
+                                <a href="{{route('customer.show',$customer->id)}}"
+                                   class="btn btn-info btn-sm btn-icon icon-left">
+                                    Ver perfil</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

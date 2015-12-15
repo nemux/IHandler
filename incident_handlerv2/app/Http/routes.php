@@ -158,52 +158,52 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
     });
 
-    Route::group(['prefix' => 'attack', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'attack'], function () {//, 'middleware' => 'role:admin'
         Route::get('/', ['as' => 'attack.index', 'uses' => 'AttackTypeController@index']);
-        Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit']);
-        Route::post('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@update']);
-        Route::get('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@create']);
-        Route::post('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@store']);
-        Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'attack.show', 'uses' => 'AttackTypeController@show']);
     });
 
-    Route::group(['prefix' => 'criticity', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'criticity'], function () {
         Route::get('/', ['as' => 'criticity.index', 'uses' => 'CriticityController@index']);
-        Route::get('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@edit']);
-        Route::post('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@update']);
-        Route::get('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@create']);
-        Route::post('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@store']);
-        Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'criticity.show', 'uses' => 'CriticityController@show']);
     });
 
-    Route::group(['prefix' => 'flow', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'flow'], function () {
         Route::get('/', ['as' => 'flow.index', 'uses' => 'AttackFlowController@index']);
-        Route::get('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@edit']);
-        Route::post('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@update']);
-        Route::get('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@create']);
-        Route::post('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@store']);
-        Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'flow.show', 'uses' => 'AttackFlowController@show']);
     });
 
-    Route::group(['prefix' => 'category', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'category'], function () {
         Route::get('/', ['as' => 'category.index', 'uses' => 'AttackCategoryController@index']);
-        Route::get('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@edit']);
-        Route::post('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@update']);
-        Route::get('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@create']);
-        Route::post('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@store']);
-        Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'category.show', 'uses' => 'AttackCategoryController@show']);
     });
 
     Route::group(['prefix' => 'signature'], function () {
         Route::get('/', ['as' => 'signature.index', 'uses' => 'AttackSignatureController@index']);
-        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,coord']);
-        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,coord']);
-        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create', 'middleware' => 'role:admin,coord']);
-        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store', 'middleware' => 'role:admin,coord']);
+        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,user_1']);
+        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,user_1']);
+        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create', 'middleware' => 'role:admin,user_1']);
+        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store', 'middleware' => 'role:admin,user_1']);
         Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
         Route::get('/json/{id}', ['as' => 'signature.json', 'uses' => 'AttackSignatureController@getSignature']);
