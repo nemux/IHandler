@@ -187,7 +187,7 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
-                    <li>{{$category->category->noCat() }}</li>
+                    <li><b>{{$category->category->id-1}}</b>: {{$category->category->noCat() }}; {{$category->category->description}}</li>
                 @endforeach
             </ul>
         </td>

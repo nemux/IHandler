@@ -155,13 +155,31 @@
                     if (index == 0) {
                         console.log(item);
                     }
+
+                    var signatures = '<ul class="list-unstyled">';
+
+                    $.each(item.signatures, function (index, item) {
+                        signatures += '<li>' + item.signature.name + '</li>';
+                    });
+
+                    signatures += '</ul>';
+
+                    var sensors = '<ul class="list-unstyled">';
+
+                    $.each(item.sensors, function (index, item) {
+                        sensors += '<li>' + item.sensor.name + '</li>';
+                    });
+
+                    sensors += '</ul>';
+
                     incidents_table.row.add([
                         item.id,
+                        item.criticity,
                         item.internal_number,
                         item.title,
-                        item.signatures,
+                        signatures,
                         item.det_time,
-                        item.sensors,
+                        sensors,
                         item.status,
                         item.username
                     ])

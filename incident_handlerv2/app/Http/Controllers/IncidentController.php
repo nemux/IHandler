@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
+use App\Library\Pdf;
+use App\Library\WordGenerator;
 use App\Models\Evidence\Evidence;
 use App\Models\Evidence\EvidenceType;
 use App\Models\Incident\Annex;
@@ -37,11 +39,15 @@ class IncidentController extends Controller
             'incident.title',
             'user.username',
             'incident.detection_time',
-            'ticket_status.name as status');
+            'ticket_status.name as status',
+            'criticity.name as criticity');
 
         $query->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
             ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
-            ->leftJoin('user', 'user.id', '=', 'incident.user_id');
+            ->leftJoin('user', 'user.id', '=', 'incident.user_id')
+            ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
+            ->with('signatures.signature')
+            ->with('sensors.sensor');
 
         $incidents = $query->orderBy('id', 'desc')->paginate(10);
 
@@ -333,7 +339,7 @@ class IncidentController extends Controller
     public function getPdf($id, $download = false)
     {
         $case = Incident::whereId($id)->first();
-        $pdf = PdfController::generatePdf($case, 'pdf.incident');
+        $pdf = Pdf::generatePdf($case, 'pdf.incident');
         $docName = $case->title . '.pdf';
 
         if ($download) {
@@ -352,16 +358,18 @@ class IncidentController extends Controller
     public function getDoc($id)
     {
         $case = Incident::whereId($id)->first();
-        $doc = DocController::generateDoc($case, 'pdf.incident');
-        $docName = $case->title . '.doc';
-        $docName = preg_replace('/ /', '_', $docName);
+        $doc = new  WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
+        $doc->addCases($case);
+        $file = $doc->streamDocument();
+
+        $docname = $case->ticket ? $case->ticket->internal_number : 'ID' . $case->id;
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition" => "attachment;Filename=$docName"
+            "Content-Disposition" => "attachment;Filename={$docname}.docx"
         );
 
-        return \Response::make($doc, 200, $headers);
+        return \Response::make($file, 200, $headers);
     }
 
     /**
@@ -378,7 +386,7 @@ class IncidentController extends Controller
                 $message->attach($file, ['as' => $name]);
             }
 
-            $pdf = PdfController::generatePdf($incident, 'pdf.incident');
+            $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 

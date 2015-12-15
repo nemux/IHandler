@@ -149,7 +149,7 @@ class SurveillanceController extends Controller
     public function getPdf($id, $download = false)
     {
         $case = SurveillanceCase::whereId($id)->first();
-        $pdf = PdfController::generatePdf($case, 'pdf.surveillance');
+        $pdf = Pdf::generatePdf($case, 'pdf.surveillance');
         $docName = $case->title . '.pdf';
 
         if ($download) {
@@ -207,7 +207,7 @@ class SurveillanceController extends Controller
                 $message->attach($file, ['as' => $name]);
             }
 
-            $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
+            $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 

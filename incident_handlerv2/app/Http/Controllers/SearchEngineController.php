@@ -54,11 +54,13 @@ class SearchEngineController extends Controller
             'user.username',
             \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI\') as det_time'),
             'ticket_status.name as status',
-            'incident.id as signatures',
-            'incident.id as sensors'
+            'criticity.name as criticity'
         )->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
             ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
-            ->leftJoin('user', 'user.id', '=', 'incident.user_id');
+            ->leftJoin('user', 'user.id', '=', 'incident.user_id')
+            ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
+            ->with('signatures.signature')
+            ->with('sensors.sensor');
 
         if ($search_type == 'simple') {
             $search_string = trim($request->get('search_string'));
@@ -69,7 +71,7 @@ class SearchEngineController extends Controller
             try {
                 $incidents = $query->get();
             } catch (\Exception $e) {
-                return \Response::json(['err_code' => $e->getCode(), 'err_message' => $e->getMessage()]);
+                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]);
             }
 
             return \Response::json(['request' => $search_string, 'items' => $incidents]);
@@ -128,14 +130,13 @@ class SearchEngineController extends Controller
             }
 
             if ($signatures) {
-                $query->leftJoin('incident_attack_signature as ias', 'ias.incident_id', '=', 'incident.id');
                 $query->whereIn('ias.attack_signature_id', $signatures);
             }
 
             try {
                 $incidents = $query->get();
             } catch (\Exception $e) {
-                return \Response::json(['err_code' => $e->getCode(), 'err_message' => $e->getMessage()]);
+                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]);
             }
 
             return \Response::json(['items' => $incidents]);

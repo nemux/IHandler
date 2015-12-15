@@ -48,9 +48,10 @@
     <thead>
     <tr>
         <th class="col-sm-1">ID</th>
-        <th class="col-sm-1"># Ticket</th>
+        <th class="col-sm-1">Severidad</th>
+        <th class="col-sm-1">#Ticket</th>
         <th class="col-sm-3">Título</th>
-        <th class="col-sm-3">Indicadores</th>
+        <th class="col-sm-2">Indicadores de Compromiso</th>
         <th class="col-sm-1">Detección</th>
         <th class="col-sm-1">Sensores</th>
         <th class="col-sm-1">Status</th>
@@ -59,14 +60,27 @@
     </thead>
     <tbody class="middle-align">
     @if(isset($incidents))
-        @foreach($incidents as $index=>$incident)
+        @foreach($incidents as $incident)
             <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
                 <td>{{$incident->id}}</td>
+                <td>{{ $incident->criticity }}</td>
                 <td>{{isset($incident->internal_number)?$incident->internal_number:'Por asignar...'}}</td>
                 <td>{{$incident->title}}</td>
-                <td>{!! $incident->signatures_list() !!}</td>
+                <td>
+                    <ul class="list-unstyled">
+                        @foreach($incident->signatures as $signature)
+                            <li>{{$signature->signature->name}}</li>
+                        @endforeach
+                    </ul>
+                </td>
                 <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
-                <td>{!! $incident->sensors_list() !!}</td>
+                <td>
+                    <ul class="list-unstyled">
+                        @foreach($incident->sensors as $sensor)
+                            <li>{{$sensor->sensor->name}}</li>
+                        @endforeach
+                    </ul>
+                </td>
                 <td>{{isset($incident->status)?$incident->status:'Por asignar...'}}</td>
                 <td>{{$incident->username}}</td>
             </tr>

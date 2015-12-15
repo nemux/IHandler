@@ -128,12 +128,6 @@
                                     <span class="title">CSV de Tickets</span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="l3" href="{{route('report.incident','list')}}">
-                                    <i class="fa"></i>
-                                    <span class="title">Lista de Incidentes por Sensor</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li>

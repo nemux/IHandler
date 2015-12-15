@@ -7,7 +7,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#' + '{{$id}}').select2({
-            placeholder: 'Severidad(es)...',
+            placeholder: 'Severidad...',
             allowClear: true,
             dropdownAutoWidth: true
         }).on('select2-open', function () {

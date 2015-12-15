@@ -81,6 +81,23 @@ class MigrateVersionCommand extends Command
                 $this->references();
             } else if ($this->option('perform') == 'update' && $this->option('table') == 'incident_signature') {
                 $this->signatures();
+            } else if ($this->option('perform') == 'tickets') {
+                $olds = $this->query('SELECT * FROM incidents WHERE id BETWEEN 4961 AND 6675'); //TODO remove date on production
+                $bar = $this->output->createProgressBar(count($olds));
+                $newtickets = [];
+
+                foreach ($olds as $index => &$o) {
+                    $no_ticket = $this->tickets($o);
+
+                    if ($no_ticket) {
+                        array_push($newtickets, $no_ticket);
+                    }
+
+                    $bar->advance();
+                }
+                $bar->finish();
+                $this->alterSequence($this->query('SELECT * FROM tickets'), 'ticket');
+                $this->saveEmptyTickets($newtickets);
             }
         } else {
             if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
@@ -604,10 +621,11 @@ class MigrateVersionCommand extends Command
     {
         if (Incident::count() == 0) {
             $this->info("Migrando los objetos Incident");
-            $olds = $this->query('SELECT * FROM incidents where created_at > \'2015-10-01 00:00:00\''); //TODO remove date on production
-            $total = sizeof($olds);
+            $olds = $this->query('SELECT * FROM incidents WHERE id BETWEEN 4961 AND 6675'); //TODO remove date on production
 
             $bar = $this->output->createProgressBar(count($olds));
+
+            $newtickets = [];
 
             foreach ($olds as $index => &$o) {
                 try {
@@ -662,22 +680,11 @@ class MigrateVersionCommand extends Command
                     $incident->attack_flow_id = $flow->id;
                     $incident->save();
 
-                    //Tickets (No debería de haber más de un ticket en el sistema, pero...)
-                    $oldTickets = $this->query('SELECT * FROM tickets WHERE incidents_id=' . $o->id);
-                    foreach ($oldTickets as &$oT) {
-                        $ticket = new Ticket();
-                        $this->modelTimestamps($ticket, $oT);
-                        $ticket->id = $oT->id;
-                        $ticket->otrs_ticket_id = $oT->otrs_ticket_id;
-                        $ticket->otrs_ticket_number = $oT->otrs_ticket_number;
-                        $ticket->internal_number = $oT->internal_number;
-                        $ticket->send_reminder = $oT->reminder_sended;
-                        $ticket->user_id = $oT->incident_handler_id;
-                        $ticket->incident_id = $o->id;
-                        $ticket->ticket_status_id = $o->incidents_status_id;
-                        $ticket->save();
-                    }
+                    $no_ticket = $this->tickets($o);
 
+                    if ($no_ticket) {
+                        array_push($newtickets, $no_ticket);
+                    }
 
                     //IncidentEvidence
                     $images = $this->query('SELECT * FROM images WHERE incidents_id=' . $o->id);
@@ -890,6 +897,8 @@ class MigrateVersionCommand extends Command
             $bar->finish();
             $this->alterSequence($olds, 'incident');
             $this->alterSequence($this->query('SELECT * FROM tickets'), 'ticket');
+            $this->saveEmptyTickets($newtickets);
+
         }
     }
 
@@ -960,5 +969,54 @@ class MigrateVersionCommand extends Command
             $new->updated_at = date('Y-m-d H:i:s', strtotime($old->updated_at));
         if (isset($old->deleted_at))
             $new->deleted_at = date('Y-m-d H:i:s', strtotime($old->deleted_at));
+    }
+
+    /**
+     * Migra todos los tickets del incidente $old_incident
+     *
+     * @param $old_incident
+     * @return Ticket
+     */
+    private function tickets($old_incident)
+    {
+        //Tickets (No debería de haber más de un ticket en el sistema, pero...)
+        $oldTickets = $this->query('SELECT * FROM tickets WHERE incidents_id=' . $old_incident->id);
+
+        if (sizeof($oldTickets) > 0)
+            foreach ($oldTickets as &$oT) {
+                $ticket = new Ticket();
+                $this->modelTimestamps($ticket, $oT);
+                $ticket->id = $oT->id;
+                $ticket->otrs_ticket_id = $oT->otrs_ticket_id;
+                $ticket->otrs_ticket_number = $oT->otrs_ticket_number;
+                $ticket->internal_number = $oT->internal_number;
+                $ticket->send_reminder = $oT->reminder_sended;
+                $ticket->user_id = $oT->incident_handler_id;
+                $ticket->incident_id = $old_incident->id;
+                $ticket->ticket_status_id = $old_incident->incidents_status_id;
+                $ticket->save();
+            }
+        else {
+            $ticket = new Ticket();
+            $this->modelTimestamps($ticket, $old_incident);
+            $ticket->user_id = $old_incident->incident_handler_id;
+            $ticket->incident_id = $old_incident->id;
+            $ticket->internal_number = 'Por asignar...';
+            $ticket->ticket_status_id = 1;
+
+            return $ticket;
+        }
+    }
+
+    /**
+     * Almacena los tickets que no estaban asignados a un incidente
+     *
+     * @param array $newtickets : Tickets que no están asignados a un incidente
+     */
+    private function saveEmptyTickets(array $newtickets)
+    {
+        foreach ($newtickets as $newticket) {
+            $newticket->save();
+        }
     }
 }

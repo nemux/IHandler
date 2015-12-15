@@ -7,7 +7,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#' + '{{$id}}').select2({
-            placeholder: 'Categoría(s)...',
+            placeholder: 'Categoría...',
             allowClear: true,
             dropdownAutoWidth: true
         }).on('select2-open', function () {

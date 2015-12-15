@@ -42,6 +42,7 @@ class IncidentEvent extends Model
 
     /**
      * Permite ensamblar un arreglo de eventos
+     *
      * @param Incident $incident
      * @return array Lista de eventos agrupados si es
      * multiorigen a destino, origen a multidestino u origen-destino
