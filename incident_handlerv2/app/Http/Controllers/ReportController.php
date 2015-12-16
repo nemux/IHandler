@@ -43,7 +43,6 @@ class ReportController extends Controller
     public function incidentReportPost(Request $request, $report_type)
     {
         $initdate = new \DateTime();
-        \Log::info($request->except('_token'));
 
         $from_date = $request->get('from_date');
         $to_date = $request->get('to_date');

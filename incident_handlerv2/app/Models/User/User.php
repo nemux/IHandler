@@ -127,9 +127,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function hasRole($role)
     {
-        \Log::info($this->type->name);
-        \Log::info($role);
-
         return $this->type->name === $role;
     }
 }

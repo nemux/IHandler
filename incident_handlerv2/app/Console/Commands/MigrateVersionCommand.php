@@ -105,7 +105,7 @@ class MigrateVersionCommand extends Command
                 if ($this->option('rollback') != null) {
                     $this->rollback();
                 } else {
-                    //TODO drops specific table
+                    //TODO drops/truncate specific table
                 }
                 $this->migrate();
                 $this->catalogs();
@@ -116,7 +116,8 @@ class MigrateVersionCommand extends Command
                 $this->incidents();
             }
         }
-        $this->info("\nTerminado [" . date('d/m/Y H:i:s') . "]");
+        $this->info("");
+        $this->info("Terminado [" . date('d/m/Y H:i:s') . "]");
     }
 
     private function references()
