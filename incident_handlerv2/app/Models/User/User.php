@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Events\EventModel;
 use App\Events\EventUser;
 use App\Http\Controllers\Controller;
 use App\Models\Person\Person;
@@ -135,9 +136,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         parent::save($options);
 
-        $username = $options['username'];
         $user = $options['user'];
+        $model = $options['model'];
 
-        \Event::fire(new EventUser($username, $user));
+        \Event::fire(new EventModel($user, User::class, 'save/update', $model));
     }
 }
