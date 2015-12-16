@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Events\EventUser;
 use App\Http\Controllers\Controller;
 use App\Models\Person\Person;
 use Illuminate\Auth\Authenticatable;
@@ -128,5 +129,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function hasRole($role)
     {
         return $this->type->name === $role;
+    }
+
+    public function save(array $options = [])
+    {
+        parent::save($options);
+
+        $username = $options['username'];
+        $user = $options['user'];
+
+        \Event::fire(new EventUser($username, $user));
     }
 }

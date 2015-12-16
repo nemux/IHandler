@@ -33,34 +33,46 @@ class Log extends Model
     }
 
     /**
+     * Almacena en la bitácora un registro de tipo INFO
+     *
      * @param $message
      */
     public static function info($username, $message)
     {
         self::addLog(self::INFO, $username, $message);
+        \Log::info($message);
     }
 
     /**
+     * Almacena en la bitácora un registro de tipo DEBUG
+     *
      * @param $message
      */
     public static function debug($username, $message)
     {
         self::addLog(self::DEBUG, $username, $message);
+        \Log::debug($message);
     }
 
     /**
+     * Almacena en la bitácora un registro de tipo WARNING
+     *
      * @param $message
      */
     public static function warning($username, $message)
     {
         self::addLog(self::WARNING, $username, $message);
+        \Log::warning($message);
     }
 
     /**
+     * Almacena en la bitácora un registro de tipo ERROR
+     *
      * @param $message
      */
     public static function error($username, $message)
     {
         self::addLog(self::ERROR, $username, $message);
+        \Log::error($message);
     }
 }
