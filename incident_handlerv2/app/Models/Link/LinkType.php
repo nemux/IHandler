@@ -2,12 +2,11 @@
 
 namespace App\Models\Link;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 
 
-class LinkType extends Model
+class LinkType extends BaseModel
 {
     use SoftDeletes;
 

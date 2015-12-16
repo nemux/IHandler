@@ -110,8 +110,9 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrNew($id);
         $person = sizeof($customer->contacts) == 0 ? new Person() : $customer->contacts[0]->person;
+        $contact = $person->contact;
 
-        return view('customer.edit', compact('customer', 'person'));
+        return view('customer.edit', compact('customer', 'person','contact'));
     }
 
     /**

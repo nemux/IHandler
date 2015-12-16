@@ -2,10 +2,10 @@
 
 namespace App\Models\Catalog;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Location extends Model
+class Location extends BaseModel
 {
     use SoftDeletes;
 

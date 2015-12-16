@@ -2,13 +2,11 @@
 
 namespace App\Models\Incident;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Monolog\Formatter\LogglyFormatter;
-use PhpParser\Node\Expr\Cast\Array_;
 
 
-class IncidentEvent extends Model
+class IncidentEvent extends BaseModel
 {
     use SoftDeletes;
 
@@ -57,7 +55,7 @@ class IncidentEvent extends Model
             $event_relation = $event->event_relation;
 
             $event = null;
-            if ($event_relation === '11'||$event_relation === 'ol') {
+            if ($event_relation === '11' || $event_relation === 'ol') {
                 array_push($groupedEvents, ['type' => '11', 'source' => $source, 'target' => $target, 'payload' => $payload]);
             } else if ($event_relation === '1n') {
                 $found = false;

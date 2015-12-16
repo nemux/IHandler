@@ -69,7 +69,7 @@ class UserController extends Controller
         $user->active = $request->get('active') ? true : false;
         $user->username = $request->get('username');
         $user->password = bcrypt($password);
-        $user->save(['user' => \Auth::user()->username, 'model' => $user]);
+        $user->save();
 
         \Mail::send('email.newuser', compact(['user', 'password']), function ($mail) use ($user) {
             $mailTo = PersonContact::compareEmail($user->person->contact->email);
@@ -119,7 +119,7 @@ class UserController extends Controller
 
         $user->user_type_id = $request->get('user_type');
         $user->active = $request->get('active') ? true : false;
-        $user->save(['user' => \Auth::user()->username, 'model' => $user]);
+        $user->save();
 
         $user->person->name = $request->get('name');
         $user->person->lname = $request->get('lname');

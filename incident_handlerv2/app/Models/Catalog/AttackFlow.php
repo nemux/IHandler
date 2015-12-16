@@ -3,11 +3,11 @@
 namespace App\Models\Catalog;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-class AttackFlow extends Model
+class AttackFlow extends BaseModel
 {
     use SoftDeletes;
 

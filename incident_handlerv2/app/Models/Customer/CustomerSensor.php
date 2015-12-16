@@ -3,12 +3,12 @@
 namespace App\Models\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
-class CustomerSensor extends Model
+class CustomerSensor extends BaseModel
 {
     use SoftDeletes;
 

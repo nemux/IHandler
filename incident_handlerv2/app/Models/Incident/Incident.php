@@ -3,6 +3,7 @@
 namespace App\Models\Incident;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Catalog\AttackCategory;
 use App\Models\Catalog\AttackFlow;
 use App\Models\Catalog\AttackSignature;
@@ -11,12 +12,11 @@ use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\Ticket\Ticket;
 use App\Models\User\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
-class Incident extends Model
+class Incident extends BaseModel
 {
     use SoftDeletes;
 

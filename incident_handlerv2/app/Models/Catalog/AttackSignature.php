@@ -3,12 +3,11 @@
 namespace App\Models\Catalog;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
-class AttackSignature extends Model
+class AttackSignature extends BaseModel
 {
     use SoftDeletes;
 

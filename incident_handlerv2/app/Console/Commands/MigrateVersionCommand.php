@@ -347,7 +347,7 @@ class MigrateVersionCommand extends Command
                     $n->active = !$o->active;
                     $n->remember_token = $o->remember_token;
 
-                    $n->save(['user' => 'MIGRATION', 'model' => $n]);
+                    $n->save();
                 } catch (\Exception $e) {
                     $this->showError($e, 'usuario', $o->id);
                     //return;

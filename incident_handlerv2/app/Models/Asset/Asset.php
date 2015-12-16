@@ -2,12 +2,12 @@
 
 namespace App\Models\Asset;
 
+use App\Models\BaseModel;
 use App\Models\Catalog\Location;
 use App\Models\Incident\Machine;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Asset extends Model
+class Asset extends BaseModel
 {
     use SoftDeletes;
     protected $table = 'asset';

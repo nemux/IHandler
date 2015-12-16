@@ -2,12 +2,12 @@
 
 namespace App\Models\Incident;
 
+use App\Models\BaseModel;
 use App\Models\Catalog\AttackCategory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class IncidentAttackCategory extends Model
+class IncidentAttackCategory extends BaseModel
 {
     use SoftDeletes;
 

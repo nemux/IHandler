@@ -2,12 +2,12 @@
 
 namespace App\Models\Incident;
 
+use App\Models\BaseModel;
 use App\Models\Evidence\Evidence;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class IncidentEvidence extends Model
+class IncidentEvidence extends BaseModel
 {
     use  SoftDeletes;
 

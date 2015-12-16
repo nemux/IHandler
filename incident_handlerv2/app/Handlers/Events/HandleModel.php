@@ -3,13 +3,22 @@
 namespace App\Handlers\Events;
 
 use App\Events\EventModel;
+use App\Models\BaseModel;
 use App\Models\Log\Log;
 
 class HandleModel
 {
+    /**
+     * @var string
+     */
     protected $username;
-    protected $class;
+    /**
+     * @var BaseModel
+     */
     protected $model;
+    /**
+     * @var string
+     */
     protected $action;
 
     /**
@@ -30,11 +39,12 @@ class HandleModel
     public function handle(EventModel $event)
     {
         $this->username = $event->username;
-        $this->class = $event->class;
         $this->model = $event->model;
         $this->action = $event->action;
+
+        $class = strtoupper($event->model->getTable());
         $truncated = mb_strimwidth(json_encode($this->model), 0, 255);
 
-        Log::info($this->username, "Se {$this->action} un modelo de tipo '{$this->class}' con ID '{$this->model->id}' / '{$truncated}'");
+        Log::info($this->username, "{$this->action} de un objeto TIPO '{$class}' con ID '{$this->model->id}' / '{$truncated}'");
     }
 }

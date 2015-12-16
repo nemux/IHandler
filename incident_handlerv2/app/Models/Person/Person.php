@@ -3,13 +3,12 @@
 namespace App\Models\Person;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 
-class Person extends Model
+class Person extends BaseModel
 {
     use SoftDeletes;
 

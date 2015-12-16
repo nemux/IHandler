@@ -4,12 +4,7 @@ namespace App\Models\Log;
 
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @property  type
- * @property  message
- * @property  username
- */
-class Log extends Model
+class Log extends Model //Esta clase no extiende de BaseModel porque de lo contrario se ciclaría almacenando los datos de esta tabla
 {
     protected $table = 'log';
 

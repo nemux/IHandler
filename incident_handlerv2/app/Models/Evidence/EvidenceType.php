@@ -2,12 +2,11 @@
 
 namespace App\Models\Evidence;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 
 
-class EvidenceType extends Model
+class EvidenceType extends BaseModel
 {
     use SoftDeletes;
     /**

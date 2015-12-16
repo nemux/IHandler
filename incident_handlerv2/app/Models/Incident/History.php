@@ -2,12 +2,12 @@
 
 namespace App\Models\Incident;
 
+use App\Models\BaseModel;
 use App\Models\Customer\Customer;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Psy\Util\Json;
 
-class History extends Model
+class History extends BaseModel
 {
     use SoftDeletes;
 

@@ -3,15 +3,15 @@
 namespace App\Models\Surveillance;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\User\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
-class SurveillanceCase extends Model
+class SurveillanceCase extends BaseModel
 {
     use SoftDeletes;
 
