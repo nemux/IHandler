@@ -11,7 +11,7 @@ class AttackSignatureSeeder extends Seeder
      */
     public function run()
     {
-        $attackCategories = [
+        $attackSignatures = [
             [
 
                 "name" => ".htpasswd access",
@@ -4480,8 +4480,8 @@ class AttackSignatureSeeder extends Seeder
             ]
 
         ];
-        foreach ($attackCategories as $attackCategory) {
-            DB::table('attack_category')->insert($attackCategory);
+        foreach ($attackSignatures as $attackSignature) {
+            DB::table('attack_signature')->insert($attackSignature);
         }
     }
 
