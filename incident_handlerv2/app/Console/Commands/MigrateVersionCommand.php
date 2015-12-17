@@ -82,7 +82,7 @@ class MigrateVersionCommand extends Command
             } else if ($this->option('perform') == 'update' && $this->option('table') == 'incident_signature') {
                 $this->signatures();
             } else if ($this->option('perform') == 'tickets') {
-                $olds = $this->query('SELECT * FROM incidents WHERE id BETWEEN 4961 AND 6675'); //TODO remove date on production
+                $olds = $this->query('SELECT * FROM incidents');
                 $bar = $this->output->createProgressBar(count($olds));
                 $newtickets = [];
 
@@ -623,7 +623,7 @@ class MigrateVersionCommand extends Command
     {
         if (Incident::count() == 0) {
             $this->info("Migrando los objetos Incident");
-            $olds = $this->query('SELECT * FROM incidents WHERE id BETWEEN 4961 AND 6675'); //TODO remove date on production
+            $olds = $this->query('SELECT * FROM incidents');
 
             $bar = $this->output->createProgressBar(count($olds));
 
