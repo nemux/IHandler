@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Incident\Incident;
-use App\Models\Surveillance\SurveillanceCase;
 
 class DashboardController extends Controller
 {
