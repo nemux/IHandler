@@ -380,8 +380,7 @@
 <script src="/custom/assets/js/gcs-im/SocketIO.js"></script>
 <script>
     $(document).ready(function () {
-{{--        SocketIO.init('{{parse_url(url())['host']}}', 8001);--}}
-        SocketIO.init('10.30.4.18', 8002);
+        SocketIO.init('{{parse_url(url())['host']}}', 8002);
         SocketIO.start();
     });
 </script>
