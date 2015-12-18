@@ -18,8 +18,6 @@ class EventName extends Event implements ShouldBroadcast
      */
     public function __construct($data)
     {
-        \Log::info('__construct eventname');
-
         $this->data = $data;
     }
 
