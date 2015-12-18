@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
-var redis = new Redis('redis://:temp0ral@10.30.4.18:8002/4');  //TODO modificar en producción la IP y puerto
+var redis = new Redis('redis://:temp0ral@10.30.4.18:8002');  //TODO modificar en producción la IP y puerto
 
 redis.subscribe('test-channel', function (err, count) {
 });
