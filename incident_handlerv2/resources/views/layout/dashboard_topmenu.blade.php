@@ -375,5 +375,28 @@
         <!-- JavaScripts initializations and stuff -->
 <script src="/xenon/assets/js/xenon-custom.js" id="script-resource-7">
 </script>
+<script src="/xenon/assets/js/toastr/toastr.min.js"></script>
+<script src="/custom/assets/js/socket.io/socket.io.js"></script>
+<script>
+    var socket = io('http://localhost:8001'); //TODO update "localhost" to server host from laravel helper function
+    var socket_opts = {
+        "closeButton": true,
+        "debug": false,
+        "positionClass": "toast-top-right",
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    socket.on("test-channel:App\\Events\\EventName", function (message) {
+        console.log(message);
+        toastr.success(message.data, "Mensaje del servidor", socket_opts);
+    });
+</script>
 </body>
 </html>
