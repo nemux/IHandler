@@ -378,7 +378,7 @@
 <script src="/xenon/assets/js/toastr/toastr.min.js"></script>
 <script src="/custom/assets/js/socket.io/socket.io.js"></script>
 <script>
-    var socket = io('http://localhost:8001'); //TODO update "localhost" to server host from laravel helper function
+    var socket = io('http://{{parse_url(url())['host']}}:8001');
     var socket_opts = {
         "closeButton": true,
         "debug": false,
