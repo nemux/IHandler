@@ -4,10 +4,9 @@ var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis({
     port: 8001,          // Redis port
-    host: '10.30.4.18',   // Redis host
+    host: 'localhost',   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: 'auth',
-    db: 0
+    password: 'temp0ral'
 });
 
 redis.subscribe('test-channel', function (err, count) {
@@ -20,5 +19,5 @@ redis.on('message', function (channel, message) {
 });
 
 http.listen(8002, function () {
-    console.log('Listening on Port 8001');
+    console.log('Listening on Port 8002');
 });
