@@ -282,6 +282,13 @@
                                 <span class="title">Usuarios</span>
                             </a>
                         </li>
+                        {{--Usuarios Helpdesk--}}
+                        <li>
+                            <a class="l2" href="{{route('helpdesk.user.index')}}">
+                                <i class="fa fa-user"></i>
+                                <span class="title">Usuarios Helpdesk</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             @endif

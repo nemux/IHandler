@@ -28,10 +28,27 @@
 /**
  * Esto permite pasar Objetos a las rutas, en lugar de IDs
  */
-Route::model('user', 'Models\User\User');
+Route::model('user', \App\Models\User\User::class);
+Route::model('customer_user', \App\Models\Helpdesk\CustomerUser::class);
 
 Route::bind('user', function ($value, $route) {
-    return App\Models\User\User::whereUsername($value)->first();
+    $user = App\Models\User\User::whereUsername($value)->first();
+
+    if (!$user) {
+        abort(404, 'No se encontró al usuario que se buscaba');
+    }
+
+    return $user;
+});
+
+Route::bind('customer_user', function ($value, $route) {
+    $user =  \App\Models\Helpdesk\CustomerUser::whereUsername($value)->first();
+
+    if (!$user) {
+        abort(404, 'No se encontró al usuario que se buscaba');
+    }
+
+    return $user;
 });
 
 
@@ -85,6 +102,18 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::delete('/{user}', ['as' => 'user.destroy', 'uses' => 'UserController@destroy', 'middleware' => 'role:admin']);
 
         Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass', 'middleware' => 'role:admin']);
+    });
+
+    Route::group(['prefix' => 'helpdesk/user', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'helpdesk.user.index', 'uses' => 'Helpdesk\HelpdeskUserController@index']);
+        Route::get('/create', ['as' => 'helpdesk.user.create', 'uses' => 'Helpdesk\HelpdeskUserController@create']);
+        Route::post('/create', ['as' => 'helpdesk.user.create', 'uses' => 'Helpdesk\HelpdeskUserController@store']);
+        Route::get('/{customer_user}', ['as' => 'helpdesk.user.show', 'uses' => 'Helpdesk\HelpdeskUserController@show']);
+        Route::get('/edit/{customer_user}', ['as' => 'helpdesk.user.edit', 'uses' => 'Helpdesk\HelpdeskUserController@edit']);
+        Route::post('/edit/{customer_user}', ['as' => 'helpdesk.user.update', 'uses' => 'Helpdesk\HelpdeskUserController@update']);
+        Route::delete('/{customer_user}', ['as' => 'helpdesk.user.destroy', 'uses' => 'Helpdesk\HelpdeskUserController@destroy']);
+
+        Route::post('/changepass', ['as' => 'helpdesk.user.change_pass', 'uses' => 'Helpdesk\HelpdeskUserController@changePass']);
     });
 
     Route::group(['prefix' => 'customer'], function () {

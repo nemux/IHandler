@@ -86,6 +86,17 @@ return [
             'schema' => 'public',
         ],
 
+        'hd_pgsql' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HD_HOST', 'localhost'),
+            'database' => env('DB_HD_DATABASE', 'forge'),
+            'username' => env('DB_HD_USERNAME', 'forge'),
+            'password' => env('DB_HD_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),
