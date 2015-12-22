@@ -2,13 +2,12 @@
 
 namespace App\Models\Surveillance;
 
+use App\Models\BaseModel;
 use App\Models\Evidence\Evidence;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 
 
-class SurveillanceCaseEvidence extends Model
+class SurveillanceCaseEvidence extends BaseModel
 {
     use SoftDeletes;
     /**

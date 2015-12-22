@@ -14,13 +14,15 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-Event::listen('illuminate.query', function ($sql, $bindings) {
-    foreach ($bindings as $val) {
-        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-    }
-
-    Log::info($sql);
-});
+//Event::listen('illuminate.query', function ($sql, $bindings) {
+//
+//    foreach ($bindings as $val) {
+//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+//    }
+//
+////    \App\Models\Log\Log::info($sql);
+////    \App\Models\Log\Log::info("-------------------------------------------------------------------------------------------------------");
+//});
 
 
 /**
@@ -50,6 +52,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/edit/{id}', ['as' => 'incident.edit', 'uses' => 'IncidentController@update']);
 
         Route::get('/pdf/{id}/{download}', ['as' => 'incident.pdf', 'uses' => 'IncidentController@getPdf']);
+        Route::get('/doc/{id}', ['as' => 'incident.doc', 'uses' => 'IncidentController@getDoc']);
         Route::get('/email/{id}', ['as' => 'incident.email', 'uses' => 'IncidentController@email']);
 
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
@@ -67,6 +70,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/annex/create', ['as' => 'incident.annex.store', 'uses' => 'IncidentController@storeAnnex']);
         Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
         Route::delete('/note/delete', ['as' => 'incident.note.delete', 'uses' => 'IncidentController@deleteNote']);
+
+        Route::get('/search', ['as' => 'incident.search', 'uses' => 'SearchEngineController@incident']);
+        Route::post('/search', ['as' => 'incident.search.post', 'uses' => 'SearchEngineController@incidentSearch']);
     });
 
     Route::group(['prefix' => 'user'], function () {
@@ -136,6 +142,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/edit/{id}', ['as' => 'surveillance.edit', 'uses' => 'SurveillanceController@update']);
 
         Route::get('/pdf/{id}/{download}', ['as' => 'surveillance.pdf', 'uses' => 'SurveillanceController@getPdf']);
+        Route::get('/doc/{id}', ['as' => 'surveillance.doc', 'uses' => 'SurveillanceController@getDoc']);
         Route::get('/email/{id}', ['as' => 'surveillance.email', 'uses' => 'SurveillanceController@email']);
 
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'SurveillanceController@preview']);
@@ -151,52 +158,52 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
     });
 
-    Route::group(['prefix' => 'attack', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'attack'], function () {//, 'middleware' => 'role:admin'
         Route::get('/', ['as' => 'attack.index', 'uses' => 'AttackTypeController@index']);
-        Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit']);
-        Route::post('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@update']);
-        Route::get('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@create']);
-        Route::post('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@store']);
-        Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'attack.create', 'uses' => 'AttackTypeController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'attack.destroy', 'uses' => 'AttackTypeController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'attack.show', 'uses' => 'AttackTypeController@show']);
     });
 
-    Route::group(['prefix' => 'criticity', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'criticity'], function () {
         Route::get('/', ['as' => 'criticity.index', 'uses' => 'CriticityController@index']);
-        Route::get('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@edit']);
-        Route::post('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@update']);
-        Route::get('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@create']);
-        Route::post('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@store']);
-        Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'criticity.edit', 'uses' => 'CriticityController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'criticity.create', 'uses' => 'CriticityController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'criticity.destroy', 'uses' => 'CriticityController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'criticity.show', 'uses' => 'CriticityController@show']);
     });
 
-    Route::group(['prefix' => 'flow', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'flow'], function () {
         Route::get('/', ['as' => 'flow.index', 'uses' => 'AttackFlowController@index']);
-        Route::get('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@edit']);
-        Route::post('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@update']);
-        Route::get('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@create']);
-        Route::post('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@store']);
-        Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'flow.edit', 'uses' => 'AttackFlowController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'flow.create', 'uses' => 'AttackFlowController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'flow.destroy', 'uses' => 'AttackFlowController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'flow.show', 'uses' => 'AttackFlowController@show']);
     });
 
-    Route::group(['prefix' => 'category', 'middleware' => 'role:admin'], function () {
+    Route::group(['prefix' => 'category'], function () {
         Route::get('/', ['as' => 'category.index', 'uses' => 'AttackCategoryController@index']);
-        Route::get('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@edit']);
-        Route::post('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@update']);
-        Route::get('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@create']);
-        Route::post('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@store']);
-        Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy']);
+        Route::get('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@edit', 'middleware' => 'role:admin']);
+        Route::post('/edit/{id}', ['as' => 'category.edit', 'uses' => 'AttackCategoryController@update', 'middleware' => 'role:admin']);
+        Route::get('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@create', 'middleware' => 'role:admin']);
+        Route::post('/create', ['as' => 'category.create', 'uses' => 'AttackCategoryController@store', 'middleware' => 'role:admin']);
+        Route::delete('/{id}', ['as' => 'category.destroy', 'uses' => 'AttackCategoryController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'category.show', 'uses' => 'AttackCategoryController@show']);
     });
 
     Route::group(['prefix' => 'signature'], function () {
         Route::get('/', ['as' => 'signature.index', 'uses' => 'AttackSignatureController@index']);
-        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,coord']);
-        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,coord']);
-        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create', 'middleware' => 'role:admin,coord']);
-        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store', 'middleware' => 'role:admin,coord']);
+        Route::get('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@edit', 'middleware' => 'role:admin,user_1']);
+        Route::post('/edit/{id}', ['as' => 'signature.edit', 'uses' => 'AttackSignatureController@update', 'middleware' => 'role:admin,user_1']);
+        Route::get('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@create', 'middleware' => 'role:admin,user_1']);
+        Route::post('/create', ['as' => 'signature.create', 'uses' => 'AttackSignatureController@store', 'middleware' => 'role:admin,user_1']);
         Route::delete('/{id}', ['as' => 'signature.destroy', 'uses' => 'AttackSignatureController@destroy', 'middleware' => 'role:admin']);
         Route::get('/show/{id}', ['as' => 'signature.show', 'uses' => 'AttackSignatureController@show']);
         Route::get('/json/{id}', ['as' => 'signature.json', 'uses' => 'AttackSignatureController@getSignature']);
@@ -214,16 +221,52 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::get('test', 'DashboardController@test');
-});
 
-Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
-    Route::get('/', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
-    Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
-    Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
-    Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
-    Route::get('/incidents/flow/{days}', ['as' => 'incidents.flow', 'uses' => 'StatisticsController@incidentsFlow']);
-    Route::get('/incidents/type/{days}', ['as' => 'incidents.type', 'uses' => 'StatisticsController@incidentsType']);
+    Route::group(['prefix' => 'stats', 'middleware' => 'auth'], function () {
+        Route::get('/', ['as' => 'stats.index', 'uses' => 'StatisticsController@index']);
 
-    Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
-    Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+        Route::get('/customer', ['as' => 'stats.customer', 'uses' => 'StatisticsController@customer']);
+        Route::post('/customer', ['as' => 'stats.customer.post', 'uses' => 'StatisticsController@customerIncidents']);
+
+        Route::get('/eventside', ['as' => 'stats.eventside', 'uses' => 'StatisticsController@eventsideIncidents']);
+        Route::post('/eventside', ['as' => 'stats.eventside.post', 'uses' => 'StatisticsController@eventsideIncidentsPost']);
+
+        Route::get('/handler', ['as' => 'stats.handler', 'uses' => 'StatisticsController@handlerIncidents']);
+        Route::post('/handler', ['as' => 'stats.handler.post', 'uses' => 'StatisticsController@handlerIncidentsPost']);
+
+        Route::get('/category', ['as' => 'stats.category', 'uses' => 'StatisticsController@categoryIncidents']);
+        Route::post('/category', ['as' => 'stats.category.post', 'uses' => 'StatisticsController@categoryIncidentsPost']);
+
+        Route::get('/criticity', ['as' => 'stats.criticity', 'uses' => 'StatisticsController@criticityIncidents']);
+        Route::post('/criticity', ['as' => 'stats.criticity.post', 'uses' => 'StatisticsController@criticityIncidentsPost']);
+
+        Route::get('/attacktype', ['as' => 'stats.attacktype', 'uses' => 'StatisticsController@attacktypeIncidents']);
+        Route::post('/attacktype', ['as' => 'stats.attacktype.post', 'uses' => 'StatisticsController@attacktypeIncidentsPost']);
+
+        Route::get('/sensor', ['as' => 'stats.sensor', 'uses' => 'StatisticsController@sensorIncidents']);
+        Route::post('/sensor', ['as' => 'stats.sensor.post', 'uses' => 'StatisticsController@sensorIncidentsPost']);
+
+        Route::get('/attackflow', ['as' => 'stats.attackflow', 'uses' => 'StatisticsController@attackflowIncidents']);
+        Route::post('/attackflow', ['as' => 'stats.attackflow.post', 'uses' => 'StatisticsController@attackflowIncidentsPost']);
+
+        Route::get('/machinetype', ['as' => 'stats.machinetype', 'uses' => 'StatisticsController@machinetypeIncidents']);
+        Route::post('/machinetype', ['as' => 'stats.machinetype.post', 'uses' => 'StatisticsController@machinetypeIncidentsPost']);
+    });
+
+    Route::group(['prefix' => 'report', 'middleware' => 'auth'], function () {
+        Route::get('/incident/{report_type}', ['as' => 'report.incident', 'uses' => 'ReportController@incidentReport']);
+        Route::post('/incident/{report_type}', ['as' => 'report.incident.post', 'uses' => 'ReportController@incidentReportPost']);
+    });
+
+    Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
+//        Route::get('/incidents', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
+        Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
+        Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
+        Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
+        Route::get('/incidents/flow/{days}', ['as' => 'incidents.flow', 'uses' => 'StatisticsController@incidentsFlow']);
+        Route::get('/incidents/type/{days}', ['as' => 'incidents.type', 'uses' => 'StatisticsController@incidentsType']);
+
+        Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
+        Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+    });
 });

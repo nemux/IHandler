@@ -2,11 +2,11 @@
 
 namespace App\Models\Incident;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class MachineType extends Model
+class MachineType extends BaseModel
 {
     use SoftDeletes;
 

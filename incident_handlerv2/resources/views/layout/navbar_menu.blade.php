@@ -1,4 +1,4 @@
-<nav class="navbar horizontal-menu navbar-fixed-top">
+<nav class="navbar horizontal-menu navbar-fixed-top" role="navigation">
     <div class="navbar-inner">
         <div class="navbar-brand">
             <a href="{{route('dashboard.index')}}" class="logo">
@@ -42,9 +42,60 @@
                         </a>
                     </li>
                     <li>
-                        <a class="l2" href="{{route('incident.index')}}">
-                            <span class="title">Lista de Incidentes</span>
+                        <a class="l2" href="{{route('statistics.index')}}">
+                            <i class="fa fa-line-chart"></i>
+                            <span class="title">Estadísticas</span>
                         </a>
+                    </li>
+                    <li>
+                        <a class="l2">
+                            <i class="fa fa-line-chart"></i>
+                            <span class="title">Estadísticas</span>
+                        </a>
+                        <ul>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-area-chart"></i>
+                                    <span class="title">Incidentes por Cliente</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-list-ol"></i>
+                                    <span class="title">Direcciones IP por Cliente (en blacklist)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-area-chart"></i>
+                                    <span class="title">Incidentes reportados por Handler</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-pie-chart"></i>
+                                    <span class="title">Incidentes por Categoría</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-pie-chart"></i>
+                                    <span class="title">Incidentes por Criticidad</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-pie-chart"></i>
+                                    <span class="title">Incidentes por Tipo de Ataque</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="l3" href="">
+                                    <i class="fa fa-pie-chart"></i>
+                                    <span class="title">Incidentes por Sensor</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

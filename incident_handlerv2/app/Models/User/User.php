@@ -2,20 +2,21 @@
 
 namespace App\Models\User;
 
+use App\Events\EventUser;
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Person\Person;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Http\Request;
 
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword, SoftDeletes;
 
@@ -127,6 +128,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function hasRole($role)
     {
-        return $this->type->name===$role;
+        return $this->type->name === $role;
     }
 }

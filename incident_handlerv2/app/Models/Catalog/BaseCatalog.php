@@ -2,9 +2,9 @@
 
 namespace App\Models\Catalog;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class BaseCatalog extends Model
+class BaseCatalog// extends BaseModel
 {
     public $title;
     public $name;

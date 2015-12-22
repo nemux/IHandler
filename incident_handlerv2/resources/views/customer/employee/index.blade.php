@@ -1,14 +1,46 @@
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $("#customer-employees-table").dataTable({
-            aoColumns: [
-                null,
-                null,
-                null,
-                null,
-                null
-            ],
-        });
+    var empl_tableClassName = '{{$customer->name}} - Empleados';
+    var empl_datatableOptions = {
+        dom: "<'row'<'col-sm-5'B><'col-sm-7'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: [
+            {
+                text: 'Copiar Tabla',
+                extend: 'copyHtml5'
+            }, {
+                extend: 'collection',
+                text: 'Exportar a...',
+                buttons: [{
+                    text: 'CSV',
+                    extend: 'csvHtml5',
+                    title: empl_tableClassName
+                }, {
+                    text: 'PDF',
+                    extend: 'pdfHtml5',
+                    title: empl_tableClassName
+                }]
+            }, {
+                text: 'Imprimir',
+                extend: 'print',
+                title: empl_tableClassName
+            }
+        ],
+        language: {
+            buttons: {
+                pageLength: {
+                    _: 'Mostrar %d ' + empl_tableClassName,
+                    '-1': 'Todos'
+                }
+            },
+            infoEmpty: 'No hay registros para mostrar',
+            zeroRecords: 'No hay registros para mostrar',
+            info: 'Mostrando del _START_ al _END_ <b>(_TOTAL_ registros)</b>',
+            search: 'Buscar: ',
+            infoFiltered: ' - Filtrado de <b>_MAX_</b> registros en total'
+        },
+        sorting: [[0, 'asc']]
+    };
+    $(document).ready(function ($) {
+        $("#customer-employees-table").DataTable(empl_datatableOptions);
     });
 </script>
 

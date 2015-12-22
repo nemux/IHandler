@@ -14,6 +14,12 @@
          */
         $('#customer_id').change(function () {
             var customer_id = $(this).find('option:selected').attr('value');
+
+            if (!customer_id) {
+                $("#sensor_id").select2("val", "").empty();
+                return;
+            }
+
             $.ajax({
                 url: '/dashboard/ws/sensors/' + customer_id,
                 type: 'get',

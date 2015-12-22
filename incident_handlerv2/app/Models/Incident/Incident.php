@@ -3,6 +3,7 @@
 namespace App\Models\Incident;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Catalog\AttackCategory;
 use App\Models\Catalog\AttackFlow;
 use App\Models\Catalog\AttackSignature;
@@ -11,18 +12,17 @@ use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\Ticket\Ticket;
 use App\Models\User\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
-class Incident extends Model
+class Incident extends BaseModel
 {
     use SoftDeletes;
 
     protected $table = 'incident';
 
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'detection_time', 'occurrence_time'];
 
     protected static $attributeNames = [
         'title' => 'Título del Incidente',
@@ -93,7 +93,7 @@ class Incident extends Model
      */
     public function categories()
     {
-        return $this->hasMany(IncidentAttackCategory::class, 'incident_id');
+        return $this->hasMany(IncidentAttackCategory::class, 'incident_id')->orderBy('id', 'asc');;
     }
 
     /**
@@ -125,16 +125,6 @@ class Incident extends Model
         return $this->hasMany(IncidentAttackSignature::class, 'incident_id');
     }
 
-    public function signatures_list()
-    {
-        $list = '<ul>';
-        foreach ($this->signatures as $signature) {
-            $list .= '<li>' . $signature->signature->name . '</li>';
-        }
-        $list .= '</ul>';
-        return $list;
-    }
-
     /**
      * Resuelve si una firma está relacionada con las firmas de un incidente
      *
@@ -158,17 +148,7 @@ class Incident extends Model
      */
     public function sensors()
     {
-        return $this->hasMany(IncidentCustomerSensor::class, 'incident_id');
-    }
-
-    public function sensors_list()
-    {
-        $list = '<ul>';
-        foreach ($this->sensors as $sensor) {
-            $list .= '<li>' . $sensor->sensor->name . '</li>';
-        }
-        $list .= '</ul>';
-        return $list;
+        return $this->hasMany(IncidentCustomerSensor::class, 'incident_id')->orderBy('id', 'asc');
     }
 
     /**
@@ -262,11 +242,21 @@ class Incident extends Model
         return $this->belongsTo(Criticity::class, 'criticity_id');
     }
 
+    /**
+     * Relación entre un Incidente y el tipo de ataque
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function type()
     {
         return $this->belongsTo(AttackType::class, 'attack_type_id');
     }
 
+    /**
+     * Relación entre un Incidente y su Ticket
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function ticket()
     {
         return $this->hasOne(Ticket::class, 'incident_id');
@@ -287,6 +277,11 @@ class Incident extends Model
         return false;
     }
 
+    /**
+     * Obtiene los eventos de un incidente agrupados
+     *
+     * @return array
+     */
     public function getGroupedEvents()
     {
         return IncidentEvent::generateArray($this);
@@ -323,7 +318,11 @@ class Incident extends Model
         return $this->hasMany(Note::class, 'incident_id')->orderBy('id', 'asc');
     }
 
-
+    /**
+     * Determina si un campo en la vista debe estar o no habilitado
+     *
+     * @return string
+     */
     public function fieldEnabled()
     {
         return (isset($this->ticket->ticket_status_id) && $this->ticket->ticket_status_id >= 2) ? 'disabled' : '';

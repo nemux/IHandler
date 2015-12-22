@@ -4,12 +4,12 @@ namespace App\Models\Incident;
 
 use App\Http\Controllers\AssetController;
 use App\Models\Asset\Asset;
+use App\Models\BaseModel;
 use App\Models\Catalog\Location;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Machine extends Model
+class Machine extends BaseModel
 {
     use SoftDeletes;
 

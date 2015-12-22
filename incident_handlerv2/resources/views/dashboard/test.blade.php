@@ -89,7 +89,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            @include('chart._incidents')
+                            @include('dashboard.chart._incidents')
                         </div>
                     </div>
                 </div>

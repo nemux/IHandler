@@ -3,11 +3,11 @@
 namespace App\Models\Incident;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
-class Annex extends Model
+class Annex extends BaseModel
 {
     use SoftDeletes;
 

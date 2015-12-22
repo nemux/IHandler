@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
+    $(document).ready(function ($) {
         $("#customer_id").select2({
             placeholder: 'Selecciona un cliente...',
             allowClear: true,
@@ -105,7 +105,7 @@
         <h3 class="title">Descripción</h3>
 
         <div class="form-group">
-            <input class="btn btn-lg btn-info" type="button" onclick="jQuery('#modal-files-uploaded').modal('show');"
+            <input class="btn btn-lg btn-info" type="button" onclick="$('#modal-files-uploaded').modal('show');"
                    value="Mostrar evidencias">
         </div>
         <div class="form-group">

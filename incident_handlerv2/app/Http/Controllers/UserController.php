@@ -19,7 +19,6 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy('id')->get();
-
         return view('user.index', compact('users'));
     }
 
@@ -34,7 +33,7 @@ class UserController extends Controller
         $person = new Person();
         $contact = new PersonContact();
 
-        return view('user.create', compact('user', 'person','contact'));
+        return view('user.create', compact('user', 'person', 'contact'));
     }
 
     /**
@@ -67,7 +66,7 @@ class UserController extends Controller
         $user = new User();
         $user->person_id = $person->id;
         $user->user_type_id = $request->get('user_type');
-        $user->active = $request->get('active');
+        $user->active = $request->get('active') ? true : false;
         $user->username = $request->get('username');
         $user->password = bcrypt($password);
         $user->save();
@@ -102,7 +101,7 @@ class UserController extends Controller
     {
         $person = $user->person;
         $contact = $person->contact;
-        return view('user.edit', compact('user', 'person','contact'));
+        return view('user.edit', compact('user', 'person', 'contact'));
     }
 
     /**
@@ -119,7 +118,7 @@ class UserController extends Controller
         PersonContact::validateUpdate($request, $this);
 
         $user->user_type_id = $request->get('user_type');
-        $user->active = $request->get('active');
+        $user->active = $request->get('active') ? true : false;
         $user->save();
 
         $user->person->name = $request->get('name');

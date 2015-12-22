@@ -31,6 +31,12 @@
             $(btn).attr('disabled', false);
         }
 
+        function doc(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('incident.doc',$case)}}', '_self');
+            $(btn).attr('disabled', false);
+        }
+
         function mail(btn) {
             $(btn).attr('disabled', true);
             window.open('{{route('incident.email',$case)}}', '_self');
@@ -128,7 +134,7 @@
                         },
                         data: {
                             _method: 'delete',
-                            id:id
+                            id: id
                         },
                         success: function (result) {
                             if (result.status === 0) {
@@ -161,13 +167,16 @@
 
 @section('dashboard_content')
     <div class="row">
-        @if($case->ticket->ticket_status_id===1 ||$case->ticket->ticket_status_id===2 )
+        @if(isset($case->ticket) && ($case->ticket->ticket_status_id===1 ||$case->ticket->ticket_status_id===2 ))
             <div class="btn btn-primary" onclick="edit(this)">
                 <i class="fa fa-pencil fa-fw"></i> Editar Caso
             </div>
         @endif
-        <div class="btn btn-info" onclick="pdf(this)">
+        <div class="btn btn-danger" onclick="pdf(this)">
             <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
+        </div>
+        <div class="btn btn-blue" onclick="doc(this)">
+            <i class="fa fa-file-word-o fa-fw"></i> Generar DOC
         </div>
         <div class="btn btn-success"
              onclick="mail(this)">
@@ -252,7 +261,7 @@
                             </div>
                         </section>
 
-                        @if($case->ticket->ticket_status_id==4)
+                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==4)
                             <h3>Caso Cerrado</h3>
                             <section class="gallery-env">
                                 <div class="row">
@@ -265,7 +274,7 @@
                             </section>
                         @endif
 
-                        @if($case->ticket->ticket_status_id==5)
+                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==5)
                             <h3>Falso Positivo</h3>
                             <section class="gallery-env">
                                 <div class="row">

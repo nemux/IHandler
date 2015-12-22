@@ -143,7 +143,7 @@ class EvidenceController extends Controller
 
     public static function uploadSingleFile($file)
     {
-        \Log::info('Updating single file');
+//        \Log::info('Updating single file');
         $mimeType = \File::mimeType($file);
 
         $md5 = hash_file('md5', $file);

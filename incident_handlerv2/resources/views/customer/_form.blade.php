@@ -23,6 +23,6 @@
 <div class="form-group row">
     {!! Form::label('logo','Logotipo',['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::file('logo',['class'=>'form-control']) !!}
+        {!! Form::file('logo',[]) !!}
     </div>
 </div>

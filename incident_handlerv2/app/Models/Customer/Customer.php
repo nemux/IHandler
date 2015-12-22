@@ -4,12 +4,12 @@ namespace App\Models\Customer;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Surveillance\SurveillanceCase;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
-class Customer extends Model
+class Customer extends BaseModel
 {
     use SoftDeletes;
     /**

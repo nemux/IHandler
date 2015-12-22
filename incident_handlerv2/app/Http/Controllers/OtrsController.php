@@ -43,7 +43,7 @@ class OtrsController extends Controller
 
                     $count = Customer::whereOtrsUserId($userID)->whereOtrsCustomerId($userCustomerID)->count();
 
-                    \Log::info("Count $count $userID $userCustomerID");
+//                    \Log::info("Count $count $userID $userCustomerID");
 
                     if ($count === 0) {
                         $customer = new Customer();

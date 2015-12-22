@@ -2,12 +2,12 @@
 
 namespace App\Models\Incident;
 
+use App\Models\BaseModel;
 use App\Models\Customer\CustomerSensor;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class IncidentCustomerSensor extends Model
+class IncidentCustomerSensor extends BaseModel
 {
     use SoftDeletes;
 

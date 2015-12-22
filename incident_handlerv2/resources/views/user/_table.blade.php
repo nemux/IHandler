@@ -1,13 +1,46 @@
 <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $("#users-table").dataTable({
-            aoColumns: [
-                null,
-                null,
-                null,
-                null
-            ],
-        });
+    var user_tableClassName = 'Usuarios';
+    var user_datatableOptions = {
+        dom: "<'row'<'col-sm-5'B><'col-sm-7'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: [
+            {
+                text: 'Copiar Tabla',
+                extend: 'copyHtml5'
+            }, {
+                extend: 'collection',
+                text: 'Exportar a...',
+                buttons: [{
+                    text: 'CSV',
+                    extend: 'csvHtml5',
+                    title: user_tableClassName
+                }, {
+                    text: 'PDF',
+                    extend: 'pdfHtml5',
+                    title: user_tableClassName
+                }]
+            }, {
+                text: 'Imprimir',
+                extend: 'print',
+                title: user_tableClassName
+            }
+        ],
+        language: {
+            buttons: {
+                pageLength: {
+                    _: 'Mostrar %d ' + user_tableClassName,
+                    '-1': 'Todos'
+                }
+            },
+            infoEmpty: 'No hay registros para mostrar',
+            zeroRecords: 'No hay registros para mostrar',
+            info: 'Mostrando del _START_ al _END_ <b>(_TOTAL_ registros)</b>',
+            search: 'Buscar: ',
+            infoFiltered: ' - Filtrado de <b>_MAX_</b> registros en total'
+        },
+        sorting: [[0, 'asc']]
+    };
+    $(document).ready(function ($) {
+        $("#users-table").DataTable(user_datatableOptions);
     });
 </script>
 <table class="table table-bordered table-striped" id="users-table">

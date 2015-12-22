@@ -42,7 +42,7 @@
 }
 
 .page-container {
-    margin-top: 85px !important;
+    /*margin-top: 85px !important;*/
 }
 
 .modal-dialog {
@@ -71,4 +71,26 @@
 
 .page-container .main-content {
     word-break: keep-all;
+}
+
+.jumbotron {
+    padding: 0 !important;
+}
+
+.date-and-time .form-control.datepicker {
+    width: 100%;
+}
+
+.cut-title {
+    max-width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.text-crop {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

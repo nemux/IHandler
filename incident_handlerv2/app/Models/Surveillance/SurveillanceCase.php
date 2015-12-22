@@ -3,15 +3,15 @@
 namespace App\Models\Surveillance;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseModel;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 
 
-class SurveillanceCase extends Model
+class SurveillanceCase extends BaseModel
 {
     use SoftDeletes;
 
@@ -61,11 +61,22 @@ class SurveillanceCase extends Model
 
     /**
      * Relaciona un caso con el cliente al que pertenece
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    /**
+     * Relaciona un caso con el usuario que levantó el caso
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

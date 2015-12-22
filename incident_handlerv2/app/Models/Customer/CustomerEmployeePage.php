@@ -2,11 +2,11 @@
 
 namespace App\Models\Customer;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class CustomerEmployeePage extends Model
+class CustomerEmployeePage extends BaseModel
 {
     use SoftDeletes;
     /**

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
+use App\Events\EventName;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class AuthController extends Controller
 {
@@ -78,13 +79,14 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $this->validate($request, [
-            $this->loginUsername() => 'required',
+            $this->loginUsername() => 'required|exists:user,username,active,1',
             'password' => 'required',
         ]);
 
         $credentials = $this->getCredentials($request);
 
         if (Auth::attempt($credentials)) {
+            \Event::fire(new EventName("El usuario <b>" . \Auth::user()->username . "</b> inició sesión"));
             return redirect()->intended($this->redirectPath());
         } else {
             return redirect(route('login.get'))->with('message', 'Usuario o contraseña incorrectos');

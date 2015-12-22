@@ -15,7 +15,10 @@
     "doctrine/dbal": "2.3.5",
     "enyo/dropzone": "v4.0.1",
     "tijsverkoyen/css-to-inline-styles": "1.5.4",
-    "barryvdh/laravel-dompdf": "v0.6.0"
+    "barryvdh/laravel-dompdf": "v0.6.0",
+    "phpoffice/phpword": "dev-master",
+    "phpoffice/phpexcel": "dev-master",
+    "predis/predis": "^1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

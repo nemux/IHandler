@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use App\Library\Otrs\OtrsClient;
+use App\Library\Pdf;
+use App\Library\WordGenerator;
 use App\Models\Evidence\Evidence;
 use App\Models\Evidence\EvidenceType;
 use App\Models\Incident\Annex;
@@ -16,12 +20,7 @@ use App\Models\Incident\Note;
 use App\Models\Person\PersonContact;
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Library\Otrs\OtrsClient;
-use Illuminate\Support\Facades\Log;
-use Mockery\CountValidator\Exception;
 use Psy\Util\Json;
-use Symfony\Component\Debug\Exception\FatalErrorException;
 
 class IncidentController extends Controller
 {
@@ -35,7 +34,23 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $incidents = Incident::all();
+        $query = Incident::select('incident.id',
+            'ticket.internal_number',
+            'incident.title',
+            'user.username',
+            'incident.detection_time',
+            'ticket_status.name as status',
+            'criticity.name as criticity');
+
+        $query->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
+            ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
+            ->leftJoin('user', 'user.id', '=', 'incident.user_id')
+            ->leftJoin('criticity', 'criticity.id', '=', 'incident.criticity_id')
+            ->with('signatures.signature')
+            ->with('sensors.sensor');
+
+        $incidents = $query->orderBy('id', 'desc')->paginate(10);
+
         return view('incident.index', compact('incidents'));
     }
 
@@ -324,7 +339,7 @@ class IncidentController extends Controller
     public function getPdf($id, $download = false)
     {
         $case = Incident::whereId($id)->first();
-        $pdf = PdfController::generatePdf($case, 'pdf.incident');
+        $pdf = Pdf::generatePdf($case, 'pdf.incident');
         $docName = $case->title . '.pdf';
 
         if ($download) {
@@ -332,6 +347,29 @@ class IncidentController extends Controller
         } else {
             return $pdf->stream($docName);
         }
+    }
+
+    /**
+     * Método que se ejecuta en una petición GET para generar el Doc de Word del incidente
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getDoc($id)
+    {
+        $case = Incident::whereId($id)->first();
+        $doc = new  WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
+        $doc->addCases($case);
+        $file = $doc->streamDocument();
+
+        $docname = $case->ticket ? $case->ticket->internal_number : 'ID' . $case->id;
+
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename={$docname}.docx"
+        );
+
+        return \Response::make($file, 200, $headers);
     }
 
     /**
@@ -348,7 +386,7 @@ class IncidentController extends Controller
                 $message->attach($file, ['as' => $name]);
             }
 
-            $pdf = PdfController::generatePdf($incident, 'pdf.incident');
+            $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
@@ -412,7 +450,7 @@ class IncidentController extends Controller
      */
     public function updateEvidence(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $ie_id = $request->get('id');
         $ie_note = $request->get('note');
@@ -475,22 +513,22 @@ class IncidentController extends Controller
         $newTicketStatusId = $request->get('status');
         $incident = Incident::whereId($incidentId)->first();
 
-        \Log::info($newTicketStatusId);
+//        \Log::info($newTicketStatusId);
         if ($newTicketStatusId == 5 || $newTicketStatusId == 4) {
-            \Log::info('is 5 or 4');
+//            \Log::info('is 5 or 4');
 
             $files = $request->file('fp-files');
 
             if ($newTicketStatusId == 5) {
-                \Log::info('is 5');
+//                \Log::info('is 5');
                 $evidenceType = EvidenceType::whereName('Falso Positivo')->first();
             } else if ($newTicketStatusId == 4) {
-                \Log::info('is 4');
+//                \Log::info('is 4');
                 $evidenceType = EvidenceType::whereName('Cerrado')->first();
             }
 
             foreach ($files as $file) {
-                \Log::info($file);
+//                \Log::info($file);
                 $evidence = EvidenceController::uploadSingleFile($file);
                 $incidentEvidence = new IncidentEvidence();
                 $incidentEvidence->incident_id = $incident->id;
@@ -572,7 +610,7 @@ class IncidentController extends Controller
             ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
             ->where('ticket.internal_number', '!=', '')
             ->count();
-        \Log::info($ticketCount);
+//        \Log::info($ticketCount);
 
 //        $incident = Incident::whereId(19)->first();
 //        $emails = '';
@@ -650,7 +688,7 @@ class IncidentController extends Controller
      */
     public function deleteNote(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         $note = Note::whereId($request->get('id'))->first();
         $status = $note->incident->ticket->ticket_status_id;

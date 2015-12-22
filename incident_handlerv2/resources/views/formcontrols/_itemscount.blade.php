@@ -1,0 +1,1 @@
+<input type="text" class="form-control" id="{{$id}}" name="{{$id}}" placeholder="Cantidad de elementos..." value="10"/>

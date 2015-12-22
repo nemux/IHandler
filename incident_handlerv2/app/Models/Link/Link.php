@@ -3,13 +3,12 @@
 namespace App\Models\Link;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 
-class Link extends Model
+class Link extends BaseModel
 {
     use SoftDeletes;
     /**

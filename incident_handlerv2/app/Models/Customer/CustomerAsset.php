@@ -3,10 +3,10 @@
 namespace App\Models\Customer;
 
 use App\Models\Asset\Asset;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CustomerAsset extends Model
+class CustomerAsset extends BaseModel
 {
     use SoftDeletes;
     /**

@@ -2,12 +2,12 @@
 
 namespace App\Models\Incident;
 
+use App\Models\BaseModel;
 use App\Models\Catalog\AttackSignature;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class IncidentAttackSignature extends Model
+class IncidentAttackSignature extends BaseModel
 {
     use SoftDeletes;
 

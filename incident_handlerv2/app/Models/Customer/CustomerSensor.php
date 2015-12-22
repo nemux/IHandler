@@ -3,12 +3,12 @@
 namespace App\Models\Customer;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 
-class CustomerSensor extends Model
+class CustomerSensor extends BaseModel
 {
     use SoftDeletes;
 
@@ -35,6 +35,11 @@ class CustomerSensor extends Model
             $this->user_id = 1;
 
         parent::__construct($attributes);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
 

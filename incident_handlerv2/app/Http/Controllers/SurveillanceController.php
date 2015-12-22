@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\Evidence\Evidence;
@@ -9,9 +10,6 @@ use App\Models\Person\PersonContact;
 use App\Models\Surveillance\SurveillanceCase;
 use App\Models\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Library\InlineCss;
 
 class SurveillanceController extends Controller
 {
@@ -24,7 +22,7 @@ class SurveillanceController extends Controller
      */
     public function index()
     {
-        $cases = SurveillanceCase::orderBy('id', 'desc')->get();
+        $cases = SurveillanceCase::orderBy('id', 'desc')->paginate(10);
 
         return view('surveillance.index', compact('cases'));
     }
@@ -148,11 +146,10 @@ class SurveillanceController extends Controller
      * @param bool $download
      * @return \PDF
      */
-//    public function getPdf($case, $download = false, $output = false)
     public function getPdf($id, $download = false)
     {
         $case = SurveillanceCase::whereId($id)->first();
-        $pdf = PdfController::generatePdf($case, 'pdf.surveillance');
+        $pdf = Pdf::generatePdf($case, 'pdf.surveillance');
         $docName = $case->title . '.pdf';
 
         if ($download) {
@@ -160,14 +157,26 @@ class SurveillanceController extends Controller
         } else {
             return $pdf->stream($docName);
         }
+    }
 
-//        if ($download) {
-//            return $pdf->download($docName);
-//        } else if ($output) {
-//            return $pdf->output();
-//        } else {
-//            return $pdf->stream($docName);
-//        }
+    /**
+     * Devuelve al navegador el stream del PDF
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getDoc($id)
+    {
+        $case = SurveillanceCase::whereId($id)->first();
+        $doc = DocController::generateDoc($case, 'pdf.surveillance');
+        $docName = $case->title . '.doc';
+        $docName = preg_replace('/ /', '_', $docName);
+
+        $headers = array(
+            "Content-Type" => "application/vnd.ms-word;charset=utf-8",
+            "Content-Disposition" => "attachment;Filename=$docName"
+        );
+
+        return \Response::make($doc, 200, $headers);
     }
 
     /**
@@ -177,7 +186,7 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
-        \Log::info($id);
+//        \Log::info($id);
 
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);
@@ -198,7 +207,7 @@ class SurveillanceController extends Controller
                 $message->attach($file, ['as' => $name]);
             }
 
-            $pdf = PdfController::generatePdf($surv, 'pdf.surveillance');
+            $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');
 
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 

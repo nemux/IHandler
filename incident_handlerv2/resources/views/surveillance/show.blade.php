@@ -14,6 +14,12 @@
             $(btn).attr('disabled', false);
         }
 
+        function doc(btn) {
+            $(btn).attr('disabled', true);
+            window.open('{{route('surveillance.doc',$case)}}', '_self');
+            $(btn).attr('disabled', false);
+        }
+
         function mail(btn) {
             $(btn).attr('disabled', true);
             window.open('{{route('surveillance.email',$case)}}', '_self');
@@ -30,8 +36,11 @@
                 <div class="btn btn-primary" onclick="edit(this)">
                     <i class="fa fa-pencil fa-fw"></i> Editar Caso
                 </div>
-                <div class="btn btn-info" onclick="pdf(this)">
+                <div class="btn btn-danger" onclick="pdf(this)">
                     <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
+                </div>
+                <div class="btn btn-blue" onclick="doc(this)">
+                    <i class="fa fa-file-pdf-o fa-fw"></i> Generar DOC
                 </div>
                 <div class="btn btn-success"
                      onclick="mail(this)">

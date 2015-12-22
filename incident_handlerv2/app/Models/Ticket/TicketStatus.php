@@ -2,11 +2,11 @@
 
 namespace App\Models\Ticket;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class TicketStatus extends Model
+class TicketStatus extends BaseModel
 {
     use SoftDeletes;
 

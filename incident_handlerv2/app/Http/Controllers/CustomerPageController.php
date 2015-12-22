@@ -19,7 +19,7 @@ class CustomerPageController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::info($request->except('_token'));
+//        \Log::info($request->except('_token'));
 
         Link::validateCreate($request, $this);
 
@@ -52,8 +52,6 @@ class CustomerPageController extends Controller
 
         $customerPage = CustomerPage::findOrNew($id);
         $link = $customerPage->link;
-
-        \Log::info($link);
 
         return view('link.show', compact('link'));
     }
