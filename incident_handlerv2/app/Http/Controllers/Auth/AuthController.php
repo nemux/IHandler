@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\EventName;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
