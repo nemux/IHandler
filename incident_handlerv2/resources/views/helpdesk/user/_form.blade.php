@@ -1,7 +1,7 @@
 <div class="form-group row">
     {!! Form::label('user_type','Cliente',['class'=>'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        @if(isset($user))
+        @if(isset($user->customer))
             {!! Form::text('customer',$user->customer->name,['class'=>'form-control','disabled']) !!}
         @else
             {!! Form::select('customer',\App\Models\Customer\Customer::all()->lists('name', 'id'),isset($user->customer_id)?$user->customer_id:1,['class'=>'form-control']) !!}
