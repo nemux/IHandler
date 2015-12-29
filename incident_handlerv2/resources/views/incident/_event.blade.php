@@ -71,7 +71,9 @@
      * @param id ID del elemento encontrado en la base de datos
      * @param event Evento a agregar
      */
+    //TODO TypeError: event is null
     function addMultitargetRow(id, event) {
+//        console.log(event);
         var row = $("<div class='col-md-12 h4'>" +
                 "<input onclick='removeEvent(" + id + "," + events.indexOf(event) + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-1' />" +
                 "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + JSON.stringify(event) + "' />" +
@@ -89,6 +91,7 @@
      * @param id ID del elemento encontrado en la base de datos
      * @param event Evento a agregar
      */
+    //TODO TypeError: event is null
     function addMultisourceRow(id, event) {
         var row = $("<div class='col-md-12 h4'>" +
                 "<input onclick='removeEvent(" + id + "," + events.indexOf(event) + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-1' />" +
@@ -156,7 +159,7 @@
     }
 
 
-    @if(isset($case))
+    @if(isset($case->id))
     /**
      * Elimina elementos específicos de la sección donde se muestran eventos cargados de la base de datos
      */
@@ -193,11 +196,14 @@
             //Si no se encontró, seteamos el source al event
             if (!found) {
                 event.source = source;
+//                console.log(source);
 
                 //Agrtegamos el evento a la lista
                 events.push(event);
 
-                addMultitargetRow(true, null, event);
+//                console.log(event);
+
+                addMultitargetRow(null, event);
             }
             //Agregamos el target
             event.targets.push({target: target, payload: payload});
@@ -233,7 +239,9 @@
                 //Agregamos el evento a la lista
                 events.push(event);
 
-                addMultisourceRow(true, null, event);
+//                console.log(event);
+
+                addMultisourceRow(null, event);
             }
             //Agregamos el source
             event.sources.push({source: source, payload: payload});
@@ -547,7 +555,7 @@
 
 </div>
 <div class="row" id="old-events">
-    @if(isset($case))
+    @if(isset($case->id))
         @foreach($case->getGroupedEvents() as $index=>&$e)
             @if($e['type']==='11')
                 <div class='col-md-12 h4' id="old-e-{{$index}}">
