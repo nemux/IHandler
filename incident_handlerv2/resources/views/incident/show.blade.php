@@ -167,7 +167,7 @@
 
 @section('dashboard_content')
     <div class="row">
-        @if(isset($case->ticket) && ($case->ticket->ticket_status_id===1 ||$case->ticket->ticket_status_id===2 ))
+        @if($case->ticket->ticket_status_id==1 || $case->ticket->ticket_status_id==2)
             <div class="btn btn-primary" onclick="edit(this)">
                 <i class="fa fa-pencil fa-fw"></i> Editar Caso
             </div>
@@ -261,7 +261,7 @@
                             </div>
                         </section>
 
-                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==4)
+                        @if($case->ticket->ticket_status_id==4)
                             <h3>Caso Cerrado</h3>
                             <section class="gallery-env">
                                 <div class="row">
@@ -274,7 +274,7 @@
                             </section>
                         @endif
 
-                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==5)
+                        @if($case->ticket->ticket_status_id==5)
                             <h3>Falso Positivo</h3>
                             <section class="gallery-env">
                                 <div class="row">

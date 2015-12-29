@@ -70,7 +70,7 @@
 </script>
 
 <div id="status-buttons">
-    @if(!isset($case->ticket) || $case->ticket->ticket_status_id===1){{--Sin ticket o Abierto--}}
+    @if($case->ticket->ticket_status_id==1){{--Sin ticket o Abierto--}}
     <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">
         Mover a Investigación
     </div>
@@ -115,13 +115,13 @@
     @endif
 </div>
 <div id="other-buttons">
-    @if(isset($case->ticket) && $case->ticket->ticket_status_id===1)
+    @if($case->ticket->ticket_status_id==1)
         <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===2)
+    @elseif($case->ticket->ticket_status_id==2)
         <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===3)
+    @elseif($case->ticket->ticket_status_id==3)
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
     @endif
 </div>

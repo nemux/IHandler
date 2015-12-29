@@ -180,7 +180,7 @@
     </tr>
     <tr>
         <td class="title_column">Estatus</td>
-        <td class="content_column" id="pv-status">{{isset($case->ticket)?$case->ticket->status->name:'Abierto'}}</td>
+        <td class="content_column" id="pv-status">{{$case->ticket->status->name}}</td>
     </tr>
     <tr>
         <td class="title_column">Categoría(s):</td>
