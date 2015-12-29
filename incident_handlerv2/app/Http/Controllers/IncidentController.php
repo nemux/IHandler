@@ -221,8 +221,8 @@ class IncidentController extends Controller
 
         if ($status == 1) {
             $incident->title = $request->get('title');
-            $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time').':00';
-            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time)));
+            $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
+            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))).':00';
 
             $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
             $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))).':00';

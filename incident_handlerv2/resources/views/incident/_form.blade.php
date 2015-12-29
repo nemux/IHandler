@@ -433,7 +433,7 @@
         </div>
         {{--Eventos--}}
         {{-- Si está abierto el caso o es un caso nuevo --}}
-        @if(isset($case->ticket->ticket_status_id) && $case->ticket->ticket_status_id==1)
+        @if(!isset($case->id) || $case->ticket->ticket_status_id==1)
             <div class="row">
                 <div class="col-md-10"><span class="h1">Eventos del Incidente</span></div>
             </div>
@@ -443,21 +443,18 @@
     <div class="tab-pane" id="incident-description-tab">
         <div class="form-group">
             <h3 class="control-label">Descripción del Incidente</h3>
-           <textarea class="form-control ckeditor" name="description" id="description" data-validate="required">
-               {{isset($case->description)?$case->description:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="description" id="description"
+                      data-validate="required">{{isset($case->description)?$case->description:''}}</textarea>
         </div>
         <div class="form-group">
             <h3 class="control-label">Recomendaciones</h3>
-           <textarea class="form-control ckeditor" name="recommendation" id="recommendation" data-validate="required">
-               {{isset($case->recommendation)?$case->recommendation:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="recommendation" id="recommendation"
+                      data-validate="required">{{isset($case->recommendation)?$case->recommendation:''}}</textarea>
         </div>
         <div class="form-group">
             <h3 class="control-label">Referencias</h3>
-           <textarea class="form-control ckeditor" name="reference" id="reference" data-validate="required">
-               {{isset($case->reference)?$case->reference:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="reference" id="reference"
+                      data-validate="required">{{isset($case->reference)?$case->reference:''}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="incident-evidences-tab">
@@ -475,7 +472,7 @@
 
         <div class="row">
             <div class="col-sm-12 text-right">
-                @if(isset($case))
+                @if(isset($case->id))
                     @foreach($case->evidences as $evidence)
                         <input type="hidden" value="{{$evidence->evidence->id}}"
                                name="evidence_{{$evidence->evidence->id}}"
