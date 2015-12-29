@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
 use App\Models\Customer\Customer;
 use App\Models\Customer\CustomerContact;
 use App\Models\Person\Person;
 use App\Models\Person\PersonContact;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class OtrsController extends Controller
 {
@@ -32,6 +31,14 @@ class OtrsController extends Controller
         if ($request->ajax()) {
             $oClient = new OtrsClient();
             $otrsCustomerUsers = $oClient->getCustomerUsers();
+
+            \Log::info($otrsCustomerUsers);
+            //TODO arreglar fallo para
+//            [2015-12-28 21:28:33] developing.INFO: array (
+//                'response_status' => 0,
+//                'error_code' => 0,
+//                'error_description' => 'No data.',
+//            )
 
             $returnList = array();
             foreach ($otrsCustomerUsers as $otrsCustomerUser) {

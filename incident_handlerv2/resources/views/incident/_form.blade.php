@@ -295,13 +295,13 @@
                 <div class="date-and-time">
                     <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_date"
                            id="occurrence_date" type="text"
-                           class="form-control datepicker" data-format="dd/mm/yyyy"
-                           data-end-date="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}"
-                           value="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}">
+                           class="datepicker datepicker-inline form-control" data-format="dd/mm/yyyy"
+                           data-end-date="{{isset($case->occurrence_time)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}"
+                           value="{{isset($case->occurrence_time)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}">
                     <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_time"
                            id="occurrence_time" type="text"
-                           class="form-control timepicker" data-template="dropdown"
-                           data-default-time="{{isset($case)?date('H:i',strtotime($case->occurrence_time)):date('H:i')}}"
+                           class="timepicker form-control" data-template="dropdown"
+                           data-default-time="{{isset($case->occurrence_time)?date('H:i',strtotime($case->occurrence_time)):date('H:i')}}"
                            data-show-meridian="false" data-minute-step="5"/>
                 </div>
             </div>

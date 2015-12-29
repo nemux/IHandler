@@ -431,7 +431,7 @@ class WordGenerator
         $this->addRowInfo($table, 'Flujo del Ataque:', $i->flow->name, $this->center_p);
 
         //Flow row
-        $this->addRowInfo($table, 'Fecha de Detección:', date('d/m/Y H:i', strtotime($i->detection_time)) . " GMT-6", $this->center_p);
+        $this->addRowInfo($table, 'Fecha de Detección:', date('d/m/Y H:i T', strtotime($i->detection_time)), $this->center_p);
 
         //Criticity row
         $this->addCriticity($table, $i->criticity);

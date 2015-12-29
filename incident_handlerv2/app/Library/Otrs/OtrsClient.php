@@ -94,11 +94,11 @@ class OtrsClient
                     $CustomerInfo["response_status"] = 0;
                     return $CustomerInfo;
                 } else
-                    return $this->noDataResponse();;
+                    return $this->noDataResponse();
             } else
-                return $this->noDataResponse();;
+                return $this->noDataResponse();
         } catch (SoapFault $s) {
-            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Customer::getAll().");
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Customer::getCustomerUsers().");
         }
     }
 
@@ -271,12 +271,12 @@ class OtrsClient
                 $user["response_status"] = 0;
                 return $user;
             } else {
-                return $this->noDataResponse();;
+                return $this->noDataResponse();
             }
-        } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
             return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failes to connect to OTRS on User::getAll().");
+        } catch (Exception $e) {
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         }
     }
 
@@ -378,10 +378,10 @@ class OtrsClient
             $formattedTicketNumber = number_format($ticketNumber['TicketNr'], 0, '.', '');
 
             return array("response_status" => 0, "TicketID" => $ticketId, "ArticleID" => $articleId, "TicketNumber" => $formattedTicketNumber);
+        } catch (SoapFault  $s) {
+            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::create().");
         } catch (Exception $e) {
             return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
-        } catch (FatalException  $s) {
-            return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::create().");
         }
     }
 
@@ -422,10 +422,10 @@ class OtrsClient
                 "UserID", $userInfo['UserID'],
             ));
             return $this->returnSoapData($ticketInfo);
-        } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
             return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::getInfo().");
+        } catch (Exception $e) {
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         }
     }
 
@@ -485,10 +485,10 @@ class OtrsClient
                 return array("response_status" => 0);
             else
                 return array("response_status" => -1, "error_code" => 1, "error_description" => "Failed to connect to OTRS on Ticket::close()");
-        } catch (Exception $e) {
-            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         } catch (SoapFault $s) {
             return array("response_status" => -1, "error_code" => $s->getCode(), "error_description" => $s->getMessage()." -- Failed to connect to OTRS on Ticket::close().");
+        } catch (Exception $e) {
+            return array("response_status" => -1, "error_code" => $e->getCode(), "error_description" => $e->getMessage());
         }
     }
 

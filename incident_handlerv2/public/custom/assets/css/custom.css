@@ -77,10 +77,6 @@
     padding: 0 !important;
 }
 
-.date-and-time .form-control.datepicker {
-    width: 100%;
-}
-
 .cut-title {
     max-width: 100%;
     overflow: hidden;
