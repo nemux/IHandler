@@ -14,11 +14,20 @@ class StringHelper
      */
     public static function parseHtml($html)
     {
+        \Log::info($html);
+
+        $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+        \Log::info($html);
+
+        self::removeAttributes($html);
         self::removeTag('span', $html);
-        self::removeTag('div', $html);
         self::removeTag('i', $html);
-        self::removeTag('b', $html);
-        $html = str_replace("<br>", "<br/>", $html);
+        self::replaceTag('b', 'strong', $html);
+        \Log::info($html);
+
+//        $html = str_replace("<br>", "<br/>", $html);
+//        $html = str_replace("<br />", "<br/>", $html);
+        $html = str_replace("<br/>", "</p><p>", $html);
         $html = str_replace(array("\n", "\r", "\r\n"), ' ', $html);
         $html = preg_replace('/<a\b[^>]*>(.*?)<\/a>/i', '$1', $html);
         $html = str_replace("&nbsp;", " ", $html);
@@ -27,6 +36,7 @@ class StringHelper
         $html = preg_replace('/\s{2,}/', ' ', $html);
         $html = preg_replace('/\n{2,}/', '\n', $html);
         $html = str_replace(array("> <"), array('><'), $html);
+        \Log::info($html);
 
         return $html;
     }
@@ -52,5 +62,29 @@ class StringHelper
     {
         $html = str_replace("<$tag>", "", $html);
         $html = str_replace("</$tag>", "", $html);
+    }
+
+    /**
+     * Reemplaza un tag en un html
+     *
+     * @param $fromtag
+     * @param $totag
+     *
+     * @param $html
+     */
+    private static function replaceTag($fromtag, $totag, &$html)
+    {
+        $html = str_replace("<$fromtag>", "<$totag>", $html);
+        $html = str_replace("</$fromtag>", "<$totag>", $html);
+    }
+
+    /**
+     * Remueve todas las propiedades de los tags de HTML
+     *
+     * @param $html
+     */
+    private static function removeAttributes(&$html)
+    {
+        $html = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\\/?)>/", "<$1$2>", $html);
     }
 }

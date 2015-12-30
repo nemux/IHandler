@@ -219,7 +219,7 @@
     <tr>
         <td class="title_column">Fecha de Detección:</td>
         <td class="content_column"
-            id="pv-detection-date">{{date('d/m/Y H:i',strtotime(($case->id!=null)?$case->detection_time:'now'))}}</td>
+            id="pv-detection-date">{{date('d/m/Y H:i T',strtotime(($case->id!=null)?$case->detection_time:'now'))}}</td>
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>

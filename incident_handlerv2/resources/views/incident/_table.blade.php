@@ -73,7 +73,7 @@
                         @endforeach
                     </ul>
                 </td>
-                <td>{{date('d/m/Y H:i',strtotime($incident->detection_time))}}</td>
+                <td>{{date('d/m/Y H:i T',strtotime($incident->detection_time))}}</td>
                 <td>
                     <ul class="list-unstyled">
                         @foreach($incident->sensors as $sensor)

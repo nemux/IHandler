@@ -293,7 +293,7 @@ class IncidentController extends Controller
         }
 
         if ($status == 1) {
-            //Sensor
+            //Sensores
             $oldSensors = IncidentCustomerSensor::whereIncidentId($incident->id)->get();
             foreach ($oldSensors as $old)
                 $old->delete();
@@ -362,7 +362,7 @@ class IncidentController extends Controller
         $doc->addCases($case);
         $file = $doc->streamDocument();
 
-        $docname = $case->ticket ? $case->ticket->internal_number : 'ID' . $case->id;
+        $docname = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",

@@ -117,7 +117,7 @@ class MigrateVersionCommand extends Command
             }
         }
         $this->info("");
-        $this->info("Terminado [" . date('d/m/Y H:i:s') . "]");
+        $this->info("Terminado [" . date('d/m/Y H:i:s T') . "]");
     }
 
     private function references()

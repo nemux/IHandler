@@ -189,7 +189,7 @@
                 <div class="col-md-4">
                     <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
-                    <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b>
+                    <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s T',strtotime($case->updated_at))}}</b>
                     </h3>
                     <br/>
 
