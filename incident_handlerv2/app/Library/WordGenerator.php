@@ -250,7 +250,8 @@ class WordGenerator
         $title_cell->addText($label, $this->bold_f, $this->center_p);
 
         $content_cell = $row->addCell($this->right_col_t, $this->normal_cell);
-        Html::addHtml($content_cell, StringHelper::parseHtml($content));
+        $html = StringHelper::parseHtml($content);
+        Html::addHtml($content_cell, $html);
     }
 
     /**
@@ -476,7 +477,8 @@ class WordGenerator
 
         $content_cell = $annex_row->addCell($this->right_col_t, $this->normal_cell);
         $content_cell->addText($annex->field, $this->bold_f, $this->center_p);
-        $html = $annex->content;
-        Html::addHtml($content_cell, StringHelper::parseHtml($html));
+        $content = $annex->content;
+        $html = StringHelper::parseHtml($content);
+        Html::addHtml($content_cell, $html);
     }
 }

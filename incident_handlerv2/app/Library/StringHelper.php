@@ -10,37 +10,51 @@ class StringHelper
      * Hace algunos parseos necesarios para evitar que tenga problemas para usar el método Html::addHtml
      *
      * @param $html
+     * @param bool $decode define si el $html se va a decodificar (NOTA: Dejar en false para los documentos de Word)
      * @return mixed|string
      */
-    public static function parseHtml($html)
+    public static function parseHtml($html, $decode = false)
     {
-//        \Log::info($html);
+//        \Log::info('-----------------------------------------------------------------------
+//        ' . $html);
 
-        $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
-//        \Log::info($html);
+        if ($decode) {
+            $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
+//            \Log::info($html . '
+//        -----------------------------------------------------------------------');
+        }
 
         self::removeAttributes($html);
+
         self::removeTag('span', $html);
         self::removeTag('i', $html);
-        self::replaceTag('b', 'strong', $html);
-        self::removeTag('hr', $html);
         self::removeTag('div', $html);
-//        \Log::info($html);
 
+        self::replaceTag('b', 'strong', $html);
+//        \Log::info($html . '
+//        -----------------------------------------------------------------------');
+
+        $html = str_replace("<!-- div-->", "", $html);
+        $html = str_replace("<hr/>", "", $html);
         $html = str_replace("<br>", "<br/>", $html);
         $html = str_replace("<br />", "<br/>", $html);
         $html = str_replace("<br/>", "</p><p>", $html);
+        $html = str_replace("&amp;", "&amp;amp;", $html);  //Escapar doble ampersand para que no truene la generación de documentos
         $html = str_replace(array("\n", "\r", "\r\n"), ' ', $html);
+
         $html = preg_replace('/<a\b[^>]*>(.*?)<\/a>/i', '$1', $html);
-        $html = str_replace("&nbsp;", " ", $html);
-        $html = str_replace("&", "&amp;", $html);
+
+//        \Log::info($html . '
+//        -----------------------------------------------------------------------');
+
         $html = trim($html);
         $html = preg_replace('/\s{2,}/', ' ', $html);
         $html = preg_replace('/\n{2,}/', '\n', $html);
         $html = str_replace(array("> <"), array('><'), $html);
 
         self::fixOrphanTag('p', $html);
-//        \Log::info($html);
+//        \Log::info($html . '
+//        -----------------------------------------------------------------------');
 
         return $html;
     }
@@ -53,7 +67,7 @@ class StringHelper
      */
     public static function htmlToString($html)
     {
-        return strip_tags(self::parseHtml($html));
+        return strip_tags(self::parseHtml($html, true));
     }
 
     /**
