@@ -84,10 +84,10 @@ class IncidentController extends Controller
         $incident->reference = $request->get('reference');
 
         $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
-        $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))).':00';
+        $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))) . ':00';
 
         $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
-        $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))).':00';
+        $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))) . ':00';
 
         $incident->attack_flow_id = $request->get('flow_id');
         $incident->criticity_id = $request->get('criticity_id');
@@ -100,6 +100,7 @@ class IncidentController extends Controller
         $ticket = new Ticket();
         $ticket->incident_id = $incident->id;
         $ticket->ticket_status_id = 1;
+        $ticket->internal_number = 'Por asignar...';
         $ticket->save();
 
         //Evidencias
@@ -222,10 +223,10 @@ class IncidentController extends Controller
         if ($status == 1) {
             $incident->title = $request->get('title');
             $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
-            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))).':00';
+            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))) . ':00';
 
             $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
-            $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))).':00';
+            $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))) . ':00';
 
             $incident->attack_flow_id = $request->get('flow_id');
             $incident->criticity_id = $request->get('criticity_id');
@@ -513,7 +514,7 @@ class IncidentController extends Controller
         $newTicketStatusId = $request->get('status');
         $incident = Incident::whereId($incidentId)->first();
 
-//        \Log::info($newTicketStatusId);
+        \Log::info($newTicketStatusId);
         if ($newTicketStatusId == 5 || $newTicketStatusId == 4) {
 //            \Log::info('is 5 or 4');
 
@@ -541,38 +542,52 @@ class IncidentController extends Controller
         $ticket = $incident->ticket;
         $oldTicketStatusId = $ticket->ticket_status_id;
 
-        if ($oldTicketStatusId == 1 && ($newTicketStatusId != 2 || $newTicketStatusId != 5)) {
+        if ($oldTicketStatusId == 1 && ($newTicketStatusId == 2 || $newTicketStatusId == 5)) {
             //De abierto, puede pasar a investigación o falso positivo
+
+            $ticketCount = Incident::whereCustomerId(2)
+                ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
+                ->where('ticket.internal_number', '!=', 'Por asignar...')//Se valida que cuente los tickets asignados
+                ->where('ticket.internal_number', '!=', '')//Con un numero interno definido
+                ->where('ticket.ticket_status_id', '>', 1) //Contar los tickets que no est{an abiertos
+                ->whereNotNull('ticket.internal_number')
+                ->whereNull('ticket.deleted_at')//TODO ningún ticket debe ser eliminado ni de modo soft
+                ->count();
+
+            //Se guarda el numero interno y el estatus antes de generar el ticket en el OTRS para que no genere tráfico en la generación de los consecutivos
+            $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
+            $ticket->ticket_status_id = $newTicketStatusId;
+            $ticket->save();
+
+            \Log::info($ticket->internal_number);
+
+            //TODO ¿cuando es un falso positivo se debe generar ticket en el OTRS?
 
             $otrs = new OtrsClient();
             $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $incident->customer->semicolonSeparatedEmails(), $incident->renderHtml());
 
             if (!isset($otrsTicket['error_code'])) {
-
-                $ticketCount = Incident::whereCustomerId(2)
-                    ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
-                    ->where('ticket.internal_number', '!=', '')
-                    ->count();
-
                 $ticket->otrs_ticket_id = $otrsTicket['TicketID'];
                 $ticket->otrs_ticket_number = $otrsTicket['TicketNumber'];
-                $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
-                $ticket->ticket_status_id = $newTicketStatusId;
                 $ticket->save();
 
                 if ($newTicketStatusId == 2) {
+                    //TODO verificar que el correo se envíe aún cuando el OTRS haya generado un error
                     $this->sendEmail($incident);
                     return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
 
                 } else {
-
                     return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
                 }
 
             } else {
+                //Definimos en verdadero debemos recordar de enviar la informaci{on al OTRS
+                $ticket->send_reminder = true;
+                $ticket->save();
+
                 return $this->createOtrsErrorResult($otrsTicket);
             }
-        } else if ($oldTicketStatusId == 2 && ($newTicketStatusId != 3 || $newTicketStatusId != 5)) {
+        } else if ($oldTicketStatusId == 2 && ($newTicketStatusId == 3 || $newTicketStatusId == 5)) {
             //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
@@ -582,7 +597,7 @@ class IncidentController extends Controller
             else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
-        } else if ($oldTicketStatusId == 3 && ($newTicketStatusId != 4 || $newTicketStatusId != 6)) {
+        } else if ($oldTicketStatusId == 3 && ($newTicketStatusId == 4 || $newTicketStatusId == 6)) {
             //De Resuelto sólo puede pasar a Cerrado o Cerrado automático
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
@@ -595,7 +610,7 @@ class IncidentController extends Controller
         } else if ($oldTicketStatusId == 4 || $oldTicketStatusId == 5 || $oldTicketStatusId == 6) {
             return Json::encode(['status' => false, 'message' => "El estatus {$oldTicketStatusId} ya es un estado final. No se puede transicionar un ticket con este estatus"]);
         } else {
-            return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus $newTicketStatusId"]);
+            return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus {$newTicketStatusId}"]);
         }
     }
 

@@ -14,15 +14,15 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-//Event::listen('illuminate.query', function ($sql, $bindings) {
-//
-//    foreach ($bindings as $val) {
-//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-//    }
-//
-////    \App\Models\Log\Log::info($sql);
-////    \App\Models\Log\Log::info("-------------------------------------------------------------------------------------------------------");
-//});
+Event::listen('illuminate.query', function ($sql, $bindings) {
+
+    foreach ($bindings as $val) {
+        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+    }
+
+    \Log::info($sql);
+    \Log::info("-------------------------------------------------------------------------------------------------------");
+});
 
 
 /**
@@ -42,7 +42,7 @@ Route::bind('user', function ($value, $route) {
 });
 
 Route::bind('customer_user', function ($value, $route) {
-    $user =  \App\Models\Helpdesk\CustomerUser::whereUsername($value)->first();
+    $user = \App\Models\Helpdesk\CustomerUser::whereUsername($value)->first();
 
     if (!$user) {
         abort(404, 'No se encontró al usuario que se buscaba');
