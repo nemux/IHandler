@@ -105,7 +105,7 @@ class StringHelper
         foreach ($split as $item) {
             $replaced = preg_replace("/<\\/p>/i", "", $item);
 
-            \Log::info($replaced);
+//            \Log::info($replaced);
 
             //Si no empieza y no termina con alguna de estas opciones
             if (
