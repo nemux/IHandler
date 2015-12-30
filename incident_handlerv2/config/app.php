@@ -146,13 +146,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /**
-         * Whoops Error Handler
-         *
-         * https://laracasts.com/discuss/channels/general-discussion/whoops-removed-from-laravel-5
-         */
-        App\Providers\ErrorServiceProvider::class,
-
-        /**
          * Ide Helper
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
