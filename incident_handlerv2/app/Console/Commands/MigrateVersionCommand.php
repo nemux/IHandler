@@ -26,6 +26,7 @@ use App\Models\Incident\IncidentAttackSignature;
 use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
+use App\Models\Incident\IncidentRecommendation;
 use App\Models\Incident\Machine;
 use App\Models\Incident\MachineType;
 use App\Models\Incident\Note;
@@ -69,6 +70,33 @@ class MigrateVersionCommand extends Command
     }
 
     /**
+     * Migra las recomendaciones de un incidente
+     *
+     * @param $incident
+     */
+    private function migrateRecommendations($incident)
+    {
+        //Recommendations
+        $recommendations = $this->query('SELECT * FROM recomendations WHERE incidents_id=' . $incident->id);
+        foreach ($recommendations as &$or) {
+            $recommendation = new IncidentRecommendation();
+
+            $recommendation->content = $or->content;
+            $recommendation->incident_id = $or->incidents_id;
+            $recommendation->otrs_article_id = $or->otrs_article_id;
+
+            $this->modelTimestamps($recommendation, $or);
+
+            if (isset($incident->incident_handler_id))
+                $recommendation->user_id = $incident->incident_handler_id;
+            else
+                $recommendation->user_id = $incident->user_id;
+
+            $recommendation->save();
+        }
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -82,7 +110,13 @@ class MigrateVersionCommand extends Command
             } else if ($this->option('perform') == 'update' && $this->option('table') == 'incident_signature') {
                 $this->signatures();
             } else if ($this->option('perform') == 'tickets') {
-                $olds = $this->query('SELECT * FROM incidents');
+                /**
+                 * @NOTA: Cuando se realiza una migración ahislada,
+                 * es porque ya se migraron previamente los incidentes, por lo tanto
+                 * se obtiene de la nueva base de datos estos incidentes y de la vieja
+                 * base de datos los otros elementos
+                 */
+                $olds = Incident::all();
                 $bar = $this->output->createProgressBar(count($olds));
                 $newtickets = [];
 
@@ -98,6 +132,20 @@ class MigrateVersionCommand extends Command
                 $bar->finish();
                 $this->alterSequence($this->query('SELECT * FROM tickets'), 'ticket');
                 $this->saveEmptyTickets($newtickets);
+            } else if ($this->option('perform') == 'recommendations') {
+                /**
+                 * @NOTA: Cuando se realiza una migración ahislada,
+                 * es porque ya se migraron previamente los incidentes, por lo tanto
+                 * se obtiene de la nueva base de datos estos incidentes y de la vieja
+                 * base de datos los otros elementos
+                 */
+                $incidents = Incident::all();
+                $bar = $this->output->createProgressBar(count($incidents));
+                foreach ($incidents as $incident) {
+                    $this->migrateRecommendations($incident);
+                    $bar->advance();
+                }
+                $bar->finish();
             }
         } else {
             if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
@@ -888,6 +936,8 @@ class MigrateVersionCommand extends Command
                             $note->attended_by = $o->attended;
                         $note->save();
                     }
+
+                    $this->migrateRecommendations($o);
                 } catch (\Exception $e) {
                     $this->showError($e, 'incidente', $o->id);
                     //return;
@@ -984,7 +1034,7 @@ class MigrateVersionCommand extends Command
         //Tickets (No debería de haber más de un ticket en el sistema, pero...)
         $oldTickets = $this->query('SELECT * FROM tickets WHERE incidents_id=' . $old_incident->id);
 
-        if (sizeof($oldTickets) > 0)
+        if (sizeof($oldTickets) > 0) {
             foreach ($oldTickets as &$oT) {
                 $ticket = new Ticket();
                 $this->modelTimestamps($ticket, $oT);
@@ -998,7 +1048,7 @@ class MigrateVersionCommand extends Command
                 $ticket->ticket_status_id = $old_incident->incidents_status_id;
                 $ticket->save();
             }
-        else {
+        } else {
             $ticket = new Ticket();
             $this->modelTimestamps($ticket, $old_incident);
             $ticket->user_id = $old_incident->incident_handler_id;
@@ -1012,6 +1062,10 @@ class MigrateVersionCommand extends Command
 
     /**
      * Almacena los tickets que no estaban asignados a un incidente
+     *
+     * NOTA: Estos tickets nuevos se deben almacenar al final del procedimiento de migración,
+     * ya que el consecutivo del id de ticket se modifica con respecto a la cantidad de tickets
+     * del viejo sistema. $this->alterSequence(...)
      *
      * @param array $newtickets : Tickets que no están asignados a un incidente
      */

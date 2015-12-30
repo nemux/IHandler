@@ -18,7 +18,8 @@
     "barryvdh/laravel-dompdf": "v0.6.0",
     "phpoffice/phpword": "dev-master",
     "phpoffice/phpexcel": "dev-master",
-    "predis/predis": "^1.0"
+    "predis/predis": "^1.0",
+    "filp/whoops": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
