@@ -549,7 +549,7 @@ class IncidentController extends Controller
                 ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
                 ->where('ticket.internal_number', '!=', 'Por asignar...')//Se valida que cuente los tickets asignados
                 ->where('ticket.internal_number', '!=', '')//Con un numero interno definido
-                ->where('ticket.ticket_status_id', '>', 1) //Contar los tickets que no est{an abiertos
+                ->where('ticket.ticket_status_id', '>', 1)//Contar los tickets que no est{an abiertos
                 ->whereNotNull('ticket.internal_number')
                 ->whereNull('ticket.deleted_at')//TODO ningún ticket debe ser eliminado ni de modo soft
                 ->count();
@@ -619,34 +619,6 @@ class IncidentController extends Controller
         return Json::encode(['status' => false, 'message' => '(Error Code: ' . $otrsResponse['error_code'] . ') Message: ' . $otrsResponse['error_description']]);
     }
 
-    public function test()
-    {
-        $ticketCount = Incident::whereCustomerId(2)
-            ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
-            ->where('ticket.internal_number', '!=', '')
-            ->count();
-//        \Log::info($ticketCount);
-
-//        $incident = Incident::whereId(19)->first();
-//        $emails = '';
-//        foreach ($incident->customer->contacts as $index => $contact) {
-//            $emails .= $contact->person->contact->email;
-//            if ($index < count($incident->customer->contacts) - 1) {
-//                $emails .= ';';
-//            }
-//        }
-//        $otrs = new OtrsClient();
-//        \Log::info($incident->risk);
-//        $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $emails, $incident->renderHtml());
-////
-//        \Log::info($otrsTicket);
-    }
-
-    public function postTest(Request $request)
-    {
-
-    }
-
     /**
      * Recibe una peticion para agregar un anexo a un incidente
      *
@@ -670,6 +642,10 @@ class IncidentController extends Controller
         $annex->save();
 
         return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó el anexo al incidente');
+    }
+
+    public function storeRecommendation(){
+
     }
 
     /**

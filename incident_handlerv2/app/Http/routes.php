@@ -81,10 +81,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::post('/change/status', ['as' => 'incident.change.status', 'uses' => 'IncidentController@changeStatus']);
 
-        Route::get('/test', ['uses' => 'IncidentController@test']);
-        Route::post('/test', ['uses' => 'IncidentController@postTest']);
-
         Route::post('/annex/create', ['as' => 'incident.annex.store', 'uses' => 'IncidentController@storeAnnex']);
+
         Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
         Route::delete('/note/delete', ['as' => 'incident.note.delete', 'uses' => 'IncidentController@deleteNote']);
 
@@ -248,8 +246,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'ws', 'middleware' => 'auth'], function () {
         Route::get('/sensors/{id}', ['as' => 'ws.getSensors', 'uses' => 'CustomerSensorController@getSensors']);
     });
-
-    Route::get('test', 'DashboardController@test');
 
     Route::group(['prefix' => 'stats', 'middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'stats.index', 'uses' => 'StatisticsController@index']);
