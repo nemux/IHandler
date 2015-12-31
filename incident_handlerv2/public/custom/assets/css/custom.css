@@ -90,3 +90,16 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.criticity-1 {
+    color: #CC3F44;
+}
+
+.criticity-2 {
+    color: #ff7900;
+}
+
+.criticity-3 {
+    color: #f7cc31;
+
+}

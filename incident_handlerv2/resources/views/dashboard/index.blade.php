@@ -2,11 +2,6 @@
 
 @section('title', 'Dashboard Incident Manager')
 
-{{--@section('include_up')--}}
-{{--<link type="text/css" href="/xenon/assets/js/devexpress-web-14.1.x/css/dx.common.css">--}}
-{{--<link type="text/css" href="/xenon/assets/js/devexpress-web-14.1x/css/dx.ligth.css">--}}
-{{--@endsection--}}
-
 @section('include_down')
     <script src="/xenon/assets/js/devexpress-web-14.1x/js/globalize.min.js" id="script-resource-7"></script>
     <script src="/xenon/assets/js/devexpress-web-14.1x/js/dx.chartjs.js" id="script-resource-8"></script>
@@ -14,25 +9,9 @@
     {{--HighCharts--}}
     <script src="/custom/assets/js/highcharts-4.1.9/highcharts.js"></script>
     <script src="/custom/assets/js/highcharts-4.1.9/modules/data.js"></script>
-    {{--<script src="/custom/assets/js/highcharts-4.1.9/modules/exporting.js"></script>--}}
-
-    <style>
-        .criticity-1 {
-            color: #CC3F44;
-        }
-
-        .criticity-2 {
-            color: #ff7900;
-        }
-
-        .criticity-3 {
-            color: #f7cc31;
-
-        }
-    </style>
 
     <script>
-        var xenonPalette = ['#68b828', '#7c38bc', '#0e62c7', '#fcd036', '#4fcdfc', '#00b19d', '#ff6264', '#f7aa47'];
+//        var xenonPalette = ['#68b828', '#7c38bc', '#0e62c7', '#fcd036', '#4fcdfc', '#00b19d', '#ff6264', '#f7aa47'];
         $(document).ready(function () {
             //Cargar la lista de incidentes en el tag <ol> correspondiente
             $.ajax({
@@ -48,7 +27,7 @@
                     }
                 },
                 error: function (response) {
-                    alert(response);
+                    console.log(response);
                 }
             });
 
@@ -67,7 +46,7 @@
                     }
                 },
                 error: function (response) {
-                    alert(response);
+                    console.log(response);
                 }
             });
         });
@@ -78,24 +57,6 @@
     <div class="row">
         <div class="col-md-3">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options">--}}
-                {{--<a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a>--}}
-                {{--</div>--}}
-                {{--<h1 class="panel-title">Incidentes de Seguridad</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     <ol id="incidents-list">
                         {{--Populated with Ajax Request--}}
@@ -105,24 +66,6 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options">--}}
-                {{--<a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a>--}}
-                {{--</div>--}}
-                {{--<h1 class="panel-title">Incidentes por Cliente en los últimos 7 días</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -134,24 +77,6 @@
         </div>
         <div class="col-md-3">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options"><a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a></div>--}}
-                {{--<h1 class="panel-title">Cibervigilancia</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     <ol id="surveillance-list">
                         {{--Populated with Ajax Request--}}
@@ -163,24 +88,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options"><a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a></div>--}}
-                {{--<h1 class="panel-title">Incidentes por Criticidad (7 dias)</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     @include('dashboard.chart._criticity')
                 </div>
@@ -188,24 +95,6 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options"><a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a></div>--}}
-                {{--<h1 class="panel-title">Incidentes por Flujo de Ataque (7 dias)</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     @include('dashboard.chart._flow')
                 </div>
@@ -215,24 +104,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options"><a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a></div>--}}
-                {{--<h1 class="panel-title">Incidentes por Categoría (7 dias)</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     @include('dashboard.chart._category')
                 </div>
@@ -240,24 +111,6 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                {{--<div class="panel-heading">--}}
-                {{--<div class="panel-options"><a href="#">--}}
-                {{--<i class="linecons-cog"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="panel">--}}
-                {{--<span class="collapse-icon">–</span>--}}
-                {{--<span class="expand-icon">+</span>--}}
-                {{--</a>--}}
-                {{--<a href="#"--}}
-                {{--data-toggle="reload">--}}
-                {{--<i class="fa-rotate-right"></i>--}}
-                {{--</a>--}}
-                {{--<a href="#" data-toggle="remove">--}}
-                {{--×--}}
-                {{--</a></div>--}}
-                {{--<h1 class="panel-title">Incidentes por Tipo de Ataque (7 dias)</h1>--}}
-                {{--</div>--}}
                 <div class="panel-body">
                     @include('dashboard.chart._type')
                 </div>
