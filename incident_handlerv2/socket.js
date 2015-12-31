@@ -2,11 +2,17 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
+
+var assert = require('assert');
+var env = require('node-env-file');
+
+//Cargamos el archivo de environment
+env('.env');
+
 var redis = new Redis({
-    port: 8001,          // Redis port
-    host: 'localhost',   // Redis host
-    family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: 'temp0ral'
+    port: process.env.REDIS_PORT,
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASSWORD
 });
 
 redis.subscribe('test-channel', function (err, count) {
@@ -18,6 +24,6 @@ redis.on('message', function (channel, message) {
     io.emit(channel + ':' + message.event, message.data);
 });
 
-http.listen(8002, function () {
-    console.log('Listening on Port 8002');
+http.listen(process.env.NODEJS_PORT, function () {
+    console.log('Listening on Port ' + process.env.NODEJS_PORT);
 });
