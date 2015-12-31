@@ -26,7 +26,7 @@ use App\Models\Incident\IncidentAttackSignature;
 use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
-use App\Models\Incident\IncidentRecommendation;
+use App\Models\Incident\Recommendation;
 use App\Models\Incident\Machine;
 use App\Models\Incident\MachineType;
 use App\Models\Incident\Note;
@@ -79,7 +79,7 @@ class MigrateVersionCommand extends Command
         //Recommendations
         $recommendations = $this->query('SELECT * FROM recomendations WHERE incidents_id=' . $incident->id);
         foreach ($recommendations as &$or) {
-            $recommendation = new IncidentRecommendation();
+            $recommendation = new Recommendation();
 
             $recommendation->content = $or->content;
             $recommendation->incident_id = $or->incidents_id;

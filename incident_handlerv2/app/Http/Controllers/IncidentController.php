@@ -17,9 +17,11 @@ use App\Models\Incident\IncidentCustomerSensor;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\IncidentEvidence;
 use App\Models\Incident\Note;
+use App\Models\Incident\Recommendation;
 use App\Models\Person\PersonContact;
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Psy\Util\Json;
 
 class IncidentController extends Controller
@@ -375,11 +377,13 @@ class IncidentController extends Controller
 
     /**
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     *
      * @param Incident $incident
+     * @param string $extra_info
      */
-    public function sendEmail(Incident $incident)
+    public function sendEmail(Incident $incident, $extra_info = '')
     {
-        \Mail::send('email.incident', compact('incident'), function ($message) use ($incident) {
+        \Mail::send('email.incident', compact('incident', 'extra_info'), function (Message $message) use ($incident) {
             //Adjuntamos las evidencias cargadas
             foreach ($incident->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
@@ -392,7 +396,8 @@ class IncidentController extends Controller
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());
+            $message->to($mailTo, \Auth::user()->person->fullName()); //TODO Enviar correo al cliente, al soc y al usuario que generó el incidente
+//            $message->cc('soc@globalcybersec.com','Blue Team::Global Cybersec');
             $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . '] ' . $incident->title);
         });
     }
@@ -559,42 +564,45 @@ class IncidentController extends Controller
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            \Log::info($ticket->internal_number);
+//            \Log::info($ticket->internal_number);
 
             //TODO ¿cuando es un falso positivo se debe generar ticket en el OTRS?
 
             $otrs = new OtrsClient();
             $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $incident->customer->semicolonSeparatedEmails(), $incident->renderHtml());
 
+            //Si no contiene error, almacena el ticket con el ticket id y el ticket number
             if (!isset($otrsTicket['error_code'])) {
                 $ticket->otrs_ticket_id = $otrsTicket['TicketID'];
                 $ticket->otrs_ticket_number = $otrsTicket['TicketNumber'];
                 $ticket->save();
-
-                if ($newTicketStatusId == 2) {
-                    //TODO verificar que el correo se envíe aún cuando el OTRS haya generado un error
-                    $this->sendEmail($incident);
-                    return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
-
-                } else {
-                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
-                }
-
             } else {
-                //Definimos en verdadero debemos recordar de enviar la informaci{on al OTRS
+                //Definimos en verdadero debemos recordar de enviar la información al OTRS
                 $ticket->send_reminder = true;
                 $ticket->save();
 
+                //Aunque haya error en el OTRS se envía el correo
+                $this->sendEmail($incident);
+
                 return $this->createOtrsErrorResult($otrsTicket);
+            }
+
+            if ($newTicketStatusId == 2) {
+                $this->sendEmail($incident);
+                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
+
+            } else {
+                return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
             }
         } else if ($oldTicketStatusId == 2 && ($newTicketStatusId == 3 || $newTicketStatusId == 5)) {
             //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId == 3)
+            if ($newTicketStatusId == 3) {
+                $this->sendEmail($incident);
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Resuelto']);
-            else
+            } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
         } else if ($oldTicketStatusId == 3 && ($newTicketStatusId == 4 || $newTicketStatusId == 6)) {
@@ -602,9 +610,10 @@ class IncidentController extends Controller
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId == 4)
+            if ($newTicketStatusId == 4) {
+                $this->sendEmail($incident);
                 return redirect()->route('incident.show', $incident->id)->withMessage('Se cerró el Incidente y se envió el correo al cliente');
-            else
+            } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);
 
         } else if ($oldTicketStatusId == 4 || $oldTicketStatusId == 5 || $oldTicketStatusId == 6) {
@@ -644,8 +653,45 @@ class IncidentController extends Controller
         return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó el anexo al incidente');
     }
 
-    public function storeRecommendation(){
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function storeRecommendation(Request $request)
+    {
+        $incident = Incident::whereId($request->get('incident_id'))->first();
+        $status = $incident->ticket->ticket_status_id;
 
+        if ($status > 2) {
+            abort(404);
+        }
+
+        Recommendation::validateCreate($request, $this);
+
+        $otrs = new OtrsClient();
+
+        $user_info = $otrs->getUserInfo($otrs->getAgent());
+
+        if (isset($user_info['error_code']))
+            return $this->createOtrsErrorResult($user_info);
+
+        $article_id = $otrs->createArticle($incident->ticket->otrs_ticket_id, $user_info['UserID'], $user_info['UserEmail'], $incident->title, $incident->customer->semicolonSeparatedEmails(), $request->get('content'));
+
+        if (isset($article_id['error_code']))
+            return $this->createOtrsErrorResult($article_id);
+
+
+        $recomm = new Recommendation();
+        $recomm->incident_id = $request->get('incident_id');
+        $recomm->content = $request->get('content');
+        $recomm->otrs_article_id = $article_id;
+        $recomm->save();
+
+        $this->sendEmail($incident, 'Se agregó una recomendación al Incidente'); //Confirmar que cuando se agrega una recomendación se envíe un correo
+
+        return redirect()
+            ->route('incident.show', $request->get('incident_id'))
+            ->withMessage('Se agregó la recomendación al incidente');
     }
 
     /**

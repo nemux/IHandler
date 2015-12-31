@@ -319,6 +319,14 @@ class Incident extends BaseModel
     }
 
     /**
+     * Lista de recomendaciones agregadas al caso
+     */
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class, 'incident_id')->orderBy('id', 'asc');
+    }
+
+    /**
      * Determina si un campo en la vista debe estar o no habilitado
      *
      * @return string

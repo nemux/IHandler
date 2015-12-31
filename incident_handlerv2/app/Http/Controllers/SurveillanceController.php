@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Library\Pdf;
 use App\Models\Catalog\Criticity;
 use App\Models\Customer\Customer;
 use App\Models\Evidence\Evidence;
@@ -10,6 +11,7 @@ use App\Models\Person\PersonContact;
 use App\Models\Surveillance\SurveillanceCase;
 use App\Models\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 
 class SurveillanceController extends Controller
 {
@@ -199,7 +201,7 @@ class SurveillanceController extends Controller
      */
     public function sendEmail(SurveillanceCase $surv)
     {
-        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
+        \Mail::send('email.surveillance', compact('surv'), function (Message $message) use ($surv) {
 //            Adjuntamos las evidencias cargadas
             foreach ($surv->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
@@ -212,7 +214,8 @@ class SurveillanceController extends Controller
             $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());
+            $message->to($mailTo, \Auth::user()->person->fullName());//TODO enviar correo al cliente?, enviar el correo al SOC y al usuario que generó el incidente
+//            $message->cc('soc@globalcybersec.com','Blue Team::Global Cybersec');
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });
     }

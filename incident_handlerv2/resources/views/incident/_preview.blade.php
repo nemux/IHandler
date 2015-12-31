@@ -187,7 +187,8 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
-                    <li><b>{{$category->category->id-1}}</b>: {{$category->category->noCat() }}; {{$category->category->description}}</li>
+                    <li><b>{{$category->category->id-1}}</b>: {{$category->category->noCat() }}
+                        ; {{$category->category->description}}</li>
                 @endforeach
             </ul>
         </td>
@@ -357,6 +358,22 @@
                 <td class="content_column align-justify"><p><b>{{$annex->field}}</b></p>
 
                     <p>{!! $annex->content !!}</p></td>
+            </tr>
+        @endforeach
+    @endif
+
+    @if(count($case->recommendations)>0)
+        <tr>
+            <td colspan="2" class="title_column"><h3><b>Recomendaciones</b></h3></td>
+        </tr>
+        @foreach($case->recommendations as $recomm)
+            <tr>
+                <td class="title_column">
+                    {{$recomm->created_at->format('d/m/Y')}}<br/>
+                    {{$recomm->created_at->format('H:i:s T')}}
+                </td>
+                <td class="content_column align-justify">
+                    <p>{!! $recomm->content !!}</p></td>
             </tr>
         @endforeach
     @endif

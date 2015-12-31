@@ -8,6 +8,7 @@ use App\Models\Incident\Annex;
 use App\Models\Incident\Incident;
 use App\Models\Incident\IncidentEvent;
 use App\Models\Incident\Machine;
+use App\Models\Incident\Recommendation;
 use Illuminate\Database\Eloquent\Collection;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\Table;
@@ -458,6 +459,15 @@ class WordGenerator
             }
         }
 
+        //Recommendations n-rows
+        if (sizeof($i->recommendations) > 0) {
+            $this->section->addTitle('Recomendaciones', 4);
+            $recomm_table = $this->section->addTable($this->table_s);
+            foreach ($i->recommendations as $recomm) {
+                $this->addRecommendation($recomm_table, $recomm);
+            }
+        }
+
         $this->section->addTextBreak(1, $this->normal_f, $this->center_p);
     }
 
@@ -478,6 +488,26 @@ class WordGenerator
         $content_cell = $annex_row->addCell($this->right_col_t, $this->normal_cell);
         $content_cell->addText($annex->field, $this->bold_f, $this->center_p);
         $content = $annex->content;
+        $html = StringHelper::parseHtml($content);
+        Html::addHtml($content_cell, $html);
+    }
+
+    /**
+     * Agregar recomendacion al documento
+     *
+     * @param Table $recomm_table
+     * @param Recommendation $recomm
+     */
+    private function addRecommendation(Table &$recomm_table, Recommendation $recomm)
+    {
+        $recomm_row = $recomm_table->addRow(null, $this->row_s);
+
+        $title_cell = $recomm_row->addCell($this->left_col_t, $this->gray_cell);
+        $title_cell->addText($recomm->created_at->format('d/m/Y'), $this->bold_f, $this->center_p);
+        $title_cell->addText($recomm->created_at->format('H:i:s T'), $this->bold_f, $this->center_p);
+
+        $content_cell = $recomm_row->addCell($this->right_col_t, $this->normal_cell);
+        $content = $recomm->content;
         $html = StringHelper::parseHtml($content);
         Html::addHtml($content_cell, $html);
     }
