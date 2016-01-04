@@ -550,7 +550,7 @@ class IncidentController extends Controller
         if ($oldTicketStatusId == 1 && ($newTicketStatusId == 2 || $newTicketStatusId == 5)) {
             //De abierto, puede pasar a investigación o falso positivo
 
-            $ticketCount = Incident::whereCustomerId(2)
+            $ticketCount = Incident::whereCustomerId($incident->customer->id)
                 ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
                 ->where('ticket.internal_number', '!=', 'Por asignar...')//Se valida que cuente los tickets asignados
                 ->where('ticket.internal_number', '!=', '')//Con un numero interno definido

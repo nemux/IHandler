@@ -154,14 +154,17 @@
 
     .criticity-1 {
         background-color: #CC3F44;
+        color:white;
     }
 
     .criticity-2 {
         background-color: #ff7900;
+        color:white;
     }
 
     .criticity-3 {
         background-color: #f7cc31;
+        color:white;
 
     }
 

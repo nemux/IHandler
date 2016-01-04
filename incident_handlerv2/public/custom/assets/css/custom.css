@@ -91,15 +91,20 @@
     text-overflow: ellipsis;
 }
 
+
+
 .criticity-1 {
-    color: #CC3F44;
+    background-color: #CC3F44;
+    color:white;
 }
 
 .criticity-2 {
-    color: #ff7900;
+    background-color: #ff7900;
+    color:white;
 }
 
 .criticity-3 {
-    color: #f7cc31;
+    background-color: #f7cc31;
+    color:white;
 
 }
