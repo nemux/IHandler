@@ -133,14 +133,16 @@ class HelpdeskUserController extends Controller
         $user->person->sex = $request->get('sex');
         $user->person->save();
 
-        if (!$user->person->contact) {
-            $user->person->contact = new CustomerUserPersonContact();
-            $user->person->contact->person_id = $user->person->id;
+        $contact = $user->person->contact;
+
+        if (!$contact) {
+            $contact = new CustomerUserPersonContact();
+            $contact->person_id = $user->person->id;
         }
 
-        $user->person->contact->email = $request->get('email');
-        $user->person->contact->phone = $request->get('phone');
-        $user->person->contact->save();
+        $contact->email = $request->get('email');
+        $contact->phone = $request->get('phone');
+        $contact->save();
 
         return redirect()->route('helpdesk.user.edit', $user->username)->withMessage('Datos actualizados');
     }
