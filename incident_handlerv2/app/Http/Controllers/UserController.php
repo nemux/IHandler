@@ -74,7 +74,7 @@ class UserController extends Controller
         \Mail::send('email.newuser', compact(['user', 'password']), function ($mail) use ($user) {
             $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
-            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Nuevo Usuario');
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IM] Nuevo Usuario');
         });
 
         return redirect()->route('user.index')->withMessage('Nuevo usuario creado');
@@ -173,7 +173,7 @@ class UserController extends Controller
         \Mail::send('email.changepass', compact(['user', 'password']), function ($mail) use ($user) {
             $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
-            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Cambio de Contraseña');
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IM] Cambio de Contraseña');
         });
 
         return redirect()->route('user.edit', $user->username)->withMessage('Contraseña actualizada');

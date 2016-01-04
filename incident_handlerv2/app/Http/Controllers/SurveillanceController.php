@@ -15,7 +15,7 @@ use Illuminate\Mail\Message;
 
 class SurveillanceController extends Controller
 {
-    protected $email_subject_prefix = '[GCS-IH][Cibervigilancia]';
+    protected $email_subject_prefix = '[GCS-IM][Cibervigilancia]'; //TODO move to .env file
 
     /**
      * Display a listing of the resource.
@@ -211,7 +211,8 @@ class SurveillanceController extends Controller
 
             $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');
 
-            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+//            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+            $mailTo = PersonContact::compareEmail($surv->user->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName());//TODO enviar correo al cliente?, enviar el correo al SOC y al usuario que generó el incidente

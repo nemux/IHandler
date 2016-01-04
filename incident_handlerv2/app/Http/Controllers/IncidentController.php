@@ -27,7 +27,7 @@ use Psy\Util\Json;
 class IncidentController extends Controller
 {
 
-    protected $email_subject_prefix = '[GCS-IH][Incidente]';
+    protected $email_subject_prefix = '[GCS-IM][Incidente]'; //TODO move to .env file
 
     /**
      * Display a listing of the resource.
@@ -393,7 +393,8 @@ class IncidentController extends Controller
 
             $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
-            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+//            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+            $mailTo = PersonContact::compareEmail($incident->user->person->contact->email);
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
             $message->to($mailTo, \Auth::user()->person->fullName()); //TODO Enviar correo al cliente, al soc y al usuario que generó el incidente

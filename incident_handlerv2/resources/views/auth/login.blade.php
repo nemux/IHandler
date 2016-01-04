@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Xenon Boostrap Admin Panel"/>
     <meta name="author" content="Laborator.co"/>
-    <title>[GCS][IH] - Iniciar sesión</title>
+    <title>[GCS][IM] - Iniciar sesión</title>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" id="style-resource-1">
     <link rel="stylesheet" href="xenon/assets/css/fonts/linecons/css/linecons.css" id="style-resource-2">
     <link rel="stylesheet" href="xenon/assets/css/fonts/fontawesome/css/font-awesome.min.css" id="style-resource-3">
