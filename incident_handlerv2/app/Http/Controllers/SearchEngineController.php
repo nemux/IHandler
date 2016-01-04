@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incident\Incident;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SearchEngineController extends Controller
@@ -52,7 +53,7 @@ class SearchEngineController extends Controller
             'ticket.internal_number',
             'incident.title',
             'user.username',
-            \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI\') as det_time'),
+            \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI \')||\'' . date_default_timezone_get() . '\' as det_time'), //TODO CST (timezone) no debería ir aquí
             'ticket_status.name as status',
             'criticity.name as criticity'
         )->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
