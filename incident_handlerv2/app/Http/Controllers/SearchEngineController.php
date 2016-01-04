@@ -53,7 +53,7 @@ class SearchEngineController extends Controller
             'ticket.internal_number',
             'incident.title',
             'user.username',
-            \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI \')||\'' . date_default_timezone_get() . '\' as det_time'), //TODO CST (timezone) no debería ir aquí
+            \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI \')||\'' . date('T') . '\' as det_time'), //TODO CST (timezone) no debería ir aquí
             'ticket_status.name as status',
             'criticity.name as criticity'
         )->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
