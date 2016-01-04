@@ -52,6 +52,16 @@
         var incidents_table;
         var datatableOptions = {
             dom: "<'row'<'col-sm-5'B><'col-sm-7'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            columns: [
+                null, null, null, null, null,
+                {
+                    type: 'date',
+                    dataSort: 9
+                }, null, null, null,
+                {
+                    visible: false
+                }
+            ],
             buttons: [
                 {
                     text: 'Copiar Tabla',
@@ -138,7 +148,6 @@
                     }
                 });
 
-
                 event.preventDefault();
             });
         });
@@ -152,9 +161,9 @@
 
                 incidents_table.clear();
                 $.each(response.items, function (index, item) {
-                    if (index == 0) {
-                        console.log(item);
-                    }
+//                    if (index == 0) {
+//                        console.log(item);
+//                    }
 
                     var signatures = '<ul class="list-unstyled">';
 
@@ -181,7 +190,8 @@
                         item.det_time,
                         sensors,
                         item.status,
-                        item.username
+                        item.username,
+                        item.dt
                     ])
                 });
                 incidents_table.draw();

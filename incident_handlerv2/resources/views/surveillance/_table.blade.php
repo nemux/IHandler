@@ -1,6 +1,16 @@
 <script type="text/javascript">
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
+        columns: [
+            null, null, null, null,
+            {
+                type: 'date',
+                dataSort: 6
+            }, null,
+            {
+                visible: false
+            }
+        ],
         buttons: [
             {
                 text: 'Copiar Tabla',
@@ -44,7 +54,7 @@
 <table class="table table-bordered table-striped" id="surveillance-table">
     <thead>
     <tr>
-        <th>#</th>
+        <th>ID</th>
         <th>Título</th>
         <th>Cliente</th>
         <th>Criticidad</th>
@@ -59,8 +69,9 @@
             <td class="col-sm-5">{{$case->title}}</td>
             <td class="col-sm-3">{{$case->customer->name}}</td>
             <td class="col-sm-1">{{$case->criticity->name}}</td>
-            <td class="col-sm-1">{{date_format($case->created_at,'d/M/Y H:i')}}</td>
+            <td class="col-sm-1">{{$case->created_at->format('d/M/Y H:i T')}}</td>
             <td class="col-sm-1">{{$case->user->username}}</td>
+            <td>{{$case->created_at}}</td>
         </tr>
     @endforeach
     </tbody>

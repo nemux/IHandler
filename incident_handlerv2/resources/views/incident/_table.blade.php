@@ -2,6 +2,16 @@
     @if(isset($incidents));
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
+        columns: [
+            null, null, null, null, null,
+            {
+                type: 'date',
+                dataSort: 9
+            }, null, null, null,
+            {
+                visible: false
+            }
+        ],
         buttons: [
             {
                 text: 'Copiar Tabla',
@@ -73,7 +83,7 @@
                         @endforeach
                     </ul>
                 </td>
-                <td>{{date('d/m/Y H:i T',strtotime($incident->detection_time))}}</td>
+                <td>{{$incident->detection_time->format('d/m/Y H:i T')}}</td>
                 <td>
                     <ul class="list-unstyled">
                         @foreach($incident->sensors as $sensor)
@@ -83,6 +93,7 @@
                 </td>
                 <td>{{isset($incident->status)?$incident->status:'Por asignar...'}}</td>
                 <td>{{$incident->username}}</td>
+                <td>{{$incident->detection_time}}</td>
             </tr>
         @endforeach
     @endif

@@ -55,7 +55,8 @@ class SearchEngineController extends Controller
             'user.username',
             \DB::raw('to_char("incident"."detection_time", \'DD/MM/YYYY HH24:MI \')||\'' . date('T') . '\' as det_time'), //TODO CST (timezone) no debería ir aquí
             'ticket_status.name as status',
-            'criticity.name as criticity'
+            'criticity.name as criticity',
+            'incident.detection_time as dt'
         )->leftJoin('ticket', 'ticket.incident_id', '=', 'incident.id')
             ->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
             ->leftJoin('user', 'user.id', '=', 'incident.user_id')
