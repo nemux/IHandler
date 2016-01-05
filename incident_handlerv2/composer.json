@@ -11,6 +11,10 @@
     {
       "type": "git",
       "url": "git@bitbucket.org:isclopezm2/gcs-handler-model.git"
+    },
+    {
+      "type": "git",
+      "url": "git@bitbucket.org:isclopezm2/gcs-customer-helpdesk-model"
     }
   ],
   "require": {
@@ -26,7 +30,8 @@
     "phpoffice/phpexcel": "dev-master",
     "predis/predis": "^1.0",
     "filp/whoops": "~1.0",
-    "isclopezm2/gcs-handler-model": "dev-master"
+    "isclopezm2/gcs-handler-model": "dev-master",
+    "isclopezm2/gcs-customer-helpdesk-model": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
