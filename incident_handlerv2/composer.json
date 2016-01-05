@@ -7,6 +7,12 @@
   ],
   "license": "MIT",
   "type": "project",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@bitbucket.org:isclopezm2/gcs-handler-model.git"
+    }
+  ],
   "require": {
     "php": ">=5.6",
     "laravel/framework": "5.1.*",
@@ -19,7 +25,8 @@
     "phpoffice/phpword": "dev-master",
     "phpoffice/phpexcel": "dev-master",
     "predis/predis": "^1.0",
-    "filp/whoops": "~1.0"
+    "filp/whoops": "~1.0",
+    "isclopezm2/gcs-handler-model": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
