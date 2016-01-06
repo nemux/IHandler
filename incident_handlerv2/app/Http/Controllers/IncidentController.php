@@ -6,20 +6,20 @@ use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
 use App\Library\Pdf;
 use App\Library\WordGenerator;
-use App\Models\Evidence\Evidence;
-use App\Models\Evidence\EvidenceType;
-use App\Models\Incident\Annex;
-use App\Models\Incident\History;
-use App\Models\Incident\Incident;
-use App\Models\Incident\IncidentAttackCategory;
-use App\Models\Incident\IncidentAttackSignature;
-use App\Models\Incident\IncidentCustomerSensor;
-use App\Models\Incident\IncidentEvent;
-use App\Models\Incident\IncidentEvidence;
-use App\Models\Incident\Note;
-use App\Models\Incident\Recommendation;
-use App\Models\Person\PersonContact;
-use App\Models\Ticket\Ticket;
+use Models\IncidentManager\Evidence\Evidence;
+use Models\IncidentManager\Evidence\EvidenceType;
+use Models\IncidentManager\Incident\Annex;
+use Models\IncidentManager\Incident\History;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\IncidentAttackCategory;
+use Models\IncidentManager\Incident\IncidentAttackSignature;
+use Models\IncidentManager\Incident\IncidentCustomerSensor;
+use Models\IncidentManager\Incident\IncidentEvent;
+use Models\IncidentManager\Incident\IncidentEvidence;
+use Models\IncidentManager\Incident\Note;
+use Models\IncidentManager\Incident\Recommendation;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\Ticket\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Psy\Util\Json;
@@ -63,7 +63,7 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        $case = new \App\Models\Incident\Incident();
+        $case = new \Models\IncidentManager\Incident\Incident();
         return view('incident.create', compact('case'))->withPostroute('file.upload.incident');
     }
 

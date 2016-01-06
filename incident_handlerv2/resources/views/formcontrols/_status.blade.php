@@ -1,6 +1,6 @@
 <select class="form-control" id="{{$id}}" name="{{isset($multiple) && $multiple?$id.'[]':$id}}" {{isset($multiple) && $multiple?'multiple':''}}>
     <option></option>
-    @foreach(\App\Models\Ticket\TicketStatus::all('name','id') as $item)
+    @foreach(\Models\IncidentManager\Ticket\TicketStatus::all('name','id') as $item)
         <option value="{{$item->id}}">{{$item->name}}</option>
     @endforeach
 </select>

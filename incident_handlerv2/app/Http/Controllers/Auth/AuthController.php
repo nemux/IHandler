@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\EventName;
 use App\Http\Controllers\Controller;
-use App\Models\User\User;
+use Models\IncidentManager\Log\Log;
+use Models\IncidentManager\User\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -87,6 +88,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             \Event::fire(new EventName("El usuario <b>" . \Auth::user()->username . "</b> inició sesión"));
+            Log::debug(\Auth::user()->username, "El usuario '" . \Auth::user()->username . "' inició sesión a las '" . date('d/m/Y H:I:s T'));
             return redirect()->intended($this->redirectPath());
         } else {
             return redirect(route('login.get'))->with('message', 'Usuario o contraseña incorrectos');

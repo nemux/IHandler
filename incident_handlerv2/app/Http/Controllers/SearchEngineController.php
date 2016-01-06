@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Incident\Incident;
+use Models\IncidentManager\Incident\Incident;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

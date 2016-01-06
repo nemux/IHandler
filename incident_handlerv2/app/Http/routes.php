@@ -28,11 +28,11 @@ Event::listen('illuminate.query', function ($sql, $bindings) {
 /**
  * Esto permite pasar Objetos a las rutas, en lugar de IDs
  */
-Route::model('user', \App\Models\User\User::class);
-Route::model('customer_user', \App\Models\Helpdesk\CustomerUser::class);
+Route::model('user', \Models\IncidentManager\User\User::class);
+Route::model('customer_user', \Models\Helpdesk\User\User::class);
 
 Route::bind('user', function ($value, $route) {
-    $user = App\Models\User\User::whereUsername($value)->first();
+    $user = Models\IncidentManager\User\User::whereUsername($value)->first();
 
     if (!$user) {
         abort(404, 'No se encontró al usuario que se buscaba');
@@ -42,7 +42,7 @@ Route::bind('user', function ($value, $route) {
 });
 
 Route::bind('customer_user', function ($value, $route) {
-    $user = \App\Models\Helpdesk\CustomerUser::whereUsername($value)->first();
+    $user = \Models\Helpdesk\User\User::whereUsername($value)->first();
 
     if (!$user) {
         abort(404, 'No se encontró al usuario que se buscaba');

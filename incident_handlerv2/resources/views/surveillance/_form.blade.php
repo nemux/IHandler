@@ -128,7 +128,7 @@
 
         <div class="row">
             <div id="surveillance-preview" class="col-sm-12">
-                @include('surveillance._preview',['case'=>isset($case)?$case:new \App\Models\Surveillance\SurveillanceCase()])
+                @include('surveillance._preview',['case'=>isset($case)?$case:new \Models\IncidentManager\Surveillance\SurveillanceCase()])
             </div>
         </div>
 

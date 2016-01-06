@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Library\Pdf;
-use App\Models\Catalog\Criticity;
-use App\Models\Customer\Customer;
-use App\Models\Evidence\Evidence;
-use App\Models\Person\PersonContact;
-use App\Models\Surveillance\SurveillanceCase;
-use App\Models\Surveillance\SurveillanceCaseEvidence;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\Surveillance\SurveillanceCase;
+use Models\IncidentManager\Surveillance\SurveillanceCaseEvidence;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 

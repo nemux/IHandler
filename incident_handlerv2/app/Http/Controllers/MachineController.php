@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Asset\Asset;
-use App\Models\Incident\Machine;
+use Models\IncidentManager\Asset\Asset;
+use Models\IncidentManager\Incident\Machine;
 
 class MachineController extends Controller
 {

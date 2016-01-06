@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer\Customer;
-use App\Models\Customer\CustomerAsset;
-use App\Models\Customer\CustomerContact;
-use App\Models\Person\Person;
-use App\Models\Person\PersonContact;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Customer\CustomerAsset;
+use Models\IncidentManager\Customer\CustomerContact;
+use Models\IncidentManager\Person\Person;
+use Models\IncidentManager\Person\PersonContact;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 

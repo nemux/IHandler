@@ -2,7 +2,7 @@
         name="{{isset($multiple) && $multiple?$id.'[]':$id}}" {{isset($multiple) && $multiple?'multiple':''}}>
     <option></option>
     @if(!isset($customer_id))
-        @foreach(\App\Models\Customer\CustomerSensor::with('customer')
+        @foreach(\Models\IncidentManager\Customer\CustomerSensor::with('customer')
         ->get() as $item)
             <option value="{{$item->id}}">{{$item->customer->otrs_customer_id}} - {{$item->name}}</option>
         @endforeach

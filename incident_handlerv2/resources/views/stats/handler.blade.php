@@ -171,7 +171,7 @@
                 <div class="form-group col-md-4 col-xs-12">
                     <select class="form-control" id="customer_id" name="customer_id">
                         <option></option>
-                        @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
+                        @foreach(\Models\IncidentManager\Customer\Customer::all(['name','id']) as $index=>$customer)
                             <option value="{{$customer->id}}">{{$customer->name}}</option>
                         @endforeach
                     </select>

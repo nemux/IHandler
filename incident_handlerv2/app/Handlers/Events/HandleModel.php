@@ -3,8 +3,8 @@
 namespace App\Handlers\Events;
 
 use App\Events\EventModel;
-use App\Models\BaseModel;
-use App\Models\Log\Log;
+use Models\IncidentManager\BaseModel;
+use Models\IncidentManager\Log\Log;
 
 class HandleModel
 {

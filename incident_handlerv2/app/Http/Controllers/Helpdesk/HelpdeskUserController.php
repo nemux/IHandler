@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Helpdesk;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Models\Helpdesk\CustomerUser;
-use App\Models\Helpdesk\CustomerUserPerson;
-use App\Models\Helpdesk\CustomerUserPersonContact;
+use Models\Helpdesk\Person\Person as CustomerUserPerson;
+use Models\Helpdesk\Person\PersonContact as CustomerUserPersonContact;
+use Models\Helpdesk\User\User as CustomerUser;
 use Illuminate\Http\Request;
 
 class HelpdeskUserController extends Controller

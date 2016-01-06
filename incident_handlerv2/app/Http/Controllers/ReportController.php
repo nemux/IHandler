@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Library\CsvGenerator;
 use App\Library\WordGenerator;
-use App\Models\Catalog\AttackCategory;
-use App\Models\Catalog\Criticity;
-use App\Models\Customer\Customer;
-use App\Models\Customer\CustomerSensor;
-use App\Models\Incident\Incident;
-use App\Models\Ticket\TicketStatus;
-use App\Models\User\User;
+use Models\IncidentManager\Catalog\AttackCategory;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Customer\CustomerSensor;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Ticket\TicketStatus;
+use Models\IncidentManager\User\User;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller

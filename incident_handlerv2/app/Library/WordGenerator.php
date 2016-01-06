@@ -3,12 +3,11 @@
 namespace App\Library;
 
 
-use App\Models\Catalog\Criticity;
-use App\Models\Incident\Annex;
-use App\Models\Incident\Incident;
-use App\Models\Incident\IncidentEvent;
-use App\Models\Incident\Machine;
-use App\Models\Incident\Recommendation;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Incident\Annex;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\Machine;
+use Models\IncidentManager\Incident\Recommendation;
 use Illuminate\Database\Eloquent\Collection;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\Table;

@@ -232,6 +232,11 @@ return [
          */
 //        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
 //        'Image' => Barryvdh\Snappy\Facades\SnappyImage::class,
+
+        /**
+         * Form User Model to Login
+         */
+        'UserModel' => \Models\IncidentManager\User\User::class,
     ],
 
 ];

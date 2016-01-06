@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'pgsql'), //Se cambio de DB_CONNECTION
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
             'strict' => false,
         ],
 
-        'pgsql' => [
+        env('DB_CONNECTION') => [ //IncidentManager Models
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),
             'database' => env('DB_DATABASE', 'forge'),
@@ -75,7 +75,7 @@ return [
             'schema' => 'public',
         ],
 
-        'old_pgsql' => [
+        env('OLD_DB_CONNECTION') => [ //IncidentManager V1
             'driver' => 'pgsql',
             'host' => env('OLD_DB_HOST', 'localhost'),
             'database' => env('OLD_DB_DATABASE', 'forge'),
@@ -86,7 +86,7 @@ return [
             'schema' => 'public',
         ],
 
-        'hd_pgsql' => [
+        env('HD_DB_CONNECTION') => [//Helpdesk Models
             'driver' => 'pgsql',
             'host' => env('DB_HD_HOST', 'localhost'),
             'database' => env('DB_HD_DATABASE', 'forge'),

@@ -1,6 +1,6 @@
 <select class="form-control" id="{{$id}}" name="{{$id}}">
     <option></option>
-    @foreach(\App\Models\Incident\MachineType::all('name','id') as $machinetype)
+    @foreach(\Models\IncidentManager\Incident\MachineType::all('name','id') as $machinetype)
         <option value="{{$machinetype->id}}">{{ucfirst($machinetype->name)}}</option>
     @endforeach
 </select>

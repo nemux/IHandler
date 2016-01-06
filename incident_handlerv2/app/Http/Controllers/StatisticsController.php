@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer\Customer;
-use App\Models\Incident\Incident;
-use App\Models\Surveillance\SurveillanceCase;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Surveillance\SurveillanceCase;
 use Illuminate\Http\Request;
 
 /**

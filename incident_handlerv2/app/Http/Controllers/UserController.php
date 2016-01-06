@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Person\Person;
-use App\Models\Person\PersonContact;
-use App\Models\User\User;
+use Models\IncidentManager\Person\Person;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\User\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -83,7 +83,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User\User $user
+     * @param  \Models\IncidentManager\User\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)

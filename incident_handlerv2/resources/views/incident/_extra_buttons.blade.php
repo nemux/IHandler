@@ -147,7 +147,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Agregar un anexo al caso</h4>
             </div>
-            {!! Form::model(new \App\Models\Incident\Annex(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.annex.store')]) !!}
+            {!! Form::model(new \Models\IncidentManager\Incident\Annex(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.annex.store')]) !!}
             {!! Form::hidden('incident_id',$case->id) !!}
             <div class="modal-body">
                 @include('incident.annex._form')
@@ -170,7 +170,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Agregar una observación al caso</h4>
             </div>
-            {!! Form::model(new \App\Models\Incident\Note(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.note.store')]) !!}
+            {!! Form::model(new \Models\IncidentManager\Incident\Note(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.note.store')]) !!}
             {!! Form::hidden('incident_id',$case->id) !!}
             <div class="modal-body">
                 @include('incident.note._form')
@@ -193,7 +193,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Agregar una recomendación al caso</h4>
             </div>
-            {!! Form::model(new \App\Models\Incident\Recommendation(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.recommendation.store')]) !!}
+            {!! Form::model(new \Models\IncidentManager\Incident\Recommendation(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.recommendation.store')]) !!}
             {!! Form::hidden('incident_id',$case->id) !!}
             <div class="modal-body">
                 @include('incident.recommendation._form')

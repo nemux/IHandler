@@ -117,7 +117,7 @@
                 <h4 class="modal-title">Agregar una página</h4>
             </div>
             <div class="modal-body">
-                {!! Form::model(new \App\Models\Customer\CustomerPage(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-page','url'=>route('customer.page.store')]) !!}
+                {!! Form::model(new \Models\IncidentManager\Customer\CustomerPage(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-page','url'=>route('customer.page.store')]) !!}
                 {!! Form::hidden('customer_id',$customer->id) !!}
                 @include('link._form')
                 {!! Form::close() !!}

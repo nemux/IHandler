@@ -1,6 +1,6 @@
 <select class="form-control" id="{{$id}}" name="{{isset($multiple) && $multiple?$id.'[]':$id}}" {{isset($multiple) && $multiple?'multiple':''}}>
     <option></option>
-    @foreach(\App\Models\Catalog\AttackFlow::all('name','id') as $item)
+    @foreach(\Models\IncidentManager\Catalog\AttackFlow::all('name','id') as $item)
         <option value="{{$item->id}}">{{$item->name}}</option>
     @endforeach
 </select>

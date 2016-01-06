@@ -3,7 +3,7 @@
 namespace App\Library;
 
 
-use App\Models\Incident\Incident;
+use Models\IncidentManager\Incident\Incident;
 
 class CsvGenerator
 {

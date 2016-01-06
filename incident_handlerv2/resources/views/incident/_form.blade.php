@@ -281,7 +281,7 @@
                 <select {{$case->fieldEnabled()}} class="form-control" id="category_id"
                         name="category_id[]" multiple data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackCategory::all(['name','id']) as $item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackCategory::all(['name','id']) as $item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -330,7 +330,7 @@
                 <select {{$case->fieldEnabled()}} id="flow_id" class="form-control" name="flow_id"
                         data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackFlow::all(['name','id']) as $index=>$item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackFlow::all(['name','id']) as $index=>$item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -343,7 +343,7 @@
                 <select {{$case->fieldEnabled()}} id="attack_type_id" class="form-control"
                         name="attack_type_id" data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackType::all(['name','id']) as $index=>$item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackType::all(['name','id']) as $index=>$item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -356,7 +356,7 @@
                 <select {{$case->fieldEnabled()}} id="criticity_id" class="form-control"
                         name="criticity_id" data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\Criticity::all(['name','id']) as $index=>$criticity)
+                    @foreach(\Models\IncidentManager\Catalog\Criticity::all(['name','id']) as $index=>$criticity)
                         <option value="{{$criticity->id}}">
                             {{$criticity->name}}
                         </option>
@@ -394,7 +394,7 @@
                         name="customer_id"
                         data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
+                    @foreach(\Models\IncidentManager\Customer\Customer::all(['name','id']) as $index=>$customer)
                         <option value="{{$customer->id}}">{{$customer->name}}</option>
                     @endforeach
                 </select>
@@ -424,7 +424,7 @@
             <label class="control-label">Firma(s)</label>
             <select class="form-control" id="signature" name="signature[]" multiple="multiple" data-validate="required">
                 <option></option>
-                @foreach(\App\Models\Catalog\AttackSignature::all(['name','id']) as $index=>$item)
+                @foreach(\Models\IncidentManager\Catalog\AttackSignature::all(['name','id']) as $index=>$item)
                     <option value="{{$item->id}}">
                         {{$item->name}}
                     </option>
@@ -470,7 +470,7 @@
 
         <div class="row">
             <div id="surveillance-preview" class="col-sm-12">
-                @include('incident._preview',['case'=>isset($case)?$case:new \App\Models\Incident\Incident()])
+                @include('incident._preview',['case'=>isset($case)?$case:new \Models\IncidentManager\Incident\Incident()])
             </div>
         </div>
 

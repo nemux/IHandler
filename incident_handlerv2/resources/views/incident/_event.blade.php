@@ -459,7 +459,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-src-location">
             <option></option>
-            @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
+            @foreach(\Models\IncidentManager\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -467,7 +467,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-src-type">
             <option></option>
-            @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
+            @foreach(\Models\IncidentManager\Incident\MachineType::all('name','id') as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -513,7 +513,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-tar-location">
             <option></option>
-            @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
+            @foreach(\Models\IncidentManager\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -521,7 +521,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-tar-type">
             <option></option>
-            @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
+            @foreach(\Models\IncidentManager\Incident\MachineType::all('name','id') as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>

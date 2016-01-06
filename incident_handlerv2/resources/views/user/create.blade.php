@@ -10,7 +10,7 @@
 
 @section('dashboard_content')
     <section class="">
-        {!! Form::model(new \App\Models\User\User(),['class'=>'form-horizontal','role'=>'form']) !!}
+        {!! Form::model(new \Models\IncidentManager\User\User(),['class'=>'form-horizontal','role'=>'form']) !!}
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="panel panel-default">
