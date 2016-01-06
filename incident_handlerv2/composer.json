@@ -9,7 +9,7 @@
   "type": "project",
   "repositories": [
     {
-      "type": "git",
+      "type": "vcs",
       "url": "git@bitbucket.org:isclopezm2/gcs-handler-model.git"
     }
   ],
