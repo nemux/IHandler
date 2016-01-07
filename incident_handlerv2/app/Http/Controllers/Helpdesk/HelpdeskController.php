@@ -9,6 +9,8 @@ use Models\Helpdesk\Ticket\Ticket as HelpdeskTicket;
 
 class HelpdeskController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,12 +18,24 @@ class HelpdeskController extends Controller
      */
     public function index()
     {
-//        HelpdeskTicket::orderBy('created_at', 'desc')->with('criticity')->paginate(10);
+
+        $tickets = HelpdeskTicket::orderBy('created_at', 'desc')->with('criticity')->paginate(10);
+
+        return view('helpdesk.index', compact('tickets'));
+    }
+
+    /**
+     * Display a dashboard for helpdesk
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function dashboard()
+    {
 
         $in_count = HelpdeskTicket::whereTicketTypeId(1)->count();
         $cc_count = HelpdeskTicket::whereTicketTypeId(2)->count();
 
-        return view('helpdesk.index', compact('in_count','cc_count'));
+        return view('helpdesk.dashboard', compact('in_count', 'cc_count'));
     }
 
     /**

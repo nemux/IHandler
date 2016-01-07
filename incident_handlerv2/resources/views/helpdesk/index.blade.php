@@ -2,53 +2,37 @@
 
 @section('title', 'Tickets en Helpdesk')
 
+@section('include_up')
+    {{--DataTables--}}
+    <link rel="stylesheet" type="text/css"
+          href="/custom/assets/js/DataTables/DataTables-1.10.10/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="/custom/assets/js/DataTables/Buttons-1.1.0/css/buttons.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="/custom/assets/js/DataTables/Responsive-2.0.0/css/responsive.bootstrap.min.css"/>
+@endsection
+
 @section('include_down')
-    {{--Widgets--}}
-    <script src="/xenon/assets/js/xenon-widgets.js" id="script-resource-7"></script>
-
-    {{--HighCharts--}}
-    <script src="/custom/assets/js/highcharts-4.1.9/highcharts.js"></script>
-    <script src="/custom/assets/js/highcharts-4.1.9/modules/data.js"></script>
-
-    <script>
-        $(document).ready(function () {
-
-        });
-    </script>
+    {{--DataTables--}}
+    <script type="text/javascript" src="/custom/assets/js/DataTables/pdfmake-0.1.18/build/pdfmake.min.js"></script>
+    <script type="text/javascript" src="/custom/assets/js/DataTables/pdfmake-0.1.18/build/vfs_fonts.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/DataTables-1.10.10/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/DataTables-1.10.10/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/Buttons-1.1.0/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/Buttons-1.1.0/js/buttons.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/custom/assets/js/DataTables/Buttons-1.1.0/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="/custom/assets/js/DataTables/Buttons-1.1.0/js/buttons.print.min.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/Responsive-2.0.0/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript"
+            src="/custom/assets/js/DataTables/Responsive-2.0.0/js/responsive.bootstrap.min.js"></script>
 @endsection
 
 @section('dashboard_content')
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <div class="xe-widget xe-counter xe-counter-warning" data-status="1" data-count=".num" data-from="0"
-                 data-to="{{$in_count}}"
-                 data-suffix=" Tickets"
-                 data-duration="1">
-                <div class="xe-icon">
-                    <i class="fa fa-warning"></i>
-                </div>
-                <div class="xe-label">
-                    <strong class="num">0 Tickets</strong>
-                    <span>Incidentes</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <div class="xe-widget xe-counter xe-counter-info" data-status="2" data-count=".num" data-from="0"
-                 data-to="{{$cc_count}}"
-                 data-suffix=" Tickets"
-                 data-duration="1">
-                <div class="xe-icon">
-                    <i class="fa fa-code-fork"></i>
-                </div>
-                <div class="xe-label">
-                    <strong class="num">0 Tickets</strong>
-                    <span>Control de Cambios</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-title">
@@ -56,7 +40,7 @@
             </div>
         </div>
         <div class="panel-body">
-            @include('helpdesk.chart.tickets')
+            @include('helpdesk.ticket._table')
         </div>
     </div>
 @endsection

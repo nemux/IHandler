@@ -211,10 +211,42 @@
             </li>
             {{--Helpdesk--}}
             <li class="">
-                <a class="l1" href="{{route('helpdesk.index')}}">
+                <a class="l1" href="{{route('helpdesk.dashboard')}}">
                     <i class="fa fa-ticket"></i>
                     <span class="title">Helpdesk</span>
                 </a>
+                <ul>
+                    <li>
+                        <a class="l2" href="{{route('helpdesk.index')}}">
+                            <i class="fa fa-table"></i>
+                            <span class="title">Tickets</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l2">
+                            <i class="fa fa-search"></i>
+                            <span class="title">Buscar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l2">
+                            <i class="fa fa-file-pdf-o"></i>
+                            <span class="title">Reportes</span>
+                        </a>
+                        <ul>
+                            <li><a><i></i><span>Lorem Ipsum</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="l2">
+                            <i class="fa fa-line-chart"></i>
+                            <span class="title">Estadísticas</span>
+                        </a>
+                        <ul>
+                            <li><a><i></i><span>Lorem Ipsum</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
             {{--Clientes--}}
             <li>
