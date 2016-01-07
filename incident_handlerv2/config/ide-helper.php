@@ -41,7 +41,7 @@ return array(
     */
 
     'model_locations' => array(
-        'app',
+        'app', 'vendor/isclopezm2/gcs-handler-model/src/Models',
     ),
 
 
@@ -112,6 +112,10 @@ return array(
     |  ),
     |
     */
-    'custom_db_types' => array(),
+    'custom_db_types' => array(
+        'postgresql' => array(
+            'tsvector' => 'string'
+        )
+    ),
 
 );
