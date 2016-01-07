@@ -194,6 +194,7 @@
                     </li>
                 </ul>
             </li>
+            {{--Cibervigilancia--}}
             <li class="">
                 <a class="l1" href="{{route('surveillance.index')}}">
                     <i class="fa fa-eye"></i>
@@ -207,6 +208,13 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            {{--Helpdesk--}}
+            <li class="">
+                <a class="l1" href="{{route('helpdesk.index')}}">
+                    <i class="fa fa-ticket"></i>
+                    <span class="title">Helpdesk</span>
+                </a>
             </li>
             {{--Clientes--}}
             <li>

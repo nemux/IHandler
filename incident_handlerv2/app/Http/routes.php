@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
         Route::delete('/note/delete', ['as' => 'incident.note.delete', 'uses' => 'IncidentController@deleteNote']);
 
-        Route::post('/recommendation/create',['as'=>'incident.recommendation.store','uses'=>'IncidentController@storeRecommendation']);
+        Route::post('/recommendation/create', ['as' => 'incident.recommendation.store', 'uses' => 'IncidentController@storeRecommendation']);
 
         Route::get('/search', ['as' => 'incident.search', 'uses' => 'SearchEngineController@incident']);
         Route::post('/search', ['as' => 'incident.search.post', 'uses' => 'SearchEngineController@incidentSearch']);
@@ -295,5 +295,20 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
         Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+
+        Route::get('/helpdesk/customer/{days}',['as'=>'helpdesk.ticket.customer','uses'=>'Helpdesk\StatisticsController@ticketsCustomer']);
+    });
+
+    Route::group(['prefix' => 'helpdesk', 'middleware' => 'auth'], function () {
+        Route::get('/', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\HelpdeskController@index']);
+
+        Route::group(['prefix' => 'ticket'], function () {
+
+            Route::get('/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.show', 'uses' => 'Helpdesk\TicketController@show']);
+            Route::post('/add/message/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}',['as'=>'helpdesk.ticket.addmessage','uses'=>'Helpdesk\TicketController@addMessage']);
+            Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}',['as'=>'helpdesk.ticket.changecriticity','uses'=>'Helpdesk\TicketController@changeCriticity']);
+
+
+        });
     });
 });

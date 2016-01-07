@@ -88,7 +88,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             \Event::fire(new EventName("El usuario <b>" . \Auth::user()->username . "</b> inició sesión"));
-            Log::debug(\Auth::user()->username, "El usuario '" . \Auth::user()->username . "' inició sesión a las '" . date('d/m/Y H:I:s T'));
+            Log::debug(\Auth::user()->username, "El usuario '" . \Auth::user()->username . "' inició sesión a las '" . date('d/m/Y H:i:s T'));
             return redirect()->intended($this->redirectPath());
         } else {
             return redirect(route('login.get'))->with('message', 'Usuario o contraseña incorrectos');
