@@ -16,7 +16,7 @@
   "require": {
     "php": ">=5.6",
     "laravel/framework": "5.1.*",
-    "barryvdh/laravel-ide-helper": "v2.1.0",
+    "barryvdh/laravel-ide-helper": "v2.1.2",
     "illuminate/html": "v5.0.0",
     "doctrine/dbal": "2.3.5",
     "enyo/dropzone": "v4.0.1",
