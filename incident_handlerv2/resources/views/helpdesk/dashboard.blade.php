@@ -1,6 +1,6 @@
 @extends('layout.dashboard_topmenu')
 
-@section('title', 'Tickets en Helpdesk')
+@section('title', 'Dashboard Helpdesk')
 
 @section('include_down')
     {{--Widgets--}}
