@@ -2,14 +2,15 @@
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
         columns: [
+            {
+                visible: false
+            },
             null, null, null, null,
             {
                 type: 'date',
-                dataSort: 6
-            }, null,
-            {
-                visible: false
-            }
+                dataSort: 0
+            }, null
+
         ],
         buttons: [
             {
@@ -65,13 +66,13 @@
     <tbody class="middle-align">
     @foreach($cases as $case)
         <tr style="cursor: pointer;" onclick="{window.open('{{route('surveillance.show',$case->id)}}')}">
+            <td>{{$case->created_at}}</td>
             <td class="col-sm-1">{{$case->id}}</td>
             <td class="col-sm-5">{{$case->title}}</td>
             <td class="col-sm-3">{{$case->customer->name}}</td>
             <td class="col-sm-1">{{$case->criticity->name}}</td>
             <td class="col-sm-1">{{$case->created_at->format('d/M/Y H:i T')}}</td>
             <td class="col-sm-1">{{$case->user->username}}</td>
-            <td>{{$case->created_at}}</td>
         </tr>
     @endforeach
     </tbody>

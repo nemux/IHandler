@@ -3,14 +3,14 @@
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
         columns: [
+            {
+                visible: false {{--Columna oculta que sirve solo para ordenar fechas--}}
+            },
             null, null, null, null, null,
             {
                 type: 'date',
-                dataSort: 9
-            }, null, null, null,
-            {
-                visible: false
-            }
+                dataSort: 0 {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
+            }, null, null, null
         ],
         buttons: [
             {
@@ -57,6 +57,7 @@
 <table class="table table-bordered table-striped" id="incidents-table">
     <thead>
     <tr>
+        <th></th>
         <th class="col-sm-1">ID</th>
         <th class="col-sm-1">Severidad</th>
         <th class="col-sm-1">#Ticket</th>
@@ -72,6 +73,7 @@
     @if(isset($incidents))
         @foreach($incidents as $incident)
             <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
+                <td>{{$incident->detection_time}}</td>{{--Esta columna está oculta por el DataTable, sólo sirve para poder ordenar campos por fecha--}}
                 <td>{{$incident->id}}</td>
                 <td>{{ $incident->criticity }}</td>
                 <td>{{isset($incident->internal_number)?$incident->internal_number:'Por asignar...'}}</td>
@@ -93,7 +95,6 @@
                 </td>
                 <td>{{isset($incident->status)?$incident->status:'Por asignar...'}}</td>
                 <td>{{$incident->username}}</td>
-                <td>{{$incident->detection_time}}</td>
             </tr>
         @endforeach
     @endif

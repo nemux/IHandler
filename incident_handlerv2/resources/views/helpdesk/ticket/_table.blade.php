@@ -1,6 +1,18 @@
 <script>
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
+        columns: [
+            {
+                visible: false {{--Columna oculta que sirve solo para ordenar fechas--}}
+            },
+            null, null, null, null, null, null,
+            {
+                type: 'date',
+                {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
+                dataSort: 0
+//                , 'class': "criticity-1"
+            }
+        ],
         buttons: [
             {
                 text: 'Copiar Tabla',
@@ -34,7 +46,6 @@
             zeroRecords: 'No hay Tickets para mostrar'
         },
         searching: false,
-//        sorting: false
         sorting: [[0, 'desc']]
     };
 
@@ -43,24 +54,32 @@
         incidents_table = $("#tickets-table").DataTable(datatableOptions);
     });
 </script>
+<style>
+</style>
 <table class="table table-bordered table-striped table-model-2" id="tickets-table">
     <thead>
     <tr>
-        <th class="col-sm-1">#Ticket</th>
+        <th></th>
+        <th class="col-sm-2">Ticket</th>
         <th class="col-sm-1">Severidad</th>
         <th class="col-sm-1">Estatus</th>
-        <th class="col-sm-3">Tipo</th>
-        <th class="col-sm-1">Detección</th>
+        <th class="col-sm-1">Tipo</th>
+        <th class="col-sm-3">Cliente</th>
+        <th class="col-sm-2">Handler</th>
+        <th class="col-sm-2">Detección</th>
     </tr>
     </thead>
     <tbody class="middle-align">
     @foreach($tickets as $ticket)
         <tr style="cursor: pointer;"
             onclick="{window.open('{{route('helpdesk.ticket.show',explode('/',$ticket->internal_number))}}')}">
+            <td>{{ $ticket->created_at}}</td>
             <td>{{$ticket->internal_number}}</td>
-            <td class="criticity-{{$ticket->ticket_criticity_id}}">{{$ticket->criticity->name}}</td>
+            <td>{{$ticket->criticity->name}}</td>
             <td>{{$ticket->status->name}}</td>
             <td>{{$ticket->type->name}}</td>
+            <td>{{$ticket->customer->name}}</td>
+            <td>{{$ticket->handler}}</td>
             <td>{{ $ticket->created_at->format('d/m/Y H:i T') }}</td>
         </tr>
     @endforeach
