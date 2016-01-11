@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Models\IncidentManager\Incident\Incident;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Models\IncidentManager\Incident\Incident;
 
 class SearchEngineController extends Controller
 {
@@ -73,10 +72,12 @@ class SearchEngineController extends Controller
             try {
                 $incidents = $query->get();
             } catch (\Exception $e) {
-                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]);
+//                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]); //No mostrar excepciones en la vista
+                \Log::error($e->getMessage());
+                $incidents = [];
+            } finally {
+                return \Response::json(['request' => $search_string, 'items' => $incidents]);
             }
-
-            return \Response::json(['request' => $search_string, 'items' => $incidents]);
 
         } else if ($search_type == 'advanced') {
 
@@ -138,10 +139,12 @@ class SearchEngineController extends Controller
             try {
                 $incidents = $query->get();
             } catch (\Exception $e) {
-                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]);
+//                return \Response::json(['err_code' => 1, 'err_message' => $e->getMessage()]);
+                \Log::error($e->getMessage());
+                $incidents = [];
+            } finally {
+                return \Response::json(['items' => $incidents]);
             }
-
-            return \Response::json(['items' => $incidents]);
         } else {
             return \Response::json(['err_code' => 1, 'err_message' => 'Tipo de búsqueda incorrecta [search_type={simple|advanced}]']);
         }
