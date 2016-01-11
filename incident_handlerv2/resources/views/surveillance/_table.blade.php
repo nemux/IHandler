@@ -5,11 +5,26 @@
             {
                 visible: false
             },
-            null, null, null, null,
             {
-                type: 'date',
-                dataSort: 0
-            }, null
+                'class': 'col-sm-1'
+            },
+            {
+                type: 'datetime',
+                dataSort: 0,
+                'class': 'col-sm-2'
+            },
+            {
+                'class': 'col-sm-1'
+            },
+            {
+                'class': 'col-sm-4'
+            },
+            {
+                'class': 'col-sm-3'
+            },
+            {
+                'class': 'col-sm-1'
+            }
 
         ],
         buttons: [
@@ -52,14 +67,15 @@
         $("#surveillance-table").DataTable(datatableOptions);
     });
 </script>
-<table class="table table-bordered table-striped" id="surveillance-table">
+<table class="table table-bordered table-striped table-model-2" id="surveillance-table">
     <thead>
     <tr>
+        <th></th>
         <th>ID</th>
+        <th>Fecha de Reporte</th>
+        <th>Severidad</th>
         <th>Título</th>
         <th>Cliente</th>
-        <th>Criticidad</th>
-        <th>Fecha de Creación</th>
         <th>Handler</th>
     </tr>
     </thead>
@@ -67,12 +83,12 @@
     @foreach($cases as $case)
         <tr style="cursor: pointer;" onclick="{window.open('{{route('surveillance.show',$case->id)}}')}">
             <td>{{$case->created_at}}</td>
-            <td class="col-sm-1">{{$case->id}}</td>
-            <td class="col-sm-5">{{$case->title}}</td>
-            <td class="col-sm-3">{{$case->customer->name}}</td>
-            <td class="col-sm-1">{{$case->criticity->name}}</td>
-            <td class="col-sm-1">{{$case->created_at->format('d/M/Y H:i T')}}</td>
-            <td class="col-sm-1">{{$case->user->username}}</td>
+            <td>{{$case->id}}</td>
+            <td>{{$case->created_at->format('d/m/Y H:i T')}}</td>
+            <td>{{$case->criticity->name}}</td>
+            <td>{{$case->title}}</td>
+            <td>{{$case->customer->name}}</td>
+            <td>{{$case->user->username}}</td>
         </tr>
     @endforeach
     </tbody>

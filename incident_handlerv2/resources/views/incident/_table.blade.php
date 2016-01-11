@@ -6,11 +6,18 @@
             {
                 visible: false {{--Columna oculta que sirve solo para ordenar fechas--}}
             },
-            null, null, null, null, null,
+            {'class': 'col-md-1'},
             {
                 type: 'date',
-                dataSort: 0 {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
-            }, null, null, null
+                dataSort: 0, {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
+                'class': 'col-md-2'
+            },
+            {'class': 'col-md-1'},
+            {'class': 'col-md-1'},
+            {'class': 'col-md-4'},
+            {'class': 'col-md-1'},
+            {'class': 'col-md-1'},
+            {'class': 'col-md-1'}
         ],
         buttons: [
             {
@@ -54,19 +61,18 @@
     });
     @endif;
 </script>
-<table class="table table-bordered table-striped" id="incidents-table">
+<table class="table table-responsive table-bordered table-striped table-model-2" id="incidents-table">
     <thead>
     <tr>
         <th></th>
-        <th class="col-sm-1">ID</th>
-        <th class="col-sm-1">Severidad</th>
-        <th class="col-sm-1">#Ticket</th>
-        <th class="col-sm-3">Título</th>
-        <th class="col-sm-2">Indicadores de Compromiso</th>
-        <th class="col-sm-1">Detección</th>
-        <th class="col-sm-1">Sensores</th>
-        <th class="col-sm-1">Status</th>
-        <th class="col-sm-1">Handler</th>
+        <th>ID</th>
+        <th>Fecha de Detección</th>
+        <th>Severidad</th>
+        <th>Ticket</th>
+        <th>Título</th>
+        <th>Sensores</th>
+        <th>Status</th>
+        <th>Handler</th>
     </tr>
     </thead>
     <tbody class="middle-align">
@@ -75,25 +81,16 @@
             <tr style="cursor: pointer;" onclick="{window.open('{{route('incident.show',$incident->id)}}')}">
                 <td>{{$incident->detection_time}}</td>{{--Esta columna está oculta por el DataTable, sólo sirve para poder ordenar campos por fecha--}}
                 <td>{{$incident->id}}</td>
+                <td>{{$incident->detection_time->format('d/m/Y H:i T')}}</td>
                 <td>{{ $incident->criticity }}</td>
                 <td>{{isset($incident->internal_number)?$incident->internal_number:'Por asignar...'}}</td>
                 <td>{{$incident->title}}</td>
                 <td>
-                    <ul class="list-unstyled">
-                        @foreach($incident->signatures as $signature)
-                            <li>{{$signature->signature->name}}</li>
-                        @endforeach
-                    </ul>
+                    @foreach($incident->sensors as $index=>$sensor)
+                        {{$sensor->sensor->name}},
+                    @endforeach
                 </td>
-                <td>{{$incident->detection_time->format('d/m/Y H:i T')}}</td>
-                <td>
-                    <ul class="list-unstyled">
-                        @foreach($incident->sensors as $sensor)
-                            <li>{{$sensor->sensor->name}}</li>
-                        @endforeach
-                    </ul>
-                </td>
-                <td>{{isset($incident->status)?$incident->status:'Por asignar...'}}</td>
+                <td>{{isset($incident->status)?$incident->status:'Abierto'}}</td>
                 <td>{{$incident->username}}</td>
             </tr>
         @endforeach

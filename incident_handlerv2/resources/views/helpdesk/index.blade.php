@@ -35,9 +35,7 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="panel-title">
-                <h3>Tickets</h3>
-            </div>
+            <h3 class="panel-title">Lista de Tickets</h3>
         </div>
         <div class="panel-body">
             @include('helpdesk.ticket._table')

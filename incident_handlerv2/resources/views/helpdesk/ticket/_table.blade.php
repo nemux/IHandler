@@ -5,13 +5,13 @@
             {
                 visible: false {{--Columna oculta que sirve solo para ordenar fechas--}}
             },
-            null, null, null, null, null, null,
+            null,
             {
                 type: 'date',
                 {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
                 dataSort: 0
 //                , 'class': "criticity-1"
-            }
+            }, null, null, null, null, null, null
         ],
         buttons: [
             {
@@ -51,22 +51,23 @@
 
     var incidents_table;
     $(document).ready(function ($) {
-        incidents_table = $("#tickets-table").DataTable(datatableOptions);
+        incidents_table = $("#helpdesk-table").DataTable(datatableOptions);
     });
 </script>
 <style>
 </style>
-<table class="table table-bordered table-striped table-model-2" id="tickets-table">
+<table class="table table-bordered table-striped table-model-2" id="helpdesk-table">
     <thead>
     <tr>
         <th></th>
-        <th class="col-sm-2">Ticket</th>
-        <th class="col-sm-1">Severidad</th>
-        <th class="col-sm-1">Estatus</th>
-        <th class="col-sm-1">Tipo</th>
-        <th class="col-sm-3">Cliente</th>
-        <th class="col-sm-2">Handler</th>
-        <th class="col-sm-2">Detección</th>
+        <th>ID</th>
+        <th>Fecha de Reporte</th>
+        <th>Severidad</th>
+        <th>Ticket</th>
+        <th>Tipo</th>
+        <th>Cliente</th>
+        <th>Handler</th>
+        <th>Estatus</th>
     </tr>
     </thead>
     <tbody class="middle-align">
@@ -74,13 +75,15 @@
         <tr style="cursor: pointer;"
             onclick="{window.open('{{route('helpdesk.ticket.show',explode('/',$ticket->internal_number))}}')}">
             <td>{{ $ticket->created_at}}</td>
-            <td>{{$ticket->internal_number}}</td>
-            <td>{{$ticket->criticity->name}}</td>
-            <td>{{$ticket->status->name}}</td>
-            <td>{{$ticket->type->name}}</td>
-            <td>{{$ticket->customer->name}}</td>
-            <td>{{$ticket->handler}}</td>
-            <td>{{ $ticket->created_at->format('d/m/Y H:i T') }}</td>
+            <td class="col-sm-1">{{$ticket->id}}</td>
+            <td class="col-sm-2">{{ $ticket->created_at->format('d/m/Y H:i T') }}</td>
+
+            <td class="col-sm-1">{{strtoupper($ticket->criticity->name)}}</td>
+            <td class="col-sm-1">{{$ticket->internal_number}}</td>
+            <td class="col-sm-2">{{$ticket->type->name}}</td>
+            <td class="col-sm-3">{{$ticket->customer->name}}</td>
+            <td class="col-sm-1">{{$ticket->descriptions->first()->handler->username}}</td>
+            <td class="col-sm-1">{{$ticket->status->name}}</td>
         </tr>
     @endforeach
     </tbody>
@@ -93,7 +96,7 @@
                 <div aria-live="polite" role="status" id="incidents-table_info" class="dataTables_info">
                     {{($tickets->perPage()*$tickets->currentPage())-$tickets->perPage()+1}}
                     al {{$tickets->hasMorePages()?($tickets->perPage()*$tickets->currentPage()):$tickets->total()}}
-                    de <b>{{$tickets->total()}} Incidentes</b>
+                    de <b>{{$tickets->total()}} Reportes</b>
                 </div>
             </div>
             <div class="col-sm-7">

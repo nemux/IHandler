@@ -110,3 +110,20 @@ body {
     color: white;
 
 }
+
+/*table {*/
+    /*table-layout: auto;*/
+/*}*/
+
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th {
+    padding: 6px 7px;
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
