@@ -27,8 +27,9 @@
     <![endif]-->
     <!-- TS1444235278: Xenon - Boostrap Admin Template created by Laborator -->
     <style>
-        .toast {
-            opacity: 1 !important;
+        .toast::before {
+            /*opacity: 1 !important;*/
+            background-color: white;
         }
     </style>
 
@@ -376,15 +377,15 @@
 
         <div class="row">
             <div class="col-md-12">
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                {{--@if (count($errors) > 0)--}}
+                {{--<div class="alert alert-danger">--}}
+                {{--<ul>--}}
+                {{--@foreach ($errors->all() as $error)--}}
+                {{--<li>{{ $error }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--@endif--}}
 
                 @if (Session::has('message'))
                     <div class="alert alert-success">
@@ -427,6 +428,32 @@
 <script src="/custom/assets/js/gcs-im/SocketIO.js"></script>
 <script>
     $(document).ready(function () {
+
+        @if (count($errors) > 0);
+        var validation_errors = {
+            "closeButton": false,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "showEasing": "swing",
+            "showMethod": "fadeIn",
+            "timeOut": "0",
+            "extendedTimeOut": "0",
+            "hideEasing": "linear",
+            "hideDuration": "300",
+            "hideMethod": "fadeOut"
+        };
+
+        var errors = '<ul>';
+        @foreach ($errors->all() as $error)
+        errors += '<li>{{ $error }}</li>';
+        @endforeach
+        errors += '</ul>';
+        toastr.error(errors, "Los datos intriducidos en el formulario son incorrectos", validation_errors);
+
+        @endif;
+
         SocketIO.init('{{parse_url(url())['host']}}', 8002);
         SocketIO.start();
     });
