@@ -46,7 +46,7 @@
             zeroRecords: 'No hay Tickets para mostrar'
         },
         searching: false,
-        sorting: [[0, 'desc']]
+        sorting: [] //Not sort by default
     };
 
     var incidents_table;
