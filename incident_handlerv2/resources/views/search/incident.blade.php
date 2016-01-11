@@ -53,14 +53,21 @@
         var datatableOptions = {
             dom: "<'row'<'col-sm-5'B><'col-sm-7'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
             columns: [
-                null, null, null, null, null,
+                {
+                    visible: false {{--Columna oculta que sirve solo para ordenar fechas--}}
+                },
+                {'class': 'col-md-1'},
                 {
                     type: 'date',
-                    dataSort: 9
-                }, null, null, null,
-                {
-                    visible: false
-                }
+                    dataSort: 0, {{--Definido como 0, por si se agregan más columnas no tenga un efecto contraproducente--}}
+                    'class': 'col-md-2'
+                },
+                {'class': 'col-md-1'},
+                {'class': 'col-md-1'},
+                {'class': 'col-md-4'},
+                {'class': 'col-md-1'},
+                {'class': 'col-md-1'},
+                {'class': 'col-md-1'}
             ],
             buttons: [
                 {
@@ -161,37 +168,31 @@
 
                 incidents_table.clear();
                 $.each(response.items, function (index, item) {
-//                    if (index == 0) {
-//                        console.log(item);
-//                    }
 
-                    var signatures = '<ul class="list-unstyled">';
+//                    var signatures = '<ul class="list-unstyled">';
+//
+//                    $.each(item.signatures, function (index, item) {
+//                        signatures += '<li>' + item.signature.name + '</li>';
+//                    });
+//
+//                    signatures = '';
 
-                    $.each(item.signatures, function (index, item) {
-                        signatures += '<li>' + item.signature.name + '</li>';
-                    });
-
-                    signatures += '</ul>';
-
-                    var sensors = '<ul class="list-unstyled">';
+                    var sensors = '';
 
                     $.each(item.sensors, function (index, item) {
-                        sensors += '<li>' + item.sensor.name + '</li>';
+                        sensors += item.sensor.name + ', ';
                     });
 
-                    sensors += '</ul>';
-
                     incidents_table.row.add([
+                        item.dt,
                         item.id,
+                        item.det_time,
                         item.criticity,
                         item.internal_number,
                         item.title,
-                        signatures,
-                        item.det_time,
                         sensors,
                         item.status,
-                        item.username,
-                        item.dt
+                        item.username
                     ])
                 });
                 incidents_table.draw();
@@ -357,7 +358,7 @@
     </div>
     <div class="panel panel-default" id="result-section">
         <div class="panel-heading">
-            <h3 class="panel-title">Lista de Incidentes</h3><br/>
+            <h3 class="panel-title">Lista de Incidentes</h3>
         </div>
         <div class="panel-body">
             @include('incident._table')
