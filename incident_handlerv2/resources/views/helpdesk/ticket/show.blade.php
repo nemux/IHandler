@@ -45,23 +45,23 @@
                 </div>
             </div>
         </article>
-        @foreach($ticket->descriptions as $description)
-            @if($description->is_customer)
+        @foreach($ticket->messages as $message)
+            @if($message->is_customer)
                 <article class="timeline-entry left-aligned">
                     <div class="timeline-entry-inner">
-                        <time class="timeline-time" datetime="{{$description->created_at->format('Y-m-d H:i:s T')}}">
-                            <span>{{$description->created_at->format('d/m/Y')}}</span>
-                            <span>{{$description->created_at->format('H:i:s T')}}</span>
+                        <time class="timeline-time" datetime="{{$message->created_at->format('Y-m-d H:i:s T')}}">
+                            <span>{{$message->created_at->format('d/m/Y')}}</span>
+                            <span>{{$message->created_at->format('H:i:s T')}}</span>
                         </time>
                         <div class="timeline-icon timeline-bg-info">
                             <i class="fa-envelope"></i>
                         </div>
                         <div class="timeline-label">
                             <h2>
-                                <b>{{$description->customer->person->fullName()}}</b>
+                                <b>{{$message->customer->person->fullName()}}</b>
                             </h2>
                             <blockquote>
-                                {{$description->message}}
+                                {{$message->message}}
                             </blockquote>
                         </div>
                     </div>
@@ -69,19 +69,19 @@
             @else
                 <article class="timeline-entry">
                     <div class="timeline-entry-inner">
-                        <time class="timeline-time" datetime="{{$description->updated_at->format('Y-m-d\TH:i:s')}}">
-                            <span>{{$description->updated_at->format('d/m/Y')}}</span>
-                            <span>{{$description->updated_at->format('H:i:s T')}}</span>
+                        <time class="timeline-time" datetime="{{$message->updated_at->format('Y-m-d\TH:i:s')}}">
+                            <span>{{$message->updated_at->format('d/m/Y')}}</span>
+                            <span>{{$message->updated_at->format('H:i:s T')}}</span>
                         </time>
                         <div class="timeline-icon timeline-bg-info">
                             <i class="fa-envelope"></i>
                         </div>
                         <div class="timeline-label">
                             <h2>
-                                <b>{{$description->handler->person->fullName()}}</b>
+                                <b>{{$message->handler->person->fullName()}}</b>
                             </h2>
                             <blockquote>
-                                {!! $description->message !!}
+                                {!! $message->message !!}
                             </blockquote>
                         </div>
                     </div>
