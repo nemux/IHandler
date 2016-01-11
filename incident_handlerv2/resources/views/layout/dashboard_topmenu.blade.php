@@ -212,13 +212,13 @@
             </li>
             {{--Helpdesk--}}
             <li class="">
-                <a class="l1" href="{{route('helpdesk.dashboard')}}">
+                <a class="l1" href="{{route('helpdesk.index')}}">
                     <i class="fa fa-ticket"></i>
                     <span class="title">Helpdesk</span>
                 </a>
                 <ul>
                     <li>
-                        <a class="l2" href="{{route('helpdesk.index')}}">
+                        <a class="l2" href="{{route('helpdesk.ticket.index')}}">
                             <i class="fa fa-table"></i>
                             <span class="title">Tickets</span>
                         </a>

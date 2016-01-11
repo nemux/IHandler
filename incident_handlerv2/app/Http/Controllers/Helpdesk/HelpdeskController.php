@@ -15,7 +15,7 @@ class HelpdeskController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function dashboard()
+    public function index()
     {
 
         $in_count = HelpdeskTicket::whereTicketTypeId(1)->count();

@@ -300,11 +300,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::group(['prefix' => 'helpdesk', 'middleware' => 'auth'], function () {
-        Route::get('/', ['as' => 'helpdesk.dashboard', 'uses' => 'Helpdesk\HelpdeskController@dashboard']);
-        Route::get('/tickets', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\TicketController@index']);
+        Route::get('/', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\HelpdeskController@index']);
 
         Route::group(['prefix' => 'ticket'], function () {
 
+            Route::get('/', ['as' => 'helpdesk.ticket.index', 'uses' => 'Helpdesk\TicketController@index']);
             Route::get('/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.show', 'uses' => 'Helpdesk\TicketController@show']);
             Route::post('/add/message/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.addmessage', 'uses' => 'Helpdesk\TicketController@addMessage']);
             Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.changecriticity', 'uses' => 'Helpdesk\TicketController@changeCriticity']);
