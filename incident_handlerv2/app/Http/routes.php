@@ -14,15 +14,15 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-Event::listen('illuminate.query', function ($sql, $bindings) {
-
-    foreach ($bindings as $val) {
-        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-    }
-
-    \Log::info($sql);
-    \Log::info("-------------------------------------------------------------------------------------------------------");
-});
+//Event::listen('illuminate.query', function ($sql, $bindings) {
+//
+//    foreach ($bindings as $val) {
+//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+//    }
+//
+//    \Log::info($sql);
+//    \Log::info("-------------------------------------------------------------------------------------------------------");
+//});
 
 
 /**
@@ -296,18 +296,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
         Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
 
-        Route::get('/helpdesk/customer/{days}',['as'=>'helpdesk.ticket.customer','uses'=>'Helpdesk\StatisticsController@ticketsCustomer']);
+        Route::get('/helpdesk/customer/{days}', ['as' => 'helpdesk.ticket.customer', 'uses' => 'Helpdesk\StatisticsController@ticketsCustomer']);
     });
 
     Route::group(['prefix' => 'helpdesk', 'middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'helpdesk.dashboard', 'uses' => 'Helpdesk\HelpdeskController@dashboard']);
-        Route::get('/tickets', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\HelpdeskController@index']);
+        Route::get('/tickets', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\TicketController@index']);
 
         Route::group(['prefix' => 'ticket'], function () {
 
             Route::get('/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.show', 'uses' => 'Helpdesk\TicketController@show']);
-            Route::post('/add/message/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}',['as'=>'helpdesk.ticket.addmessage','uses'=>'Helpdesk\TicketController@addMessage']);
-            Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}',['as'=>'helpdesk.ticket.changecriticity','uses'=>'Helpdesk\TicketController@changeCriticity']);
+            Route::post('/add/message/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.addmessage', 'uses' => 'Helpdesk\TicketController@addMessage']);
+            Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.changecriticity', 'uses' => 'Helpdesk\TicketController@changeCriticity']);
+            Route::post('/change/status/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.status', 'uses' => 'Helpdesk\TicketController@changeStatus']);
 
 
         });

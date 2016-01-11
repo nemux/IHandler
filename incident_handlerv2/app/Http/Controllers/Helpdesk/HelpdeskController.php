@@ -10,20 +10,6 @@ use Models\Helpdesk\Ticket\Ticket as HelpdeskTicket;
 class HelpdeskController extends Controller
 {
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-        $tickets = HelpdeskTicket::orderBy('created_at', 'desc')->with('criticity')->paginate(10);
-
-        return view('helpdesk.index', compact('tickets'));
-    }
-
     /**
      * Display a dashboard for helpdesk
      *
