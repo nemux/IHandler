@@ -71,12 +71,11 @@ class TicketController extends Controller
 
         $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
 
-        if (!$ticket) {
+        //Si no se encuentra o si el ticket ya está cerrado, no se podrá agregar mensaje
+        //Se arroja un error
+        if (!$ticket  || $ticket->ticket_status_id == 4) {
             abort(404);
         }
-
-        $ticket->updated_at = new \DateTime();
-        $ticket->save();
 
         $this->validate($request, ['message' => 'required'], [], ['message' => 'Mensaje']);
 
@@ -86,6 +85,14 @@ class TicketController extends Controller
         $message->message = trim($request->get('message'));
         $message->is_customer = false;
         $message->save();
+
+        //Si el ticket está como abierto, al agregar un mensaje se establece en 2 el estatus
+        if ($ticket->ticket_status_id == 1) {
+            $ticket->ticket_status_id = 2;
+        }
+
+        $ticket->updated_at = new \DateTime();
+        $ticket->save();
 
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
             ->withMessage('Se agregó el comentario al ticket con número de referencia: ' . $ticket->internal_number);
