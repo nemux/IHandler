@@ -105,28 +105,39 @@
                     </div>
                     <div class="row">
                         @if($ticket->ticket_status_id<=2)
-                            <div class="col-md-4">
-                                <form method="POST"
+                            <div class="col-md-8">
+                                <form class="form form-horizontal"
+                                      method="POST"
                                       action="{{route('helpdesk.ticket.changecriticity',explode('/',$ticket->internal_number))}}"
                                       role="form">
                                     {!! csrf_field() !!}
-                                    <select name="ticket_criticity_id" id="criticity" class="form-control">
-                                        <option></option>
-                                        @foreach(\Models\Helpdesk\Ticket\TicketCriticity::all(['name','id']) as $criticity)
-                                            <option {{$ticket->criticity->id==$criticity->id?'selected':''}} value="{{$criticity->id}}">{{$criticity->name}}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="submit" class="btn btn-info form-control" value="Cambiar severidad">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <select name="ticket_criticity_id" id="criticity">
+                                                <option></option>
+                                                @foreach(\Models\Helpdesk\Ticket\TicketCriticity::all(['name','id']) as $criticity)
+                                                    <option {{$ticket->criticity->id==$criticity->id?'selected':''}} value="{{$criticity->id}}">{{$criticity->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="submit" class="btn btn-info col-md-4"
+                                               value="Cambiar severidad">
+                                    </div>
                                 </form>
                             </div>
                         @endif
 
-                        <div class="col-md-2">
-                            <div class="btn btn-success form-control">Resuelto</div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="btn btn-primary form-control">Cerrado</div>
-                        </div>
+                        @if($ticket->ticket_status_id==2)
+                            <div class="col-md-4">
+                                <div class="btn btn-success form-control">Resuelto</div>
+                            </div>
+                        @endif
+
+                        @if($ticket->ticket_statud_id==1 || $ticket->ticket_status_id==3)
+                            <div class="col-md-4">
+                                <div class="btn btn-primary form-control">Cerrado</div>
+                            </div>
+                        @endif
                     </div>
                     @if($ticket->ticket_status_id!=4)
                         <hr/>
@@ -139,15 +150,17 @@
                               action="{{route('helpdesk.ticket.addmessage',explode('/',$ticket->internal_number))}}"
                               role="form">
                             {!! csrf_field() !!}
-                            <textarea
-                                    rows="5"
-                                    class="form-control"
-                                    id="message"
-                                    name="message"
-                                    placeholder="¿Tiene información que desee agregar al ticket?"
-                                    >{{old('message')}}</textarea>
+                            <div class="form-group">
+                                <textarea
+                                        rows="5"
+                                        class="form-control"
+                                        id="message"
+                                        name="message"
+                                        placeholder="¿Tiene información que desee agregar al ticket?"
+                                        >{{old('message')}}</textarea>
 
-                            <input type="submit" class="btn btn-info form-control" value="Enviar">
+                                <input type="submit" class="btn btn-info form-control" value="Enviar">
+                            </div>
                         </form>
                     @endif
                 </div>
