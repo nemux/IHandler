@@ -82,7 +82,7 @@
             <td class="col-sm-1">{{$ticket->internal_number}}</td>
             <td class="col-sm-2">{{$ticket->type->name}}</td>
             <td class="col-sm-3">{{$ticket->customer->name}}</td>
-            <td class="col-sm-1">{{$ticket->descriptions->first()->handler->username}}</td>
+            <td class="col-sm-1">{{$ticket->lastHandler()?$ticket->lastHandler()->username:'----'}}</td>
             <td class="col-sm-1">{{$ticket->status->name}}</td>
         </tr>
     @endforeach
