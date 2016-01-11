@@ -73,7 +73,7 @@ class TicketController extends Controller
 
         //Si no se encuentra o si el ticket ya está cerrado, no se podrá agregar mensaje
         //Se arroja un error
-        if (!$ticket  || $ticket->ticket_status_id == 4) {
+        if (!$ticket || $ticket->ticket_status_id == 4) {
             abort(404);
         }
 
@@ -110,13 +110,13 @@ class TicketController extends Controller
      */
     public function changeCriticity(Request $request, $app, $otrs_customer_id, $ticket_type_abb, $consecutive)
     {
-
-        //TODO validar si el estatus del ticket es ... no se puede cambiar la criticidad
         $internal_number = self::getInternalNumber($app, $otrs_customer_id, $ticket_type_abb, $consecutive);
 
         $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
 
-        if (!$ticket) {
+        //Si no se encuentra o si el ticket ya está cerrado, no se podrá cdambiar la severidad
+        //Se arroja un error
+        if (!$ticket || $ticket->ticket_status_id == 3 || $ticket->ticket_status_id == 4) {
             abort(404);
         }
 
