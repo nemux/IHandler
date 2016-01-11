@@ -182,7 +182,7 @@
                 </div>
             </article>
         @else
-            <article class="timeline-entry">
+            <article class="timeline-entry begin">
                 <div class="timeline-entry-inner">
                     <time class="timeline-time" datetime="{{$ticket->updated_at->format('Y-m-d\TH:i:s')}}">
                         <span>{{$ticket->updated_at->format('d/m/Y')}}</span>
@@ -190,11 +190,6 @@
                     </time>
                     <div class="timeline-icon timeline-bg-danger">
                         <i class="fa-circle"></i>
-                    </div>
-                    <div class="timeline-label">
-                        <h2>
-                            <b>TICKET CERRADO</b>
-                        </h2>
                     </div>
                 </div>
             </article>
