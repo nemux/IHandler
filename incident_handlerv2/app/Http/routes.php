@@ -14,15 +14,15 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-//Event::listen('illuminate.query', function ($sql, $bindings) {
-//
-//    foreach ($bindings as $val) {
-//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-//    }
-//
-//    \Log::info($sql);
-//    \Log::info("-------------------------------------------------------------------------------------------------------");
-//});
+Event::listen('illuminate.query', function ($sql, $bindings) {
+
+    foreach ($bindings as $val) {
+        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+    }
+
+    \Log::info($sql);
+    \Log::info("-------------------------------------------------------------------------------------------------------");
+});
 
 
 /**
@@ -310,7 +310,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
             Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.changecriticity', 'uses' => 'Helpdesk\TicketController@changeCriticity']);
             Route::post('/change/status/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.status', 'uses' => 'Helpdesk\TicketController@changeStatus']);
 
-
+            Route::get('/search', ['as' => 'helpdesk.ticket.search', 'uses' => 'SearchEngineController@helpdeskTicket']);
+            Route::post('/search', ['as' => 'helpdesk.ticket.search.post', 'uses' => 'SearchEngineController@helpdeskTicketSearch']);
         });
     });
 });

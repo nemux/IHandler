@@ -3,13 +3,99 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Models\Helpdesk\Ticket\Ticket;
 use Models\IncidentManager\Incident\Incident;
 
 class SearchEngineController extends Controller
 {
+    /**
+     * Devuelve la vista con el formulario para buscar incidentes
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function incident()
     {
         return view('search.incident');
+    }
+
+    /**
+     * Devuelve la vista con el formulario para buscar tickets del helpdesk
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function helpdeskTicket()
+    {
+        return view('search.helpdesk');
+    }
+
+    public function helpdeskTicketSearch(Request $request)
+    {
+        $search_type = $request->get('search_type');
+
+        if ($search_type == '') {
+            return \Response::json(['err_code' => 1, 'err_message' => 'Debe definirse el tipo de búsqueda']);
+        }
+
+        $empty = false;
+        foreach ($request->except('_token') as $index => $input) {
+            if ($index != 'search_type') {
+                if (is_array($input) && sizeof($input) == 0) {
+                    $empty = true;
+                } else {
+                    if (empty($input)) {
+                        $empty = true;
+                    } else {
+                        $empty = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ($empty) {
+//            \Log::info('exit for empty');
+            return \Response::json(['err_code' => 1, 'err_message' => 'Debe llenar al menos uno de los campos del formulario']);
+        }
+
+        $query = Ticket::select(
+            'ticket.created_at as ca',
+            'ticket.id',
+            \DB::raw('to_char("ticket"."created_at", \'DD/MM/YYYY HH24:MI \')||\'' . date('T') . '\' as cr_at'),
+            'ticket_criticity.name as criticity',
+            'ticket.internal_number',
+            'ticket_type.name as type',
+            'ticket.customer_id',
+            'user.username',
+            'ticket_status.name as status'
+        )->leftJoin('ticket_status', 'ticket_status.id', '=', 'ticket.ticket_status_id')
+            ->leftJoin('user', 'user.id', '=', 'ticket.user_id')
+            ->leftJoin('ticket_criticity', 'ticket_criticity.id', '=', 'ticket.ticket_criticity_id')
+            ->leftJoin('ticket_message', 'ticket_message.ticket_id', '=', 'ticket.id')
+            ->leftJoin('ticket_type', 'ticket_type.id', '=', 'ticket.ticket_type_id')
+            ->with('customer', 'messages.handler');
+
+        if ($search_type == 'simple') {
+            $search_string = trim($request->get('search_string'));
+
+            if ($search_string != '')
+                $query
+                    ->whereRaw("ticket_message.tsv @@ plainto_tsquery('pg_catalog.spanish','$search_string')");
+
+            try {
+                $tickets = $query->get();
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+                $tickets = [];
+            } finally {
+
+                \Log::info($tickets);
+
+                return \Response::json(['request' => $search_string, 'items' => $tickets]);
+            }
+
+        } else {
+            return \Response::json(['err_code' => 1, 'err_message' => 'Tipo de búsqueda incorrecta [search_type={simple|advanced}]']);
+        }
     }
 
     /**

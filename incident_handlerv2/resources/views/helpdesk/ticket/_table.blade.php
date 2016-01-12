@@ -1,4 +1,5 @@
 <script>
+    @if(isset($tickets));
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
         columns: [
@@ -53,6 +54,7 @@
     $(document).ready(function ($) {
         incidents_table = $("#helpdesk-table").DataTable(datatableOptions);
     });
+    @endif;
 </script>
 <style>
 </style>
@@ -71,25 +73,27 @@
     </tr>
     </thead>
     <tbody class="middle-align">
-    @foreach($tickets as $ticket)
-        <tr style="cursor: pointer;"
-            onclick="{window.open('{{route('helpdesk.ticket.show',explode('/',$ticket->internal_number))}}')}">
-            <td>{{ $ticket->created_at}}</td>
-            <td class="col-sm-1">{{$ticket->id}}</td>
-            <td class="col-sm-2">{{ $ticket->created_at->format('d/m/Y H:i T') }}</td>
+    @if(isset($tickets))
+        @foreach($tickets as $ticket)
+            <tr style="cursor: pointer;"
+                onclick="{window.open('{{route('helpdesk.ticket.show',explode('/',$ticket->internal_number))}}')}">
+                <td>{{ $ticket->created_at}}</td>
+                <td class="col-sm-1">{{$ticket->id}}</td>
+                <td class="col-sm-2">{{ $ticket->created_at->format('d/m/Y H:i T') }}</td>
 
-            <td class="col-sm-1">{{strtoupper($ticket->criticity->name)}}</td>
-            <td class="col-sm-1">{{$ticket->internal_number}}</td>
-            <td class="col-sm-2">{{$ticket->type->name}}</td>
-            <td class="col-sm-3">{{$ticket->customer->name}}</td>
-            <td class="col-sm-1">{{$ticket->lastHandler()?$ticket->lastHandler()->username:'----'}}</td>
-            <td class="col-sm-1">{{$ticket->status->name}}</td>
-        </tr>
-    @endforeach
+                <td class="col-sm-1">{{strtoupper($ticket->criticity->name)}}</td>
+                <td class="col-sm-1">{{$ticket->internal_number}}</td>
+                <td class="col-sm-2">{{$ticket->type->name}}</td>
+                <td class="col-sm-3">{{$ticket->customer->name}}</td>
+                <td class="col-sm-1">{{$ticket->lastHandler()?$ticket->lastHandler()->username:'----'}}</td>
+                <td class="col-sm-1">{{$ticket->status->name}}</td>
+            </tr>
+        @endforeach
+    @endif
     </tbody>
 </table>
 {{--Valida si se está utilizando un paginado en el controlador--}}
-@if(method_exists($tickets,'render'))
+@if(isset($tickets) && method_exists($tickets,'render'))
     <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
         <div class="row">
             <div class="col-sm-5">

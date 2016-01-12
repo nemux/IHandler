@@ -103,13 +103,13 @@
                 search: 'Buscar: ',
                 infoFiltered: ' - Filtrado de <b>_MAX_</b> registros en total'
             },
-            sorting: [[0, 'desc']]
+            sorting: []
         };
         $(document).ready(function ($) {
             incidents_table = $("#incidents-table").DataTable(datatableOptions);
             $('#incidents-table tbody').on('click', 'tr', function () {
                 var data = incidents_table.row(this).data();
-                window.open('/dashboard/incident/show/' + data[0])
+                window.open('/dashboard/incident/show/' + data[1])
             });
 
             $("#simple-search").submit(function (event) {
@@ -187,7 +187,7 @@
                         item.dt,
                         item.id,
                         item.det_time,
-                        item.criticity,
+                        item.criticity.toUpperCase(),
                         item.internal_number,
                         item.title,
                         sensors,

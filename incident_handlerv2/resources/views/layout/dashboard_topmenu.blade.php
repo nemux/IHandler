@@ -224,7 +224,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="l2">
+                        <a class="l2" href="{{route('helpdesk.ticket.search')}}">
                             <i class="fa fa-search"></i>
                             <span class="title">Buscar</span>
                         </a>
