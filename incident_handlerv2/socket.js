@@ -1,6 +1,6 @@
 //Cargamos el archivo de entorno del socket (.env file)
 var env = require('node-env-file');
-env('.env');
+env('./.env');
 
 //Cargamos las opciones para el socket io
 var fs = require('fs');
