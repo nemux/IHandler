@@ -1,5 +1,5 @@
 /app/Library/Otrs/Models/model.txt
-/public/evidences/*
+/public/upload/evidences/*
 /vendor
 /node_modules
 Homestead.yaml
