@@ -157,7 +157,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 @if(isset($case->customer->logo))
-                    <img class="img-responsive logo" src="{{$isPdf?'':'/'}}customer/{{$case->customer->logo}}">
+                    <img class="img-responsive logo" src="{{$isPdf?'':'/'}}upload/customer/{{$case->customer->logo}}">
                 @else
                     <h1>Cliente: {{$case->customer->name}}</h1>
                 @endif

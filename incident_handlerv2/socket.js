@@ -1,12 +1,12 @@
 //Cargamos el archivo de entorno del socket (.env file)
 var env = require('node-env-file');
-env('./.env');
+env('.env');
 
 //Cargamos las opciones para el socket io
 var fs = require('fs');
 var options = {
-    key: fs.readFileSync('./ssl/gcs-imanager.key'),
-    cert: fs.readFileSync('./ssl/gcs-imanager.crt'),
+    key: fs.readFileSync('ssl/gcs-imanager.key'),
+    cert: fs.readFileSync('ssl/gcs-imanager.crt'),
     requestCert: true
 };
 

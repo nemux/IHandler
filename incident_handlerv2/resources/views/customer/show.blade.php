@@ -99,7 +99,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         @if(isset($customer->logo))
-                                            <img class="img-responsive" src="/customer/{{$customer->logo}}">
+                                            <img class="img-responsive" src="/upload/customer/{{$customer->logo}}">
                                         @endif
                                     </div>
                                 </div>

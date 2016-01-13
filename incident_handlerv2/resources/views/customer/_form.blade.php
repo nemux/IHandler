@@ -16,7 +16,7 @@
 
         </div>
         <div class="col-sm-10">
-            <img class="img-responsive" src="/customer/{{$customer->logo}}">
+            <img class="img-responsive" src="/upload/customer/{{$customer->logo}}">
         </div>
     </div>
 @endif

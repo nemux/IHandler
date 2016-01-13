@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use Models\IncidentManager\Evidence\Evidence;
 use Models\IncidentManager\Evidence\EvidenceType;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class EvidenceController extends Controller
 {
@@ -118,7 +118,7 @@ class EvidenceController extends Controller
      * @param $file
      * @return \Illuminate\Http\JsonResponse
      */
-    public function upload($file)
+    public function upload(UploadedFile $file)
     {
         $evidence = false;
 
@@ -141,21 +141,29 @@ class EvidenceController extends Controller
         }
     }
 
-    public static function uploadSingleFile($file)
+    /**
+     * Sube un archivo $file al servidor
+     *
+     * @param $file
+     * @return bool|Evidence
+     */
+    public static function uploadSingleFile(UploadedFile $file)
     {
-//        \Log::info('Updating single file');
-        $mimeType = \File::mimeType($file);
+        $mimeType = $file->getMimeType();
 
         $md5 = hash_file('md5', $file);
         $sha1 = hash_file('sha1', $file);
         $sha256 = hash_file('sha256', $file);
 
         // Crea un árbol de directorios con la fecha definiendo: año/mes/día/{md5}.{ext}
-        $directory = 'evidences/' . date('Y/m/d/');
+        $directory = 'upload/evidences/' . date('Y/m/d/');
 
         $filename = $md5 . "." . \File::extension($file->getClientOriginalName());
 
-        if ($file->move($directory, $filename)) {
+        $fileMoved = $file->move($directory, $filename);
+        chmod($directory . '/' . $filename, 0444);
+
+        if ($fileMoved) {
             $evidence = Evidence::whereName($filename)->wherePath($directory)->first();
 
             if (!isset($evidence->id))
@@ -172,6 +180,7 @@ class EvidenceController extends Controller
             $evidence->save();
 
             $imgbinary = fread(fopen($directory . $filename, "r"), filesize($directory . $filename));
+
             $evidence->base64 = 'data:' . $mimeType . ';base64,' . base64_encode($imgbinary);
 
             return $evidence;

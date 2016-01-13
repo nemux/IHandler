@@ -437,7 +437,6 @@ class IncidentController extends Controller
      */
     public function deleteEvidence($id)
     {
-
         $incidentEvidence = IncidentEvidence::whereId($id)->first();
         $status = $incidentEvidence->incident->ticket->ticket_status_id;
 
@@ -457,8 +456,6 @@ class IncidentController extends Controller
      */
     public function updateEvidence(Request $request)
     {
-//        \Log::info($request->except('_token'));
-
         $ie_id = $request->get('id');
         $ie_note = $request->get('note');
         $ie = IncidentEvidence::whereId($ie_id)->first();

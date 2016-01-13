@@ -133,7 +133,7 @@ class CustomerController extends Controller
         if ($request->file('logo')) {
             $customer->logo = hash('md5', $id) . "." . $request->file('logo')->getClientOriginalExtension();
             $customer->mimetype = $request->file('logo')->getClientMimeType();
-            $request->file('logo')->move('customer/', $customer->logo);
+            $request->file('logo')->move('upload/customer/', $customer->logo);
         }
 
         $customer->save();
