@@ -1,1 +1,9 @@
+
 php_flag engine off
+#This will prevent apache from executing *.php-files
+
+AddType text/plain .php .php3 .php4 .phtml .pl .py .jsp .asp .htm .shtml .sh .cgi .html .phtm .js
+#this wil display php-files in browser (if not, browser will want to download file!)
+
+AddCharset UTF-8 .php .php3 .php4 .phtml .pl .py .jsp .asp .htm .shtml .sh .cgi .html .phtm .js
+#Mostrará los archivos con el charset definido
