@@ -205,7 +205,7 @@ return [
         'Password' => Illuminate\Support\Facades\Password::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,
         'Redirect' => Illuminate\Support\Facades\Redirect::class,
-        'Redis' => Illuminate\Support\Facades\Redis::class,
+        'LRedis' => Illuminate\Support\Facades\Redis::class, //Se cambió a LRedis para que no haya conflicto
         'Request' => Illuminate\Support\Facades\Request::class,
         'Response' => Illuminate\Support\Facades\Response::class,
         'Route' => Illuminate\Support\Facades\Route::class,

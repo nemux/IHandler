@@ -454,7 +454,7 @@
 
         @endif;
 
-        SocketIO.init('{{parse_url(url())['host']}}', 8002);
+        SocketIO.init('{{env('NODEJS_HOST')}}', {{env('NODEJS_PORT_SSL')}});
         SocketIO.start();
     });
 </script>
