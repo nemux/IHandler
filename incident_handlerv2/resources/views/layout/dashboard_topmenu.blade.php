@@ -229,24 +229,24 @@
                             <span class="title">Buscar</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="l2">
-                            <i class="fa fa-file-pdf-o"></i>
-                            <span class="title">Reportes</span>
-                        </a>
-                        <ul>
-                            <li><a><i></i><span>Lorem Ipsum</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="l2">
-                            <i class="fa fa-line-chart"></i>
-                            <span class="title">Estadísticas</span>
-                        </a>
-                        <ul>
-                            <li><a><i></i><span>Lorem Ipsum</span></a></li>
-                        </ul>
-                    </li>
+                    {{--<li>--}}
+                        {{--<a class="l2">--}}
+                            {{--<i class="fa fa-file-pdf-o"></i>--}}
+                            {{--<span class="title">Reportes</span>--}}
+                        {{--</a>--}}
+                        {{--<ul>--}}
+                            {{--<li><a><i></i><span>Lorem Ipsum</span></a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="l2">--}}
+                            {{--<i class="fa fa-line-chart"></i>--}}
+                            {{--<span class="title">Estadísticas</span>--}}
+                        {{--</a>--}}
+                        {{--<ul>--}}
+                            {{--<li><a><i></i><span>Lorem Ipsum</span></a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
                 </ul>
             </li>
             {{--Clientes--}}
