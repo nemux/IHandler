@@ -28,6 +28,12 @@ class SearchEngineController extends Controller
         return view('search.helpdesk');
     }
 
+    /**
+     * Busca los tickets y devuelve una lista de ellos
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function helpdeskTicketSearch(Request $request)
     {
         $search_type = $request->get('search_type');
