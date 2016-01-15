@@ -29,9 +29,8 @@
                     incidents_options.title = {text: ''};
                     $.each(response, function (index, item) {
                         var data = [];
-
-                        $.each(item.data, function (index, d) {
-                            data.push([Date.parse(d.date), d.count]);
+                        $.each(item.data, function (date, count) {
+                            data.push([Date.parse(date), count]);
                         });
 
                         incidents_options.series.push({name: item.name.otrs_customer_id, data: data});

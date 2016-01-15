@@ -462,6 +462,8 @@ class StatisticsController extends Controller
      * @param $grouper :Campo que diferencía los datos por el cual se van a agrupar
      * @param $relation :Etiqueta que contiene la relación $label=>$count
      * @return array
+     *
+     * @deprecated
      */
     protected function tableToDatasource($rows, $grouper, $relation)
     {
@@ -482,6 +484,42 @@ class StatisticsController extends Controller
                 $item['data'] = [];
 
                 array_push($item['data'], [$relation => $row[$relation], 'count' => $row['count']]);
+                array_push($items, $item);
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * Convierte un set de datos en un objeto json agrupado por el campo $field con la etiqueta $label
+     *
+     * El formato del array será: array(customer1=>[date1=>count1, date2=>count2,...],customer2=>[date1=>count1,...],...);
+     *
+     * @param $rows :Set de datos a agrupar
+     * @param $grouper :Campo que diferencía los datos por el cual se van a agrupar
+     * @param $relation :Etiqueta que contiene la relación $label=>$count
+     * @return array
+     */
+    protected function tableToDatasource2($rows, $grouper, $relation)
+    {
+        $items = []; //Objeto transformado
+        foreach ($rows as &$row) { //Para cada elemento en el set de datos
+            $item = []; //Creamos un arreglo nuevo
+            foreach ($items as &$i) { //Para cada elemento en el arreglo response
+                if (isset($i['name']) && $i['name'] == $row[$grouper]) {
+                    //Validamos si está definido el campo 'name' y que el valor en ese campo sea igual al elemento con esa etiqueta
+                    $item = $i;
+                    $i['data'][$row[$relation]] = $row['count'];
+                }
+            }
+
+            //Si el elemento es nulo
+            if ($item == null) {
+                $item['name'] = $row[$grouper];
+                $item['data'] = [];
+
+                $item['data'][$row[$relation]] = $row['count'];
                 array_push($items, $item);
             }
         }
@@ -661,21 +699,16 @@ class StatisticsController extends Controller
     {
         $period = new \DatePeriod($from_date, new \DateInterval('P1D'), $to_date->modify('+1 day'));
 
+        //Arma un arreglo con la fecha y el valor por omisión
+        $data = array();
+        foreach ($period as $index => $date) {
+            $date = $date->format('Y-m-d');
+            $data[$date] = $default_value;
+        }
+
         foreach ($customers as &$c) {
-            $data = [];
-            foreach ($period as $date) {
-                $date = $date->format('Y-m-d');
-
-                foreach ($c['data'] as $d) {
-
-                    if ($d['date'] == $date) {
-                        array_push($data, ['date' => $d['date'], 'count' => $d['count']]);
-                    } else {
-                        array_push($data, ['date' => $date, 'count' => $default_value]);
-                    }
-                }
-            }
-            $c['data'] = $data;
+            //Reemplazar los datos de los arreglos para rellenar las fechas que hacen falta
+            $c['data'] = array_replace($data, $c['data']);
         }
 
         return $customers;

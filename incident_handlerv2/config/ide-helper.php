@@ -41,7 +41,7 @@ return array(
     */
 
     'model_locations' => array(
-        'app', 'vendor/isclopezm2/gcs-handler-model/src/Models',
+        'app', 'vendor/isclopezm2/gcs-handler-model/app/Models',
     ),
 
 

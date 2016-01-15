@@ -32,13 +32,11 @@ class StatisticsController extends \App\Http\Controllers\StatisticsController
                 ->groupBy(['customer_id', 'date'])
                 ->orderBy('date', 'asc');
 
-            \Log::info($sql->toSql());
-
             $tickets = $sql->get();
 
-            $customers = self::tableToDatasource($tickets, 'customer', self::RELATION_DATE);
+            $customers = self::tableToDatasource2($tickets, 'customer', self::RELATION_DATE);
 
-            $customers=self::fullTableDatesValues($customers, $fromDate, $toDate, 0);
+            $customers = self::fullTableDatesValues($customers, $fromDate, $toDate, 0);
 
             return \Response::json($customers);
         } else {
