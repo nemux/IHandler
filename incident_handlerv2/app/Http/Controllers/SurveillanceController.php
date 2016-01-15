@@ -196,6 +196,7 @@ class SurveillanceController extends Controller
 
     /**
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     *
      * @param SurveillanceCase $surv
      */
     public function sendEmail(SurveillanceCase $surv)
@@ -205,12 +206,12 @@ class SurveillanceController extends Controller
             foreach ($surv->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
-                $message->attach($file, ['as' => $name]);
+
+                $message->attach(storage_path('app/' . $file), ['as' => $name]);
             }
 
             $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');
 
-//            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
             $mailTo = PersonContact::compareEmail($surv->user->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
@@ -222,6 +223,7 @@ class SurveillanceController extends Controller
 
     /**
      * Muestra una vista previa del caso de cibervigilancia tal como se creará el documento PDF
+     *
      * @param $id
      * @return \Illuminate\View\View
      */

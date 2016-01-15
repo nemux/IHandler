@@ -388,7 +388,8 @@ class IncidentController extends Controller
             foreach ($incident->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
-                $message->attach($file, ['as' => $name]);
+
+                $message->attach(storage_path('app/' . $file), ['as' => $name]);
             }
 
             $pdf = Pdf::generatePdf($incident, 'pdf.incident');

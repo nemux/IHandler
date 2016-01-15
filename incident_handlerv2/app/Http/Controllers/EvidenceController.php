@@ -160,9 +160,6 @@ class EvidenceController extends Controller
 
         $filename = $md5 . "." . \File::extension($file->getClientOriginalName());
 
-//        $fileMoved = $file->move($directory, $filename);
-//        chmod($directory . '/' . $filename, 0444);
-
         $writed = \Storage::put($directory . $filename, \File::get($file));
 
         if ($writed) {
@@ -180,8 +177,6 @@ class EvidenceController extends Controller
             $evidence->sha1 = $sha1;
             $evidence->sha256 = $sha256;
             $evidence->save();
-
-//            $imgbinary = fread(fopen($directory . $filename, "r"), filesize($directory . $filename));
 
             $imgbinary = \Storage::get($directory . $filename);
 
