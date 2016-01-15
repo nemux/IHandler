@@ -6,6 +6,8 @@ use App\Http\Requests;
 use App\Library\Otrs\OtrsClient;
 use App\Library\Pdf;
 use App\Library\WordGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Models\IncidentManager\Evidence\Evidence;
 use Models\IncidentManager\Evidence\EvidenceType;
 use Models\IncidentManager\Incident\Annex;
@@ -20,8 +22,6 @@ use Models\IncidentManager\Incident\Note;
 use Models\IncidentManager\Incident\Recommendation;
 use Models\IncidentManager\Person\PersonContact;
 use Models\IncidentManager\Ticket\Ticket;
-use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
 use Psy\Util\Json;
 
 class IncidentController extends Controller
@@ -166,7 +166,7 @@ class IncidentController extends Controller
             array_push($incidentSignatures, $item);
         }
 
-        return redirect()->route('incident.index')->withMessage('Se creó el Incidente ' . $incident->title);
+        return redirect()->route('incident.show', $incident->id)->withMessage('Se creó el Incidente ' . $incident->title);
     }
 
 
@@ -329,7 +329,7 @@ class IncidentController extends Controller
             }
         }
 
-        return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
+        return redirect()->route('incident.show', $incident->id)->withMessage('Se actualizó el Incidente ' . $incident->title);
     }
 
     /**
