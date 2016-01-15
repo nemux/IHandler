@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use Models\IncidentManager\Customer\Customer;
 use Models\IncidentManager\Customer\CustomerAsset;
 use Models\IncidentManager\Customer\CustomerContact;
 use Models\IncidentManager\Person\Person;
 use Models\IncidentManager\Person\PersonContact;
-use Illuminate\Http\Request;
-use App\Http\Requests;
 
 class CustomerController extends Controller
 {
@@ -112,7 +112,7 @@ class CustomerController extends Controller
         $person = sizeof($customer->contacts) == 0 ? new Person() : $customer->contacts[0]->person;
         $contact = $person->contact;
 
-        return view('customer.edit', compact('customer', 'person','contact'));
+        return view('customer.edit', compact('customer', 'person', 'contact'));
     }
 
     /**
@@ -131,9 +131,11 @@ class CustomerController extends Controller
 //        \Log::info($request->file('logo')->getClientOriginalName());
 
         if ($request->file('logo')) {
-            $customer->logo = hash('md5', $id) . "." . $request->file('logo')->getClientOriginalExtension();
+            $customer->logo = 'customer/logo/' . hash('md5', $id) . "." . $request->file('logo')->getClientOriginalExtension();
             $customer->mimetype = $request->file('logo')->getClientMimeType();
-            $request->file('logo')->move('upload/customer/', $customer->logo);
+
+            //Almacena el logo del cliente en la localidad correspondiente
+            \Storage::put($customer->logo, \File::get($request->file('logo')));
         }
 
         $customer->save();
@@ -151,5 +153,20 @@ class CustomerController extends Controller
         $contact->save();
 
         return redirect()->route('customer.show', $customer->id)->withMessage('Datos del cliente actualizados');
+    }
+
+    /**
+     * Devuelve la imagen del logo del cliente
+     * @param $id
+     */
+    public function getLogo($id)
+    {
+        $customer = Customer::whereId($id)->first();
+        $file = $customer->logo;
+
+        $file_ = \Storage::get($file);
+
+        //Regresa el archivo
+        return response($file_, 200)->header('Content-Type', $customer->mimetype);
     }
 }

@@ -14,15 +14,15 @@
 /**
  * Muestra en el LOG de Laravel las queries ejecutadas. Útil para debugear
  */
-Event::listen('illuminate.query', function ($sql, $bindings) {
-
-    foreach ($bindings as $val) {
-        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
-    }
-
-    \Log::info($sql);
-    \Log::info("-------------------------------------------------------------------------------------------------------");
-});
+//Event::listen('illuminate.query', function ($sql, $bindings) {
+//
+//    foreach ($bindings as $val) {
+//        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
+//    }
+//
+//    \Log::info($sql);
+//    \Log::info("-------------------------------------------------------------------------------------------------------");
+//});
 
 
 /**
@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
 
         Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
+        Route::get('/file/evidence/{evidenceid}', ['as' => 'incident.evidence.file', 'uses' => 'IncidentController@getEvidenceFile']);
+
         Route::delete('/delete/event/{incidentId}/{sourceId}/{targetId}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
 
         Route::patch('/edit/evidence', ['as' => 'incident.evidence.edit', 'uses' => 'IncidentController@updateEvidence']);
@@ -124,6 +126,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/{id}', ['as' => 'customer.show', 'uses' => 'CustomerController@show']);
         Route::get('/edit/{id}', ['as' => 'customer.edit', 'uses' => 'CustomerController@edit', 'middleware' => 'role:admin']);
         Route::post('/edit/{id}', ['as' => 'customer.update', 'uses' => 'CustomerController@update', 'middleware' => 'role:admin']);
+
+        Route::get('/logo/{id}', ['as' => 'customer.logo', 'uses' => 'CustomerController@getLogo']);
 
         Route::group(['prefix' => 'asset'], function () {
             Route::post('/create', ['as' => 'asset.store', 'uses' => 'CustomerAssetController@store', 'middleware' => 'role:admin']);

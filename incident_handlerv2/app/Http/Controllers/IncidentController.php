@@ -735,4 +735,11 @@ class IncidentController extends Controller
             return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar la Observación']);
         }
     }
+
+    public function getEvidenceFile($incident_evidence_id)
+    {
+        $evidence_id = IncidentEvidence::whereId($incident_evidence_id)->first()->evidence_id;
+
+        return EvidenceController::getFile($evidence_id);
+    }
 }

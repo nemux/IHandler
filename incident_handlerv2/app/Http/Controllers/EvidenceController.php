@@ -156,14 +156,16 @@ class EvidenceController extends Controller
         $sha256 = hash_file('sha256', $file);
 
         // Crea un árbol de directorios con la fecha definiendo: año/mes/día/{md5}.{ext}
-        $directory = 'upload/evidences/' . date('Y/m/d/');
+        $directory = 'evidences/' . date('Y/m/d/');
 
         $filename = $md5 . "." . \File::extension($file->getClientOriginalName());
 
-        $fileMoved = $file->move($directory, $filename);
-        chmod($directory . '/' . $filename, 0444);
+//        $fileMoved = $file->move($directory, $filename);
+//        chmod($directory . '/' . $filename, 0444);
 
-        if ($fileMoved) {
+        $writed = \Storage::put($directory . $filename, \File::get($file));
+
+        if ($writed) {
             $evidence = Evidence::whereName($filename)->wherePath($directory)->first();
 
             if (!isset($evidence->id))
@@ -179,7 +181,9 @@ class EvidenceController extends Controller
             $evidence->sha256 = $sha256;
             $evidence->save();
 
-            $imgbinary = fread(fopen($directory . $filename, "r"), filesize($directory . $filename));
+//            $imgbinary = fread(fopen($directory . $filename, "r"), filesize($directory . $filename));
+
+            $imgbinary = \Storage::get($directory . $filename);
 
             $evidence->base64 = 'data:' . $mimeType . ';base64,' . base64_encode($imgbinary);
 
@@ -207,5 +211,22 @@ class EvidenceController extends Controller
         }
 
         return $evidences;
+    }
+
+    /**
+     * Obtiene el archivo por ID
+     *
+     * @param $evidence_id
+     * @return mixed
+     */
+    public static function getFile($evidence_id)
+    {
+        $evidence = Evidence::whereId($evidence_id)->first();
+        $file = $evidence->path . $evidence->name;
+
+        $file_ = \Storage::get($file);
+
+        //Regresa el archivo
+        return response($file_, 200)->header('Content-Type', $evidence->mime_type);
     }
 }
