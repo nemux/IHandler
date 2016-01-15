@@ -92,18 +92,15 @@
                    value="Mostrar evidencias">
         </div>
         <div class="form-group">
-           <textarea class="form-control ckeditor" name="description" id="description" data-validate="required">
-               {{isset($case->description)?$case->description:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="description" id="description"
+                      data-validate="required">{{isset($case->description)?$case->description:''}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="surveillance-recommendation-tab">
         <h3 class="title">Recomendaciones</h3>
 
         <div class="form-group">
-           <textarea class="form-control ckeditor" name="recommendation" id="recommendation">
-               {{isset($case->recommendation)?$case->recommendation:''}}
-           </textarea>
+           <textarea class="form-control ckeditor" name="recommendation" id="recommendation">{{isset($case->recommendation)?$case->recommendation:''}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="surveillance-save-tab">

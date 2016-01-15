@@ -166,13 +166,11 @@
                                   role="form">
                                 {!! csrf_field() !!}
                                 <div class="form-group">
-                                <textarea
-                                        rows="5"
+                                <textarea rows="5"
                                         class="form-control"
                                         id="message"
                                         name="message"
-                                        placeholder="¿Tiene información que desee agregar al ticket?"
-                                        >{{old('message')}}</textarea>
+                                        placeholder="¿Tiene información que desee agregar al ticket?">{{old('message')}}</textarea>
 
                                     <input type="submit" class="btn btn-info form-control" value="Enviar">
                                 </div>
