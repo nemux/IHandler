@@ -28,8 +28,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (result) {
-                    $("#sensor_id").select2("val", "");
-                    $('#sensor_id').empty();
+                    $("#sensor_id").empty().select2("val", "");
+//                    $('#sensor_id').empty();
 
                     if (result.status === true) {
                         $('#sensor_id').append($('<option>', {}));
@@ -488,9 +488,7 @@
         </div>
     </div>
     <ul class="pager wizard">
-        <li class="previous first"><a href="#">Primero</a></li>
         <li class="previous"><a href="#"><i class="entypo-left-open"></i> Anterior</a></li>
-        <li class="next last"><a href="#">Último</a></li>
         <li class="next"><a href="#">Siguiente <i class="entypo-right-open"></i></a></li>
     </ul>
 </div>
