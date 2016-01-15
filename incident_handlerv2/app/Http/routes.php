@@ -184,6 +184,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'evidence'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
         Route::post('upload/incident', ['as' => 'file.upload.incident', 'uses' => 'EvidenceController@uploadIncident']);
+
+        Route::get('/file/{evidence_id}',['as'=>'evidence.file','uses'=>'EvidenceController@getFile']);
     });
 
     Route::group(['prefix' => 'otrs'], function () {

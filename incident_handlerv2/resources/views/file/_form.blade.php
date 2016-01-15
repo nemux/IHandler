@@ -57,9 +57,7 @@
                 file.progressBar.width(progress + '%');
             },
             success: function (file, evidence) {
-                var evidenceRoot = '{!! url('') !!}';
-                var pathFile = evidenceRoot + "/" + evidence.path + evidence.name;
-                var base64 = evidence.base64;
+                var evidenceurl = '{!! url('') !!}/dashboard/evidence/file/'+evidence.id;
 
                 file.fileEntryTd.find('td:last').html('<span class="text-success">Finalizó la carga</span>');
                 file.fileEntryTd.find('td:last').on('click', function () {
@@ -68,7 +66,10 @@
 
                 file.progressBar.removeClass('progress-bar-warning').addClass('progress-bar-success');
 
-                var img_thumbnail = "@include('file._evidence_thumb',['isJavascript'=>true])";
+                var img_thumbnail = "<div class='col-md-3 col-sm-4 col-xs-6'><div class='album-image'>" +
+                        "<div class='thumb'><img src='" + evidenceurl + "' class='img-responsive'/></div><div class='name'>" +
+                        "<span>" + file.name + "</span><em>" + evidenceurl + "</em>" +
+                        "</div></div></div>";
 
                 $('#evidences-thumbs').html($('#evidences-thumbs').html() + img_thumbnail);
 

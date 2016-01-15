@@ -214,7 +214,7 @@ class EvidenceController extends Controller
      * @param $evidence_id
      * @return mixed
      */
-    public static function getFile($evidence_id)
+    public function getFile($evidence_id)
     {
         $evidence = Evidence::whereId($evidence_id)->first();
         $file = $evidence->path . $evidence->name;

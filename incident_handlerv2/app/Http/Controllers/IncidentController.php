@@ -741,6 +741,12 @@ class IncidentController extends Controller
     {
         $evidence_id = IncidentEvidence::whereId($incident_evidence_id)->first()->evidence_id;
 
-        return EvidenceController::getFile($evidence_id);
+        $evidence = Evidence::whereId($evidence_id)->first();
+        $file = $evidence->path . $evidence->name;
+
+        $file_ = \Storage::get($file);
+
+        //Regresa el archivo
+        return response($file_, 200)->header('Content-Type', $evidence->mime_type);
     }
 }
