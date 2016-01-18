@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta content="text/html">
+    {{--<meta content="text/html">--}}
 
     <style>
         html {
@@ -156,11 +156,7 @@
     <div class="main-content">
         <div class="panel panel-default">
             <div class="panel-heading">
-                @if(isset($case->customer->logo))
-                    <img class="img-responsive logo" src="{{$isPdf?'':'/'}}upload/customer/{{$case->customer->logo}}">
-                @else
-                    <h1>Cliente: {{$case->customer->name}}</h1>
-                @endif
+                <h3>Cliente: {{$case->customer->name}}</h3>
             </div>
             <div class="panel-body">
                 @include('surveillance._preview')
