@@ -48,6 +48,11 @@ return [
             'root'   => storage_path('app'),
         ],
 
+        'helpdesk' => [
+            'driver' => 'local',
+            'root'   => '/home/diego/Documentos/zedka/proyects/imanager_helpdesk/imanager_helpdesk/storage/app',
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

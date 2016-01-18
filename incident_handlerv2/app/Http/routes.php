@@ -308,6 +308,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'helpdesk', 'middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\HelpdeskController@index']);
 
+        Route::group(['prefix' => 'file'], function () {
+            Route::get('{message_id}/{filename}', ['as' => 'helpdesk.file.filename', 'uses' => 'Helpdesk\HelpdeskFileController@getFile']);
+        });
+
         Route::group(['prefix' => 'ticket'], function () {
 
             Route::get('/', ['as' => 'helpdesk.ticket.index', 'uses' => 'Helpdesk\TicketController@index']);
