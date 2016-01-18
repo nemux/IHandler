@@ -251,6 +251,7 @@
                     <div class="tab-pane" id="v-evidences">
                         <h3>Evidencias</h3>
 
+                        {{--Muestra las evidencias del incidente--}}
                         <section class="gallery-env">
                             <div class="row">
                                 <div class="album-images row">
@@ -261,6 +262,7 @@
                             </div>
                         </section>
 
+                        {{--Muestra las evidencias subidas para un cerrado--}}
                         @if($case->ticket->ticket_status_id==4)
                             <h3>Caso Cerrado</h3>
                             <section class="gallery-env">
@@ -274,6 +276,7 @@
                             </section>
                         @endif
 
+                        {{--Muestra las evidencias subidas para un falso positivo--}}
                         @if($case->ticket->ticket_status_id==5)
                             <h3>Falso Positivo</h3>
                             <section class="gallery-env">

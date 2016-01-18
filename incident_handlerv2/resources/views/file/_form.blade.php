@@ -57,7 +57,7 @@
                 file.progressBar.width(progress + '%');
             },
             success: function (file, evidence) {
-                var evidenceurl = '{!! url('') !!}/dashboard/evidence/file/' + evidence.id;
+                var evidenceurl = '{!! url('') !!}/dashboard/evidence/file/' + evidence.id; //No se usa el helper route por ser un espacio javascript
 
                 file.fileEntryTd.find('td:last').html('<span class="text-success">Finalizó la carga</span>');
                 file.fileEntryTd.find('td:last').on('click', function () {
