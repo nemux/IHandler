@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Events\EventModel;
+use Handlers\Events\HandleIncidentManagerModel;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -16,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
 //        'App\Events\SomeEvent' => ['App\Listeners\EventListener',],
 //        'event.name' => ['EventListener',],
 //        'App\Events\EventUser' => ['App\Handlers\Events\HandleSaveUser',],
-        'Events\EventModel' => ['Handlers\Events\HandleModel'], //php artisan event:generate
+        EventModel::class => [HandleIncidentManagerModel::class], //php artisan event:generate
     ];
 
     /**

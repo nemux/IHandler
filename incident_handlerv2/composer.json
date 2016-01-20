@@ -63,7 +63,9 @@
     "post-update-cmd": [
       "php artisan clear-compiled",
       "php artisan ide-helper:generate",
-      "php artisan optimize"
+      "php artisan optimize",
+      "php artisan cache:clear",
+      "composer dumpautoload -o"
     ],
     "post-root-package-install": [
       "php -r \"copy('.env.example', '.env');\""
