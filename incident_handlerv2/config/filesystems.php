@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => env('FTP_NAME_IM', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +51,22 @@ return [
         'helpdesk' => [
             'driver' => 'local',
             'root' => env('FILESYSTEM_HELPDESK_ROOT', 'app'),
+        ],
+
+        env('FTP_NAME_IM') => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST_IM'),
+            'username' => env('FTP_USER_IM'),
+            'password' => env('FTP_PASS_IM'),
+            'root' => env('FTP_ROOT_IM', '')
+        ],
+
+        env('FTP_NAME_HD') => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST_HD'),
+            'username' => env('FTP_USER_HD'),
+            'password' => env('FTP_PASS_HD'),
+            'root' => env('FTP_ROOT_HD', '')
         ],
 
         'ftp' => [

@@ -10,10 +10,12 @@ namespace App\Http\Controllers\Helpdesk;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Library\Otrs\OtrsClient;
 use Illuminate\Http\Request;
 use Models\Helpdesk\Ticket\Ticket as HelpdeskTicket;
 use Models\Helpdesk\Ticket\TicketCriticity as HelpdeskTicketCriticity;
 use Models\Helpdesk\Ticket\TicketMessage as HelpdeskTicketMessage;
+use Models\Helpdesk\Ticket\TicketMessageFile as HelpdeskTicketMessageFile;
 use Models\Helpdesk\Ticket\TicketStatus;
 
 
@@ -93,8 +95,55 @@ class TicketController extends Controller
             abort(404);
         }
 
-        $this->validate($request, ['message' => 'required'], [], ['message' => 'Mensaje']);
+        //Valida la petición
+        $this->validate($request,
+            ['message' => 'required', 'evidence' => 'max:5120'],
+            ['evidence.max' => 'El archivo adjunto no puede ser mayor a 5M'],
+            ['message' => 'Mensaje', 'evidence' => 'Archivo adjunto']);
 
+        $message = $this->pushMessage($ticket, $request);
+
+        $file = $request->file('evidence');
+
+        //Si se adjuntó un archivo, lo almacena
+        if ($file) {
+            //TODO verify filesize
+            $max_filesize = ini_get('upload_max_filesize');
+            $filesize = $request->file('evidence')->getSize();
+
+            $file = HelpdeskFileController::uploadFile($file, $ticket->customer->otrs_customer_id);
+
+            $ticketFile = new HelpdeskTicketMessageFile();
+            $ticketFile->file_id = $file->id;
+            $ticketFile->ticket_message_id = $message->id;
+            $ticketFile->save();
+        }
+
+        //Si el ticket está como abierto, al agregar un mensaje se establece en 2 el estatus
+        if ($ticket->ticket_status_id == 1) {
+            $ticket->ticket_status_id = 2;
+        }
+
+        //Actualiza el campo de update_at del ticket
+        $ticket->updated_at = new \DateTime();
+        $ticket->save();
+
+        return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
+            ->withMessage('Se agregó el comentario al ticket con número de referencia: ' . $ticket->internal_number);
+
+    }
+
+    /**
+     * Agrega un mensaje al ticket
+     *
+     * @param HelpdeskTicket $ticket
+     * @param Request $request
+     * @param bool|false $isnew Define si el ticket es de reciente creación o sólo se le está agregando un mensaje
+     *
+     * @return HelpdeskTicketMessage
+     */
+    private function pushMessage(HelpdeskTicket $ticket, Request $request, $isnew = false)
+    {
         $message = new HelpdeskTicketMessage();
         $message->ticket_id = $ticket->id;
         $message->user_id = $request->user()->id;
@@ -102,17 +151,50 @@ class TicketController extends Controller
         $message->is_customer = false;
         $message->save();
 
-        //Si el ticket está como abierto, al agregar un mensaje se establece en 2 el estatus
-        if ($ticket->ticket_status_id == 1) {
-            $ticket->ticket_status_id = 2;
+        //Si se almacenó correctamente el mensaje en la BD
+        if ($message->id) {
+            $otrs = new OtrsClient();
+            if ($isnew) {//Si se está agregando un mensaje a un nuevo ticket
+                $risk = 0;
+                switch ($ticket->ticket_criticity_id) {
+                    case 1:
+                        $risk = 1;
+                        break;
+                    case 2:
+                        $risk = 5;
+                        break;
+                    case 3:
+                        $risk = 10;
+                        break;
+                }
+                $otrs_response = $otrs
+                    ->createTicket($ticket->title, $risk, $ticket->customer->otrs_user_id, $ticket->customer->semicolonSeparatedEmails(), $this->renderTicketMessageHtml($ticket, $message));
+
+                if (isset($otrs_response['error_code']))
+                    return $this->createOtrsErrorResult($otrs_response);
+
+                $ticket->otrs_ticket_id = $otrs_response['TicketID'];
+                $ticket->otrs_ticket_number = $otrs_response['TicketNumber'];
+                $ticket->save();
+
+            } else { //Si se está agregando un mensaje
+                $user_info = $otrs->getUserInfo($otrs->getAgent());
+
+                if (isset($user_info['error_code']))
+                    return $this->createOtrsErrorResult($user_info);
+
+                $article_id = $otrs
+                    ->createArticle($ticket->otrs_ticket_id, $user_info['UserID'], $user_info['UserEmail'], $ticket->title, $ticket->customer->semicolonSeparatedEmails(), $this->renderTicketMessageHtml($ticket, $message));
+
+                if (isset($article_id['error_code']))
+                    return $this->createOtrsErrorResult($article_id);
+                else
+                    $message->otrs_article_id = $article_id;
+            }
         }
 
-        $ticket->updated_at = new \DateTime();
-        $ticket->save();
 
-        return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
-            ->withMessage('Se agregó el comentario al ticket con número de referencia: ' . $ticket->internal_number);
-
+        return $message;
     }
 
     /**
@@ -226,6 +308,18 @@ class TicketController extends Controller
             default:
                 return (object)['in' => '|in:null', 'message' => 'El ticket sólo puede pasar a NULL'];
         }
+    }
+
+    /**
+     * Devuelve una vista HTML renderizada de un Ticket
+     *
+     * @param HelpdeskTicket $ticket
+     * @param HelpdeskTicketMessage $message
+     * @return string
+     */
+    private function renderTicketMessageHtml(HelpdeskTicket $ticket, HelpdeskTicketMessage $message)
+    {
+        return view('helpdesk.ticket._preview_ticket_message', compact('ticket', 'message'))->render();
     }
 
 }
