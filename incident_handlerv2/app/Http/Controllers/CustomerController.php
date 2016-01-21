@@ -158,6 +158,7 @@ class CustomerController extends Controller
     /**
      * Devuelve la imagen del logo del cliente
      * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function getLogo($id)
     {
@@ -166,7 +167,9 @@ class CustomerController extends Controller
 
         $file_ = \Storage::get($file);
 
+        $headers = ['Content-Type' => $customer->mimetype, 'Content-Disposition' => 'inline; filename="' . $customer->logo . '"'];
+
         //Regresa el archivo
-        return response($file_, 200)->header('Content-Type', $customer->mimetype);
+        return response($file_, 200, $headers);
     }
 }

@@ -217,11 +217,12 @@ class EvidenceController extends Controller
     public function getFile($evidence_id)
     {
         $evidence = Evidence::whereId($evidence_id)->first();
-        $file = $evidence->path . $evidence->name;
 
-        $file_ = \Storage::get($file);
+        $file = \Storage::get($evidence->path . $evidence->name);
+
+        $headers = ['Content-Type' => $evidence->mime_type, 'Content-Disposition' => 'inline; filename="' . $evidence->original_name . '"'];
 
         //Regresa el archivo
-        return response($file_, 200)->header('Content-Type', $evidence->mime_type);
+        return response($file, 200, $headers);
     }
 }

@@ -102,8 +102,7 @@ class HelpdeskFileController extends Controller
             //Si se encontró el archivo y los customer_id son iguales
             if ($file) {
                 $file_ =  $this->disk->get($file->path . $file->name);
-
-                $headers = ['Content-Type' => $file->mime_type];
+                $headers = ['Content-Type' => $file->mime_type, 'Content-Disposition' => 'inline; filename="' . $file->original_name . '"'];
 
                 //Regresa el archivo
                 return response($file_, 200, $headers);
