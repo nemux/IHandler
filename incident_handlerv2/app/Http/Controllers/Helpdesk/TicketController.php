@@ -111,7 +111,8 @@ class TicketController extends Controller
             $max_filesize = ini_get('upload_max_filesize');
             $filesize = $request->file('evidence')->getSize();
 
-            $file = HelpdeskFileController::uploadFile($file, $ticket->customer->otrs_customer_id);
+            $controller = new HelpdeskFileController();
+            $file = $controller->uploadFile($file, $ticket->customer->otrs_customer_id);
 
             $ticketFile = new HelpdeskTicketMessageFile();
             $ticketFile->file_id = $file->id;

@@ -63,21 +63,8 @@
                             <blockquote>
                                 {{$message->message}}
                             </blockquote>
-                            @if($message->messagefile)
 
-                                <i><i class="fa fa-file"></i>
-                                    <b>Adjunto: </b>
-                                    <a target="_blank"
-                                       href="{{route('helpdesk.file.filename',[$message->id,$message->messagefile->file->name])}}">
-                                        {{$message->messagefile->file->original_name}}
-                                    </a>
-                                </i>
-                                @if(sizeof(preg_grep('/^image\//i',explode('\n', $message->messagefile->file->mime_type)))>0)
-                                    <br/>
-                                    <img src="{{route('helpdesk.file.filename',[$message->id,$message->messagefile->file->name])}}"
-                                         class="img-thumbnail" style="max-height: 216px;">
-                                @endif
-                            @endif
+                            @include('helpdesk.ticket.message._file')
                         </div>
                     </div>
                 </article>
@@ -98,6 +85,8 @@
                             <blockquote>
                                 {!! $message->message !!}
                             </blockquote>
+
+                            @include('helpdesk.ticket.message._file')
                         </div>
                     </div>
                 </article>
@@ -176,9 +165,7 @@
                                 <b>Agregar un comentario</b>
                             </h2>
 
-                            @include('dashboard.tickets.message._form')
-
-
+                            @include('helpdesk.ticket.message._form')
                         @endif
                     </div>
                 </div>

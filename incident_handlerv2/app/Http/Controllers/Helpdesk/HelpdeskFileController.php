@@ -15,14 +15,16 @@ class HelpdeskFileController extends Controller
     /**
      * @var Filesystem
      */
-    private static $disk;
+    private $disk;
 
     /**
      * Constructor de la clase
      */
     public function __construct()
     {
-        self::$disk = \Storage::disk(env('FTP_NAME_HD'));
+        $this->disk = \Storage::disk(env('FTP_NAME_HD'));
+
+        return $this;
     }
 
     /**
@@ -33,7 +35,7 @@ class HelpdeskFileController extends Controller
      *
      * @return bool|File
      */
-    public static function uploadFile(UploadedFile $file, $customer_path)
+    public function uploadFile(UploadedFile $file, $customer_path)
     {
         $extension = $file->getClientOriginalExtension();
         $md5_name = md5($file->getFilename());
@@ -57,7 +59,7 @@ class HelpdeskFileController extends Controller
         //Si no está definido el ID
         if (!isset($file_->id)) {
             //Almacenamos el archivo en disco
-            self::$disk->put("$path$md5_name.$extension", \File::get($file), Filesystem::VISIBILITY_PRIVATE);
+            $this->disk->put("$path$md5_name.$extension", \File::get($file), Filesystem::VISIBILITY_PRIVATE);
 
             $file_ = new File();
             $file_->mime_type = $mimeType;
@@ -99,7 +101,7 @@ class HelpdeskFileController extends Controller
 
             //Si se encontró el archivo y los customer_id son iguales
             if ($file) {
-                $file_ = self::$disk->get($file->path . $file->name);
+                $file_ =  $this->disk->get($file->path . $file->name);
 
                 $headers = ['Content-Type' => $file->mime_type];
 
