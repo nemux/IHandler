@@ -176,20 +176,9 @@
                                 <b>Agregar un comentario</b>
                             </h2>
 
-                            <form method="POST"
-                                  action="{{route('helpdesk.ticket.addmessage',explode('/',$ticket->internal_number))}}"
-                                  role="form">
-                                {!! csrf_field() !!}
-                                <div class="form-group">
-                                <textarea rows="5"
-                                        class="form-control"
-                                        id="message"
-                                        name="message"
-                                        placeholder="¿Tiene información que desee agregar al ticket?">{{old('message')}}</textarea>
+                            @include('dashboard.tickets.message._form')
 
-                                    <input type="submit" class="btn btn-info form-control" value="Enviar">
-                                </div>
-                            </form>
+
                         @endif
                     </div>
                 </div>
