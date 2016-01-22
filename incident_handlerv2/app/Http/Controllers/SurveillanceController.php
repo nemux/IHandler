@@ -225,6 +225,7 @@ class SurveillanceController extends Controller
 
             //TODO enviar correo al cliente? Actualmente se envía un reporte manual.
 //            $message->to($mailTo, \Auth::user()->person->fullName()); //CustomerMail
+
             $message->to(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SocMail
 
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);

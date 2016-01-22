@@ -42,10 +42,10 @@
                 {{--<div class="btn btn-blue" onclick="doc(this)">--}}
                     {{--<i class="fa fa-file-pdf-o fa-fw"></i> Generar DOC--}}
                 {{--</div>--}}
-                {{--<div class="btn btn-success"--}}
-                     {{--onclick="mail(this)">--}}
-                    {{--<i class="fa fa-envelope fa-fw"></i> Enviar Correo--}}
-                {{--</div>--}}
+                <div class="btn btn-success"
+                     onclick="mail(this)">
+                    <i class="fa fa-envelope fa-fw"></i> Enviar Correo
+                </div>
             </div>
         </div>
         <div class="panel-body">
