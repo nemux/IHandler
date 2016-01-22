@@ -342,12 +342,12 @@ class IncidentController extends Controller
     {
         $case = Incident::whereId($id)->first();
         $pdf = Pdf::generatePdf($case, 'pdf.incident');
-        $docName = $case->title . '.pdf';
+        $docName = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
 
         if ($download) {
-            return $pdf->download($docName);
+            return $pdf->download($docName . '.pdf');
         } else {
-            return $pdf->stream($docName);
+            return $pdf->stream($docName . '.pdf');
         }
     }
 
@@ -360,7 +360,7 @@ class IncidentController extends Controller
     public function getDoc($id)
     {
         $case = Incident::whereId($id)->first();
-        $doc = new  WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
+        $doc = new WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
         $doc->addCases($case);
         $file = $doc->streamDocument();
 

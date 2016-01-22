@@ -287,7 +287,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
-//        Route::get('/incidents', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
         Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
         Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
         Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);

@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Library\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Models\IncidentManager\Catalog\Criticity;
 use Models\IncidentManager\Customer\Customer;
 use Models\IncidentManager\Person\PersonContact;
 use Models\IncidentManager\Surveillance\SurveillanceCase;
 use Models\IncidentManager\Surveillance\SurveillanceCaseEvidence;
-use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
 
 class SurveillanceController extends Controller
 {
@@ -115,7 +115,7 @@ class SurveillanceController extends Controller
     public function update(Request $request, $id)
     {
         //Agregar todos los archivos de evidencia
-        $evidences = $this->getEvidences($request);
+        $evidences = EvidenceController::getEvidences($request);
 
         //Almacena en variables de sesión las evidencias, por si ocurriera un error en la actualización
         \Session::flash('surv_evidences', $evidences);
@@ -152,6 +152,7 @@ class SurveillanceController extends Controller
         $case = SurveillanceCase::whereId($id)->first();
         $pdf = Pdf::generatePdf($case, 'pdf.surveillance');
         $docName = $case->title . '.pdf';
+        $docName = preg_replace('/ /', '_', $docName);
 
         if ($download) {
             return $pdf->download($docName);
@@ -168,9 +169,11 @@ class SurveillanceController extends Controller
     public function getDoc($id)
     {
         $case = SurveillanceCase::whereId($id)->first();
-        $doc = DocController::generateDoc($case, 'pdf.surveillance');
-        $docName = $case->title . '.doc';
+
+        $docName = $case->title . '.docx';
         $docName = preg_replace('/ /', '_', $docName);
+
+        $doc = DocController::generateDoc($case, 'pdf.surveillance');
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
@@ -198,7 +201,6 @@ class SurveillanceController extends Controller
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
      *
      * @param SurveillanceCase $surv
-     * @param string $extra_info
      */
     public function sendEmail(SurveillanceCase $surv, $extra_info = '')
     {
