@@ -30,6 +30,17 @@ class StringHelper
         self::removeTag('i', $html);
         self::removeTag('div', $html);
 
+        //Replace all tags from a table
+        self::replaceTag('table','p',$html);
+        self::replaceTag('caption','h1',$html);
+        self::replaceTag('tbody','p',$html);
+        self::replaceTag('thead','p',$html);
+        self::replaceTag('tfoot','p',$html);
+        self::replaceTag('tr','p',$html);
+        self::replaceTag('td','span',$html);
+        self::replaceTag('th','span',$html);
+        self::replaceTag('th','span',$html);
+
         self::replaceTag('b', 'strong', $html);
 //        \Log::info($html . '
 //        -----------------------------------------------------------------------');
