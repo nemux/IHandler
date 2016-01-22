@@ -31,15 +31,15 @@ class StringHelper
         self::removeTag('div', $html);
 
         //Replace all tags from a table
-        self::replaceTag('table','p',$html);
-        self::replaceTag('caption','h1',$html);
-        self::replaceTag('tbody','p',$html);
-        self::replaceTag('thead','p',$html);
-        self::replaceTag('tfoot','p',$html);
-        self::replaceTag('tr','p',$html);
-        self::replaceTag('td','span',$html);
-        self::replaceTag('th','span',$html);
-        self::replaceTag('th','span',$html);
+        self::replaceTag('table', 'p', $html);
+        self::replaceTag('caption', 'h1', $html);
+        self::replaceTag('tbody', 'p', $html);
+        self::replaceTag('thead', 'p', $html);
+        self::replaceTag('tfoot', 'p', $html);
+        self::replaceTag('tr', 'p', $html);
+        self::replaceTag('td', 'span', $html);
+        self::replaceTag('th', 'span', $html);
+        self::replaceTag('th', 'span', $html);
 
         self::replaceTag('b', 'strong', $html);
 //        \Log::info($html . '
@@ -63,7 +63,10 @@ class StringHelper
         $html = preg_replace('/\n{2,}/', '\n', $html);
         $html = str_replace(array("> <"), array('><'), $html);
 
+        self::fixBadFormed($html);
+
         self::fixOrphanTag('p', $html);
+
 //        \Log::info($html . '
 //        -----------------------------------------------------------------------');
 
@@ -142,5 +145,14 @@ class StringHelper
             $newhtml .= $replaced;
         }
         $html = $newhtml;
+    }
+
+    private static function fixBadFormed(&$html)
+    {
+
+        $html = preg_replace('/(<li\\b[^>]*>)(<\\/?\\w>)?(.*?)(<\\/?\\w>)?(<\\/li>)/i', '$1$3$5', $html);
+
+        return $html;
+
     }
 }
