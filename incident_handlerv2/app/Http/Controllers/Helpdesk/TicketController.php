@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Helpdesk;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Library\Otrs\OtrsClient;
 use Illuminate\Http\Request;
 use Models\Helpdesk\Ticket\Ticket as HelpdeskTicket;
 use Models\Helpdesk\Ticket\TicketCriticity as HelpdeskTicketCriticity;
@@ -139,61 +138,18 @@ class TicketController extends Controller
      *
      * @param HelpdeskTicket $ticket
      * @param Request $request
+     * @param null $message_txt
      * @param bool|false $isnew Define si el ticket es de reciente creación o sólo se le está agregando un mensaje
-     *
      * @return HelpdeskTicketMessage
      */
-    private function pushMessage(HelpdeskTicket $ticket, Request $request, $isnew = false)
+    private function pushMessage(HelpdeskTicket $ticket, Request $request, $message_txt = null, $isnew = false)
     {
         $message = new HelpdeskTicketMessage();
         $message->ticket_id = $ticket->id;
         $message->user_id = $request->user()->id;
-        $message->message = trim($request->get('message'));
+        $message->message = ($message_txt == null) ? trim($request->get('message')) : trim($message_txt);
         $message->is_customer = false;
         $message->save();
-
-        //Si se almacenó correctamente el mensaje en la BD
-        if ($message->id) {
-            $otrs = new OtrsClient();
-            if ($isnew) {//Si se está agregando un mensaje a un nuevo ticket
-                $risk = 0;
-                switch ($ticket->ticket_criticity_id) {
-                    case 1:
-                        $risk = 1;
-                        break;
-                    case 2:
-                        $risk = 5;
-                        break;
-                    case 3:
-                        $risk = 10;
-                        break;
-                }
-                $otrs_response = $otrs
-                    ->createTicket($ticket->title, $risk, $ticket->customer->otrs_user_id, $ticket->customer->semicolonSeparatedEmails(), $this->renderTicketMessageHtml($ticket, $message));
-
-                if (isset($otrs_response['error_code']))
-                    return $this->createOtrsErrorResult($otrs_response);
-
-                $ticket->otrs_ticket_id = $otrs_response['TicketID'];
-                $ticket->otrs_ticket_number = $otrs_response['TicketNumber'];
-                $ticket->save();
-
-            } else { //Si se está agregando un mensaje
-                $user_info = $otrs->getUserInfo($otrs->getAgent());
-
-                if (isset($user_info['error_code']))
-                    return $this->createOtrsErrorResult($user_info);
-
-                $article_id = $otrs
-                    ->createArticle($ticket->otrs_ticket_id, $user_info['UserID'], $user_info['UserEmail'], $ticket->title, $ticket->customer->semicolonSeparatedEmails(), $this->renderTicketMessageHtml($ticket, $message));
-
-                if (isset($article_id['error_code']))
-                    return $this->createOtrsErrorResult($article_id);
-                else
-                    $message->otrs_article_id = $article_id;
-            }
-        }
-
 
         return $message;
     }
@@ -235,12 +191,7 @@ class TicketController extends Controller
         $ticket->ticket_criticity_id = $request->get('ticket_criticity_id');
         $ticket->save();
 
-        $message = new HelpdeskTicketMessage();
-        $message->ticket_id = $ticket->id;
-        $message->user_id = $request->user()->id;
-        $message->message = "Se cambió la criticidad del ticket de <strong>$old</strong> a <strong>$new</strong>";
-        $message->is_customer = false;
-        $message->save();
+        $this->pushMessage($ticket, $request, "Se cambió la criticidad del ticket de <strong>$old</strong> a <strong>$new</strong>");
 
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
             ->withMessage('Se cambió la severidad del ticket con número de referencia: ' . $ticket->internal_number);
@@ -270,17 +221,10 @@ class TicketController extends Controller
 
         $new_status = TicketStatus::whereId($request->get('ticket_status_id'))->first();
 
-        \Log::info($old_status);
-
-        $message = new HelpdeskTicketMessage();
-        $message->ticket_id = $ticket->id;
-        $message->user_id = $request->user()->id;
-        $message->message = "Se cambió el estatus del ticket de <strong>{$old_status->name}</strong> a <strong>{$new_status->name}</strong>";
-        $message->is_customer = false;
-        $message->save();
-
         $ticket->ticket_status_id = $new_status->id;
         $ticket->save();
+
+        $this->pushMessage($ticket, $request, "Se cambió el estatus del ticket de <strong>{$old_status->name}</strong> a <strong>{$new_status->name}</strong>");
 
 
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
@@ -314,13 +258,12 @@ class TicketController extends Controller
     /**
      * Devuelve una vista HTML renderizada de un Ticket
      *
-     * @param HelpdeskTicket $ticket
      * @param HelpdeskTicketMessage $message
      * @return string
      */
-    private function renderTicketMessageHtml(HelpdeskTicket $ticket, HelpdeskTicketMessage $message)
+    private function renderTicketMessageHtml(HelpdeskTicketMessage $message)
     {
-        return view('helpdesk.ticket._preview_ticket_message', compact('ticket', 'message'))->render();
+        return view('helpdesk.ticket._preview_ticket_message', compact('message'))->render();
     }
 
 }

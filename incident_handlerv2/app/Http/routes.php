@@ -188,11 +188,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/file/{evidence_id}',['as'=>'evidence.file','uses'=>'EvidenceController@getFile']);
     });
 
-    Route::group(['prefix' => 'otrs'], function () {
-        Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index', 'middleware' => 'role:admin']);
-        Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
-    });
-
     Route::group(['prefix' => 'attack'], function () {//, 'middleware' => 'role:admin'
         Route::get('/', ['as' => 'attack.index', 'uses' => 'AttackTypeController@index']);
         Route::get('/edit/{id}', ['as' => 'attack.edit', 'uses' => 'AttackTypeController@edit', 'middleware' => 'role:admin']);

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{{$ticket->title}}</title>
+    <title>{{$message->ticket->title}}</title>
     <style>
         html, body {
             width: 100%;
@@ -64,22 +64,22 @@
     <tbody>
     <tr>
         <td colspan="2">
-            <h1>{{$ticket->title}}</h1></td>
+            <h1>{{$message->ticket->title}}</h1></td>
     </tr>
     <tr>
         <td>Folio</td>
-        <td><strong>{{$ticket->internal_number}}</strong></td>
+        <td><strong>{{$message->ticket->internal_number}}</strong></td>
     </tr>
     <tr>
         <td>Cliente</td>
-        <td>{{$ticket->customer->name}}</td>
+        <td>{{$message->ticket->customer->name}}</td>
     </tr>
     <tr>
         <td>Severidad</td>
-        <td class="criticity-{{$ticket->criticity->id}}">{{$ticket->criticity->name}}</td>
+        <td class="criticity-{{$message->ticket->criticity->id}}">{{$message->ticket->criticity->name}}</td>
     </tr>
     <tr>
-        <td colspan="2" class="message">{{$message->message}}</td>
+        <td colspan="2" class="message">{!! $message->message !!}</td>
     </tr>
     </tbody>
 </table>

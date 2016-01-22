@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Library\Otrs\OtrsClient;
 use App\Library\Pdf;
 use App\Library\WordGenerator;
 use Illuminate\Http\Request;
@@ -555,36 +554,13 @@ class IncidentController extends Controller
                 ->where('ticket.internal_number', '!=', '')//Con un numero interno definido
                 ->where('ticket.ticket_status_id', '>', 1)//Contar los tickets que no est{an abiertos
                 ->whereNotNull('ticket.internal_number')
-                ->whereNull('ticket.deleted_at')//TODO ningún ticket debe ser eliminado ni de modo soft
+                ->whereNull('ticket.deleted_at')
                 ->count();
 
             //Se guarda el numero interno y el estatus antes de generar el ticket en el OTRS para que no genere tráfico en la generación de los consecutivos
             $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
-
-//            \Log::info($ticket->internal_number);
-
-            //TODO ¿cuando es un falso positivo se debe generar ticket en el OTRS?
-
-            $otrs = new OtrsClient();
-            $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $incident->customer->semicolonSeparatedEmails(), $incident->renderHtml());
-
-            //Si no contiene error, almacena el ticket con el ticket id y el ticket number
-            if (!isset($otrsTicket['error_code'])) {
-                $ticket->otrs_ticket_id = $otrsTicket['TicketID'];
-                $ticket->otrs_ticket_number = $otrsTicket['TicketNumber'];
-                $ticket->save();
-            } else {
-                //Definimos en verdadero debemos recordar de enviar la información al OTRS
-                $ticket->send_reminder = true;
-                $ticket->save();
-
-                //Aunque haya error en el OTRS se envía el correo
-                $this->sendEmail($incident);
-
-                return $this->createOtrsErrorResult($otrsTicket);
-            }
 
             if ($newTicketStatusId == 2) {
                 $this->sendEmail($incident);
@@ -620,11 +596,6 @@ class IncidentController extends Controller
         } else {
             return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus {$newTicketStatusId}"]);
         }
-    }
-
-    private function createOtrsErrorResult($otrsResponse)
-    {
-        return Json::encode(['status' => false, 'message' => '(Error Code: ' . $otrsResponse['error_code'] . ') Message: ' . $otrsResponse['error_description']]);
     }
 
     /**
@@ -667,23 +638,11 @@ class IncidentController extends Controller
 
         Recommendation::validateCreate($request, $this);
 
-        $otrs = new OtrsClient();
-
-        $user_info = $otrs->getUserInfo($otrs->getAgent());
-
-        if (isset($user_info['error_code']))
-            return $this->createOtrsErrorResult($user_info);
-
-        $article_id = $otrs->createArticle($incident->ticket->otrs_ticket_id, $user_info['UserID'], $user_info['UserEmail'], $incident->title, $incident->customer->semicolonSeparatedEmails(), $request->get('content'));
-
-        if (isset($article_id['error_code']))
-            return $this->createOtrsErrorResult($article_id);
-
 
         $recomm = new Recommendation();
         $recomm->incident_id = $request->get('incident_id');
         $recomm->content = $request->get('content');
-        $recomm->otrs_article_id = $article_id;
+        $recomm->otrs_article_id = '';
         $recomm->save();
 
         $this->sendEmail($incident, 'Se agregó una recomendación al Incidente'); //Confirmar que cuando se agrega una recomendación se envíe un correo
