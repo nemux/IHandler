@@ -25,7 +25,6 @@
     "phpoffice/phpword": "dev-master",
     "phpoffice/phpexcel": "dev-master",
     "predis/predis": "^1.0",
-    "filp/whoops": "~1.0",
     "isclopezm2/gcs-handler-model": "dev-master"
   },
   "require-dev": {
