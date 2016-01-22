@@ -198,16 +198,17 @@ class SurveillanceController extends Controller
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
      *
      * @param SurveillanceCase $surv
+     * @param string $extra_info
      */
-    public function sendEmail(SurveillanceCase $surv)
+    public function sendEmail(SurveillanceCase $surv, $extra_info = '')
     {
-        \Mail::send('email.surveillance', compact('surv'), function (Message $message) use ($surv) {
+        \Mail::send('email.surveillance', compact('surv', 'extra_info'), function (Message $message) use ($surv) {
 //            Adjuntamos las evidencias cargadas
             foreach ($surv->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
 
-                $message->attach(storage_path('app/' . $file), ['as' => $name]);
+                $message->attachData(\Storage::get($file), $name);
             }
 
             $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');

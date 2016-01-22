@@ -388,12 +388,11 @@ class IncidentController extends Controller
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
 
-                $message->attach(storage_path('app/' . $file), ['as' => $name]);
+                $message->attachData(\Storage::get($file), $name);
             }
 
             $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
-//            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
             $mailTo = PersonContact::compareEmail($incident->user->person->contact->email);
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
@@ -563,8 +562,9 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 2) {
-                $this->sendEmail($incident);
-                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
+                $message = 'Se cambió el estatus del Incidente y se envió el correo al cliente';
+                $this->sendEmail($incident, $message);
+                return Json::encode(['status' => true, 'message' => $message]);
 
             } else {
                 return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
@@ -575,8 +575,9 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 3) {
-                $this->sendEmail($incident);
-                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Resuelto']);
+                $message = 'Se cambió el estatus del Incidente a Resuelto';
+                $this->sendEmail($incident, $message);
+                return Json::encode(['status' => true, 'message' => $message]);
             } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
@@ -586,7 +587,7 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 4) {
-                $this->sendEmail($incident);
+                $this->sendEmail($incident, "Se cerró el Ticket del Incidente");
                 return redirect()->route('incident.show', $incident->id)->withMessage('Se cerró el Incidente y se envió el correo al cliente');
             } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);

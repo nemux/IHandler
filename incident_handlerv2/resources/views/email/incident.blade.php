@@ -11,5 +11,5 @@
 @endif
 
 <p>
-    Se adjunta el reporte del caso y las evidencias, en caso de haberlas.
+    Se adjunta el reporte del caso y las evidencias.
 </p>
