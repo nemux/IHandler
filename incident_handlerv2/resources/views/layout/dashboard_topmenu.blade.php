@@ -309,13 +309,6 @@
                         <span class="title">Administrar Sistema</span>
                     </a>
                     <ul>
-                        {{--OTRS--}}
-                        <li>
-                            <a class="l2" href="{{route('otrs.index')}}">
-                                <i class="fa fa-ticket"></i>
-                                <span class="title">OTRS</span>
-                            </a>
-                        </li>
                         {{--Usuarios--}}
                         <li>
                             <a class="l2" href="{{route('user.index')}}">
