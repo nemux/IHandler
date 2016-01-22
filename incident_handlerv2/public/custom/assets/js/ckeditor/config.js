@@ -22,7 +22,7 @@ CKEDITOR.editorConfig = function (config) {
         {name: 'about', groups: ['about']}
     ];
 
-    config.removeButtons = 'Save,NewPage,Form,HiddenField,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,About,Flash,Table,CreateDiv,BidiLtr,BidiRtl,Outdent,Indent,Language,Smiley,PageBreak,Iframe';
+    config.removeButtons = 'Source,Templates,Save,NewPage,Form,HiddenField,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,About,Flash,Table,CreateDiv,BidiLtr,BidiRtl,Outdent,Indent,Language,Smiley,PageBreak,Iframe';
 
     // Define changes to default configuration here. For example:
     config.language = 'es';
