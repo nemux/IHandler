@@ -72,9 +72,11 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        $this->sendEmail($surv);
+//        $this->sendEmail($surv);
 
-        return redirect()->route('surveillance.index')->withMessage('Nuevo caso de Cibervigilancia creado');
+        return redirect()
+            ->route('surveillance.show', $surv->id)
+            ->withMessage('Nuevo caso de Cibervigilancia creado');
     }
 
     /**
@@ -138,7 +140,10 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        return redirect()->route('surveillance.index')->withMessage('Se actualizó el caso ' . $surv->title);
+
+        return redirect()
+            ->route('surveillance.show', $surv->id)
+            ->withMessage('Se actualizó el caso ' . $surv->title);
     }
 
     /**
@@ -190,8 +195,6 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
-//        \Log::info($id);
-
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);
         return redirect()->route('surveillance.show', $id)->withMessage('Se envió el correo electrónico del caso ' . $surv->title);
@@ -201,6 +204,7 @@ class SurveillanceController extends Controller
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
      *
      * @param SurveillanceCase $surv
+     * @param string $extra_info
      */
     public function sendEmail(SurveillanceCase $surv, $extra_info = '')
     {
@@ -218,8 +222,11 @@ class SurveillanceController extends Controller
             $mailTo = PersonContact::compareEmail($surv->user->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());//TODO enviar correo al cliente?, enviar el correo al SOC y al usuario que generó el incidente
-//            $message->cc('soc@globalcybersec.com','Blue Team::Global Cybersec');
+
+            //TODO enviar correo al cliente? Actualmente se envía un reporte manual.
+//            $message->to($mailTo, \Auth::user()->person->fullName()); //CustomerMail
+            $message->to(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SocMail
+
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });
     }
