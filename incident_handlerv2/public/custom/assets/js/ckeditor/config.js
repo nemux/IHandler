@@ -33,4 +33,6 @@ CKEDITOR.editorConfig = function (config) {
 
     //To detects whenever the content is changed
     //config.extraPlugins = 'onchange';
+
+    config.allowedContent = true;
 };

@@ -26,7 +26,7 @@ use Psy\Util\Json;
 class IncidentController extends Controller
 {
 
-    protected $email_subject_prefix = '[GCS-IM][Incidente]'; //TODO move to .env file
+    protected $email_subject_prefix = '[GCS-IM][Incidente]';
 
     /**
      * Display a listing of the resource.
@@ -382,7 +382,7 @@ class IncidentController extends Controller
      */
     public function sendEmail(Incident $incident, $extra_info = '')
     {
-        \Mail::send('email.incident', compact('incident', 'extra_info'), function (Message $message) use ($incident) {
+        \Mail::send('email.incident', compact('incident', 'extra_info'), function (Message $message) use ($incident, $extra_info) {
             //Adjuntamos las evidencias cargadas
             foreach ($incident->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
@@ -393,12 +393,13 @@ class IncidentController extends Controller
 
             $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
-            $mailTo = PersonContact::compareEmail($incident->user->person->contact->email);
+            $mailTo = PersonContact::compareEmail($incident->customer->contacts);
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName()); //TODO Enviar correo al cliente, al soc y al usuario que generó el incidente
-//            $message->cc('soc@globalcybersec.com','Blue Team::Global Cybersec');
-            $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . '] ' . $incident->title);
+
+            $message->to($incident->customer->semicolonSeparatedEmails(), $incident->customer->name); //Customer
+            $message->cc(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SOC
+            $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . ']-' . $extra_info . '::' . $incident->title);
         });
     }
 
@@ -411,7 +412,7 @@ class IncidentController extends Controller
     public function email($id)
     {
         $incident = Incident::whereId($id)->first();
-        $this->sendEmail($incident);
+        $this->sendEmail($incident, "Informe sobre Incidente de Seguridad");
         return redirect()->route('incident.show', $id)->withMessage('Se envió el correo electrónico del Incidente ' . $incident->title);
     }
 
@@ -562,7 +563,7 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 2) {
-                $message = 'Se cambió el estatus del Incidente y se envió el correo al cliente';
+                $message = 'Informe sobre Incidente de Seguridad';
                 $this->sendEmail($incident, $message);
                 return Json::encode(['status' => true, 'message' => $message]);
 
@@ -575,7 +576,7 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 3) {
-                $message = 'Se cambió el estatus del Incidente a Resuelto';
+                $message = 'Cambio de estatus del Incidente a Resuelto';
                 $this->sendEmail($incident, $message);
                 return Json::encode(['status' => true, 'message' => $message]);
             } else
@@ -587,8 +588,9 @@ class IncidentController extends Controller
             $ticket->save();
 
             if ($newTicketStatusId == 4) {
-                $this->sendEmail($incident, "Se cerró el Ticket del Incidente");
-                return redirect()->route('incident.show', $incident->id)->withMessage('Se cerró el Incidente y se envió el correo al cliente');
+                $message = "Cambio de Estatus de Incidente a Cerrado";
+                $this->sendEmail($incident, $message);
+                return redirect()->route('incident.show', $incident->id)->withMessage($message);
             } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);
 
@@ -646,7 +648,7 @@ class IncidentController extends Controller
         $recomm->otrs_article_id = '';
         $recomm->save();
 
-        $this->sendEmail($incident, 'Se agregó una recomendación al Incidente'); //Confirmar que cuando se agrega una recomendación se envíe un correo
+        $this->sendEmail($incident, "Recomendación sobre Incidente de Seguridad"); //Confirmar que cuando se agrega una recomendación se envíe un correo
 
         return redirect()
             ->route('incident.show', $request->get('incident_id'))

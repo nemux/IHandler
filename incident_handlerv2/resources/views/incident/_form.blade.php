@@ -223,7 +223,8 @@
     function formatHtmlText(title, text, id) {
         text = text.replace(/\"/gi, "\'");
         text = text.replace(/\[br\]/gi, "<br/>");
-        return '<div id="data-ckeditor-' + id + '"><p><b>' + title + ':</b><br /><br />' + text + '</p><hr /></ div>';
+        var div = '<div id="data_ckeditor_' + id + '"><p><b>' + title + ':</b><br/><br/>' + text + '</p><hr/></div><br/>';
+        return div;
     }
 
     /**
@@ -249,7 +250,7 @@
         var html2 = $('<div></div>');
         html.each2(function (index, item) {
             //Si el ID enviado como parámetro  no coincide con el ID del tag en turno, agrega ese elemento al objeto HTML2
-            if ($(item).attr('id') !== 'data-ckeditor-' + id) {
+            if ($(item).attr('id') !== 'data_ckeditor_' + id) {
                 $(item).appendTo(html2);
             }
         });
