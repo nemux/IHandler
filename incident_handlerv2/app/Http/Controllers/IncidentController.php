@@ -397,8 +397,12 @@ class IncidentController extends Controller
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
 
-            $message->to($incident->customer->semicolonSeparatedEmails(), $incident->customer->name); //Customer
+            //TODO No acepta correos separados por punto y coma
+            $customer_mails = explode(";", $incident->customer->semicolonSeparatedEmails());
+
+            $message->to($customer_mails, $incident->customer->name); //Customer
             $message->cc(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SOC
+
             $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . ']-' . $extra_info . '::' . $incident->title);
         });
     }
