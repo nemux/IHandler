@@ -25,32 +25,7 @@
 //});
 
 
-/**
- * Esto permite pasar Objetos a las rutas, en lugar de IDs
- */
-Route::model('user', \Models\IncidentManager\User\User::class);
-Route::model('customer_user', \Models\Helpdesk\User\User::class);
-
-Route::bind('user', function ($value, $route) {
-    $user = Models\IncidentManager\User\User::whereUsername($value)->first();
-
-    if (!$user) {
-        abort(404, 'No se encontró al usuario que se buscaba');
-    }
-
-    return $user;
-});
-
-Route::bind('customer_user', function ($value, $route) {
-    $user = \Models\Helpdesk\User\User::whereUsername($value)->first();
-
-    if (!$user) {
-        abort(404, 'No se encontró al usuario que se buscaba');
-    }
-
-    return $user;
-});
-
+//Route::model y Route::bind se moieron a RouteServiceProvider::boot
 
 Route::get('/', ['as' => 'login.get', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('/', ['as' => 'login.post', 'uses' => 'Auth\AuthController@postLogin']);
@@ -185,7 +160,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
         Route::post('upload/incident', ['as' => 'file.upload.incident', 'uses' => 'EvidenceController@uploadIncident']);
 
-        Route::get('/file/{evidence_id}',['as'=>'evidence.file','uses'=>'EvidenceController@getFile']);
+        Route::get('/file/{evidence_id}', ['as' => 'evidence.file', 'uses' => 'EvidenceController@getFile']);
     });
 
     Route::group(['prefix' => 'attack'], function () {//, 'middleware' => 'role:admin'
