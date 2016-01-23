@@ -2,84 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{{$message->ticket->title}}</title>
-    <style>
-        html, body {
-            width: 100%;
-            height: auto;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            text-align: center;
-            margin: 0;
-        }
-
-        table {
-            border: solid 4px #bbbbbb;
-            width: 50%;
-            min-width: 500px;
-        }
-
-        table tbody tr td {
-            border: solid 1px #bbbbbb;
-            padding: 5px;
-        }
-
-        table tbody tr td:nth-child(1) {
-            text-align: center;
-            background-color: #dddddd;
-            width: 25%;
-        }
-
-        table tbody tr td:nth-child(2) {
-            text-align: center;
-            background-color: #eeeeee;
-            width: 75%;
-        }
-
-        table tbody tr td.criticity-1 {
-            background-color: #CC3F44;
-            color: white;
-        }
-
-        table tbody tr td.criticity-2 {
-            background-color: #ff7900;
-            color: white;
-        }
-
-        table tbody tr td.criticity-3 {
-            background-color: #f7cc31;
-            color: white;
-        }
-
-        table tbody tr td.message {
-            background-color: white;
-            padding: 20px;
-            text-align: justify;
-        }
-    </style>
+    <title>{{$ticket->title}}</title>
 </head>
-<body>
-<table align="center" cellspacing="0" cellpadding="0">
+<body style="width: 100%; height: auto;">
+<table align="center" cellspacing="0" cellpadding="0" style="border: 4px solid #BBB;width: 50%;min-width: 500px;">
     <tbody>
     <tr>
-        <td colspan="2">
-            <h1>{{$message->ticket->title}}</h1></td>
+        <td colspan="2"
+            style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">
+            <h1 style="text-align: center;margin: 0;">{{$ticket->title}}</h1></td>
     </tr>
     <tr>
-        <td>Folio</td>
-        <td><strong>{{$message->ticket->internal_number}}</strong></td>
+        <td style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">Folio
+        </td>
+        <td style="text-align: center;background-color: #EEE;width: 75%; border: 1px solid #BBB;padding: 5px;">
+            <strong>{{$ticket->internal_number}}</strong></td>
     </tr>
     <tr>
-        <td>Cliente</td>
-        <td>{{$message->ticket->customer->name}}</td>
+        <td style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">Cliente
+        </td>
+        <td style="text-align: center;background-color: #EEE;width: 75%; border: 1px solid #BBB;padding: 5px;">{{$ticket->customer->name}}</td>
     </tr>
     <tr>
-        <td>Severidad</td>
-        <td class="criticity-{{$message->ticket->criticity->id}}">{{$message->ticket->criticity->name}}</td>
+        <td style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">Severidad
+        </td>
+        <td style="text-align: center;width: 75%; border: 1px solid #BBB;padding: 5px; color: white; background-color: @if($ticket->criticity->id==1)#CC3F44 @elseif($ticket->criticity->id==2)#ff7900 @elseif($ticket->criticity->id==3)#f7cc31 @endif;">{{$ticket->criticity->name}}</td>
     </tr>
     <tr>
-        <td colspan="2" class="message">{!! $message->message !!}</td>
+        <td colspan="2"
+            style="background-color: #FFF;padding: 20px;text-align: justify; width: 25%; border: 1px solid #BBB;"><strong>{{$ticket_message->handler->person->fullName()}}:</strong> {!! $ticket_message->message !!}</td>
     </tr>
     </tbody>
 </table>

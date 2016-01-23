@@ -1,26 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: diego
- * Date: 6/01/16
- * Time: 04:16 PM
- */
 
 namespace App\Http\Controllers\Helpdesk;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Models\Helpdesk\Ticket\Ticket as HelpdeskTicket;
-use Models\Helpdesk\Ticket\TicketCriticity as HelpdeskTicketCriticity;
-use Models\Helpdesk\Ticket\TicketMessage as HelpdeskTicketMessage;
-use Models\Helpdesk\Ticket\TicketMessageFile as HelpdeskTicketMessageFile;
+use Illuminate\Mail\Message;
+use Models\Helpdesk\Ticket\Ticket;
+use Models\Helpdesk\Ticket\TicketCriticity;
+use Models\Helpdesk\Ticket\TicketMessage;
+use Models\Helpdesk\Ticket\TicketMessageFile;
 use Models\Helpdesk\Ticket\TicketStatus;
 
 
 class TicketController extends Controller
 {
-
+    protected $email_subject_prefix = '[GCS Helpdesk]';
 
     /**
      * Display a listing of the resource.
@@ -30,7 +25,7 @@ class TicketController extends Controller
     public function index()
     {
 
-        $tickets = HelpdeskTicket::orderBy('updated_at', 'desc')->with('criticity')->paginate(10);
+        $tickets = Ticket::orderBy('updated_at', 'desc')->with('criticity')->paginate(10);
 
         return view('helpdesk.index', compact('tickets'));
     }
@@ -48,7 +43,7 @@ class TicketController extends Controller
     {
         $internal_number = self::getInternalNumber($app, $otrs_customer_id, $ticket_type_abb, $consecutive);
 
-        $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
+        $ticket = Ticket::whereInternalNumber($internal_number)->first();
 
         if (!$ticket) {
             abort(404);
@@ -86,7 +81,7 @@ class TicketController extends Controller
     {
         $internal_number = self::getInternalNumber($app, $otrs_customer_id, $ticket_type_abb, $consecutive);
 
-        $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
+        $ticket = Ticket::whereInternalNumber($internal_number)->first();
 
         //Si no se encuentra o si el ticket ya está cerrado, no se podrá agregar mensaje
         //Se arroja un error
@@ -102,22 +97,7 @@ class TicketController extends Controller
 
         $message = $this->pushMessage($ticket, $request);
 
-        $file = $request->file('evidence');
-
-        //Si se adjuntó un archivo, lo almacena
-        if ($file) {
-            //TODO verify filesize
-            $max_filesize = ini_get('upload_max_filesize');
-            $filesize = $request->file('evidence')->getSize();
-
-            $controller = new HelpdeskFileController();
-            $file = $controller->uploadFile($file, $ticket->customer->otrs_customer_id);
-
-            $ticketFile = new HelpdeskTicketMessageFile();
-            $ticketFile->file_id = $file->id;
-            $ticketFile->ticket_message_id = $message->id;
-            $ticketFile->save();
-        }
+        $message_file = $this->addEvidence($ticket, $message, $request);
 
         //Si el ticket está como abierto, al agregar un mensaje se establece en 2 el estatus
         if ($ticket->ticket_status_id == 1) {
@@ -128,23 +108,89 @@ class TicketController extends Controller
         $ticket->updated_at = new \DateTime();
         $ticket->save();
 
+        $this->sendEmail($ticket, $message, $message_file);
+
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
             ->withMessage('Se agregó el comentario al ticket con número de referencia: ' . $ticket->internal_number);
 
     }
 
     /**
+     * Agrega un archivo de evidencia al mensaje
+     *
+     * @param Ticket $ticket
+     * @param TicketMessage $message
+     * @param Request $request
+     * @return bool|TicketMessageFile
+     */
+    private function addEvidence(Ticket $ticket, TicketMessage $message, Request $request)
+    {
+        $file = $request->file('evidence');
+
+        //Si se adjuntó un archivo, lo almacena
+        if ($file) {
+            //TODO verify filesize
+            $max_filesize = ini_get('upload_max_filesize');
+            $filesize = $request->file('evidence')->getSize();
+
+            $c = new HelpdeskFileController();
+            $file = $c->uploadFile($file, $ticket->customer->otrs_customer_id);
+
+            $ticketFile = new TicketMessageFile();
+            $ticketFile->file_id = $file->id;
+            $ticketFile->ticket_message_id = $message->id;
+            $ticketFile->save();
+
+            return $ticketFile;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Envía un correo cuando se crea un ticket o se agrega un mensaje
+     *
+     * @param Ticket $ticket
+     * @param TicketMessage $ticket_message
+     * @param bool|TicketMessageFile $message_file
+     * @internal param TicketMessage $message
+     */
+    public function sendEmail(Ticket $ticket, TicketMessage $ticket_message, $message_file = false)
+    {
+        \Mail::queue('helpdesk.ticket._preview_ticket_message', compact('ticket', 'ticket_message'), function (Message $message) use ($ticket, $message_file) {
+            //Si el mensaje tiene una evidencia, adjuntamos al mensaje
+            if ($message_file)
+                $message
+                    ->attachData(
+                        \Storage::disk('helpdesk')->get($message_file->file->path . $message_file->file->name),
+                        $message_file->file->original_name
+                    );
+
+            //Separa los correos por punto y coma
+            $customer_mails = explode(";", $ticket->customer->semicolonSeparatedEmails());
+            $message->to($customer_mails, $ticket->customer->name); //Customer
+
+            $message->to($ticket->user->person->contact->email, $ticket->user->person->fullName()); //Customer User
+
+            $message->cc(env('MAIL_SOC'), env('MAIL_SOC_NAME'));//SOC
+
+            //[' . $ticket->customer->otrs_customer_id . ']
+            $message->subject($this->email_subject_prefix . '[' . $ticket->internal_number . ']');
+        });
+    }
+
+    /**
      * Agrega un mensaje al ticket
      *
-     * @param HelpdeskTicket $ticket
+     * @param Ticket $ticket
      * @param Request $request
      * @param null $message_txt
      * @param bool|false $isnew Define si el ticket es de reciente creación o sólo se le está agregando un mensaje
-     * @return HelpdeskTicketMessage
+     * @return TicketMessage
      */
-    private function pushMessage(HelpdeskTicket $ticket, Request $request, $message_txt = null, $isnew = false)
+    private function pushMessage(Ticket $ticket, Request $request, $message_txt = null, $isnew = false)
     {
-        $message = new HelpdeskTicketMessage();
+        $message = new TicketMessage();
         $message->ticket_id = $ticket->id;
         $message->user_id = $request->user()->id;
         $message->message = ($message_txt == null) ? trim($request->get('message')) : trim($message_txt);
@@ -167,7 +213,7 @@ class TicketController extends Controller
     {
         $internal_number = self::getInternalNumber($app, $otrs_customer_id, $ticket_type_abb, $consecutive);
 
-        $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
+        $ticket = Ticket::whereInternalNumber($internal_number)->first();
 
         //Si no se encuentra o si el ticket ya está cerrado, no se podrá cdambiar la severidad
         //Se arroja un error
@@ -182,7 +228,7 @@ class TicketController extends Controller
             ['ticket_criticity_id.not_in' => 'El valor del campo SEVERIDAD debe ser diferente a ' . $old],
             ['ticket_criticity_id' => 'Severidad']);
 
-        $new = strtoupper(HelpdeskTicketCriticity::whereId($request->get('ticket_criticity_id'))->first()->name);
+        $new = strtoupper(TicketCriticity::whereId($request->get('ticket_criticity_id'))->first()->name);
 
         //Si el ticket está como abierto, al agregar un mensaje se establece en 2 el estatus
         if ($ticket->ticket_status_id == 1) {
@@ -191,7 +237,9 @@ class TicketController extends Controller
         $ticket->ticket_criticity_id = $request->get('ticket_criticity_id');
         $ticket->save();
 
-        $this->pushMessage($ticket, $request, "Se cambió la criticidad del ticket de <strong>$old</strong> a <strong>$new</strong>");
+        $message = $this->pushMessage($ticket, $request, "Se cambió la criticidad del ticket de <strong>$old</strong> a <strong>$new</strong>");
+
+        $this->sendEmail($ticket, $message);
 
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
             ->withMessage('Se cambió la severidad del ticket con número de referencia: ' . $ticket->internal_number);
@@ -201,7 +249,7 @@ class TicketController extends Controller
     {
         $internal_number = self::getInternalNumber($app, $otrs_customer_id, $ticket_type_abb, $consecutive);
 
-        $ticket = HelpdeskTicket::whereInternalNumber($internal_number)->first();
+        $ticket = Ticket::whereInternalNumber($internal_number)->first();
 
         //Si no se encuentra o si el ticket ya está cerrado, no se podrá cdambiar la severidad
         //Se arroja un error
@@ -224,7 +272,9 @@ class TicketController extends Controller
         $ticket->ticket_status_id = $new_status->id;
         $ticket->save();
 
-        $this->pushMessage($ticket, $request, "Se cambió el estatus del ticket de <strong>{$old_status->name}</strong> a <strong>{$new_status->name}</strong>");
+        $message = $this->pushMessage($ticket, $request, "Se cambió el estatus del ticket de <strong>{$old_status->name}</strong> a <strong>{$new_status->name}</strong>");
+
+        $this->sendEmail($ticket, $message);
 
 
         return redirect()->route('helpdesk.ticket.show', explode('/', $internal_number))
@@ -258,10 +308,10 @@ class TicketController extends Controller
     /**
      * Devuelve una vista HTML renderizada de un Ticket
      *
-     * @param HelpdeskTicketMessage $message
+     * @param TicketMessage $message
      * @return string
      */
-    private function renderTicketMessageHtml(HelpdeskTicketMessage $message)
+    private function renderTicketMessageHtml(TicketMessage $message)
     {
         return view('helpdesk.ticket._preview_ticket_message', compact('message'))->render();
     }
