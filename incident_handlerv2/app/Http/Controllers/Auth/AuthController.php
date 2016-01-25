@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Events\EventName;
 use App\Http\Controllers\Controller;
-use Models\IncidentManager\Log\Log;
-use Models\IncidentManager\User\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Models\IncidentManager\Log\Log;
+use Models\IncidentManager\User\User;
 use Validator;
 
 class AuthController extends Controller
@@ -91,7 +91,7 @@ class AuthController extends Controller
             Log::debug(\Auth::user()->username, "El usuario '" . \Auth::user()->username . "' inició sesión a las '" . date('d/m/Y H:i:s T'));
             return redirect()->intended($this->redirectPath());
         } else {
-            return redirect(route('login.get'))->with('message', 'Usuario o contraseña incorrectos');
+            return redirect()->route('login.get')->withErrors('Usuario o contraseña incorrectos');
         }
     }
 }

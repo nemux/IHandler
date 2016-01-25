@@ -35,7 +35,32 @@
 <div class="login-container">
     <div class="row">
         <div class="col-sm-6">
-            <div class="errors-container"></div>
+            <div class="errors-container">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (Session::has('message'))
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert"><span
+                                            aria-hidden="true">×</span>
+                                    <span class="sr-only">Close</span>
+                                </button>
+                                <strong>{{ Session::get('message') }}</strong>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
             {!! Form::model(Auth::user(),['route'=>'login.post','role'=>"form", 'id'=>"login", 'class'=>"login-form fade-in-effect"])!!}
             <div class="login-header">
                 <a href="xenon/dashboard/variant-1/" class="logo">
