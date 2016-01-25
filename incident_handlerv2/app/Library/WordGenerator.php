@@ -3,12 +3,12 @@
 namespace App\Library;
 
 
+use Illuminate\Database\Eloquent\Collection;
 use Models\IncidentManager\Catalog\Criticity;
 use Models\IncidentManager\Incident\Annex;
 use Models\IncidentManager\Incident\Incident;
 use Models\IncidentManager\Incident\Machine;
 use Models\IncidentManager\Incident\Recommendation;
-use Illuminate\Database\Eloquent\Collection;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\IOFactory;
@@ -108,6 +108,42 @@ class WordGenerator
     }
 
     /**
+     * Parsea texto para agregarlo como HTML
+     *
+     * @param $container
+     * @param $content
+     * @param bool $encoded
+     */
+    private static function addHtml(&$container, $content, $encoded = false)
+    {
+        try {
+            \Log::info("----
+            " . $content
+            );
+            $html = StringHelper::parseHtml($content, $encoded);
+
+            \Log::info("----
+            " . $html
+            );
+            Html::addHtml($container, $html);
+        } catch (\Exception $e) {
+            $html = StringHelper::parseHtml($content, true);
+
+            \Log::error("Error al agregar elementos HTML al documento: " . $e->getMessage() .
+                $html
+            );
+
+            $html = strip_tags($html);
+
+            \Log::info("----
+            " . $html
+            );
+
+            $container->addText($html);
+        }
+    }
+
+    /**
      * Agrega un título al documento para separar una sección
      *
      * @param $title
@@ -156,6 +192,11 @@ class WordGenerator
     public function streamDocument()
     {
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
+
+        \Log::info(
+            $temp_file
+        );
+
         $objWriter = IOFactory::createWriter($this->document, 'Word2007');
         $objWriter->save($temp_file);
         $file = file_get_contents($temp_file);
@@ -237,8 +278,7 @@ class WordGenerator
     }
 
     /**
-     * Agrega a la tabla $table una fila que contiene el nombre del campo $label y el contenido del mismo $content
-     *
+     *addinfo
      * @param Table $table
      * @param $label
      * @param $content
@@ -250,8 +290,7 @@ class WordGenerator
         $title_cell->addText($label, $this->bold_f, $this->center_p);
 
         $content_cell = $row->addCell($this->right_col_t, $this->normal_cell);
-        $html = StringHelper::parseHtml($content);
-        Html::addHtml($content_cell, $html);
+        self::addHtml($content_cell, $content);
     }
 
     /**
@@ -487,8 +526,8 @@ class WordGenerator
         $content_cell = $annex_row->addCell($this->right_col_t, $this->normal_cell);
         $content_cell->addText($annex->field, $this->bold_f, $this->center_p);
         $content = $annex->content;
-        $html = StringHelper::parseHtml($content);
-        Html::addHtml($content_cell, $html);
+
+        self::addHtml($content_cell, $content, true);
     }
 
     /**
@@ -507,7 +546,7 @@ class WordGenerator
 
         $content_cell = $recomm_row->addCell($this->right_col_t, $this->normal_cell);
         $content = $recomm->content;
-        $html = StringHelper::parseHtml($content);
-        Html::addHtml($content_cell, $html);
+
+        self::addHtml($content_cell, $content);
     }
 }

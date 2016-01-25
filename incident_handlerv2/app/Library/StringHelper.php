@@ -28,9 +28,9 @@ class StringHelper
 
         self::removeTag('span', $html);
         self::removeTag('i', $html);
-        self::removeTag('div', $html);
 
         //Replace all tags from a table
+        self::replaceTag('div', 'p', $html);
         self::replaceTag('table', 'p', $html);
         self::replaceTag('caption', 'h1', $html);
         self::replaceTag('tbody', 'p', $html);
