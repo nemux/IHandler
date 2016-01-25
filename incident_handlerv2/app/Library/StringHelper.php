@@ -51,6 +51,8 @@ class StringHelper
         $html = str_replace("<br />", "<br/>", $html);
         $html = str_replace("<br/>", "</p><p>", $html);
         $html = str_replace("&amp;", "&amp;amp;", $html);  //Escapar doble ampersand para que no truene la generación de documentos
+        $html = str_replace("&lt;","&amp;lt;",$html); //Escapar doble los picoparéntesis
+        $html = str_replace("&gt;","&amp;gt;",$html); //TODO buscar todos los escapes con ampersand y escaparlos doble
         $html = str_replace(array("\n", "\r", "\r\n"), ' ', $html);
 
         $html = preg_replace('/<a\b[^>]*>(.*?)<\/a>/i', '$1', $html);

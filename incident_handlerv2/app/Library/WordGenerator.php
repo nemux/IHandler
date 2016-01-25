@@ -107,38 +107,39 @@ class WordGenerator
         }
     }
 
+    private $html_failed = [];
+
     /**
      * Parsea texto para agregarlo como HTML
      *
      * @param $container
      * @param $content
-     * @param bool $encoded
      */
-    private static function addHtml(&$container, $content, $encoded = false)
+    private function addHtml(&$container, $content)
     {
         try {
-            \Log::info("----
-            " . $content
-            );
-            $html = StringHelper::parseHtml($content, $encoded);
+//            \Log::info("INFO PRE
+//            " . $content
+//            );
 
-            \Log::info("----
-            " . $html
-            );
+            $html = StringHelper::parseHtml($content);
+
+//            \Log::info("INFO POST
+//            " . $html
+//            );
             Html::addHtml($container, $html);
         } catch (\Exception $e) {
             $html = StringHelper::parseHtml($content, true);
 
-            \Log::error("Error al agregar elementos HTML al documento: " . $e->getMessage() .
-                $html
-            );
+//            \Log::error("Error al agregar elementos HTML al documento: " . $e->getMessage());
 
             $html = strip_tags($html);
 
-            \Log::info("----
-            " . $html
-            );
+//            \Log::info("ERROR
+//            " . $html
+//            );
 
+            array_push($this->html_failed, [$content => $html]);
             $container->addText($html);
         }
     }
@@ -193,9 +194,8 @@ class WordGenerator
     {
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
 
-        \Log::info(
-            $temp_file
-        );
+        \Log::info("Inserciones HTML fallidas: ");
+        \Log::info($this->html_failed);
 
         $objWriter = IOFactory::createWriter($this->document, 'Word2007');
         $objWriter->save($temp_file);
@@ -527,7 +527,7 @@ class WordGenerator
         $content_cell->addText($annex->field, $this->bold_f, $this->center_p);
         $content = $annex->content;
 
-        self::addHtml($content_cell, $content, true);
+        self::addHtml($content_cell, $content);
     }
 
     /**
