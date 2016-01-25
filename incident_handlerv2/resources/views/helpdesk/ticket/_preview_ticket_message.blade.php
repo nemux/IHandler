@@ -10,7 +10,7 @@
     <tr>
         <td colspan="2"
             style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">
-            <h1 style="text-align: center;margin: 0;">{{$ticket->title}}</h1></td>
+            <h1 style="text-align: center;margin: 0;">{{$ticket->title}} {{$ticket->status->name}}</h1></td>
     </tr>
     <tr>
         <td style="text-align: center;background-color: #DDD;width: 25%; border: 1px solid #BBB;padding: 5px;">Folio
