@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-3 text-center">
         <div id="advancedDropzone" class="droppable-area">
-            Arrastra aqui las evidencias
+            Arrastra aquí las evidencias
         </div>
     </div>
     <div class="col-sm-9">
