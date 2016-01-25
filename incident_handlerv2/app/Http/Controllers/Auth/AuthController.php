@@ -79,10 +79,18 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        $this->validate($request, [
-            $this->loginUsername() => 'required|exists:user,username,active,1',
-            'password' => 'required',
-        ]);
+        $this->validate($request,
+            [
+                $this->loginUsername() => 'required|exists:user,username,active,1',
+                'password' => 'required',
+            ],
+            [
+                $this->loginUsername() . '.exists' => 'Las credenciales son incorrectas.'
+            ],
+            [
+                $this->loginUsername() => 'Nombre de Usuario', 'password' => 'Contraseña'
+            ]
+        );
 
         $credentials = $this->getCredentials($request);
 
@@ -91,7 +99,7 @@ class AuthController extends Controller
             Log::debug(\Auth::user()->username, "El usuario '" . \Auth::user()->username . "' inició sesión a las '" . date('d/m/Y H:i:s T'));
             return redirect()->intended($this->redirectPath());
         } else {
-            return redirect()->route('login.get')->withErrors('Usuario o contraseña incorrectos');
+            return redirect()->route('login.get')->withErrors('Las credenciales son incorrectas.');
         }
     }
 }
