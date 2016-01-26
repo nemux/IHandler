@@ -5,6 +5,20 @@
             document.getElementById('blacklist-section').style.visibility = 'visible';
     }
 
+//    /**
+//     * Agrega una vista previa de un payload
+//     */
+//    function addPayloadPreview(event) {
+//        var payload_row = $('<tr  id="pv-payload-row-' + events.indexOf(event) + '">><td class="content_column align-justify" colspan="2">' +
+//                '<h4>Origen: <strong>' + event.source + '</strong> Destino: <strong>' + event.target + '</strong></h4>' +
+//                '<pre>' + event.payload + '</pre>' +
+//                '</td></tr>');
+//
+//        var payload_cont = $('#payload_cont');
+//
+//        console.log(payload_cont);
+//    }
+
     /**
      * Si es un nuevo evento, se agrega un elemento a la vista previa
      */
@@ -34,6 +48,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+//        addPayloadPreview(event);
     }
 
     /**
@@ -56,6 +72,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     /**
@@ -78,6 +96,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     function addTargetToSourcePreview(event, target) {
@@ -89,6 +109,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + target.ipv4 + '</td><td>' + target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     function addSourceToTargetPreview(event, source) {
@@ -100,6 +122,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + source.ipv4 + '</td><td>' + source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 </script>
 <style>
@@ -130,6 +154,7 @@
 
     td:first-child.title_column {
         width: 20%;
+        min-width: 250px;
         background-color: #CCC;
         font-weight: bolder;
     }
@@ -154,17 +179,17 @@
 
     .criticity-1 {
         background-color: #CC3F44;
-        color:white;
+        color: white;
     }
 
     .criticity-2 {
         background-color: #ff7900;
-        color:white;
+        color: white;
     }
 
     .criticity-3 {
         background-color: #f7cc31;
-        color:white;
+        color: white;
 
     }
 
@@ -360,7 +385,8 @@
                 <td class="title_column">{{$annex->title}}</td>
                 <td class="content_column align-justify"><p><b>{{$annex->field}}</b></p>
 
-                    <p>{!! $annex->content !!}</p></td>
+                    <p>{!! $annex->content !!}</p>
+                </td>
             </tr>
         @endforeach
     @endif
@@ -376,8 +402,30 @@
                     {{$recomm->created_at->format('H:i:s T')}}
                 </td>
                 <td class="content_column align-justify">
-                    <p>{!! $recomm->content !!}</p></td>
+                    <p>{!! $recomm->content !!}</p>
+                </td>
             </tr>
+        @endforeach
+    @endif
+
+    {{--Payloads--}}
+    @if(count($case->events)>0)
+        <tr>
+            <td colspan="2" class="title_column"><h3><b>Payloads</b></h3></td>
+        </tr>
+        @foreach($case->events as $event)
+            @if($event->payload!= null && $event->payload!='')
+                <tr>
+                    <td class="content_column align-justify" colspan="2">
+                        <h4>Origen: <strong>{{$event->source}}</strong> Destino: <strong>{{$event->target}}</strong>
+                        </h4>
+
+                        <hr/>
+
+                        <p>{{ $event->payload }}</p>
+                    </td>
+                </tr>
+            @endif
         @endforeach
     @endif
 </table>
