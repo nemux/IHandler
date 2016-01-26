@@ -117,30 +117,28 @@ class WordGenerator
      */
     private function addHtml(&$container, $content)
     {
+        $html_e = '';
+        $html_p = StringHelper::parseHtml($content);
         try {
-//            \Log::info("INFO PRE
-//            " . $content
-//            );
-
-            $html = StringHelper::parseHtml($content);
-
-//            \Log::info("INFO POST
-//            " . $html
-//            );
-            Html::addHtml($container, $html);
+            Html::addHtml($container, $html_p);
         } catch (\Exception $e) {
-            $html = StringHelper::parseHtml($content, true);
+            try {
+                $html_e = StringHelper::extraParse($html_p);
+                Html::addHtml($container, $html_e);
+            } catch (\Exception $e) {
+                $stripped_html = strip_tags($html_p);
 
-//            \Log::error("Error al agregar elementos HTML al documento: " . $e->getMessage());
+                array_push($this->html_failed,
+                    [
+                        '[   ERROR  ]' => ' AT ' . $e->getFile() . ' ON ' . $e->getLine() . ' \'CAUSE ' . $e->getMessage(),
+                        '[ ORIGINAL ]' => $content,
+                        '[  PARSED  ]' => $html_p,
+                        '[  EXTRA 1 ]' => $html_e,
+                        '[ STRIPPED ]' => $stripped_html]
+                );
 
-            $html = strip_tags($html);
-
-//            \Log::info("ERROR
-//            " . $html
-//            );
-
-            array_push($this->html_failed, [$content => $html]);
-            $container->addText($html);
+                $container->addText($stripped_html);
+            }
         }
     }
 
@@ -194,8 +192,8 @@ class WordGenerator
     {
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
 
-        \Log::info("Inserciones HTML fallidas: ");
-        \Log::info($this->html_failed);
+        \Log::warning($this->html_failed);
+        \Log::warning("Inserciones HTML fallidas: " . sizeof($this->html_failed));
 
         $objWriter = IOFactory::createWriter($this->document, 'Word2007');
         $objWriter->save($temp_file);

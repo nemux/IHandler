@@ -28,9 +28,10 @@ class StringHelper
 
         self::removeTag('span', $html);
         self::removeTag('i', $html);
+        self::removeTag('u', $html);
 
         //Replace all tags from a table
-        self::replaceTag('div', 'p', $html);
+//        self::replaceTag('div', 'p', $html);
         self::replaceTag('table', 'p', $html);
         self::replaceTag('caption', 'h1', $html);
         self::replaceTag('tbody', 'p', $html);
@@ -42,35 +43,28 @@ class StringHelper
         self::replaceTag('th', 'span', $html);
 
         self::replaceTag('b', 'strong', $html);
-//        \Log::info($html . '
-//        -----------------------------------------------------------------------');
 
-        $html = str_replace("<!-- div-->", "", $html);
+        $html = preg_replace('/<!--[\s\S]*?-->/i', '', $html);
         $html = str_replace("<hr/>", "", $html);
         $html = str_replace("<br>", "<br/>", $html);
         $html = str_replace("<br />", "<br/>", $html);
-        $html = str_replace("<br/>", "</p><p>", $html);
         $html = str_replace("&amp;", "&amp;amp;", $html);  //Escapar doble ampersand para que no truene la generación de documentos
-        $html = str_replace("&lt;","&amp;lt;",$html); //Escapar doble los picoparéntesis
-        $html = str_replace("&gt;","&amp;gt;",$html); //TODO buscar todos los escapes con ampersand y escaparlos doble
+        $html = str_replace("&lt;", "&amp;lt;", $html); //Escapar doble los picoparéntesis
+        $html = str_replace("&gt;", "&amp;gt;", $html); //TODO buscar todos los escapes con ampersand y escaparlos doble
+        $html = str_replace("&nbsp;", " ", $html); //Reemplazamos los espacios escapados con espacios
         $html = str_replace(array("\n", "\r", "\r\n"), ' ', $html);
 
         $html = preg_replace('/<a\b[^>]*>(.*?)<\/a>/i', '$1', $html);
-
-//        \Log::info($html . '
-//        -----------------------------------------------------------------------');
 
         $html = trim($html);
         $html = preg_replace('/\s{2,}/', ' ', $html);
         $html = preg_replace('/\n{2,}/', '\n', $html);
         $html = str_replace(array("> <"), array('><'), $html);
 
-        self::fixBadFormed($html);
 
-        self::fixOrphanTag('p', $html);
-
-//        \Log::info($html . '
-//        -----------------------------------------------------------------------');
+//        $html = str_replace("<br/>", "</p><p>", $html); //106
+//        self::fixBadFormed($html); //107
+//        self::fixOrphanTag('p', $html); //7
 
         return $html;
     }
@@ -130,20 +124,22 @@ class StringHelper
      */
     private static function fixOrphanTag($tag, &$html)
     {
-        $split = preg_split("/<p>/i", $html);
+        $split = preg_split('/<' . $tag . '>/i', $html);
         $newhtml = '';
         foreach ($split as $item) {
-            $replaced = preg_replace("/<\\/p>/i", "", $item);
+            $replaced = preg_replace('/<\/' . $tag . '>/i', '', $item);
 
 //            \Log::info($replaced);
 
             //Si no empieza y no termina con alguna de estas opciones
             if (
-                substr($replaced, 0, 4) !== "<ul>" && substr($replaced, -5, 5) !== "</ul>"
-                && substr($replaced, 0, 4) !== "<ol>" && substr($replaced, -5, 5) !== "</ol>"
-                && substr($replaced, 0, 5) !== "<div>" && substr($replaced, -6, 6) !== "</div>"
-            )
+                substr($replaced, 0, 4) !== "<ul>" && substr($replaced, -5, 5) !== "</ul>" &&
+                substr($replaced, 0, 4) !== "<ol>" && substr($replaced, -5, 5) !== "</ol>" &&
+                substr($replaced, 0, 5) !== "<div>" && substr($replaced, -6, 6) !== "</div>"
+            ) {
                 $replaced = "<$tag>$replaced</$tag>";
+            }
+
             $newhtml .= $replaced;
         }
         $html = $newhtml;
@@ -151,10 +147,22 @@ class StringHelper
 
     private static function fixBadFormed(&$html)
     {
-
-        $html = preg_replace('/(<li\\b[^>]*>)(<\\/?\\w>)?(.*?)(<\\/?\\w>)?(<\\/li>)/i', '$1$3$5', $html);
-
+        $html = preg_replace('/(<li>)(<\/?\w>)?(.*?)(<\/?\w>)?(<\/li>)/i', '$1$3$5', $html);
         return $html;
 
+    }
+
+    /**
+     * Cuando un parseo no funciona, se aplica otro parseo para evitar excepciones al crear un documento de Word
+     *
+     * @param $html
+     * @return mixed
+     */
+    public static function extraParse($html)
+    {
+        $html = preg_replace('/(<p>\s*)(\b.*?)?(<\/p>)?(\W*<ul>)/i', '$1$2</p>$4', $html);
+        $html = preg_replace('/(<\/ul>\s*)(\b.*?)?(<\/p>)?(\W*<\/p>)/i', '$1<p>$3$4', $html);
+
+        return $html;
     }
 }
