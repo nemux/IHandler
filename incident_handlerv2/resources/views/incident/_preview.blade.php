@@ -409,7 +409,7 @@
     @endif
 
     {{--Payloads--}}
-    @if(count($case->events)>0)
+    @if(count($case->payloads)>0)
         <tr>
             <td colspan="2" class="title_column"><h3><b>Payloads</b></h3></td>
         </tr>
