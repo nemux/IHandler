@@ -447,7 +447,7 @@
 
         @endif;
 
-        SocketIO.init('{{env('NODEJS_HOST')}}', {{env('NODEJS_PORT_SSL')}});
+        SocketIO.init('{{env('NODEJS_HOST')}}', '{{env('NODEJS_PORT_SSL')}}');
         SocketIO.start();
     });
 </script>
