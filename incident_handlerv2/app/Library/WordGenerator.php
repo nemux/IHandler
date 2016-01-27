@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Models\IncidentManager\Catalog\Criticity;
 use Models\IncidentManager\Incident\Annex;
 use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\IncidentEvent;
 use Models\IncidentManager\Incident\Machine;
 use Models\IncidentManager\Incident\Recommendation;
 use PhpOffice\PhpWord\Element\Section;
@@ -57,11 +58,13 @@ class WordGenerator
     {
         $this->class = $class;
         $this->type = $type;
+        $this->_gridSpan = null;
 
         if ($class == Incident::class) {
             $this->bold_f = ['bold' => true];
             $this->normal_f = ['bold' => false];
             $this->center_p = ['align' => 'center'];
+            $this->left_p = ['align' => 'left'];
 
             $this->full_width = Converter::cmToTwip(18);
             $this->left_col_t = Converter::cmToTwip(5);
@@ -504,6 +507,15 @@ class WordGenerator
             }
         }
 
+        //Payloads n-rows
+        if (sizeof($i->payloads) > 0) {
+            $this->section->addTitle('Payloads', 4);
+            $pl_table = $this->section->addTable($this->table_s);
+            foreach ($i->events as $evt) {
+                $this->addPayload($pl_table, $evt);
+            }
+        }
+
         $this->section->addTextBreak(1, $this->normal_f, $this->center_p);
     }
 
@@ -546,5 +558,41 @@ class WordGenerator
         $content = $recomm->content;
 
         self::addHtml($content_cell, $content);
+    }
+
+    private $_gridSpan;// for the colspan
+
+    public function setGridSpan($pValue = null)
+    {
+        $this->_gridSpan = $pValue;
+    }
+
+    public function getGridSpan()
+    {
+        return $this->_gridSpan;
+    }
+
+    /**
+     * Agrega un Payload a la tabla del incidente
+     *
+     * @param Table $pl_table
+     * @param IncidentEvent $evt
+     */
+    private
+    function addPayload(Table &$pl_table, IncidentEvent $evt)
+    {
+        if ($evt->payload == null && $evt->payload == '')
+            return;
+
+        $styleCell = array($this->normal_cell, 'gridSpan' => 2);
+
+        $pl_row = $pl_table->addRow(null, $this->row_s);
+
+        $pl_cell = $pl_row->addCell($this->left_col_t, $styleCell);
+
+        $pl_cell->addText('Origen: [' . $evt->source->asset->ipv4 . '] Destino: [' . $evt->target->asset->ipv4 . ']', $this->bold_f, $this->left_p);
+        $pl_cell->addTextBreak();
+
+        $pl_cell->addText(htmlspecialchars($evt->payload), $this->normal_f, $this->left_p);
     }
 }

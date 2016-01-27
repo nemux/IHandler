@@ -14,8 +14,6 @@ class Pdf
      */
     public static function generatePdf($case, $view)
     {
-        $html = view($view, ['case' => $case, 'isPdf' => true])->render();
-//        $pdf = \PDF::loadHTML($html);
         $pdf = \PDF::loadView($view, ['case' => $case, 'isPdf' => true]);
         return $pdf;
     }

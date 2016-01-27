@@ -127,7 +127,7 @@
     }
 </script>
 <style>
-    table.incident {
+    table.incident, div.incident {
         color: black;
         text-align: center;
         width: 100%;
@@ -148,6 +148,10 @@
     }
 
     tr.title {
+        background-color: #CCC;
+    }
+
+    div.title_column {
         background-color: #CCC;
     }
 
@@ -201,6 +205,22 @@
 
     .page-break {
         page-break-before: always;
+    }
+
+    pre{
+        white-space: pre-wrap;
+        font-size: 12px;
+
+        display: block;
+        padding: 8px;
+        margin: 0 0 9px;
+        line-height: 1.42857;
+        word-break: break-all;
+        word-wrap: break-word;
+        color: #333;
+        background-color: #F5F5F5;
+        border: 1px solid #E4E4E4;
+        border-radius: 0;
     }
 </style>
 <table class="incident" border="1" onload="enableBlacklist()">
@@ -422,26 +442,29 @@
     </table>
 @endif
 
-{{--Payloads--}}
 @if(count($case->payloads)>0)
     <div class="page-break"></div>
-    <table class="incident" border="1">
-        <tr>
-            <td colspan="2" class="title_column"><h3><b>Payloads</b></h3></td>
-        </tr>
+    <div class="incident" border="1">
+        <div>
+            <div class="title_column"><h3><b>Payloads</b></h3></div>
+        </div>
         @foreach($case->events as $event)
             @if($event->payload!= null && $event->payload!='')
-                <tr>
-                    <td class="content_column align-justify" colspan="2">
+                <div>
+                    <div class="content_column align-justify" colspan="2">
                         <h4>Origen: <strong>{{$event->source}}</strong> Destino: <strong>{{$event->target}}</strong>
                         </h4>
 
                         <hr/>
-
-                        <p class="align-left">{{ htmlspecialchars($event->payload) }}</p>
-                    </td>
-                </tr>
+                        @if(isset($isPdf) && $isPdf)
+                            <pre class="align-left"
+                                 style="font-size: 8pt;">{!! htmlspecialchars($event->payload) !!}</pre>
+                        @else
+                            <pre class="align-left">{!! htmlspecialchars($event->payload) !!}</pre>
+                        @endif
+                    </div>
+                </div>
             @endif
         @endforeach
-    </table>
+    </div>
 @endif
