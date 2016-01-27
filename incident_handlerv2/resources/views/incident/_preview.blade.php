@@ -5,19 +5,19 @@
             document.getElementById('blacklist-section').style.visibility = 'visible';
     }
 
-//    /**
-//     * Agrega una vista previa de un payload
-//     */
-//    function addPayloadPreview(event) {
-//        var payload_row = $('<tr  id="pv-payload-row-' + events.indexOf(event) + '">><td class="content_column align-justify" colspan="2">' +
-//                '<h4>Origen: <strong>' + event.source + '</strong> Destino: <strong>' + event.target + '</strong></h4>' +
-//                '<pre>' + event.payload + '</pre>' +
-//                '</td></tr>');
-//
-//        var payload_cont = $('#payload_cont');
-//
-//        console.log(payload_cont);
-//    }
+    //    /**
+    //     * Agrega una vista previa de un payload
+    //     */
+    //    function addPayloadPreview(event) {
+    //        var payload_row = $('<tr  id="pv-payload-row-' + events.indexOf(event) + '">><td class="content_column align-justify" colspan="2">' +
+    //                '<h4>Origen: <strong>' + event.source + '</strong> Destino: <strong>' + event.target + '</strong></h4>' +
+    //                '<pre>' + event.payload + '</pre>' +
+    //                '</td></tr>');
+    //
+    //        var payload_cont = $('#payload_cont');
+    //
+    //        console.log(payload_cont);
+    //    }
 
     /**
      * Si es un nuevo evento, se agrega un elemento a la vista previa
@@ -131,7 +131,6 @@
         color: black;
         text-align: center;
         width: 100%;
-        /*font-size: 12pt;*/
         border-color: #AAA;
         border-width: 1px;
     }
@@ -154,7 +153,6 @@
 
     td:first-child.title_column {
         width: 20%;
-        min-width: 250px;
         background-color: #CCC;
         font-weight: bolder;
     }
@@ -195,6 +193,14 @@
 
     .align-justify {
         text-align: justify;
+    }
+
+    .align-left {
+        text-align: left;
+    }
+
+    .page-break {
+        page-break-before: always;
     }
 </style>
 <table class="incident" border="1" onload="enableBlacklist()">
@@ -376,7 +382,11 @@
         <td class="content_column" style="text-align: justify; padding:20px;"
             id="pv-reference">{!! $case->reference !!}</td>
     </tr>
-    @if(count($case->annexes)>0)
+</table>
+{{--Anexos--}}
+@if(count($case->annexes)>0)
+    <div class="page-break"></div>
+    <table class="incident" border="1">
         <tr>
             <td colspan="2" class="title_column"><h3><b>Anexos</b></h3></td>
         </tr>
@@ -389,9 +399,12 @@
                 </td>
             </tr>
         @endforeach
-    @endif
-
-    @if(count($case->recommendations)>0)
+    </table>
+@endif
+{{--Recomendaciones--}}
+@if(count($case->recommendations)>0)
+    <div class="page-break"></div>
+    <table class="incident" border="1">
         <tr>
             <td colspan="2" class="title_column"><h3><b>Recomendaciones</b></h3></td>
         </tr>
@@ -406,10 +419,13 @@
                 </td>
             </tr>
         @endforeach
-    @endif
+    </table>
+@endif
 
-    {{--Payloads--}}
-    @if(count($case->payloads)>0)
+{{--Payloads--}}
+@if(count($case->payloads)>0)
+    <div class="page-break"></div>
+    <table class="incident" border="1">
         <tr>
             <td colspan="2" class="title_column"><h3><b>Payloads</b></h3></td>
         </tr>
@@ -422,10 +438,10 @@
 
                         <hr/>
 
-                        <p>{{ $event->payload }}</p>
+                        <p class="align-left">{{ htmlspecialchars($event->payload) }}</p>
                     </td>
                 </tr>
             @endif
         @endforeach
-    @endif
-</table>
+    </table>
+@endif

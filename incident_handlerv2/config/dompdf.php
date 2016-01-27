@@ -117,7 +117,7 @@ return array(
          * @link http://www.ros.co.nz/pdf
          * @link http://www.php.net/image
          */
-        "DOMPDF_PDF_BACKEND" => "CPDF",
+        "DOMPDF_PDF_BACKEND" => "auto",//CPDF
 
         /**
          * PDFlib license key
@@ -243,7 +243,7 @@ return array(
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,
+        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,//1.1
 
         /**
          * Enable CSS float

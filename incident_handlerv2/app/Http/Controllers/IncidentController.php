@@ -342,12 +342,13 @@ class IncidentController extends Controller
     {
         $case = Incident::whereId($id)->first();
         $pdf = Pdf::generatePdf($case, 'pdf.incident');
-        $docName = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = str_replace(' ', '_', $doc_name);
 
         if ($download) {
-            return $pdf->download($docName . '.pdf');
+            return $pdf->download($doc_name . '.pdf');
         } else {
-            return $pdf->stream($docName . '.pdf');
+            return $pdf->stream($doc_name . '.pdf');
         }
     }
 
@@ -364,11 +365,12 @@ class IncidentController extends Controller
         $doc->addCases($case);
         $file = $doc->streamDocument();
 
-        $docname = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = str_replace(' ', '_', $doc_name);
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition" => "attachment;Filename={$docname}.docx"
+            "Content-Disposition" => "attachment;Filename={$doc_name}.docx"
         );
 
         return \Response::make($file, 200, $headers);
