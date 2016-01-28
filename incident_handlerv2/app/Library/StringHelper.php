@@ -118,6 +118,20 @@ class StringHelper
     }
 
     /**
+     * Hace un parseo doble de los %*?;
+     * @param $html
+     * @return mixed|string
+     */
+    public static function doubleEscapeAmp($html)
+    {
+        $html = str_replace(array('&amp;'), array('_amp_'), $html);
+        $html = str_replace("&", "&amp;", $html);
+        $html = str_replace(array('_amp_'), array('&amp;'), $html);
+
+        return $html;
+    }
+
+    /**
      * Arregla el tag $tag cuando se detecta que está huérfano, para cumplir con un XML well formed
      *
      * @param $tag

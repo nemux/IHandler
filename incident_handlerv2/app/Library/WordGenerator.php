@@ -129,7 +129,7 @@ class WordGenerator
                 $html_e = StringHelper::extraParse($html_p);
                 Html::addHtml($container, $html_e);
             } catch (\Exception $e) {
-                $stripped_html = strip_tags($html_e);
+                $stripped_html = StringHelper::doubleEscapeAmp(strip_tags($html_e));
 
                 array_push($this->html_failed,
                     [
