@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'local',
+    'default' => env('FTP_NAME_IM', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,12 +45,33 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root'   => storage_path('app'),
+            'root' => storage_path('app'),
+        ],
+
+        'helpdesk' => [
+            'driver' => 'local',
+            'root' => env('FILESYSTEM_HELPDESK_ROOT', 'app'),
+        ],
+
+        env('FTP_NAME_IM') => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST_IM'),
+            'username' => env('FTP_USER_IM'),
+            'password' => env('FTP_PASS_IM'),
+            'root' => env('FTP_ROOT_IM', '')
+        ],
+
+        env('FTP_NAME_HD') => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST_HD'),
+            'username' => env('FTP_USER_HD'),
+            'password' => env('FTP_PASS_HD'),
+            'root' => env('FTP_ROOT_HD', '')
         ],
 
         'ftp' => [
-            'driver'   => 'ftp',
-            'host'     => 'ftp.example.com',
+            'driver' => 'ftp',
+            'host' => 'ftp.example.com',
             'username' => 'your-username',
             'password' => 'your-password',
 
@@ -64,20 +85,20 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key'    => 'your-key',
+            'key' => 'your-key',
             'secret' => 'your-secret',
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
 
         'rackspace' => [
-            'driver'    => 'rackspace',
-            'username'  => 'your-username',
-            'key'       => 'your-key',
+            'driver' => 'rackspace',
+            'username' => 'your-username',
+            'key' => 'your-key',
             'container' => 'your-container',
-            'endpoint'  => 'https://identity.api.rackspacecloud.com/v2.0/',
-            'region'    => 'IAD',
-            'url_type'  => 'publicURL',
+            'endpoint' => 'https://identity.api.rackspacecloud.com/v2.0/',
+            'region' => 'IAD',
+            'url_type' => 'publicURL',
         ],
 
     ],

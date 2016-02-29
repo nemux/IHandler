@@ -5,6 +5,20 @@
             document.getElementById('blacklist-section').style.visibility = 'visible';
     }
 
+    //    /**
+    //     * Agrega una vista previa de un payload
+    //     */
+    //    function addPayloadPreview(event) {
+    //        var payload_row = $('<tr  id="pv-payload-row-' + events.indexOf(event) + '">><td class="content_column align-justify" colspan="2">' +
+    //                '<h4>Origen: <strong>' + event.source + '</strong> Destino: <strong>' + event.target + '</strong></h4>' +
+    //                '<pre>' + event.payload + '</pre>' +
+    //                '</td></tr>');
+    //
+    //        var payload_cont = $('#payload_cont');
+    //
+    //        console.log(payload_cont);
+    //    }
+
     /**
      * Si es un nuevo evento, se agrega un elemento a la vista previa
      */
@@ -34,6 +48,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+//        addPayloadPreview(event);
     }
 
     /**
@@ -56,6 +72,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.source.ipv4 + '</td><td>' + event.source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     /**
@@ -78,6 +96,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + event.target.ipv4 + '</td><td>' + event.target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     function addTargetToSourcePreview(event, target) {
@@ -89,6 +109,8 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + target.ipv4 + '</td><td>' + target.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 
     function addSourceToTargetPreview(event, source) {
@@ -100,14 +122,15 @@
             $('<tr class="new-bl-' + events.indexOf(event) + '"><td>' + source.ipv4 + '</td><td>' + source.location_name + '</td></tr>').appendTo(pv_blacklist);
             $('#blacklist-section').attr('style', 'visibility:visible;');
         }
+
+        //TODO add payloa dpreview
     }
 </script>
 <style>
-    table.incident {
+    table.incident, div.incident {
         color: black;
         text-align: center;
         width: 100%;
-        /*font-size: 12pt;*/
         border-color: #AAA;
         border-width: 1px;
     }
@@ -125,6 +148,10 @@
     }
 
     tr.title {
+        background-color: #CCC;
+    }
+
+    div.title_column {
         background-color: #CCC;
     }
 
@@ -154,19 +181,46 @@
 
     .criticity-1 {
         background-color: #CC3F44;
+        color: white;
     }
 
     .criticity-2 {
         background-color: #ff7900;
+        color: white;
     }
 
     .criticity-3 {
         background-color: #f7cc31;
+        color: white;
 
     }
 
     .align-justify {
         text-align: justify;
+    }
+
+    .align-left {
+        text-align: left;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+
+    pre{
+        white-space: pre-wrap;
+        font-size: 12px;
+
+        display: block;
+        padding: 8px;
+        margin: 0 0 9px;
+        line-height: 1.42857;
+        word-break: break-all;
+        word-wrap: break-word;
+        color: #333;
+        background-color: #F5F5F5;
+        border: 1px solid #E4E4E4;
+        border-radius: 0;
     }
 </style>
 <table class="incident" border="1" onload="enableBlacklist()">
@@ -187,7 +241,8 @@
         <td class="content_column">
             <ul class="nostyle" id="pv-categories">
                 @foreach($case->categories as $category)
-                    <li><b>{{$category->category->id-1}}</b>: {{$category->category->noCat() }}; {{$category->category->description}}</li>
+                    <li><b>{{$category->category->id-1}}</b>: {{$category->category->noCat() }}
+                        ; {{$category->category->description}}</li>
                 @endforeach
             </ul>
         </td>
@@ -219,7 +274,7 @@
     <tr>
         <td class="title_column">Fecha de Detección:</td>
         <td class="content_column"
-            id="pv-detection-date">{{date('d/m/Y H:i',strtotime(($case->id!=null)?$case->detection_time:'now'))}}</td>
+            id="pv-detection-date">{{date('d/m/Y H:i T',strtotime(($case->id!=null)?$case->detection_time:'now'))}}</td>
     </tr>
     <tr>
         <td class="title_column">Severidad:</td>
@@ -347,7 +402,11 @@
         <td class="content_column" style="text-align: justify; padding:20px;"
             id="pv-reference">{!! $case->reference !!}</td>
     </tr>
-    @if(count($case->annexes)>0)
+</table>
+{{--Anexos--}}
+@if(count($case->annexes)>0)
+    <div class="page-break"></div>
+    <table class="incident" border="1">
         <tr>
             <td colspan="2" class="title_column"><h3><b>Anexos</b></h3></td>
         </tr>
@@ -356,8 +415,56 @@
                 <td class="title_column">{{$annex->title}}</td>
                 <td class="content_column align-justify"><p><b>{{$annex->field}}</b></p>
 
-                    <p>{!! $annex->content !!}</p></td>
+                    <p>{!! $annex->content !!}</p>
+                </td>
             </tr>
         @endforeach
-    @endif
-</table>
+    </table>
+@endif
+{{--Recomendaciones--}}
+@if(count($case->recommendations)>0)
+    <div class="page-break"></div>
+    <table class="incident" border="1">
+        <tr>
+            <td colspan="2" class="title_column"><h3><b>Recomendaciones</b></h3></td>
+        </tr>
+        @foreach($case->recommendations as $recomm)
+            <tr>
+                <td class="title_column">
+                    {{$recomm->created_at->format('d/m/Y')}}<br/>
+                    {{$recomm->created_at->format('H:i:s T')}}
+                </td>
+                <td class="content_column align-justify">
+                    <p>{!! $recomm->content !!}</p>
+                </td>
+            </tr>
+        @endforeach
+    </table>
+@endif
+
+@if(count($case->payloads)>0)
+    <div class="page-break"></div>
+    <div class="incident" border="1">
+        <div>
+            <div class="title_column"><h3><b>Payloads</b></h3></div>
+        </div>
+        @foreach($case->events as $event)
+            @if($event->payload!= null && $event->payload!='')
+                <div>
+                    <div class="content_column align-justify" colspan="2">
+                        <h4>Origen: <strong>{{$event->source}}</strong> Destino: <strong>{{$event->target}}</strong>
+                        </h4>
+
+                        <hr/>
+                        @if(isset($isPdf) && $isPdf)
+                            <pre class="align-left"
+                                 style="font-size: 8pt;">{!! htmlspecialchars($event->payload) !!}</pre>
+                        @else
+                            <pre class="align-left">{!! htmlspecialchars($event->payload) !!}</pre>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+@endif

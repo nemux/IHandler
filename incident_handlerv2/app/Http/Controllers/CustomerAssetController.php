@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer\CustomerAsset;
+use Models\IncidentManager\Customer\CustomerAsset;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;

@@ -31,7 +31,7 @@
         <p id="preview-description">
             {{--Si es un render para PDF, modifica la ruta de las imágenes --}}
             @if(isset($isPdf) && $isPdf)
-                {!! str_replace(url().'/','',$case->description) !!}
+                {!! str_replace(url(),'',$case->description) !!}
             @else
                 {!! $case->description !!}
             @endif
@@ -48,7 +48,7 @@
         <p id="preview-recommendation">
             {{--Si es un render para PDF, modifica la ruta de las imágenes --}}
             @if(isset($isPdf) && $isPdf)
-                {!! str_replace(url().'/','',$case->recommendation) !!}
+                {!! str_replace(url(),'',$case->recommendation) !!}
             @else
                 {!! $case->recommendation !!}
             @endif

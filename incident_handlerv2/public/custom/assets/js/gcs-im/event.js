@@ -2,13 +2,13 @@
 var EventMultiTarget = function EventMultiTarget() {
     //this.event_relation = '1n';
     this.source = new Machine();
-    this.targets = new Array();
+    this.targets = [];
 };
 
 //{{--Clase Javascript que sirve para modelar un objeto con un destino y múltiples orígenes--}}
 var EventMultiSource = function EventMultiSource() {
     //this.event_relation = 'n1';
-    this.sources = new Array();
+    this.sources = [];
     this.target = new Machine();
 };
 
@@ -86,21 +86,26 @@ function validateMachine(machine) {
     return {status: true, field: ''};
 }
 
+/**
+ * En este objeto tipo arreglo se almacenan los objetos tipo Event* (1n,n1,11)
+ * @type {Array}
+ */
 var events = [];
 
 
 /**
  * Agrega un nuevo evento al DOM
- * @param id
  * @param event_relation
  * @param src
  * @param tar
  */
-function addEvent(id, event_relation, src, tar) {
-    var source = parseMachine(src);
-    var target = parseMachine(tar);
-    var event;
-    if (event_relation === '11') {
+function addEvent(event_relation, src, tar) {
+    var source = parseMachine(src); //Máquina Origen
+    var target = parseMachine(tar); //Máquina Destino
+    var event; //Evento que relaciona ambos
+    var found = false; //Bandera que almacena si se encontró en el arreglo de eventos uno similar
+
+    if (event_relation === '11') { //Si es una relación 11
         event = new EventMachine();
         event.source = source;
         event.target = target;
@@ -110,7 +115,6 @@ function addEvent(id, event_relation, src, tar) {
         addPreviewRow(event);
     } else if (event_relation === '1n') {
         event = new EventMultiTarget();
-        var found = false;
         $.each(events, function (index, value) {
             if (value.targets && source.ipv4 === value.source.ipv4) {
                 event = value;
@@ -130,7 +134,6 @@ function addEvent(id, event_relation, src, tar) {
         addTargetToSourcePreview(event, target);
     } else if (event_relation === 'n1') {
         event = new EventMultiSource();
-        var found = false;
         $.each(events, function (index, value) {
             if (value.sources && target.ipv4 === value.target.ipv4) {
                 event = value;

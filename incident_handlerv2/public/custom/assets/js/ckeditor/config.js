@@ -12,26 +12,27 @@ CKEDITOR.editorConfig = function (config) {
         {name: 'forms', groups: ['forms']},
         '/',
         {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+        {name: 'styles', groups: ['styles']},
         {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
         {name: 'links', groups: ['links']},
         {name: 'insert', groups: ['insert']},
-        '/',
-        {name: 'styles', groups: ['styles']},
         {name: 'colors', groups: ['colors']},
         {name: 'tools', groups: ['tools']},
         {name: 'others', groups: ['others']},
         {name: 'about', groups: ['about']}
     ];
 
-    config.removeButtons = 'Save,NewPage,Form,HiddenField,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,About,Flash';
+    config.removeButtons = 'Source,Templates,Save,NewPage,Form,HiddenField,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,About,Flash,Table,CreateDiv,BidiLtr,BidiRtl,Outdent,Indent,Language,Smiley,PageBreak,Iframe';
 
     // Define changes to default configuration here. For example:
     config.language = 'es';
     // config.uiColor = '#AADC6E';
     config.skin = 'moonocolor';
 
-    config.height = 540;
+    config.height = 300;
 
     //To detects whenever the content is changed
     //config.extraPlugins = 'onchange';
+
+    config.allowedContent = true;
 };

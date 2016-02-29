@@ -57,7 +57,7 @@
         {!! Form::close() !!}
 
 
-                <!-- Modal 1 (Basic)-->
+                <!-- Modal Change Password-->
         <div class="modal fade" id="modal-change-password">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -70,11 +70,27 @@
                         @include('user._form_pass')
                     </div>
                     <div class="modal-footer">
+                        <div class="btn btn-primary" onclick="randompass()">Generar Contraseña</div>
                         <button type="submit" class="btn btn-info">Guardar</button>
                     </div>
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
+        <script>
+            function randompass(length) {
+                length = length || 12;
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-!?$#%&-+";
+
+                for (var i = 0; i < length; i++)
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+                $('#password').val(text);
+                $('#password_confirmation').val(text);
+
+                return text;
+            }
+        </script>
     </section>
 @endsection

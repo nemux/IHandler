@@ -28,8 +28,8 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (result) {
-                    $("#sensor_id").select2("val", "");
-                    $('#sensor_id').empty();
+                    $("#sensor_id").empty().select2("val", "");
+//                    $('#sensor_id').empty();
 
                     if (result.status === true) {
                         $('#sensor_id').append($('<option>', {}));
@@ -223,7 +223,8 @@
     function formatHtmlText(title, text, id) {
         text = text.replace(/\"/gi, "\'");
         text = text.replace(/\[br\]/gi, "<br/>");
-        return '<div id="data-ckeditor-' + id + '"><p><b>' + title + ':</b><br /><br />' + text + '</p><hr /></ div>';
+        var div = '<div id="data_ckeditor_' + id + '"><p><b>' + title + ':</b><br/><br/>' + text + '</p><hr/></div><br/>';
+        return div;
     }
 
     /**
@@ -249,7 +250,7 @@
         var html2 = $('<div></div>');
         html.each2(function (index, item) {
             //Si el ID enviado como parámetro  no coincide con el ID del tag en turno, agrega ese elemento al objeto HTML2
-            if ($(item).attr('id') !== 'data-ckeditor-' + id) {
+            if ($(item).attr('id') !== 'data_ckeditor_' + id) {
                 $(item).appendTo(html2);
             }
         });
@@ -281,7 +282,7 @@
                 <select {{$case->fieldEnabled()}} class="form-control" id="category_id"
                         name="category_id[]" multiple data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackCategory::all(['name','id']) as $item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackCategory::all(['name','id']) as $item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -295,13 +296,13 @@
                 <div class="date-and-time">
                     <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_date"
                            id="occurrence_date" type="text"
-                           class="form-control datepicker" data-format="dd/mm/yyyy"
-                           data-end-date="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}"
-                           value="{{isset($case)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}">
+                           class="datepicker datepicker-inline form-control" data-format="dd/mm/yyyy"
+                           data-end-date="{{isset($case->occurrence_time)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}"
+                           value="{{isset($case->occurrence_time)?date('d/m/Y',strtotime($case->occurrence_time)):date('d/m/Y')}}">
                     <input {{$case->fieldEnabled()}} data-validate="required" name="occurrence_time"
                            id="occurrence_time" type="text"
-                           class="form-control timepicker" data-template="dropdown"
-                           data-default-time="{{isset($case)?date('H:i',strtotime($case->occurrence_time)):date('H:i')}}"
+                           class="timepicker form-control" data-template="dropdown"
+                           data-default-time="{{isset($case->occurrence_time)?date('H:i',strtotime($case->occurrence_time)):date('H:i')}}"
                            data-show-meridian="false" data-minute-step="5"/>
                 </div>
             </div>
@@ -330,7 +331,7 @@
                 <select {{$case->fieldEnabled()}} id="flow_id" class="form-control" name="flow_id"
                         data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackFlow::all(['name','id']) as $index=>$item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackFlow::all(['name','id']) as $index=>$item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -343,7 +344,7 @@
                 <select {{$case->fieldEnabled()}} id="attack_type_id" class="form-control"
                         name="attack_type_id" data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\AttackType::all(['name','id']) as $index=>$item)
+                    @foreach(\Models\IncidentManager\Catalog\AttackType::all(['name','id']) as $index=>$item)
                         <option value="{{$item->id}}">
                             {{$item->name}}
                         </option>
@@ -356,7 +357,7 @@
                 <select {{$case->fieldEnabled()}} id="criticity_id" class="form-control"
                         name="criticity_id" data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Catalog\Criticity::all(['name','id']) as $index=>$criticity)
+                    @foreach(\Models\IncidentManager\Catalog\Criticity::all(['name','id']) as $index=>$criticity)
                         <option value="{{$criticity->id}}">
                             {{$criticity->name}}
                         </option>
@@ -394,7 +395,7 @@
                         name="customer_id"
                         data-validate="required">
                     <option></option>
-                    @foreach(\App\Models\Customer\Customer::all(['name','id']) as $index=>$customer)
+                    @foreach(\Models\IncidentManager\Customer\Customer::all(['name','id']) as $index=>$customer)
                         <option value="{{$customer->id}}">{{$customer->name}}</option>
                     @endforeach
                 </select>
@@ -424,7 +425,7 @@
             <label class="control-label">Firma(s)</label>
             <select class="form-control" id="signature" name="signature[]" multiple="multiple" data-validate="required">
                 <option></option>
-                @foreach(\App\Models\Catalog\AttackSignature::all(['name','id']) as $index=>$item)
+                @foreach(\Models\IncidentManager\Catalog\AttackSignature::all(['name','id']) as $index=>$item)
                     <option value="{{$item->id}}">
                         {{$item->name}}
                     </option>
@@ -433,7 +434,7 @@
         </div>
         {{--Eventos--}}
         {{-- Si está abierto el caso o es un caso nuevo --}}
-        @if(isset($case->ticket->ticket_status_id) && $case->ticket->ticket_status_id==1)
+        @if(!isset($case->id) || $case->ticket->ticket_status_id==1)
             <div class="row">
                 <div class="col-md-10"><span class="h1">Eventos del Incidente</span></div>
             </div>
@@ -443,21 +444,19 @@
     <div class="tab-pane" id="incident-description-tab">
         <div class="form-group">
             <h3 class="control-label">Descripción del Incidente</h3>
-           <textarea class="form-control ckeditor" name="description" id="description" data-validate="required">
-               {{isset($case->description)?$case->description:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="description" id="description"
+                      data-validate="required">{{$case->description}}</textarea>
         </div>
+        <!-- div-->
         <div class="form-group">
             <h3 class="control-label">Recomendaciones</h3>
-           <textarea class="form-control ckeditor" name="recommendation" id="recommendation" data-validate="required">
-               {{isset($case->recommendation)?$case->recommendation:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="recommendation" id="recommendation"
+                      data-validate="required">{{$case->recommendation}}</textarea>
         </div>
         <div class="form-group">
             <h3 class="control-label">Referencias</h3>
-           <textarea class="form-control ckeditor" name="reference" id="reference" data-validate="required">
-               {{isset($case->reference)?$case->reference:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="reference" id="reference"
+                      data-validate="required">{{$case->reference}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="incident-evidences-tab">
@@ -469,13 +468,13 @@
 
         <div class="row">
             <div id="surveillance-preview" class="col-sm-12">
-                @include('incident._preview',['case'=>isset($case)?$case:new \App\Models\Incident\Incident()])
+                @include('incident._preview',['case'=>isset($case)?$case:new \Models\IncidentManager\Incident\Incident()])
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12 text-right">
-                @if(isset($case))
+                @if(isset($case->id))
                     @foreach($case->evidences as $evidence)
                         <input type="hidden" value="{{$evidence->evidence->id}}"
                                name="evidence_{{$evidence->evidence->id}}"
@@ -487,9 +486,7 @@
         </div>
     </div>
     <ul class="pager wizard">
-        <li class="previous first"><a href="#">Primero</a></li>
         <li class="previous"><a href="#"><i class="entypo-left-open"></i> Anterior</a></li>
-        <li class="next last"><a href="#">Último</a></li>
         <li class="next"><a href="#">Siguiente <i class="entypo-right-open"></i></a></li>
     </ul>
 </div>

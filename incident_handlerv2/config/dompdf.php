@@ -117,7 +117,7 @@ return array(
          * @link http://www.ros.co.nz/pdf
          * @link http://www.php.net/image
          */
-        "DOMPDF_PDF_BACKEND" => "CPDF",
+        "DOMPDF_PDF_BACKEND" => "auto",//CPDF
 
         /**
          * PDFlib license key
@@ -143,7 +143,7 @@ return array(
          * the desired content might be different (e.g. screen or projection view of html file).
          * Therefore allow specification of content here.
          */
-        "DOMPDF_DEFAULT_MEDIA_TYPE" => "screen",
+        "DOMPDF_DEFAULT_MEDIA_TYPE" => "print", //screen
 
         /**
          * The default paper size.
@@ -243,7 +243,7 @@ return array(
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,
+        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,//1.1
 
         /**
          * Enable CSS float

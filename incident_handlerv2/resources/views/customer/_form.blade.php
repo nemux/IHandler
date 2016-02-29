@@ -16,7 +16,8 @@
 
         </div>
         <div class="col-sm-10">
-            <img class="img-responsive" src="/customer/{{$customer->logo}}">
+            <img class="img-responsive img-thumbnail" src="{{route('customer.logo',$customer->id)}}"
+                 style="max-width: 200px; max-height: 200px;">
         </div>
     </div>
 @endif

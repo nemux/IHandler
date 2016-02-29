@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => \App\Models\User\User::class,
+    'model' => \Models\IncidentManager\User\User::class,
 
     /*
     |--------------------------------------------------------------------------

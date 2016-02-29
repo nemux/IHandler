@@ -1,6 +1,6 @@
 <select class="form-control" id="{{$id}}" name="{{isset($multiple) && $multiple?$id.'[]':$id}}" {{isset($multiple) && $multiple?'multiple':''}}>
     <option></option>
-    @foreach(\App\Models\User\User::all() as $item)
+    @foreach(\Models\IncidentManager\User\User::all() as $item)
         <option value="{{$item->id}}">{{ $item->person->fullName() }}</option>
     @endforeach
 </select>

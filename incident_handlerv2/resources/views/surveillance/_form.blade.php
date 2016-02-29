@@ -40,24 +40,7 @@
         });
     });
 
-    /**
-     * Validate form fields
-     */
     $(document).ready(function () {
-        $('#surveillance-form').validate({
-            rules: {
-                title: 'required',
-                customer_id: 'required',
-                criticity_id: 'required',
-                description: 'required'
-            },
-            messages: {
-                title: 'El campo de título es obligatorio',
-                customer_id: 'Selecciona un Cliente',
-                criticity_id: 'Selecciona una Criticidad',
-                description: 'El campo de descripción es obligatorio'
-            }
-        });
     });
 </script>
 <ul class="tabs">
@@ -76,11 +59,11 @@
 
         <div class="form-group">
             <label class="control-label">Título del caso</label>
-            {!! Form::text('title',null,['class'=>'form-control','id'=>'title']) !!}
+            {!! Form::text('title',null,['class'=>'form-control','id'=>'title','data-validate'=>"required"]) !!}
         </div>
         <div class="form-group">
             <label class="control-label">Cliente</label>
-            <select class="form-control" id="customer_id" name="customer_id">
+            <select class="form-control" id="customer_id" name="customer_id" data-validate="required">
                 <option></option>
                 @foreach($customers as $index=>$customer)
                     <option {{(isset($case) && $customer->id==$case->customer->id)?'selected':''}} value="{{$customer->id}}">{{$customer->name}}</option>
@@ -89,7 +72,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Criticidad</label>
-            <select class="form-control" id="criticity_id" name="criticity_id">
+            <select class="form-control" id="criticity_id" name="criticity_id" data-validate="required">
                 <option></option>
                 @foreach($criticities as $index=>$criticity)
                     <option {{(isset($case) && $criticity->id==$case->criticity->id)?'selected':''}} value="{{$criticity->id}}">{{$criticity->name}}</option>
@@ -109,18 +92,15 @@
                    value="Mostrar evidencias">
         </div>
         <div class="form-group">
-           <textarea class="form-control ckeditor" name="description" id="description">
-               {{isset($case->description)?$case->description:''}}
-           </textarea>
+            <textarea class="form-control ckeditor" name="description" id="description"
+                      data-validate="required">{{isset($case->description)?$case->description:''}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="surveillance-recommendation-tab">
         <h3 class="title">Recomendaciones</h3>
 
         <div class="form-group">
-           <textarea class="form-control ckeditor" name="recommendation" id="recommendation">
-               {{isset($case->recommendation)?$case->recommendation:''}}
-           </textarea>
+           <textarea class="form-control ckeditor" name="recommendation" id="recommendation">{{isset($case->recommendation)?$case->recommendation:''}}</textarea>
         </div>
     </div>
     <div class="tab-pane" id="surveillance-save-tab">
@@ -128,7 +108,7 @@
 
         <div class="row">
             <div id="surveillance-preview" class="col-sm-12">
-                @include('surveillance._preview',['case'=>isset($case)?$case:new \App\Models\Surveillance\SurveillanceCase()])
+                @include('surveillance._preview',['case'=>isset($case)?$case:new \Models\IncidentManager\Surveillance\SurveillanceCase()])
             </div>
         </div>
 
@@ -139,9 +119,7 @@
         </div>
     </div>
     <ul class="pager wizard">
-        <li class="previous first"><a href="#">Primero</a></li>
         <li class="previous"><a href="#"><i class="entypo-left-open"></i> Anterior</a></li>
-        <li class="next last"><a href="#">Último</a></li>
         <li class="next"><a href="#">Siguiente <i class="entypo-right-open"></i></a></li>
     </ul>
 </div>

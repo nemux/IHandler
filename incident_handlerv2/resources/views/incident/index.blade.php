@@ -33,7 +33,7 @@
 @section('dashboard_content')
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Lista de Incidentes</h3><br/>
+            <h3 class="panel-title">Lista de Incidentes</h3>
         </div>
         <div class="panel-body">
             @include('incident._table')

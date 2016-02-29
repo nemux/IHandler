@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Person\Person;
-use App\Models\Person\PersonContact;
-use App\Models\User\User;
+use Models\IncidentManager\Person\Person;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\User\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -74,7 +74,7 @@ class UserController extends Controller
         \Mail::send('email.newuser', compact(['user', 'password']), function ($mail) use ($user) {
             $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
-            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Nuevo Usuario');
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IM] Nuevo Usuario');
         });
 
         return redirect()->route('user.index')->withMessage('Nuevo usuario creado');
@@ -83,7 +83,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User\User $user
+     * @param  \Models\IncidentManager\User\User $user
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -173,7 +173,7 @@ class UserController extends Controller
         \Mail::send('email.changepass', compact(['user', 'password']), function ($mail) use ($user) {
             $mailTo = PersonContact::compareEmail($user->person->contact->email);
 
-            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IH] Cambio de Contraseña');
+            $mail->to($mailTo, $user->person->fullName())->subject('[GCS-IM] Cambio de Contraseña');
         });
 
         return redirect()->route('user.edit', $user->username)->withMessage('Contraseña actualizada');

@@ -20,20 +20,12 @@
 //        $sql = preg_replace('/\?/', "'{$val}'", $sql, 1);
 //    }
 //
-////    \App\Models\Log\Log::info($sql);
-////    \App\Models\Log\Log::info("-------------------------------------------------------------------------------------------------------");
+//    \Log::info($sql);
+//    \Log::info("-------------------------------------------------------------------------------------------------------");
 //});
 
 
-/**
- * Esto permite pasar Objetos a las rutas, en lugar de IDs
- */
-Route::model('user', 'Models\User\User');
-
-Route::bind('user', function ($value, $route) {
-    return App\Models\User\User::whereUsername($value)->first();
-});
-
+//Route::model y Route::bind se moieron a RouteServiceProvider::boot
 
 Route::get('/', ['as' => 'login.get', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('/', ['as' => 'login.post', 'uses' => 'Auth\AuthController@postLogin']);
@@ -58,18 +50,20 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/preview/{id}', ['as' => 'incident.preview', 'uses' => 'IncidentController@preview']);
 
         Route::delete('/delete/evidence/{incidentevidenceid}', ['as' => 'incident.evidence.delete', 'uses' => 'IncidentController@deleteEvidence']);
+        Route::get('/file/evidence/{evidenceid}', ['as' => 'incident.evidence.file', 'uses' => 'IncidentController@getEvidenceFile']);
+
         Route::delete('/delete/event/{incidentId}/{sourceId}/{targetId}', ['as' => 'incident.event.delete', 'uses' => 'IncidentController@deleteEvent']);
 
         Route::patch('/edit/evidence', ['as' => 'incident.evidence.edit', 'uses' => 'IncidentController@updateEvidence']);
 
         Route::post('/change/status', ['as' => 'incident.change.status', 'uses' => 'IncidentController@changeStatus']);
 
-        Route::get('/test', ['uses' => 'IncidentController@test']);
-        Route::post('/test', ['uses' => 'IncidentController@postTest']);
-
         Route::post('/annex/create', ['as' => 'incident.annex.store', 'uses' => 'IncidentController@storeAnnex']);
+
         Route::post('/note/create', ['as' => 'incident.note.store', 'uses' => 'IncidentController@storeNote']);
         Route::delete('/note/delete', ['as' => 'incident.note.delete', 'uses' => 'IncidentController@deleteNote']);
+
+        Route::post('/recommendation/create', ['as' => 'incident.recommendation.store', 'uses' => 'IncidentController@storeRecommendation']);
 
         Route::get('/search', ['as' => 'incident.search', 'uses' => 'SearchEngineController@incident']);
         Route::post('/search', ['as' => 'incident.search.post', 'uses' => 'SearchEngineController@incidentSearch']);
@@ -87,6 +81,18 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::post('/changepass', ['as' => 'user.change_pass', 'uses' => 'UserController@changePass', 'middleware' => 'role:admin']);
     });
 
+    Route::group(['prefix' => 'helpdesk/user', 'middleware' => 'role:admin'], function () {
+        Route::get('/', ['as' => 'helpdesk.user.index', 'uses' => 'Helpdesk\HelpdeskUserController@index']);
+        Route::get('/create', ['as' => 'helpdesk.user.create', 'uses' => 'Helpdesk\HelpdeskUserController@create']);
+        Route::post('/create', ['as' => 'helpdesk.user.create', 'uses' => 'Helpdesk\HelpdeskUserController@store']);
+        Route::get('/{customer_user}', ['as' => 'helpdesk.user.show', 'uses' => 'Helpdesk\HelpdeskUserController@show']);
+        Route::get('/edit/{customer_user}', ['as' => 'helpdesk.user.edit', 'uses' => 'Helpdesk\HelpdeskUserController@edit']);
+        Route::post('/edit/{customer_user}', ['as' => 'helpdesk.user.update', 'uses' => 'Helpdesk\HelpdeskUserController@update']);
+        Route::delete('/{customer_user}', ['as' => 'helpdesk.user.destroy', 'uses' => 'Helpdesk\HelpdeskUserController@destroy']);
+
+        Route::post('/changepass', ['as' => 'helpdesk.user.change_pass', 'uses' => 'Helpdesk\HelpdeskUserController@changePass']);
+    });
+
     Route::group(['prefix' => 'customer'], function () {
         Route::get('/', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
         Route::get('/create', ['as' => 'customer.create', 'uses' => 'CustomerController@create', 'middleware' => 'role:admin']);
@@ -95,6 +101,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/{id}', ['as' => 'customer.show', 'uses' => 'CustomerController@show']);
         Route::get('/edit/{id}', ['as' => 'customer.edit', 'uses' => 'CustomerController@edit', 'middleware' => 'role:admin']);
         Route::post('/edit/{id}', ['as' => 'customer.update', 'uses' => 'CustomerController@update', 'middleware' => 'role:admin']);
+
+        Route::get('/logo/{id}', ['as' => 'customer.logo', 'uses' => 'CustomerController@getLogo']);
 
         Route::group(['prefix' => 'asset'], function () {
             Route::post('/create', ['as' => 'asset.store', 'uses' => 'CustomerAssetController@store', 'middleware' => 'role:admin']);
@@ -151,11 +159,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::group(['prefix' => 'evidence'], function () {
         Route::post('upload/surveillance', ['as' => 'file.upload.surveillance', 'uses' => 'EvidenceController@uploadSurveillance']);
         Route::post('upload/incident', ['as' => 'file.upload.incident', 'uses' => 'EvidenceController@uploadIncident']);
-    });
 
-    Route::group(['prefix' => 'otrs'], function () {
-        Route::get('/', ['as' => 'otrs.index', 'uses' => 'OtrsController@index', 'middleware' => 'role:admin']);
-        Route::post('/customer/synch', ['as' => 'otrs.customer.synch', 'uses' => 'OtrsController@customerSynch', 'middleware' => 'role:admin']);
+        Route::get('/file/{evidence_id}', ['as' => 'evidence.file', 'uses' => 'EvidenceController@getFile']);
     });
 
     Route::group(['prefix' => 'attack'], function () {//, 'middleware' => 'role:admin'
@@ -220,8 +225,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
         Route::get('/sensors/{id}', ['as' => 'ws.getSensors', 'uses' => 'CustomerSensorController@getSensors']);
     });
 
-    Route::get('test', 'DashboardController@test');
-
     Route::group(['prefix' => 'stats', 'middleware' => 'auth'], function () {
         Route::get('/', ['as' => 'stats.index', 'uses' => 'StatisticsController@index']);
 
@@ -259,7 +262,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     });
 
     Route::group(['prefix' => 'statistics', 'middleware' => 'auth'], function () {
-//        Route::get('/incidents', ['as' => 'statistics.list', 'uses' => 'StatisticsController@listRoutes']);
         Route::get('/incidents/customer/{days}', ['as' => 'incidents.customer', 'uses' => 'StatisticsController@incidentsCustomer']);
         Route::get('/incidents/criticity/{days}', ['as' => 'incidents.criticity', 'uses' => 'StatisticsController@incidentsCricity']);
         Route::get('/incidents/category/{days}', ['as' => 'incidents.category', 'uses' => 'StatisticsController@incidentsCategory']);
@@ -268,5 +270,26 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 
         Route::get('/incidents/{take}', ['as' => 'incidents.take', 'uses' => 'StatisticsController@lastIncidents']);
         Route::get('/surveillances/{take}', ['as' => 'surveillances.take', 'uses' => 'StatisticsController@lastSurveillances']);
+
+        Route::get('/helpdesk/customer/{days}', ['as' => 'helpdesk.ticket.customer', 'uses' => 'Helpdesk\StatisticsController@ticketsCustomer']);
+    });
+
+    Route::group(['prefix' => 'helpdesk', 'middleware' => 'auth'], function () {
+        Route::get('/', ['as' => 'helpdesk.index', 'uses' => 'Helpdesk\HelpdeskController@index']);
+
+        Route::group(['prefix' => 'file'], function () {
+            Route::get('{message_id}/{filename}', ['as' => 'helpdesk.file.filename', 'uses' => 'Helpdesk\HelpdeskFileController@getFile']);
+        });
+
+        Route::group(['prefix' => 'ticket'], function () {
+            Route::get('/', ['as' => 'helpdesk.ticket.index', 'uses' => 'Helpdesk\TicketController@index']);
+            Route::get('/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.show', 'uses' => 'Helpdesk\TicketController@show']);
+            Route::post('/add/message/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.addmessage', 'uses' => 'Helpdesk\TicketController@addMessage']);
+            Route::post('/change/criticity/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.changecriticity', 'uses' => 'Helpdesk\TicketController@changeCriticity']);
+            Route::post('/change/status/{app}/{otrs_customer_id}/{ticket_type_abb}/{consecutive}', ['as' => 'helpdesk.ticket.status', 'uses' => 'Helpdesk\TicketController@changeStatus']);
+
+            Route::get('/search', ['as' => 'helpdesk.ticket.search', 'uses' => 'SearchEngineController@helpdeskTicket']);
+            Route::post('/search', ['as' => 'helpdesk.ticket.search.post', 'uses' => 'SearchEngineController@helpdeskTicketSearch']);
+        });
     });
 });

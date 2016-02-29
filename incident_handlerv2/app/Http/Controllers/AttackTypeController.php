@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Catalog\AttackType;
-use App\Models\Catalog\BaseCatalog;
+use Models\IncidentManager\Catalog\AttackType;
+use Models\IncidentManager\Catalog\BaseCatalog;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 

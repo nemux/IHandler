@@ -2,89 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evidence\Evidence;
-use App\Models\Evidence\EvidenceType;
-use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Models\IncidentManager\Evidence\Evidence;
+use Models\IncidentManager\Evidence\EvidenceType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class EvidenceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     /**
      * Método para subir archivos directamente en el folder de Incidentes
@@ -118,7 +43,7 @@ class EvidenceController extends Controller
      * @param $file
      * @return \Illuminate\Http\JsonResponse
      */
-    public function upload($file)
+    public function upload(UploadedFile $file)
     {
         $evidence = false;
 
@@ -141,10 +66,15 @@ class EvidenceController extends Controller
         }
     }
 
-    public static function uploadSingleFile($file)
+    /**
+     * Sube un archivo $file al servidor
+     *
+     * @param $file
+     * @return bool|Evidence
+     */
+    public static function uploadSingleFile(UploadedFile $file)
     {
-//        \Log::info('Updating single file');
-        $mimeType = \File::mimeType($file);
+        $mimeType = $file->getMimeType();
 
         $md5 = hash_file('md5', $file);
         $sha1 = hash_file('sha1', $file);
@@ -155,7 +85,9 @@ class EvidenceController extends Controller
 
         $filename = $md5 . "." . \File::extension($file->getClientOriginalName());
 
-        if ($file->move($directory, $filename)) {
+        $writed = \Storage::put($directory . $filename, \File::get($file));
+
+        if ($writed) {
             $evidence = Evidence::whereName($filename)->wherePath($directory)->first();
 
             if (!isset($evidence->id))
@@ -171,7 +103,8 @@ class EvidenceController extends Controller
             $evidence->sha256 = $sha256;
             $evidence->save();
 
-            $imgbinary = fread(fopen($directory . $filename, "r"), filesize($directory . $filename));
+            $imgbinary = \Storage::get($directory . $filename);
+
             $evidence->base64 = 'data:' . $mimeType . ';base64,' . base64_encode($imgbinary);
 
             return $evidence;
@@ -187,6 +120,8 @@ class EvidenceController extends Controller
      */
     public static function getEvidences(Request $request)
     {
+        \Log::info('getEvidences');
+
         $values = $request->all();
         $evidences = array();
         foreach ($values as $field => $value) {
@@ -198,5 +133,23 @@ class EvidenceController extends Controller
         }
 
         return $evidences;
+    }
+
+    /**
+     * Obtiene el archivo por ID
+     *
+     * @param $evidence_id
+     * @return mixed
+     */
+    public function getFile($evidence_id)
+    {
+        $evidence = Evidence::whereId($evidence_id)->first();
+
+        $file = \Storage::get($evidence->path . $evidence->name);
+
+        $headers = ['Content-Type' => $evidence->mime_type, 'Content-Disposition' => 'inline; filename="' . $evidence->original_name . '"'];
+
+        //Regresa el archivo
+        return response($file, 200, $headers);
     }
 }

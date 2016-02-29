@@ -35,7 +35,7 @@
             var event = new EventMachine();
             event.source = source;
             event.target = target;
-            event.payload = (pl) ? pl : escape($('#evt-payload').val());
+            event.payload = (pl) ? pl : $('#evt-payload').val().replace(/'/g, "\"");
             events.push(event);
 
             addEventRow(id, event);
@@ -50,12 +50,14 @@
      * @param event Evento a agregar
      */
     function addEventRow(id, event) {
+        var json = JSON.stringify(event);
+
         /**
          * Se estructura el nuevo elementoq ue se agregará a la lista de eventos
          */
         var row = $("<div class='col-md-12 h4'>" +
                 "<input onclick='removeEvent(" + id + "," + events.indexOf(event) + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-1' />" +
-                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + JSON.stringify(event) + "' />" +
+                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + json + "' />" +
                 "<div class='col-md-6'>Origen " + event.source.toString() + "</div>" +
                 "<div class='col-md-5'> Destino " + event.target.toString() +
                 "</div></div>").attr({id: events.indexOf(event)});
@@ -71,10 +73,13 @@
      * @param id ID del elemento encontrado en la base de datos
      * @param event Evento a agregar
      */
+    //TODO TypeError: event is null
     function addMultitargetRow(id, event) {
+        var json = JSON.stringify(event);
+
         var row = $("<div class='col-md-12 h4'>" +
                 "<input onclick='removeEvent(" + id + "," + events.indexOf(event) + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-1' />" +
-                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + JSON.stringify(event) + "' />" +
+                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + json + "' />" +
                 "<div class='col-md-6'>Origen " + event.source.toString() + "</div>" +
                 "<div class='col-md-5'> Destinos <ul id='targets-event-" + events.indexOf(event) + "'></ul>  </div></div>").attr({id: events.indexOf(event)});
 
@@ -89,10 +94,12 @@
      * @param id ID del elemento encontrado en la base de datos
      * @param event Evento a agregar
      */
+    //TODO TypeError: event is null
     function addMultisourceRow(id, event) {
+        var json = JSON.stringify(event);
         var row = $("<div class='col-md-12 h4'>" +
                 "<input onclick='removeEvent(" + id + "," + events.indexOf(event) + ")' type='button' value='Eliminar Evento' class='btn btn-danger col-md-1' />" +
-                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + JSON.stringify(event) + "' />" +
+                "<input type='hidden' id='event_" + events.indexOf(event) + "' name='event_" + events.indexOf(event) + "' value='" + json + "' />" +
                 "<div class='col-md-6'>Origenes <ul id='sources-event-" + events.indexOf(event) + "'></ul></div>" +
                 "<div class='col-md-5'> Destino " + event.target.toString() + "  </div></div>").attr({id: events.indexOf(event)});
 
@@ -110,8 +117,8 @@
         $('<li>' + target.toString() + '</li>').appendTo('#targets-event-' + events.indexOf(event));
 
         addTargetToSourcePreview(event, target);
-
-        $('#event_' + events.indexOf(event)).attr('value', JSON.stringify(event));
+        var json = JSON.stringify(event);
+        $('#event_' + events.indexOf(event)).attr('value', json);
     }
 
     /**
@@ -124,7 +131,8 @@
 
         addSourceToTargetPreview(event, source);
 
-        $('#event_' + events.indexOf(event)).attr('value', JSON.stringify(event));
+        var json = JSON.stringify(event);
+        $('#event_' + events.indexOf(event)).attr('value', json);
     }
 
     /**
@@ -156,7 +164,7 @@
     }
 
 
-    @if(isset($case))
+    @if(isset($case->id))
     /**
      * Elimina elementos específicos de la sección donde se muestran eventos cargados de la base de datos
      */
@@ -181,7 +189,8 @@
 
         if (valid.status) {
             var source = getMachine('src');
-            var payload = escape($('#evt-payload').val());
+//            var payload = escape($('#evt-payload').val());
+            payload = $('#evt-payload').val().replace(/'/g, "\"");
             var event = new EventMultiTarget();
             var found = false;
             $.each(events, function (index, value) {
@@ -193,11 +202,14 @@
             //Si no se encontró, seteamos el source al event
             if (!found) {
                 event.source = source;
+//                console.log(source);
 
                 //Agrtegamos el evento a la lista
                 events.push(event);
 
-                addMultitargetRow(true, null, event);
+//                console.log(event);
+
+                addMultitargetRow(null, event);
             }
             //Agregamos el target
             event.targets.push({target: target, payload: payload});
@@ -218,7 +230,8 @@
 
         if (valid.status) {
             var target = getMachine('tar');
-            var payload = escape($('#evt-payload').val());
+//            var payload = escape($('#evt-payload').val());
+            payload = $('#evt-payload').val().replace(/'/g, "\"");
             var event = new EventMultiSource();
             var found = false;
             $.each(events, function (index, value) {
@@ -233,7 +246,9 @@
                 //Agregamos el evento a la lista
                 events.push(event);
 
-                addMultisourceRow(true, null, event);
+//                console.log(event);
+
+                addMultisourceRow(null, event);
             }
             //Agregamos el source
             event.sources.push({source: source, payload: payload});
@@ -451,7 +466,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-src-location">
             <option></option>
-            @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
+            @foreach(\Models\IncidentManager\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -459,7 +474,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-src-type">
             <option></option>
-            @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
+            @foreach(\Models\IncidentManager\Incident\MachineType::all('name','id') as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -505,7 +520,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-tar-location">
             <option></option>
-            @foreach(\App\Models\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
+            @foreach(\Models\IncidentManager\Catalog\Location::orderBy('name','asc')->get(['name','id']) as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -513,7 +528,7 @@
     <div class="col-md-2 form-group">
         <select id="evt-tar-type">
             <option></option>
-            @foreach(\App\Models\Incident\MachineType::all('name','id') as $item)
+            @foreach(\Models\IncidentManager\Incident\MachineType::all('name','id') as $item)
                 <option value="{{$item->id}}">{{$item->name}}</option>
             @endforeach
         </select>
@@ -547,7 +562,7 @@
 
 </div>
 <div class="row" id="old-events">
-    @if(isset($case))
+    @if(isset($case->id))
         @foreach($case->getGroupedEvents() as $index=>&$e)
             @if($e['type']==='11')
                 <div class='col-md-12 h4' id="old-e-{{$index}}">

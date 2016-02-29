@@ -3,7 +3,7 @@
 namespace App\Library;
 
 
-use App\Models\Incident\Incident;
+use Models\IncidentManager\Incident\Incident;
 
 class CsvGenerator
 {
@@ -124,7 +124,7 @@ class CsvGenerator
         //Flujo del ataque
         $this->sheet->setCellValue('H' . ($this->index), $incident->flow->name);
         //Fecha de detección
-        $this->sheet->setCellValue('I' . ($this->index), $incident->detection_time . ', GMT-6');
+        $this->sheet->setCellValue('I' . ($this->index), date('d/m/Y H:i T', strtotime($incident->detection_time)));
         //Criticidad
         $this->sheet->setCellValue('J' . ($this->index), $incident->criticity->name);
         //IP(s) de Origen (IP1|IP2|IPn)

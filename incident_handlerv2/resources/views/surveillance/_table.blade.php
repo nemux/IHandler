@@ -1,6 +1,32 @@
 <script type="text/javascript">
     var datatableOptions = {
         dom: "<'row'<'col-sm-12'B>><'row'<'col-sm-12'tr>>",
+        columns: [
+            {
+                visible: false
+            },
+            {
+                'class': 'col-sm-1'
+            },
+            {
+                type: 'datetime',
+                dataSort: 0,
+                'class': 'col-sm-2'
+            },
+            {
+                'class': 'col-sm-1'
+            },
+            {
+                'class': 'col-sm-4'
+            },
+            {
+                'class': 'col-sm-3'
+            },
+            {
+                'class': 'col-sm-1'
+            }
+
+        ],
         buttons: [
             {
                 text: 'Copiar Tabla',
@@ -41,26 +67,28 @@
         $("#surveillance-table").DataTable(datatableOptions);
     });
 </script>
-<table class="table table-bordered table-striped" id="surveillance-table">
+<table class="table table-bordered table-striped table-model-2" id="surveillance-table">
     <thead>
     <tr>
-        <th>#</th>
+        <th></th>
+        <th>ID</th>
+        <th>Fecha de Reporte</th>
+        <th>Severidad</th>
         <th>Título</th>
         <th>Cliente</th>
-        <th>Criticidad</th>
-        <th>Fecha de Creación</th>
         <th>Handler</th>
     </tr>
     </thead>
     <tbody class="middle-align">
     @foreach($cases as $case)
         <tr style="cursor: pointer;" onclick="{window.open('{{route('surveillance.show',$case->id)}}')}">
-            <td class="col-sm-1">{{$case->id}}</td>
-            <td class="col-sm-5">{{$case->title}}</td>
-            <td class="col-sm-3">{{$case->customer->name}}</td>
-            <td class="col-sm-1">{{$case->criticity->name}}</td>
-            <td class="col-sm-1">{{date_format($case->created_at,'d/M/Y H:i')}}</td>
-            <td class="col-sm-1">{{$case->user->username}}</td>
+            <td>{{$case->created_at}}</td>
+            <td>{{$case->id}}</td>
+            <td>{{$case->created_at->format('d/m/Y H:i T')}}</td>
+            <td>{{$case->criticity->name}}</td>
+            <td>{{$case->title}}</td>
+            <td>{{$case->customer->name}}</td>
+            <td>{{$case->user->username}}</td>
         </tr>
     @endforeach
     </tbody>

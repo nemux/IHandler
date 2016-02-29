@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="custom/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('custom/favicon.ico') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="author" content="Diego Miguel Angel López Muñoz;"/>
-    <title>GCS IH | @yield('title')</title>
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" id="style-resource-1">
+    <title>GCS IM | @yield('title')</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arimo:400,700,400italic" id="style-resource-1">
     <link rel="stylesheet" href="/xenon/assets/css/fonts/linecons/css/linecons.css" id="style-resource-2">
     <link rel="stylesheet" href="/xenon/assets/css/fonts/fontawesome/css/font-awesome.min.css" id="style-resource-3">
     <link rel="stylesheet" href="/xenon/assets/css/bootstrap.css" id="style-resource-4">
@@ -27,8 +27,9 @@
     <![endif]-->
     <!-- TS1444235278: Xenon - Boostrap Admin Template created by Laborator -->
     <style>
-        .toast {
-            opacity: 1 !important;
+        .toast::before {
+            /*opacity: 1 !important;*/
+            background-color: white;
         }
     </style>
 
@@ -194,6 +195,7 @@
                     </li>
                 </ul>
             </li>
+            {{--Cibervigilancia--}}
             <li class="">
                 <a class="l1" href="{{route('surveillance.index')}}">
                     <i class="fa fa-eye"></i>
@@ -206,6 +208,45 @@
                             <span class="title">Agregar Caso de Cibervigilancia</span>
                         </a>
                     </li>
+                </ul>
+            </li>
+            {{--Helpdesk--}}
+            <li class="">
+                <a class="l1" href="{{route('helpdesk.index')}}">
+                    <i class="fa fa-ticket"></i>
+                    <span class="title">Helpdesk</span>
+                </a>
+                <ul>
+                    <li>
+                        <a class="l2" href="{{route('helpdesk.ticket.index')}}">
+                            <i class="fa fa-table"></i>
+                            <span class="title">Tickets</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="l2" href="{{route('helpdesk.ticket.search')}}">
+                            <i class="fa fa-search"></i>
+                            <span class="title">Buscar</span>
+                        </a>
+                    </li>
+                    {{--<li>--}}
+                        {{--<a class="l2">--}}
+                            {{--<i class="fa fa-file-pdf-o"></i>--}}
+                            {{--<span class="title">Reportes</span>--}}
+                        {{--</a>--}}
+                        {{--<ul>--}}
+                            {{--<li><a><i></i><span>Lorem Ipsum</span></a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="l2">--}}
+                            {{--<i class="fa fa-line-chart"></i>--}}
+                            {{--<span class="title">Estadísticas</span>--}}
+                        {{--</a>--}}
+                        {{--<ul>--}}
+                            {{--<li><a><i></i><span>Lorem Ipsum</span></a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
                 </ul>
             </li>
             {{--Clientes--}}
@@ -268,18 +309,18 @@
                         <span class="title">Administrar Sistema</span>
                     </a>
                     <ul>
-                        {{--OTRS--}}
-                        <li>
-                            <a class="l2" href="{{route('otrs.index')}}">
-                                <i class="fa fa-ticket"></i>
-                                <span class="title">OTRS</span>
-                            </a>
-                        </li>
                         {{--Usuarios--}}
                         <li>
                             <a class="l2" href="{{route('user.index')}}">
                                 <i class="fa fa-user"></i>
                                 <span class="title">Usuarios</span>
+                            </a>
+                        </li>
+                        {{--Usuarios Helpdesk--}}
+                        <li>
+                            <a class="l2" href="{{route('helpdesk.user.index')}}">
+                                <i class="fa fa-user"></i>
+                                <span class="title">Usuarios Helpdesk</span>
                             </a>
                         </li>
                     </ul>
@@ -329,15 +370,15 @@
 
         <div class="row">
             <div class="col-md-12">
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                {{--@if (count($errors) > 0)--}}
+                {{--<div class="alert alert-danger">--}}
+                {{--<ul>--}}
+                {{--@foreach ($errors->all() as $error)--}}
+                {{--<li>{{ $error }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--@endif--}}
 
                 @if (Session::has('message'))
                     <div class="alert alert-success">
@@ -380,7 +421,33 @@
 <script src="/custom/assets/js/gcs-im/SocketIO.js"></script>
 <script>
     $(document).ready(function () {
-        SocketIO.init('{{parse_url(url())['host']}}', 8002);
+
+        @if (count($errors) > 0);
+        var validation_errors = {
+            "closeButton": false,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "300",
+            "showEasing": "swing",
+            "showMethod": "fadeIn",
+            "timeOut": "0",
+            "extendedTimeOut": "0",
+            "hideEasing": "linear",
+            "hideDuration": "300",
+            "hideMethod": "fadeOut"
+        };
+
+        var errors = '<ul>';
+        @foreach ($errors->all() as $error)
+        errors += '<li>{{ $error }}</li>';
+        @endforeach
+        errors += '</ul>';
+        toastr.error(errors, "Los datos intriducidos en el formulario son incorrectos", validation_errors);
+
+        @endif;
+
+        SocketIO.init('{{env('NODEJS_HOST')}}', '{{env('NODEJS_PORT_SSL')}}');
         SocketIO.start();
     });
 </script>

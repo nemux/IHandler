@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Models\Catalog\Criticity;
-use App\Models\Customer\Customer;
-use App\Models\Evidence\Evidence;
-use App\Models\Person\PersonContact;
-use App\Models\Surveillance\SurveillanceCase;
-use App\Models\Surveillance\SurveillanceCaseEvidence;
+use App\Library\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\Surveillance\SurveillanceCase;
+use Models\IncidentManager\Surveillance\SurveillanceCaseEvidence;
 
 class SurveillanceController extends Controller
 {
-    protected $email_subject_prefix = '[GCS-IH][Cibervigilancia]';
+    protected $email_subject_prefix = '[GCS-IM][Cibervigilancia]'; //TODO move to .env file
 
     /**
      * Display a listing of the resource.
@@ -71,9 +72,11 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        $this->sendEmail($surv);
+//        $this->sendEmail($surv);
 
-        return redirect()->route('surveillance.index')->withMessage('Nuevo caso de Cibervigilancia creado');
+        return redirect()
+            ->route('surveillance.show', $surv->id)
+            ->withMessage('Nuevo caso de Cibervigilancia creado');
     }
 
     /**
@@ -114,7 +117,7 @@ class SurveillanceController extends Controller
     public function update(Request $request, $id)
     {
         //Agregar todos los archivos de evidencia
-        $evidences = $this->getEvidences($request);
+        $evidences = EvidenceController::getEvidences($request);
 
         //Almacena en variables de sesión las evidencias, por si ocurriera un error en la actualización
         \Session::flash('surv_evidences', $evidences);
@@ -137,7 +140,10 @@ class SurveillanceController extends Controller
             $surv_evidence->save();
         }
 
-        return redirect()->route('surveillance.index')->withMessage('Se actualizó el caso ' . $surv->title);
+
+        return redirect()
+            ->route('surveillance.show', $surv->id)
+            ->withMessage('Se actualizó el caso ' . $surv->title);
     }
 
     /**
@@ -151,6 +157,7 @@ class SurveillanceController extends Controller
         $case = SurveillanceCase::whereId($id)->first();
         $pdf = Pdf::generatePdf($case, 'pdf.surveillance');
         $docName = $case->title . '.pdf';
+        $docName = preg_replace('/ /', '_', $docName);
 
         if ($download) {
             return $pdf->download($docName);
@@ -167,9 +174,11 @@ class SurveillanceController extends Controller
     public function getDoc($id)
     {
         $case = SurveillanceCase::whereId($id)->first();
-        $doc = DocController::generateDoc($case, 'pdf.surveillance');
-        $docName = $case->title . '.doc';
+
+        $docName = $case->title . '.docx';
         $docName = preg_replace('/ /', '_', $docName);
+
+        $doc = DocController::generateDoc($case, 'pdf.surveillance');
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
@@ -186,8 +195,6 @@ class SurveillanceController extends Controller
      */
     public function email($id)
     {
-//        \Log::info($id);
-
         $surv = SurveillanceCase::whereId($id)->first();
         $this->sendEmail($surv);
         return redirect()->route('surveillance.show', $id)->withMessage('Se envió el correo electrónico del caso ' . $surv->title);
@@ -195,30 +202,39 @@ class SurveillanceController extends Controller
 
     /**
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     *
      * @param SurveillanceCase $surv
+     * @param string $extra_info
      */
-    public function sendEmail(SurveillanceCase $surv)
+    public function sendEmail(SurveillanceCase $surv, $extra_info = '')
     {
-        \Mail::send('email.surveillance', compact('surv'), function ($message) use ($surv) {
+        \Mail::send('email.surveillance', compact('surv', 'extra_info'), function (Message $message) use ($surv) {
 //            Adjuntamos las evidencias cargadas
             foreach ($surv->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
-                $message->attach($file, ['as' => $name]);
+
+                $message->attachData(\Storage::get($file), $name);
             }
 
             $pdf = Pdf::generatePdf($surv, 'pdf.surveillance');
 
-            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+            $mailTo = PersonContact::compareEmail($surv->user->person->contact->email);
 
             $message->attachData($pdf->output(), $surv->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());
+
+            $message->to(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SocMail
+
+            //TODO enviar correo al cliente? Actualmente se envía un reporte manual.
+//            $message->to($mailTo, \Auth::user()->person->fullName()); //CustomerMail
+
             $message->subject($this->email_subject_prefix . '[' . $surv->customer->otrs_customer_id . '] ' . $surv->title);
         });
     }
 
     /**
      * Muestra una vista previa del caso de cibervigilancia tal como se creará el documento PDF
+     *
      * @param $id
      * @return \Illuminate\View\View
      */

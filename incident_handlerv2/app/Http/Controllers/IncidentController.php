@@ -3,29 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Library\Otrs\OtrsClient;
 use App\Library\Pdf;
 use App\Library\WordGenerator;
-use App\Models\Evidence\Evidence;
-use App\Models\Evidence\EvidenceType;
-use App\Models\Incident\Annex;
-use App\Models\Incident\History;
-use App\Models\Incident\Incident;
-use App\Models\Incident\IncidentAttackCategory;
-use App\Models\Incident\IncidentAttackSignature;
-use App\Models\Incident\IncidentCustomerSensor;
-use App\Models\Incident\IncidentEvent;
-use App\Models\Incident\IncidentEvidence;
-use App\Models\Incident\Note;
-use App\Models\Person\PersonContact;
-use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use Models\IncidentManager\Evidence\Evidence;
+use Models\IncidentManager\Evidence\EvidenceType;
+use Models\IncidentManager\Incident\Annex;
+use Models\IncidentManager\Incident\History;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\IncidentAttackCategory;
+use Models\IncidentManager\Incident\IncidentAttackSignature;
+use Models\IncidentManager\Incident\IncidentCustomerSensor;
+use Models\IncidentManager\Incident\IncidentEvent;
+use Models\IncidentManager\Incident\IncidentEvidence;
+use Models\IncidentManager\Incident\Note;
+use Models\IncidentManager\Incident\Recommendation;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\Ticket\Ticket;
 use Psy\Util\Json;
 
 class IncidentController extends Controller
 {
 
-    protected $email_subject_prefix = '[GCS-IH][Incidente]';
+    protected $email_subject_prefix = '[GCS-IM][Incidente]';
 
     /**
      * Display a listing of the resource.
@@ -61,7 +62,7 @@ class IncidentController extends Controller
      */
     public function create()
     {
-        $case = new \App\Models\Incident\Incident();
+        $case = new \Models\IncidentManager\Incident\Incident();
         return view('incident.create', compact('case'))->withPostroute('file.upload.incident');
     }
 
@@ -84,10 +85,10 @@ class IncidentController extends Controller
         $incident->reference = $request->get('reference');
 
         $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
-        $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time)));
+        $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))) . ':00';
 
         $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
-        $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time)));
+        $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))) . ':00';
 
         $incident->attack_flow_id = $request->get('flow_id');
         $incident->criticity_id = $request->get('criticity_id');
@@ -100,6 +101,7 @@ class IncidentController extends Controller
         $ticket = new Ticket();
         $ticket->incident_id = $incident->id;
         $ticket->ticket_status_id = 1;
+        $ticket->internal_number = 'Por asignar...';
         $ticket->save();
 
         //Evidencias
@@ -163,7 +165,7 @@ class IncidentController extends Controller
             array_push($incidentSignatures, $item);
         }
 
-        return redirect()->route('incident.index')->withMessage('Se creó el Incidente ' . $incident->title);
+        return redirect()->route('incident.show', $incident->id)->withMessage('Se creó el Incidente ' . $incident->title);
     }
 
 
@@ -222,10 +224,10 @@ class IncidentController extends Controller
         if ($status == 1) {
             $incident->title = $request->get('title');
             $occurrence_time = $request->get('occurrence_date') . " " . $request->get('occurrence_time');
-            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time)));
+            $incident->occurrence_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $occurrence_time))) . ':00';
 
             $detection_time = $request->get('detection_date') . " " . $request->get('detection_time');
-            $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time)));
+            $incident->detection_time = date('Y-m-d H:i', strtotime(str_replace('/', '-', $detection_time))) . ':00';
 
             $incident->attack_flow_id = $request->get('flow_id');
             $incident->criticity_id = $request->get('criticity_id');
@@ -293,7 +295,7 @@ class IncidentController extends Controller
         }
 
         if ($status == 1) {
-            //Sensor
+            //Sensores
             $oldSensors = IncidentCustomerSensor::whereIncidentId($incident->id)->get();
             foreach ($oldSensors as $old)
                 $old->delete();
@@ -326,7 +328,7 @@ class IncidentController extends Controller
             }
         }
 
-        return redirect()->route('incident.index')->withMessage('Se actualizó el Incidente ' . $incident->title);
+        return redirect()->route('incident.show', $incident->id)->withMessage('Se actualizó el Incidente ' . $incident->title);
     }
 
     /**
@@ -340,12 +342,13 @@ class IncidentController extends Controller
     {
         $case = Incident::whereId($id)->first();
         $pdf = Pdf::generatePdf($case, 'pdf.incident');
-        $docName = $case->title . '.pdf';
+        $doc_name = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = str_replace(' ', '_', $doc_name);
 
         if ($download) {
-            return $pdf->download($docName);
+            return $pdf->download($doc_name . '.pdf');
         } else {
-            return $pdf->stream($docName);
+            return $pdf->stream($doc_name . '.pdf');
         }
     }
 
@@ -358,15 +361,16 @@ class IncidentController extends Controller
     public function getDoc($id)
     {
         $case = Incident::whereId($id)->first();
-        $doc = new  WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
+        $doc = new WordGenerator(Incident::class, WordGenerator::TYPE_TABLE);
         $doc->addCases($case);
         $file = $doc->streamDocument();
 
-        $docname = $case->ticket ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = $case->ticket->internal_number ? $case->ticket->internal_number : 'ID' . $case->id;
+        $doc_name = str_replace(' ', '_', $doc_name);
 
         $headers = array(
             "Content-Type" => "application/vnd.ms-word;charset=utf-8",
-            "Content-Disposition" => "attachment;Filename={$docname}.docx"
+            "Content-Disposition" => "attachment;Filename={$doc_name}.docx"
         );
 
         return \Response::make($file, 200, $headers);
@@ -374,25 +378,34 @@ class IncidentController extends Controller
 
     /**
      * Envia un correo electronico, adjuntando en PDF el reporte del caso.
+     *
      * @param Incident $incident
+     * @param string $extra_info
      */
-    public function sendEmail(Incident $incident)
+    public function sendEmail(Incident $incident, $extra_info = '')
     {
-        \Mail::send('email.incident', compact('incident'), function ($message) use ($incident) {
+        \Mail::send('email.incident', compact('incident', 'extra_info'), function (Message $message) use ($incident, $extra_info) {
             //Adjuntamos las evidencias cargadas
             foreach ($incident->evidences as $evidence) {
                 $file = $evidence->evidence->path . $evidence->evidence->name;
                 $name = $evidence->evidence->original_name;
-                $message->attach($file, ['as' => $name]);
+
+                $message->attachData(\Storage::get($file), $name);
             }
 
             $pdf = Pdf::generatePdf($incident, 'pdf.incident');
 
-            $mailTo = PersonContact::compareEmail(\Auth::user()->person->contact->email);
+            $mailTo = PersonContact::compareEmail($incident->customer->contacts);
 
             $message->attachData($pdf->output(), $incident->title . '.pdf');
-            $message->to($mailTo, \Auth::user()->person->fullName());
-            $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . '] ' . $incident->title);
+
+            //TODO No acepta correos separados por punto y coma
+            $customer_mails = explode(";", $incident->customer->semicolonSeparatedEmails());
+
+            $message->to($customer_mails, $incident->customer->name); //Customer
+            $message->cc(env('MAIL_SOC'), env('MAIL_SOC_NAME')); //SOC
+
+            $message->subject($this->email_subject_prefix . '[' . $incident->customer->otrs_customer_id . ']-' . $extra_info . '::' . $incident->title);
         });
     }
 
@@ -405,7 +418,7 @@ class IncidentController extends Controller
     public function email($id)
     {
         $incident = Incident::whereId($id)->first();
-        $this->sendEmail($incident);
+        $this->sendEmail($incident, "Informe sobre Incidente de Seguridad");
         return redirect()->route('incident.show', $id)->withMessage('Se envió el correo electrónico del Incidente ' . $incident->title);
     }
 
@@ -430,7 +443,6 @@ class IncidentController extends Controller
      */
     public function deleteEvidence($id)
     {
-
         $incidentEvidence = IncidentEvidence::whereId($id)->first();
         $status = $incidentEvidence->incident->ticket->ticket_status_id;
 
@@ -450,8 +462,6 @@ class IncidentController extends Controller
      */
     public function updateEvidence(Request $request)
     {
-//        \Log::info($request->except('_token'));
-
         $ie_id = $request->get('id');
         $ie_note = $request->get('note');
         $ie = IncidentEvidence::whereId($ie_id)->first();
@@ -513,7 +523,7 @@ class IncidentController extends Controller
         $newTicketStatusId = $request->get('status');
         $incident = Incident::whereId($incidentId)->first();
 
-//        \Log::info($newTicketStatusId);
+        \Log::info($newTicketStatusId);
         if ($newTicketStatusId == 5 || $newTicketStatusId == 4) {
 //            \Log::info('is 5 or 4');
 
@@ -541,95 +551,60 @@ class IncidentController extends Controller
         $ticket = $incident->ticket;
         $oldTicketStatusId = $ticket->ticket_status_id;
 
-        if ($oldTicketStatusId == 1 && ($newTicketStatusId != 2 || $newTicketStatusId != 5)) {
+        if ($oldTicketStatusId == 1 && ($newTicketStatusId == 2 || $newTicketStatusId == 5)) {
             //De abierto, puede pasar a investigación o falso positivo
 
-            $otrs = new OtrsClient();
-            $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $incident->customer->semicolonSeparatedEmails(), $incident->renderHtml());
+            $ticketCount = Incident::whereCustomerId($incident->customer->id)
+                ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
+                ->where('ticket.internal_number', '!=', 'Por asignar...')//Se valida que cuente los tickets asignados
+                ->where('ticket.internal_number', '!=', '')//Con un numero interno definido
+                ->where('ticket.ticket_status_id', '>', 1)//Contar los tickets que no est{an abiertos
+                ->whereNotNull('ticket.internal_number')
+                ->whereNull('ticket.deleted_at')
+                ->count();
 
-            if (!isset($otrsTicket['error_code'])) {
+            //Se guarda el numero interno y el estatus antes de generar el ticket en el OTRS para que no genere tráfico en la generación de los consecutivos
+            $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
+            $ticket->ticket_status_id = $newTicketStatusId;
+            $ticket->save();
 
-                $ticketCount = Incident::whereCustomerId(2)
-                    ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
-                    ->where('ticket.internal_number', '!=', '')
-                    ->count();
-
-                $ticket->otrs_ticket_id = $otrsTicket['TicketID'];
-                $ticket->otrs_ticket_number = $otrsTicket['TicketNumber'];
-                $ticket->internal_number = strtoupper($incident->customer->otrs_customer_id) . '-' . ($ticketCount + 1);
-                $ticket->ticket_status_id = $newTicketStatusId;
-                $ticket->save();
-
-                if ($newTicketStatusId == 2) {
-                    $this->sendEmail($incident);
-                    return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente y se envió el correo al cliente']);
-
-                } else {
-
-                    return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
-                }
+            if ($newTicketStatusId == 2) {
+                $message = 'Informe sobre Incidente de Seguridad';
+                $this->sendEmail($incident, $message);
+                return Json::encode(['status' => true, 'message' => $message]);
 
             } else {
-                return $this->createOtrsErrorResult($otrsTicket);
+                return redirect()->route('incident.show', $incident->id)->withMessage('Se cambió el estatus del Incidente a Falso Positivo');
             }
-        } else if ($oldTicketStatusId == 2 && ($newTicketStatusId != 3 || $newTicketStatusId != 5)) {
+        } else if ($oldTicketStatusId == 2 && ($newTicketStatusId == 3 || $newTicketStatusId == 5)) {
             //De Investigación, sólo puede pasar a resuelto, cerrado o falso positivo
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId == 3)
-                return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Resuelto']);
-            else
+            if ($newTicketStatusId == 3) {
+                $message = 'Cambio de estatus del Incidente a Resuelto';
+                $this->sendEmail($incident, $message);
+                return Json::encode(['status' => true, 'message' => $message]);
+            } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Falso Positivo']);
 
-        } else if ($oldTicketStatusId == 3 && ($newTicketStatusId != 4 || $newTicketStatusId != 6)) {
+        } else if ($oldTicketStatusId == 3 && ($newTicketStatusId == 4 || $newTicketStatusId == 6)) {
             //De Resuelto sólo puede pasar a Cerrado o Cerrado automático
             $ticket->ticket_status_id = $newTicketStatusId;
             $ticket->save();
 
-            if ($newTicketStatusId == 4)
-                return redirect()->route('incident.show', $incident->id)->withMessage('Se cerró el Incidente y se envió el correo al cliente');
-            else
+            if ($newTicketStatusId == 4) {
+                $message = "Cambio de Estatus de Incidente a Cerrado";
+                $this->sendEmail($incident, $message);
+                return redirect()->route('incident.show', $incident->id)->withMessage($message);
+            } else
                 return Json::encode(['status' => true, 'message' => 'Se cambió el estatus del Incidente a Cerrado Automático']);
 
         } else if ($oldTicketStatusId == 4 || $oldTicketStatusId == 5 || $oldTicketStatusId == 6) {
             return Json::encode(['status' => false, 'message' => "El estatus {$oldTicketStatusId} ya es un estado final. No se puede transicionar un ticket con este estatus"]);
         } else {
-            return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus $newTicketStatusId"]);
+            return Json::encode(['status' => false, 'message' => "Error al pasar un incidente del estatus {$oldTicketStatusId} al estatus {$newTicketStatusId}"]);
         }
-    }
-
-    private function createOtrsErrorResult($otrsResponse)
-    {
-        return Json::encode(['status' => false, 'message' => '(Error Code: ' . $otrsResponse['error_code'] . ') Message: ' . $otrsResponse['error_description']]);
-    }
-
-    public function test()
-    {
-        $ticketCount = Incident::whereCustomerId(2)
-            ->join('ticket', 'ticket.incident_id', '=', 'incident.id')
-            ->where('ticket.internal_number', '!=', '')
-            ->count();
-//        \Log::info($ticketCount);
-
-//        $incident = Incident::whereId(19)->first();
-//        $emails = '';
-//        foreach ($incident->customer->contacts as $index => $contact) {
-//            $emails .= $contact->person->contact->email;
-//            if ($index < count($incident->customer->contacts) - 1) {
-//                $emails .= ';';
-//            }
-//        }
-//        $otrs = new OtrsClient();
-//        \Log::info($incident->risk);
-//        $otrsTicket = $otrs->createTicket($incident->title, $incident->risk, $incident->customer->otrs_user_id, $emails, $incident->renderHtml());
-////
-//        \Log::info($otrsTicket);
-    }
-
-    public function postTest(Request $request)
-    {
-
     }
 
     /**
@@ -655,6 +630,35 @@ class IncidentController extends Controller
         $annex->save();
 
         return redirect()->route('incident.show', $request->get('incident_id'))->withMessage('Se agregó el anexo al incidente');
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function storeRecommendation(Request $request)
+    {
+        $incident = Incident::whereId($request->get('incident_id'))->first();
+        $status = $incident->ticket->ticket_status_id;
+
+        if ($status > 2) {
+            abort(404);
+        }
+
+        Recommendation::validateCreate($request, $this);
+
+
+        $recomm = new Recommendation();
+        $recomm->incident_id = $request->get('incident_id');
+        $recomm->content = $request->get('content');
+        $recomm->otrs_article_id = '';
+        $recomm->save();
+
+        $this->sendEmail($incident, "Recomendación sobre Incidente de Seguridad"); //Confirmar que cuando se agrega una recomendación se envíe un correo
+
+        return redirect()
+            ->route('incident.show', $request->get('incident_id'))
+            ->withMessage('Se agregó la recomendación al incidente');
     }
 
     /**
@@ -699,5 +703,19 @@ class IncidentController extends Controller
         } else {
             return \Response::json(['status' => 1, 'message' => 'No se pudo eliminar la Observación']);
         }
+    }
+
+    public function getEvidenceFile($incident_evidence_id)
+    {
+        $evidence_id = IncidentEvidence::whereId($incident_evidence_id)->first()->evidence_id;
+
+        $evidence = Evidence::whereId($evidence_id)->first();
+
+        $file = \Storage::get($evidence->path . $evidence->name);
+
+        $headers = ['Content-Type' => $evidence->mime_type, 'Content-Disposition' => 'inline; filename="' . $evidence->original_name . '"'];
+
+        //Regresa el archivo
+        return response($file, 200, $headers);
     }
 }

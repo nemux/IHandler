@@ -40,8 +40,18 @@
         $('#modal-form-annex').modal('show', {backdrop: 'fade'});
     }
 
+    /**
+     * Muestra el diálogo del Modal para la Observación
+     */
     function showObservationForm() {
         $('#modal-form-note').modal('show', {backdrop: 'fade'});
+    }
+
+    /**
+     * Muestra el diálogo del Modal para la recomendación
+     */
+    function showRecommendationForm(){
+        $('#modal-form-recommendation').modal('show', {backdrop: 'fade'});
     }
 
     $(document).ready(function () {
@@ -70,7 +80,7 @@
 </script>
 
 <div id="status-buttons">
-    @if(!isset($case->ticket) || $case->ticket->ticket_status_id===1){{--Sin ticket o Abierto--}}
+    @if($case->ticket->ticket_status_id==1){{--Sin ticket o Abierto--}}
     <div class="btn btn-success" onclick="changeStatus(this,'{{$case->id}}',2)">
         Mover a Investigación
     </div>
@@ -115,14 +125,17 @@
     @endif
 </div>
 <div id="other-buttons">
-    @if(isset($case->ticket) && $case->ticket->ticket_status_id===1)
+
+    @if($case->ticket->ticket_status_id==1 || $case->ticket->ticket_status_id==2)
+        {{--Abierto o Investigación--}}
         <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===2)
-        <div class="btn btn-info" onclick="showAnnexForm()">Agregar Anexo</div>
+        <div class="btn btn-info" onclick="showRecommendationForm()">Agregar Recommendación</div>
+
+    @elseif($case->ticket->ticket_status_id==3)
+        {{--Resuelto--}}
         <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
-    @elseif(isset($case->ticket) && $case->ticket->ticket_status_id===3)
-        <div class="btn btn-info" onclick="showObservationForm()">Agregar Observación</div>
+
     @endif
 </div>
 {{--Modal Form Annex--}}
@@ -134,7 +147,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Agregar un anexo al caso</h4>
             </div>
-            {!! Form::model(new \App\Models\Incident\Annex(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.annex.store')]) !!}
+            {!! Form::model(new \Models\IncidentManager\Incident\Annex(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.annex.store')]) !!}
             {!! Form::hidden('incident_id',$case->id) !!}
             <div class="modal-body">
                 @include('incident.annex._form')
@@ -147,6 +160,7 @@
         </div>
     </div>
 </div>
+
 {{--Modal Form Note--}}
 <div aria-hidden="false" class="modal custom-width fade in" id="modal-form-note">
     {{--<div class="modal-backdrop fade in"></div>--}}
@@ -156,10 +170,33 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Agregar una observación al caso</h4>
             </div>
-            {!! Form::model(new \App\Models\Incident\Note(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.note.store')]) !!}
+            {!! Form::model(new \Models\IncidentManager\Incident\Note(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.note.store')]) !!}
             {!! Form::hidden('incident_id',$case->id) !!}
             <div class="modal-body">
                 @include('incident.note._form')
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                {!! Form::submit('Guardar',['class'=>'btn btn-blue']) !!}
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+</div>
+
+{{--Modal Form Recommendation--}}
+<div aria-hidden="false" class="modal custom-width fade in" id="modal-form-recommendation">
+    {{--<div class="modal-backdrop fade in"></div>--}}
+    <div class="modal-dialog" style="width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Agregar una recomendación al caso</h4>
+            </div>
+            {!! Form::model(new \Models\IncidentManager\Incident\Recommendation(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('incident.recommendation.store')]) !!}
+            {!! Form::hidden('incident_id',$case->id) !!}
+            <div class="modal-body">
+                @include('incident.recommendation._form')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>

@@ -36,12 +36,12 @@
                 <div class="btn btn-primary" onclick="edit(this)">
                     <i class="fa fa-pencil fa-fw"></i> Editar Caso
                 </div>
-                <div class="btn btn-danger" onclick="pdf(this)">
-                    <i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF
-                </div>
-                <div class="btn btn-blue" onclick="doc(this)">
-                    <i class="fa fa-file-pdf-o fa-fw"></i> Generar DOC
-                </div>
+                {{--<div class="btn btn-danger" onclick="pdf(this)">--}}
+                    {{--<i class="fa fa-file-pdf-o fa-fw"></i> Generar PDF--}}
+                {{--</div>--}}
+                {{--<div class="btn btn-blue" onclick="doc(this)">--}}
+                    {{--<i class="fa fa-file-pdf-o fa-fw"></i> Generar DOC--}}
+                {{--</div>--}}
                 <div class="btn btn-success"
                      onclick="mail(this)">
                     <i class="fa fa-envelope fa-fw"></i> Enviar Correo

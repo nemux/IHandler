@@ -2,43 +2,44 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Asset\Asset;
-use App\Models\Catalog\AttackCategory;
-use App\Models\Catalog\AttackFlow;
-use App\Models\Catalog\AttackSignature;
-use App\Models\Catalog\AttackType;
-use App\Models\Catalog\Criticity;
-use App\Models\Catalog\Location;
-use App\Models\Customer\Customer;
-use App\Models\Customer\CustomerAsset;
-use App\Models\Customer\CustomerContact;
-use App\Models\Customer\CustomerEmployee;
-use App\Models\Customer\CustomerEmployeePage;
-use App\Models\Customer\CustomerPage;
-use App\Models\Customer\CustomerSensor;
-use App\Models\Evidence\Evidence;
-use App\Models\Evidence\EvidenceType;
-use App\Models\Incident\Annex;
-use App\Models\Incident\History;
-use App\Models\Incident\Incident;
-use App\Models\Incident\IncidentAttackCategory;
-use App\Models\Incident\IncidentAttackSignature;
-use App\Models\Incident\IncidentCustomerSensor;
-use App\Models\Incident\IncidentEvent;
-use App\Models\Incident\IncidentEvidence;
-use App\Models\Incident\Machine;
-use App\Models\Incident\MachineType;
-use App\Models\Incident\Note;
-use App\Models\Link\Link;
-use App\Models\Link\LinkType;
-use App\Models\Person\Person;
-use App\Models\Person\PersonContact;
-use App\Models\Surveillance\SurveillanceCase;
-use App\Models\Surveillance\SurveillanceCaseEvidence;
-use App\Models\Ticket\Ticket;
-use App\Models\Ticket\TicketStatus;
-use App\Models\User\User;
-use App\Models\User\UserType;
+use Models\IncidentManager\Asset\Asset;
+use Models\IncidentManager\Catalog\AttackCategory;
+use Models\IncidentManager\Catalog\AttackFlow;
+use Models\IncidentManager\Catalog\AttackSignature;
+use Models\IncidentManager\Catalog\AttackType;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Catalog\Location;
+use Models\IncidentManager\Customer\Customer;
+use Models\IncidentManager\Customer\CustomerAsset;
+use Models\IncidentManager\Customer\CustomerContact;
+use Models\IncidentManager\Customer\CustomerEmployee;
+use Models\IncidentManager\Customer\CustomerEmployeePage;
+use Models\IncidentManager\Customer\CustomerPage;
+use Models\IncidentManager\Customer\CustomerSensor;
+use Models\IncidentManager\Evidence\Evidence;
+use Models\IncidentManager\Evidence\EvidenceType;
+use Models\IncidentManager\Incident\Annex;
+use Models\IncidentManager\Incident\History;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\IncidentAttackCategory;
+use Models\IncidentManager\Incident\IncidentAttackSignature;
+use Models\IncidentManager\Incident\IncidentCustomerSensor;
+use Models\IncidentManager\Incident\IncidentEvent;
+use Models\IncidentManager\Incident\IncidentEvidence;
+use Models\IncidentManager\Incident\Machine;
+use Models\IncidentManager\Incident\MachineType;
+use Models\IncidentManager\Incident\Note;
+use Models\IncidentManager\Incident\Recommendation;
+use Models\IncidentManager\Link\Link;
+use Models\IncidentManager\Link\LinkType;
+use Models\IncidentManager\Person\Person;
+use Models\IncidentManager\Person\PersonContact;
+use Models\IncidentManager\Surveillance\SurveillanceCase;
+use Models\IncidentManager\Surveillance\SurveillanceCaseEvidence;
+use Models\IncidentManager\Ticket\Ticket;
+use Models\IncidentManager\Ticket\TicketStatus;
+use Models\IncidentManager\User\User;
+use Models\IncidentManager\User\UserType;
 use Illuminate\Console\Command;
 
 class MigrateVersionCommand extends Command
@@ -69,6 +70,33 @@ class MigrateVersionCommand extends Command
     }
 
     /**
+     * Migra las recomendaciones de un incidente
+     *
+     * @param $incident
+     */
+    private function migrateRecommendations($incident)
+    {
+        //Recommendations
+        $recommendations = $this->query('SELECT * FROM recomendations WHERE incidents_id=' . $incident->id);
+        foreach ($recommendations as &$or) {
+            $recommendation = new Recommendation();
+
+            $recommendation->content = $or->content;
+            $recommendation->incident_id = $or->incidents_id;
+            $recommendation->otrs_article_id = $or->otrs_article_id;
+
+            $this->modelTimestamps($recommendation, $or);
+
+            if (isset($incident->incident_handler_id))
+                $recommendation->user_id = $incident->incident_handler_id;
+            else
+                $recommendation->user_id = $incident->user_id;
+
+            $recommendation->save();
+        }
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -82,7 +110,13 @@ class MigrateVersionCommand extends Command
             } else if ($this->option('perform') == 'update' && $this->option('table') == 'incident_signature') {
                 $this->signatures();
             } else if ($this->option('perform') == 'tickets') {
-                $olds = $this->query('SELECT * FROM incidents');
+                /**
+                 * @NOTA: Cuando se realiza una migración ahislada,
+                 * es porque ya se migraron previamente los incidentes, por lo tanto
+                 * se obtiene de la nueva base de datos estos incidentes y de la vieja
+                 * base de datos los otros elementos
+                 */
+                $olds = Incident::all();
                 $bar = $this->output->createProgressBar(count($olds));
                 $newtickets = [];
 
@@ -98,6 +132,20 @@ class MigrateVersionCommand extends Command
                 $bar->finish();
                 $this->alterSequence($this->query('SELECT * FROM tickets'), 'ticket');
                 $this->saveEmptyTickets($newtickets);
+            } else if ($this->option('perform') == 'recommendations') {
+                /**
+                 * @NOTA: Cuando se realiza una migración ahislada,
+                 * es porque ya se migraron previamente los incidentes, por lo tanto
+                 * se obtiene de la nueva base de datos estos incidentes y de la vieja
+                 * base de datos los otros elementos
+                 */
+                $incidents = Incident::all();
+                $bar = $this->output->createProgressBar(count($incidents));
+                foreach ($incidents as $incident) {
+                    $this->migrateRecommendations($incident);
+                    $bar->advance();
+                }
+                $bar->finish();
             }
         } else {
             if ($this->confirm('Este proceso eliminará la información actual de la base de datos; ningún proceso se podrá deshacer. ¿Deseas Continuar? [y|N]')) {
@@ -117,7 +165,7 @@ class MigrateVersionCommand extends Command
             }
         }
         $this->info("");
-        $this->info("Terminado [" . date('d/m/Y H:i:s') . "]");
+        $this->info("Terminado [" . date('d/m/Y H:i:s T') . "]");
     }
 
     private function references()
@@ -888,6 +936,8 @@ class MigrateVersionCommand extends Command
                             $note->attended_by = $o->attended;
                         $note->save();
                     }
+
+                    $this->migrateRecommendations($o);
                 } catch (\Exception $e) {
                     $this->showError($e, 'incidente', $o->id);
                     //return;
@@ -984,7 +1034,7 @@ class MigrateVersionCommand extends Command
         //Tickets (No debería de haber más de un ticket en el sistema, pero...)
         $oldTickets = $this->query('SELECT * FROM tickets WHERE incidents_id=' . $old_incident->id);
 
-        if (sizeof($oldTickets) > 0)
+        if (sizeof($oldTickets) > 0) {
             foreach ($oldTickets as &$oT) {
                 $ticket = new Ticket();
                 $this->modelTimestamps($ticket, $oT);
@@ -998,7 +1048,7 @@ class MigrateVersionCommand extends Command
                 $ticket->ticket_status_id = $old_incident->incidents_status_id;
                 $ticket->save();
             }
-        else {
+        } else {
             $ticket = new Ticket();
             $this->modelTimestamps($ticket, $old_incident);
             $ticket->user_id = $old_incident->incident_handler_id;
@@ -1012,6 +1062,10 @@ class MigrateVersionCommand extends Command
 
     /**
      * Almacena los tickets que no estaban asignados a un incidente
+     *
+     * NOTA: Estos tickets nuevos se deben almacenar al final del procedimiento de migración,
+     * ya que el consecutivo del id de ticket se modifica con respecto a la cantidad de tickets
+     * del viejo sistema. $this->alterSequence(...)
      *
      * @param array $newtickets : Tickets que no están asignados a un incidente
      */

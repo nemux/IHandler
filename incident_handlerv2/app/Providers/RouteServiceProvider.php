@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
+use Models\Helpdesk\User\User as HelpdeskUser;
+use Models\IncidentManager\User\User;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -19,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
@@ -27,12 +29,34 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot($router);
+
+        $router->model('user', User::class);
+        $router->bind('user', function ($username, $route) {
+            $user = User::whereUsername($username)->first();
+
+            if (!$user) {
+                abort(404, 'No se encontró al usuario que se buscaba');
+            }
+
+            return $user;
+        });
+
+        $router->model('customer_user', HelpdeskUser::class);
+        $router->bind('customer_user', function ($username, $route) {
+            $user = HelpdeskUser::whereUsername($username)->first();
+
+            if (!$user) {
+                abort(404, 'No se encontró al usuario que se buscaba');
+            }
+
+            return $user;
+        });
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)

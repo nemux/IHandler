@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer\Customer;
-use App\Models\Incident\Incident;
-use App\Models\Surveillance\SurveillanceCase;
 use Illuminate\Http\Request;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Surveillance\SurveillanceCase;
 
 /**
  * Esta clase contiene todos los métodos utilizados para devolver objetos Json
@@ -16,7 +15,11 @@ use Illuminate\Http\Request;
  */
 class StatisticsController extends Controller
 {
-    private $BAD_REQUEST_PARAMS = ['err_code' => '1000', 'message' => 'Los parámetros esperados en la petición no son suficientes o el formato no es correcto'];
+    const BAD_REQUEST_PARAMS = ['err_code' => '1000', 'message' => 'Los parámetros esperados en la petición no son suficientes o el formato no es correcto'];
+
+    const RELATION_DATE = 'date';
+    const RELATION_COUNT = 'count';
+
 
     /**
      * Muestra una vista genéérica para ensamblar consultas para estadísticas
@@ -311,7 +314,7 @@ class StatisticsController extends Controller
         }
         $incidents = $query->get();
 
-        $response = $this->tableToDatasource($incidents, 'username', 'date');
+        $response = $this->tableToDatasource($incidents, 'username', self::RELATION_DATE);
 
         return \Response::json($response);
     }
@@ -455,33 +458,73 @@ class StatisticsController extends Controller
     /**
      * Convierte un set de datos en un objeto json agrupado por el campo $field con la etiqueta $label
      *
-     * @param $data :Set de datos a agrupar
-     * @param $name :Campo que diferencía los datos por el cual se van a agrupar
-     * @param $label :Etiqueta que contiene la relación $label=>$count
+     * @param $rows :Set de datos a agrupar
+     * @param $grouper :Campo que diferencía los datos por el cual se van a agrupar
+     * @param $relation :Etiqueta que contiene la relación $label=>$count
      * @return array
+     *
+     * @deprecated
      */
-    private function tableToDatasource($data, $name, $label)
+    protected function tableToDatasource($rows, $grouper, $relation)
     {
-        $response = []; //Objeto transformado
-        foreach ($data as &$element) { //Para cada elemento en el set de datos
+        $items = []; //Objeto transformado
+        foreach ($rows as &$row) { //Para cada elemento en el set de datos
             $item = []; //Creamos un arreglo nuevo
-            foreach ($response as &$r) { //Para cada elemento en el arreglo response
-                if (isset($r['name']) && $r['name'] == $element[$name]) { //Validamos si está definido el campo 'name' y que el valor en ese campo sea igual al elemento con esa etiqueta
-                    $item = $r;
-                    array_push($r['data'], [$label => $element[$label], 'count' => $element['count']]);
+            foreach ($items as &$i) { //Para cada elemento en el arreglo response
+                if (isset($i['name']) && $i['name'] == $row[$grouper]) {
+                    //Validamos si está definido el campo 'name' y que el valor en ese campo sea igual al elemento con esa etiqueta
+                    $item = $i;
+                    array_push($i['data'], [$relation => $row[$relation], 'count' => $row['count']]);
                 }
             }
 
+            //Si el elemento es nulo
             if ($item == null) {
-                $item['name'] = $element[$name];
+                $item['name'] = $row[$grouper];
                 $item['data'] = [];
 
-                array_push($item['data'], [$label => $element[$label], 'count' => $element['count']]);
-                array_push($response, $item);
+                array_push($item['data'], [$relation => $row[$relation], 'count' => $row['count']]);
+                array_push($items, $item);
             }
         }
 
-        return $response;
+        return $items;
+    }
+
+    /**
+     * Convierte un set de datos en un objeto json agrupado por el campo $field con la etiqueta $label
+     *
+     * El formato del array será: array(customer1=>[date1=>count1, date2=>count2,...],customer2=>[date1=>count1,...],...);
+     *
+     * @param $rows :Set de datos a agrupar
+     * @param $grouper :Campo que diferencía los datos por el cual se van a agrupar
+     * @param $relation :Etiqueta que contiene la relación $label=>$count
+     * @return array
+     */
+    protected function tableToDatasource2($rows, $grouper, $relation)
+    {
+        $items = []; //Objeto transformado
+        foreach ($rows as &$row) { //Para cada elemento en el set de datos
+            $item = []; //Creamos un arreglo nuevo
+            foreach ($items as &$i) { //Para cada elemento en el arreglo response
+                if (isset($i['name']) && $i['name'] == $row[$grouper]) {
+                    //Validamos si está definido el campo 'name' y que el valor en ese campo sea igual al elemento con esa etiqueta
+                    $item = $i;
+                    $i['data'][$row[$relation]] = $row['count'];
+                }
+            }
+
+            //Si el elemento es nulo
+            if ($item == null) {
+                $item['name'] = $row[$grouper];
+                $item['data'] = [];
+
+                $item['data'][$row[$relation]] = $row['count'];
+                array_push($items, $item);
+            }
+        }
+
+        return $items;
     }
 
     public function listRoutes()
@@ -506,11 +549,11 @@ class StatisticsController extends Controller
                 ->orderBy('date', 'asc')
                 ->get();
 
-            $dataSource = $this->tableToDatasource($incidents, 'customer', 'date');
+            $dataSource = $this->tableToDatasource($incidents, 'customer', self::RELATION_DATE);
 
             return \Response::json($dataSource);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -534,7 +577,7 @@ class StatisticsController extends Controller
 
             return \Response::json($incidents);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -558,7 +601,7 @@ class StatisticsController extends Controller
 
             return \Response::json($incidents);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -584,7 +627,7 @@ class StatisticsController extends Controller
 
             return \Response::json($incidents);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -608,7 +651,7 @@ class StatisticsController extends Controller
 
             return \Response::json($incidents);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -624,7 +667,7 @@ class StatisticsController extends Controller
             $incidents = Incident::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);
             return \Response::json($incidents);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
     }
 
@@ -640,7 +683,34 @@ class StatisticsController extends Controller
             $surveillances = SurveillanceCase::orderBy('id', 'desc')->take($take)->get(['id', 'title', 'criticity_id']);
             return \Response::json($surveillances);
         } else {
-            return \Response::json($this->BAD_REQUEST_PARAMS);
+            return \Response::json(self::BAD_REQUEST_PARAMS);
         }
+    }
+
+    /**
+     * Genera una tabla completa para los elementos de los $customers con los campos $data_field y $value_field.
+     *
+     * @param $customers
+     * @param $from_date
+     * @param $to_date
+     * @param $default_value :Sirve para poder definir un valor por omisión con el que se rellenará el campo vacío
+     */
+    protected static function fullTableDatesValues(&$customers, $from_date, $to_date, $default_value = 0)
+    {
+        $period = new \DatePeriod($from_date, new \DateInterval('P1D'), $to_date->modify('+1 day'));
+
+        //Arma un arreglo con la fecha y el valor por omisión
+        $data = array();
+        foreach ($period as $index => $date) {
+            $date = $date->format('Y-m-d');
+            $data[$date] = $default_value;
+        }
+
+        foreach ($customers as &$c) {
+            //Reemplazar los datos de los arreglos para rellenar las fechas que hacen falta
+            $c['data'] = array_replace($data, $c['data']);
+        }
+
+        return $customers;
     }
 }

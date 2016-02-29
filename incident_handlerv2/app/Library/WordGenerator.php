@@ -3,12 +3,13 @@
 namespace App\Library;
 
 
-use App\Models\Catalog\Criticity;
-use App\Models\Incident\Annex;
-use App\Models\Incident\Incident;
-use App\Models\Incident\IncidentEvent;
-use App\Models\Incident\Machine;
 use Illuminate\Database\Eloquent\Collection;
+use Models\IncidentManager\Catalog\Criticity;
+use Models\IncidentManager\Incident\Annex;
+use Models\IncidentManager\Incident\Incident;
+use Models\IncidentManager\Incident\IncidentEvent;
+use Models\IncidentManager\Incident\Machine;
+use Models\IncidentManager\Incident\Recommendation;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\IOFactory;
@@ -57,11 +58,13 @@ class WordGenerator
     {
         $this->class = $class;
         $this->type = $type;
+        $this->_gridSpan = null;
 
         if ($class == Incident::class) {
             $this->bold_f = ['bold' => true];
             $this->normal_f = ['bold' => false];
             $this->center_p = ['align' => 'center'];
+            $this->left_p = ['align' => 'left'];
 
             $this->full_width = Converter::cmToTwip(18);
             $this->left_col_t = Converter::cmToTwip(5);
@@ -104,6 +107,41 @@ class WordGenerator
 
         if ($title != '') {
             $this->section->addTitle($title);
+        }
+    }
+
+    private $html_failed = [];
+
+    /**
+     * Parsea texto para agregarlo como HTML
+     *
+     * @param $container
+     * @param $content
+     */
+    private function addHtml(&$container, $content)
+    {
+        $html_e = '';
+        $html_p = StringHelper::parseHtml($content);
+        try {
+            Html::addHtml($container, $html_p);
+        } catch (\Exception $e) {
+            try {
+                $html_e = StringHelper::extraParse($html_p);
+                Html::addHtml($container, $html_e);
+            } catch (\Exception $e) {
+                $stripped_html = StringHelper::doubleEscapeAmp(strip_tags($html_e));
+
+                array_push($this->html_failed,
+                    [
+                        '[   ERROR  ]' => ' AT ' . $e->getFile() . ' ON ' . $e->getLine() . ' \'CAUSE ' . $e->getMessage(),
+                        '[ ORIGINAL ]' => $content,
+                        '[  PARSED  ]' => $html_p,
+                        '[  EXTRA 1 ]' => $html_e,
+                        '[ STRIPPED ]' => $stripped_html]
+                );
+
+                $container->addText($stripped_html);
+            }
         }
     }
 
@@ -156,6 +194,10 @@ class WordGenerator
     public function streamDocument()
     {
         $temp_file = tempnam(sys_get_temp_dir(), 'PHPWord');
+
+        \Log::warning($this->html_failed);
+        \Log::warning("Inserciones HTML fallidas: " . sizeof($this->html_failed));
+
         $objWriter = IOFactory::createWriter($this->document, 'Word2007');
         $objWriter->save($temp_file);
         $file = file_get_contents($temp_file);
@@ -237,8 +279,7 @@ class WordGenerator
     }
 
     /**
-     * Agrega a la tabla $table una fila que contiene el nombre del campo $label y el contenido del mismo $content
-     *
+     *addinfo
      * @param Table $table
      * @param $label
      * @param $content
@@ -250,7 +291,7 @@ class WordGenerator
         $title_cell->addText($label, $this->bold_f, $this->center_p);
 
         $content_cell = $row->addCell($this->right_col_t, $this->normal_cell);
-        Html::addHtml($content_cell, StringHelper::parseHtml($content));
+        self::addHtml($content_cell, $content);
     }
 
     /**
@@ -431,7 +472,7 @@ class WordGenerator
         $this->addRowInfo($table, 'Flujo del Ataque:', $i->flow->name, $this->center_p);
 
         //Flow row
-        $this->addRowInfo($table, 'Fecha de Detección:', date('d/m/Y H:i', strtotime($i->detection_time)) . " GMT-6", $this->center_p);
+        $this->addRowInfo($table, 'Fecha de Detección:', date('d/m/Y H:i T', strtotime($i->detection_time)), $this->center_p);
 
         //Criticity row
         $this->addCriticity($table, $i->criticity);
@@ -457,6 +498,24 @@ class WordGenerator
             }
         }
 
+        //Recommendations n-rows
+        if (sizeof($i->recommendations) > 0) {
+            $this->section->addTitle('Recomendaciones', 4);
+            $recomm_table = $this->section->addTable($this->table_s);
+            foreach ($i->recommendations as $recomm) {
+                $this->addRecommendation($recomm_table, $recomm);
+            }
+        }
+
+        //Payloads n-rows
+        if (sizeof($i->payloads) > 0) {
+            $this->section->addTitle('Payloads', 4);
+            $pl_table = $this->section->addTable($this->table_s);
+            foreach ($i->events as $evt) {
+                $this->addPayload($pl_table, $evt);
+            }
+        }
+
         $this->section->addTextBreak(1, $this->normal_f, $this->center_p);
     }
 
@@ -476,7 +535,64 @@ class WordGenerator
 
         $content_cell = $annex_row->addCell($this->right_col_t, $this->normal_cell);
         $content_cell->addText($annex->field, $this->bold_f, $this->center_p);
-        $html = $annex->content;
-        Html::addHtml($content_cell, StringHelper::parseHtml($html));
+        $content = $annex->content;
+
+        self::addHtml($content_cell, $content);
+    }
+
+    /**
+     * Agregar recomendacion al documento
+     *
+     * @param Table $recomm_table
+     * @param Recommendation $recomm
+     */
+    private function addRecommendation(Table &$recomm_table, Recommendation $recomm)
+    {
+        $recomm_row = $recomm_table->addRow(null, $this->row_s);
+
+        $title_cell = $recomm_row->addCell($this->left_col_t, $this->gray_cell);
+        $title_cell->addText($recomm->created_at->format('d/m/Y'), $this->bold_f, $this->center_p);
+        $title_cell->addText($recomm->created_at->format('H:i:s T'), $this->bold_f, $this->center_p);
+
+        $content_cell = $recomm_row->addCell($this->right_col_t, $this->normal_cell);
+        $content = $recomm->content;
+
+        self::addHtml($content_cell, $content);
+    }
+
+    private $_gridSpan;// for the colspan
+
+    public function setGridSpan($pValue = null)
+    {
+        $this->_gridSpan = $pValue;
+    }
+
+    public function getGridSpan()
+    {
+        return $this->_gridSpan;
+    }
+
+    /**
+     * Agrega un Payload a la tabla del incidente
+     *
+     * @param Table $pl_table
+     * @param IncidentEvent $evt
+     */
+    private
+    function addPayload(Table &$pl_table, IncidentEvent $evt)
+    {
+        if ($evt->payload == null && $evt->payload == '')
+            return;
+
+        $styleCell = array($this->normal_cell, 'gridSpan' => 2);
+
+        $pl_row = $pl_table->addRow(null, $this->row_s);
+
+        $pl_cell = $pl_row->addCell($this->left_col_t, $styleCell);
+
+        $pl_cell->addText('Origen: [' . $evt->source->asset->ipv4 . '] Destino: [' . $evt->target->asset->ipv4 . ']', $this->bold_f, $this->left_p);
+        $pl_cell->addTextBreak();
+
+        $pl_cell->addText(htmlspecialchars($evt->payload), $this->normal_f, $this->left_p);
     }
 }

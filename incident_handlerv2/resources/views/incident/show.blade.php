@@ -167,7 +167,7 @@
 
 @section('dashboard_content')
     <div class="row">
-        @if(isset($case->ticket) && ($case->ticket->ticket_status_id===1 ||$case->ticket->ticket_status_id===2 ))
+        @if($case->ticket->ticket_status_id==1 || $case->ticket->ticket_status_id==2)
             <div class="btn btn-primary" onclick="edit(this)">
                 <i class="fa fa-pencil fa-fw"></i> Editar Caso
             </div>
@@ -189,7 +189,7 @@
                 <div class="col-md-4">
                     <h3 class="panel-title">Cliente: <b>{{$case->customer->name}}</b></h3><br/>
 
-                    <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s',strtotime($case->updated_at))}}</b>
+                    <h3 class="panel-title">Actualizado: <b>{{date('d/m/Y H:i:s T',strtotime($case->updated_at))}}</b>
                     </h3>
                     <br/>
 
@@ -251,6 +251,7 @@
                     <div class="tab-pane" id="v-evidences">
                         <h3>Evidencias</h3>
 
+                        {{--Muestra las evidencias del incidente--}}
                         <section class="gallery-env">
                             <div class="row">
                                 <div class="album-images row">
@@ -261,7 +262,8 @@
                             </div>
                         </section>
 
-                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==4)
+                        {{--Muestra las evidencias subidas para un cerrado--}}
+                        @if($case->ticket->ticket_status_id==4)
                             <h3>Caso Cerrado</h3>
                             <section class="gallery-env">
                                 <div class="row">
@@ -274,7 +276,8 @@
                             </section>
                         @endif
 
-                        @if(isset($case->ticket) && $case->ticket->ticket_status_id==5)
+                        {{--Muestra las evidencias subidas para un falso positivo--}}
+                        @if($case->ticket->ticket_status_id==5)
                             <h3>Falso Positivo</h3>
                             <section class="gallery-env">
                                 <div class="row">

@@ -99,7 +99,8 @@
                                     </div>
                                     <div class="col-md-8">
                                         @if(isset($customer->logo))
-                                            <img class="img-responsive" src="/customer/{{$customer->logo}}">
+                                            <img style="max-width: 500px; max-height: 300px;" class="img-thumbnail"
+                                                 src="{{route('customer.logo',$customer->id)}}">
                                         @endif
                                     </div>
                                 </div>

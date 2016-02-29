@@ -23,7 +23,7 @@ var SocketIO = SocketIO || (function () {
                 _host = host;
                 _port = port;
             }, start: function () {
-                _socket = io('http://' + _host + ':' + _port);
+                _socket = io.connect('https://' + _host + ':' + _port, {secure: true});
                 _socket.on("test-channel:App\\Events\\EventName", function (message) {
                     toastr.success(message.data, "Mensaje", socket_opts);
                 });

@@ -118,7 +118,7 @@
                 <h4 class="modal-title">Agregar un activo</h4>
             </div>
             <div class="modal-body">
-                {!! Form::model(new \App\Models\Customer\CustomerAsset(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('asset.store')]) !!}
+                {!! Form::model(new \Models\IncidentManager\Customer\CustomerAsset(),['class'=>'form-horizontal','role'=>'form','id'=>'form-customer-asset','url'=>route('asset.store')]) !!}
                 {!! Form::hidden('customer_id',$customer->id) !!}
                 @include('customer.asset._form')
                 {!! Form::close() !!}

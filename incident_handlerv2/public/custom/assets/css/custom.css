@@ -1,3 +1,7 @@
+body {
+    height: auto;
+}
+
 .bg-image {
     background-image: url("/custom/assets/img/bg-02.jpg");
     background-position: top left;
@@ -77,10 +81,6 @@
     padding: 0 !important;
 }
 
-.date-and-time .form-control.datepicker {
-    width: 100%;
-}
-
 .cut-title {
     max-width: 100%;
     overflow: hidden;
@@ -91,6 +91,39 @@
 
 .text-crop {
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.criticity-1 {
+    background-color: #CC3F44;
+    color: white;
+}
+
+.criticity-2 {
+    background-color: #ff7900;
+    color: white;
+}
+
+.criticity-3 {
+    background-color: #f7cc31;
+    color: white;
+
+}
+
+/*table {*/
+    /*table-layout: auto;*/
+/*}*/
+
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th {
+    padding: 6px 7px;
+    max-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
