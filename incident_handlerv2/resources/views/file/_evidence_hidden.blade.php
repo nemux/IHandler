@@ -1,1 +1,0 @@
-<input type="hidden" value="{{$evidence->id}}" name="evidence_{{$evidence->id}}" id="evidence_{{$evidence->id}}">
