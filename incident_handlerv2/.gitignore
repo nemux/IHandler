@@ -1,7 +1,0 @@
-/app/Library/Otrs/Models/model.txt
-/public/upload/evidences/*
-/vendor
-/node_modules
-Homestead.yaml
-Homestead.json
-.env

@@ -1,1 +1,0 @@
-<label class="control-label"><input type="checkbox" id="{{$id}}" name="{{$id}}"> Blacklist</label>
